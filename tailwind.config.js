@@ -6,7 +6,20 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {
+    colors: {
+      primary: 'F97247',
+      secondary: 'BCBBBC',
+      'light-grey': 'E2E1E2',
+      'light-pink': 'ECCEC8'
+
+
+    },
+    extend: { 
+
+      fontFamily: {
+      'font-title': ['PublicaSans', 'sans-serif'],
+      'font-text': ['URWGeometricBlack', 'sans-serif'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
