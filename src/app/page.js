@@ -6,6 +6,12 @@ import TabBtn from "../components/ui/TabBtn"
 import FoodCard from "../components/eaterView/FoodCard"
 import exampleMenu from "../utils/exampleMenu"
 
+import Image from 'next/image';
+import CartBtn from "../components/eaterView/CartBtn"
+import Cart from "../components/eaterView/Cart"
+
+
+
 export default function Home() {
   const [restaurant, setRestaurant] = useState('dodopizza')
   const commandTypes = ["Livraison", "À emporter"]
@@ -17,6 +23,8 @@ export default function Home() {
 
   const [menu, setMenu] = useState(menuWithRefs)
   const [activeFoodCategory, setActiveFoodCategory] = useState(exampleMenu[0]);
+
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
 
     useEffect(() => {
@@ -50,7 +58,7 @@ export default function Home() {
 
 return(
     <>
-      <div className = "relative flex flex-row">
+      <div className = "relative flex flex-row w-full h-full">
       <SideFoodCategories 
         foodCategories={menu.map(foodCategory => ({
           value: foodCategory.value,
@@ -69,7 +77,7 @@ return(
         <div className = "relative flex-row justify-center md:justify-start ps-12 w-full">
           <div className = "flex flex-col align-center justify-center"> 
           <div className = "h-24 w-72">
-            <img  className = "h-full w-full object-contain" src={`./images/${restaurant}/logo.png`} alt="Restaurant Logo" />
+            <img className = "h-full w-full object-contain" src={`./images/${restaurant}/logo.png`} alt="Restaurant Logo" />
           </div>
             <TabBtn values = {commandTypes}/>
             {menu.map((foodCategory, i) => (
@@ -82,6 +90,8 @@ return(
             ))}
           </div>
         </div>
+        <CartBtn className = "sticky top-5 right-5" onClick = {() => setIsCartOpen(!isCartOpen)}/>
+        <Cart open={isCartOpen} setOpen = {setIsCartOpen}/>
       </div>
       </>
   )
