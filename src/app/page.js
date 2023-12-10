@@ -90,7 +90,7 @@ return(
             ))}
           </div>
         </div>
-        <CartBtn className = "sticky top-5 right-5" onClick = {() => setIsCartOpen(!isCartOpen)}/>
+        <CartBtn className = "sticky top-5 right-0 me-5" onClick = {() => setIsCartOpen(!isCartOpen)}/>
         <Cart open={isCartOpen} setOpen = {setIsCartOpen}/>
       </div>
       </>
