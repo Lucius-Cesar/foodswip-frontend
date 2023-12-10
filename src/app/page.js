@@ -1,6 +1,6 @@
 
 "use client";
-import { useState, useEffect, createRef} from "react";
+import { useState, useEffect, createRef, useRef} from "react";
 import SideFoodCategories from "../components/eaterView/SideFoodCategories"
 import TabBtn from "../components/ui/TabBtn"
 import FoodCard from "../components/eaterView/FoodCard"
@@ -17,6 +17,36 @@ export default function Home() {
 
   const [menu, setMenu] = useState(menuWithRefs)
   const [activeFoodCategory, setActiveFoodCategory] = useState(exampleMenu[0]);
+
+
+    useEffect(() => {
+      const handleScroll = () => {
+        // logic to execute while scrolling
+        menu.forEach(foodCategory => {
+          const ref = foodCategory.ref;
+          if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            const isInsideTheFoodCategory = (
+              rect.top <= 0 &&
+              rect.bottom >= 0 
+            );
+  
+            if (isInsideTheFoodCategory) {
+              setActiveFoodCategory(foodCategory)            
+            }
+          }
+        }
+          )
+      };
+
+
+      window.addEventListener('scroll', handleScroll);
+      //component destruction
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, [menu]);
+
 
 return(
     <>

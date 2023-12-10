@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 export default function SideFoodCategories({foodCategories, activeFoodCategory, onFoodCategoryClick}) {
-
     return (
         <div className ="flex flex-col justify-center h-screen w-screen sm:sticky sm:top-0 sm:w-80">
             <FontAwesomeIcon className ="self-end text-dark-grey absolute top-6 pe-6 sm:hidden" icon = {faX} size = "2xl"></FontAwesomeIcon>
