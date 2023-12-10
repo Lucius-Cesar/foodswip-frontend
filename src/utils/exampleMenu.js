@@ -1,4 +1,4 @@
-const menu = [
+const exampleMenu = [
     {
       value: "Pizza",
       foods: [
@@ -277,4 +277,4 @@ const menu = [
         
     ]
 
-export default menu;
+export default exampleMenu;
