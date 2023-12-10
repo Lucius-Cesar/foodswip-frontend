@@ -60,7 +60,7 @@ export default function Home() {
 return(
     <>
       <div className = "relative flex flex-row">
-      <button className = "sticky block sm:hidden top-2 left-2 w-fit h-fit">
+      <button className = {`${isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"} sticky top-2 left-2 w-fit h-fit`} onClick = {() => setFoodCategoriesMenuOpen(true)}>
       <FontAwesomeIcon icon = {faBars} size = "2xl"/> 
       </button>
       <SideFoodCategories 
@@ -72,6 +72,7 @@ return(
         }))}
         activeFoodCategory = {activeFoodCategory}
         onFoodCategoryClick={(index) => {
+          setFoodCategoriesMenuOpen(false)
           setActiveFoodCategory(menu[index]);
           menu[index].ref.current.scrollIntoView({
             behavior: 'instant',
@@ -96,7 +97,7 @@ return(
             ))}
           </div>
         </div>
-        <CartBtn className = {`${isFoodCategoriesMenuOpen ? "sm:hidden" : ""} lg:flex sticky top-2 sm:top-5 right-0 me-2 sm:me-5`} onClick = {() => setIsCartOpen(!isCartOpen)}/>
+        <CartBtn className = {`${isFoodCategoriesMenuOpen ? "hidden sm:flex" : "flex"} sticky top-2 sm:top-5 right-0 me-2 sm:me-5`} onClick = {() => setIsCartOpen(!isCartOpen)}/>
         <Cart open={isCartOpen} setOpen = {setIsCartOpen}/>
       </div>
       </>

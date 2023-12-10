@@ -6,9 +6,9 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 export default function SideFoodCategories({foodCategories, activeFoodCategory, onFoodCategoryClick, open, setOpen}) {
     return (
-        <div className = {`${open ? "flex" : "hidden"} md:flex flex-col justify-center h-screen w-screen sm:sticky sm:top-0 sm:w-80`}>
+        <div className = {`${open ? "fixed bg-white flex" : "hidden"} sm:bg-none z-10 md:flex flex-col justify-center h-screen w-screen sm:sticky sm:top-0 sm:w-80`}>
          <button
-         type="button" className="block md:hidden sticky rounded-md bg-white text-gray-400 hover:text-gray-500"
+         type="button" className="sm:hidden sticky top-0 self-end rounded-md bg-white text-gray-400 hover:text-gray-500 width-fit pe-5"
           onClick={() => setOpen(false)}>
           <span className="absolute -inset-2.5" />
            <span className="sr-only">Close menu</span>
