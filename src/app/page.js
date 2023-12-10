@@ -60,7 +60,7 @@ return(
         onFoodCategoryClick={(index) => {
           setActiveFoodCategory(menu[index]);
           menu[index].ref.current.scrollIntoView({
-            behavior: 'smooth',
+            behavior: 'instant',
             block: 'start',
           });
         }}
