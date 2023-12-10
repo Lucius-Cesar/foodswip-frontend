@@ -3,7 +3,7 @@ import CartIcon from "../ui/icons/CartIcon"
 import {useState} from "react"
 export default function CartBtn({className, onClick}){
     const [isHovered, setIsHovered] = useState(false);
-    const primaryColor = "#F97247"
+    const primary = "#F97247"
     const handleMouseOver = () => {
         setIsHovered(true);
       };
@@ -13,11 +13,13 @@ export default function CartBtn({className, onClick}){
       };
 
     return(
-    <button type = "button" className = {`flex justify-center items-center rounded-3xl h-fit w-fit ${isHovered ? "bg-white outline outline-primary" : "bg-primary"} ${className}`}
+    <button type = "button" className = {`flex justify-center items-center rounded-3xl ${isHovered ? "bg-white outline outline-primary" : "bg-primary"} rounded-xl h-fit w-fit sm:rounded-2xl ${className}`}
     onMouseOver={handleMouseOver}
     onMouseOut={handleMouseOut}
     onClick = {onClick}>
-        <CartIcon color = {isHovered ? primaryColor : "white"} className = "object-contain"/>
+        <div className = "h-11 w-11 sm:h-16 sm:w-16">
+            <CartIcon color = {isHovered ? primary : "white"} className ="w-full h-full"/>
+        </div>
     </button>
     )
 }

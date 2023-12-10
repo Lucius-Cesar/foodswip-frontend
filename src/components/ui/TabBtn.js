@@ -11,7 +11,7 @@ export default function TabBtn({values}) {
         type = "button"
         onClick = {() => setCurrentValue(value)}
         key = {i} 
-        className ={`${currentValue === value ? "bg-primary text-white" : "bg-light-grey text-dark-grey"} table ps-5 pe-5 w-48 rounded-s-full rounded-e-full hover:bg-light-grey-700 focus:bg-primary focus:text-white h-8`}> 
+        className ={`${currentValue === value ? "bg-primary text-white" : "bg-light-grey text-dark-grey"} h-8 w-32 sm:w-48 table ps-5 pe-5 rounded-s-full rounded-e-full hover:bg-light-grey-700 focus:bg-primary focus:text-white`}> 
             {value}
         </button>)
         }
