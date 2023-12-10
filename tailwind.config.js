@@ -6,15 +6,18 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    colors: {
-      primary: 'F97247',
-      secondary: 'BCBBBC',
-      'light-grey': 'E2E1E2',
-      'light-pink': 'ECCEC8'
-
-
-    },
     extend: { 
+      colors: {
+        'primary': '#F97247',
+        'primary-500': '#f98059',
+        'magnolia': '#FCFBFF',
+        'dark-grey': "#3F3E3F",
+        'gravel': "#BCBBBC",
+        'medium-grey': "#A2A2A2",
+        'light-grey': '#eeeeee',
+        'light-grey-700': "#d6d6d6",
+        'light-pink': '#ECCEC8'
+      },
 
       fontFamily: {
       'font-title': ['PublicaSans', 'sans-serif'],
