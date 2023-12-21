@@ -1,4 +1,3 @@
-"use client";
 import {useState} from "react"
 export default function TabBtn({values}) {
     const [currentValue, setCurrentValue] = useState(values[0])

@@ -16,7 +16,8 @@ module.exports = {
         'medium-grey': "#A2A2A2",
         'light-grey': '#eeeeee',
         'light-grey-700': "#d6d6d6",
-        'light-pink': '#ECCEC8'
+        'light-pink': '#ECCEC8',
+        'success': '#01733e'
       },
 
       fontFamily: {
@@ -30,5 +31,7 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
 }
