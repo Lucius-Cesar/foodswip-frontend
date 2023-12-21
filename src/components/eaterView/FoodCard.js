@@ -1,10 +1,27 @@
 import { useEffect, useState } from 'react'
 import AddBtn from '../ui/AddBtn';
 import ModalFood from './ModalFood'
+
+import {useDispatch} from 'react-redux'
+import { addArticleToCart } from '../../app/redux/reducers/cart';
+
 export default function FoodCard({food}) {
     const [isModalOpen, setModalOpen] = useState(false)
+
+    const dispatch = useDispatch()
+    const handleAddArticleToCart = () => {
+        const articlePayload = {
+        food: food.value,
+        foodPrice: food.price,
+        quantity: 1,
+        options: [],
+        supplements: [],
+        }
+        dispatch(addArticleToCart(articlePayload))
+    }
+
     const onClickAddBtn = () => {
-        food.options.length > 0 || food.supplements.length > 0 ? setModalOpen(true) : null
+        food.options.length > 0 || food.supplements.length > 0 ? setModalOpen(true) : handleAddArticleToCart()
     }
 
     return (

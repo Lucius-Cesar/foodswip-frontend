@@ -11,7 +11,6 @@ export default function FoodSupplementsCheckBoxGroup({label, items, chosenSupple
       updatedChosenSupplements.splice(concernedSupplementDeleteIndex, 1)
     }
     setChosenSupplements(updatedChosenSupplements)
-    console.log(chosenSupplements)
   }
     return (
       <fieldset>

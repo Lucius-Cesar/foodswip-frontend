@@ -1,7 +1,11 @@
 
 import CartIcon from "../ui/icons/CartIcon"
 import {useState} from "react"
+
+import {useSelector} from "react-redux"
 export default function CartBtn({className, onClick, isCartOpen}){
+    const numberOfArticles = useSelector((state) => state.cart.numberOfArticles);
+
     const [isHovered, setIsHovered] = useState(false);
     const primary = "#F97247"
     const handleMouseOver = () => {
@@ -17,8 +21,11 @@ export default function CartBtn({className, onClick, isCartOpen}){
     onMouseOver={handleMouseOver}
     onMouseOut={handleMouseOut}
     onClick = {onClick}>
-        <div className = "h-11 w-11 sm:h-16 sm:w-16">
+        <div className = "h-11 w-11 sm:h-16 sm:w-16 relative">
             <CartIcon color = {isHovered || isCartOpen ? primary : "white"} className ="w-full h-full"/>
+            <div className = "absolute leading-6 w-6 sm:leading-7 sm:w-7 -bottom-2 -left-2 rounded-full bg-gravel text-center">
+              {numberOfArticles > 0 && <p className = "text-white font-semibold text-base sm:text-lg">{numberOfArticles}</p>}
+            </div>
         </div>
     </button>
     )

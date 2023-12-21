@@ -1,12 +1,23 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import CartIcon from "../ui/icons/CartIcon"
+import CartArticle from "./CartArticle"
 
+import {useSelector} from  "react-redux"
+
+import { addMoney } from '@/utils/moneyCalculations'
+import DefaultBtn from '../ui/DefaultBtn'
 
 export default function Cart({open, setOpen}){
-    const primary = "#F97247"
+    const primary = "#F97247" //sorry for this
+    const cart = useSelector((state) => state.cart);
+    const orderSettings = useSelector((state) => state.restaurant.orderSettings);
+    const [totalSum, setTotalSum] = useState(null)
 
+    useEffect(() => {
+      setTotalSum(addMoney(cart.articlesSum, orderSettings.deliveryFees))
+    }, [cart])
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -35,10 +46,10 @@ export default function Cart({open, setOpen}){
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-sm">
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
-                    <div className="px-4 sm:px-6">
-                      <div className="flex items-start justify-between">    
+                <Dialog.Panel className="pointer-events-auto w-screen max-w-sm" >
+                  <div className="flex col h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                    <div className="overflow-hidden">
+                      <div className="flex flex-row items-start justify-between pb-6 px-4 sm:px-6 pt-0.5">    
                           <button
                             type="button"
                             className="sticky rounded-md bg-white text-gray-400 hover:text-gray-500"
@@ -51,11 +62,46 @@ export default function Cart({open, setOpen}){
                           <div className =  "flex justify-center items-center rounded-3xl h-fit w-fit b-white outline outline-primary">
                             <CartIcon color = {primary}/>
                           </div>
-                          <></>
                         </div>
-                      </div>
+                        <div className = "flex flex-col space-y-5 max-h-56 overflow-auto px-4 sm:px-6 pb-0.5">
+                          {cart.articles.map((article,i) => <CartArticle article = {article} key={i} index = {i}/>)}
+                        </div>
+                        {cart.articles.length > 0 ? (
+                          <div className = "flex flex-col justify-around mt-5 sm:border-t-2 border-light-grey px-4 sm:px-6 ">
+                          <div className = "flex flex-row justify-between">
+                            <p className ="font-medium">{cart.numberOfArticles} articles</p>
+                            <p className ="font-medium">{cart.articlesSum} €</p>
+                          </div>
+                          <div className = "flex flex-row justify-between">
+                            <p className ="font-medium">Frais de livraison</p>
+                            <p className ="font-medium">{orderSettings.deliveryFees} €</p>
+                          </div>
+                          <div className = "flex flex-row justify-between">
+                            <p className = "font-bold">Total</p>
+                            <p className = "font-bold">{totalSum} €</p>
+                          </div>
+
+                          <div>
+      <div className="mt-2 flex flex-col justify-around space-y-3">
+        <textarea
+          rows={4}
+          name="comment"
+          id="comment"
+          placeholder="Ajouter un message"
+          style={{ resize: 'none' }}
+          className="block h-12 w-full rounded-2xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+          defaultValue={''}
+        />
+          <DefaultBtn value = {"Commander"} className = "w-72 h-10 text-xl font-bold bg-success self-center"/>
+
+      </div>
+    </div>
+                          
+
+                        </div>
+                        ) : null}
+                        </div>
                     </div>
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">{/* Your content */}</div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

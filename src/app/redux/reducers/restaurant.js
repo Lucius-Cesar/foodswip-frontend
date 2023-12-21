@@ -23,6 +23,7 @@ const initialState = {
             min: 30,
             max: 60
         },
+        deliveryFees: 5,
         takeAwayPayments: [
             {
                 value: "Paypal",

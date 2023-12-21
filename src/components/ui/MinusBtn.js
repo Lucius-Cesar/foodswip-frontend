@@ -1,6 +1,6 @@
 import { MinusIcon } from '@heroicons/react/20/solid'
 
-export default function AddBtn({onClick}){
+export default function MinusBtn({onClick}){
     return(
         <button
             onClick = {onClick}

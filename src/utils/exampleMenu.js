@@ -10,18 +10,18 @@ const exampleMenu = [
           { 
             categoryValue: "Choisis ta taille",
             items: [
-              { value: "Taille XL", price: 3.00 },
+              { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5},
-              { value: "Taille S", price: 0 }
+              { value: "Taille XL", price: 3.00 },
             ]
           },
           {
             categoryValue: "Choisis ta croute",
             items: [
-              { value: "Croûte sans gluten", price: 2.00 },
+              {value: "Croûte normale", price: 0},
               { value: "Croûte aux herbes", price: 1.00 },
               {value: "Croûte au fromage", price: 1.00},
-              {value: "Croûte normale", price: 0}
+              { value: "Croûte sans gluten", price: 2.00 },
             ]
           }
         ],
@@ -45,18 +45,18 @@ const exampleMenu = [
           { 
             categoryValue: "Choisis ta taille",
             items: [
-              { value: "Taille XL", price: 3.00 },
+              { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5},
-              { value: "Taille S", price: 0 }
+              { value: "Taille XL", price: 3.00 },
             ]
           },
           {
             categoryValue: "Choisis ta croute",
             items: [
-              { value: "Croûte sans gluten", price: 2.00 },
+              {value: "Croûte normale", price: 0},
               { value: "Croûte aux herbes", price: 1.00 },
               {value: "Croûte au fromage", price: 1.00},
-              {value: "Croûte normale", price: 0}
+              { value: "Croûte sans gluten", price: 2.00 },
             ]
           }
         ],
@@ -80,18 +80,18 @@ const exampleMenu = [
           { 
             categoryValue: "Choisis ta taille",
             items: [
-              { value: "Taille XL", price: 3.00 },
+              { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5},
-              { value: "Taille S", price: 0 }
+              { value: "Taille XL", price: 3.00 },
             ]
           },
           {
             categoryValue: "Choisis ta croute",
             items: [
-              { value: "Croûte sans gluten", price: 2.00 },
+              {value: "Croûte normale", price: 0},
               { value: "Croûte aux herbes", price: 1.00 },
               {value: "Croûte au fromage", price: 1.00},
-              {value: "Croûte normale", price: 0}
+              { value: "Croûte sans gluten", price: 2.00 },
             ]
           }
         ],
@@ -115,18 +115,18 @@ const exampleMenu = [
           { 
             categoryValue: "Choisis ta taille",
             items: [
-              { value: "Taille XL", price: 3.00 },
+              { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5},
-              { value: "Taille S", price: 0 }
+              { value: "Taille XL", price: 3.00 },
             ]
           },
           {
             categoryValue: "Choisis ta croute",
             items: [
-              { value: "Croûte sans gluten", price: 2.00 },
+              {value: "Croûte normale", price: 0},
               { value: "Croûte aux herbes", price: 1.00 },
               {value: "Croûte au fromage", price: 1.00},
-              {value: "Croûte normale", price: 0}
+              { value: "Croûte sans gluten", price: 2.00 },
             ]
           }
         ],
@@ -150,18 +150,18 @@ const exampleMenu = [
           { 
             categoryValue: "Choisis ta taille",
             items: [
-              { value: "Taille XL", price: 3.00 },
+              { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5},
-              { value: "Taille S", price: 0 }
+              { value: "Taille XL", price: 3.00 },
             ]
           },
           {
             categoryValue: "Choisis ta croute",
             items: [
-              { value: "Croûte sans gluten", price: 2.00 },
+              {value: "Croûte normale", price: 0},
               { value: "Croûte aux herbes", price: 1.00 },
               {value: "Croûte au fromage", price: 1.00},
-              {value: "Croûte normale", price: 0}
+              { value: "Croûte sans gluten", price: 2.00 },
             ]
           }
         ],
@@ -185,18 +185,18 @@ const exampleMenu = [
               { 
                 categoryValue: "Choisis ta taille",
                 items: [
-                  { value: "Taille XL", price: 3.00 },
+                  { value: "Taille S", price: 0 },
                   { value: "Taille M", price: 1.5},
-                  { value: "Taille S", price: 0 }
+                  { value: "Taille XL", price: 3.00 },
                 ]
               },
               {
                 categoryValue: "Choisis ta croute",
                 items: [
-                  { value: "Croûte sans gluten", price: 2.00 },
+                  {value: "Croûte normale", price: 0},
                   { value: "Croûte aux herbes", price: 1.00 },
                   {value: "Croûte au fromage", price: 1.00},
-                  {value: "Croûte normale", price: 0}
+                  { value: "Croûte sans gluten", price: 2.00 },
                 ]
               }
             ],
@@ -220,18 +220,18 @@ const exampleMenu = [
                   { 
                     categoryValue: "Choisis ta taille",
                     items: [
-                      { value: "Taille XL", price: 3.00 },
+                      { value: "Taille S", price: 0 },
                       { value: "Taille M", price: 1.5},
-                      { value: "Taille S", price: 0 }
+                      { value: "Taille XL", price: 3.00 },
                     ]
                   },
                   {
                     categoryValue: "Choisis ta croute",
                     items: [
-                      { value: "Croûte sans gluten", price: 2.00 },
+                      {value: "Croûte normale", price: 0},
                       { value: "Croûte aux herbes", price: 1.00 },
                       {value: "Croûte au fromage", price: 1.00},
-                      {value: "Croûte normale", price: 0}
+                      { value: "Croûte sans gluten", price: 2.00 },
                     ]
                   }
                 ],
@@ -252,14 +252,35 @@ const exampleMenu = [
                     value: "Pizza BBQ",
                     description: "Sauce barbecue, Poulet grillé, Poivrons, Oignons, Mozzarella",
                     price: 13.49,
-                    supplements: [
-                      { value: "Double portion de poulet", price: 3.00 },
-                      { value: "Poivrons supplémentaires", price: 1.50 },
-                    ],
+                    
                     options: [
-                      { value: "Croûte aux herbes", price: 1.50 },
-                      { value: "Taille XXL", price: 4.00 },
+                      { 
+                        categoryValue: "Choisis ta taille",
+                        items: [
+                          { value: "Taille S", price: 0 },
+                          { value: "Taille M", price: 1.5},
+                          { value: "Taille XL", price: 3.00 },
+                        ]
+                      },
+                      {
+                        categoryValue: "Choisis ta croute",
+                        items: [
+                          {value: "Croûte normale", price: 0},
+                          { value: "Croûte aux herbes", price: 1.00 },
+                          {value: "Croûte au fromage", price: 1.00},
+                          { value: "Croûte sans gluten", price: 2.00 },
+                        ]
+                      }
                     ],
+                        supplements: [
+                          {
+                            categoryValue: "Choisis tes suppléments:",
+                          items: [
+                            { value: "Olives noires", price: 1.50 },
+                            { value: "Champignons", price: 2.00 },
+                          ]
+                        }
+                        ],
                     position: 8, // ajustez la position en conséquence
                     display: true,
                   },
@@ -271,18 +292,18 @@ const exampleMenu = [
                           { 
                             categoryValue: "Choisis ta taille",
                             items: [
-                              { value: "Taille XL", price: 3.00 },
+                              { value: "Taille S", price: 0 },
                               { value: "Taille M", price: 1.5},
-                              { value: "Taille S", price: 0 }
+                              { value: "Taille XL", price: 3.00 },
                             ]
                           },
                           {
                             categoryValue: "Choisis ta croute",
                             items: [
-                              { value: "Croûte sans gluten", price: 2.00 },
+                              {value: "Croûte normale", price: 0},
                               { value: "Croûte aux herbes", price: 1.00 },
                               {value: "Croûte au fromage", price: 1.00},
-                              {value: "Croûte normale", price: 0}
+                              { value: "Croûte sans gluten", price: 2.00 },
                             ]
                           }
                         ],
@@ -306,18 +327,18 @@ const exampleMenu = [
                           { 
                             categoryValue: "Choisis ta taille",
                             items: [
-                              { value: "Taille XL", price: 3.00 },
+                              { value: "Taille S", price: 0 },
                               { value: "Taille M", price: 1.5},
-                              { value: "Taille S", price: 0 }
+                              { value: "Taille XL", price: 3.00 },
                             ]
                           },
                           {
                             categoryValue: "Choisis ta croute",
                             items: [
-                              { value: "Croûte sans gluten", price: 2.00 },
+                              {value: "Croûte normale", price: 0},
                               { value: "Croûte aux herbes", price: 1.00 },
                               {value: "Croûte au fromage", price: 1.00},
-                              {value: "Croûte normale", price: 0}
+                              { value: "Croûte sans gluten", price: 2.00 },
                             ]
                           }
                         ],
@@ -348,8 +369,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -375,8 +396,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -402,8 +423,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -429,8 +450,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -456,8 +477,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -483,8 +504,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -510,8 +531,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -537,8 +558,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -564,8 +585,8 @@ const exampleMenu = [
             { 
               categoryValue: "Choisis ton type de pâtes",
               items: [
-                { value: "Pâtes complètes", price: 0 },
                 { value: "Pâtes blanches", price: 0},
+                { value: "Pâtes complètes", price: 0 },
                 {value: "Pâtes sans gluten", price: 1.5}
               ]
             }
@@ -591,8 +612,8 @@ const exampleMenu = [
                 { 
                   categoryValue: "Choisis ton type de pâtes",
                   items: [
-                    { value: "Pâtes complètes", price: 0 },
                     { value: "Pâtes blanches", price: 0},
+                    { value: "Pâtes complètes", price: 0 },
                     {value: "Pâtes sans gluten", price: 1.5}
                   ]
                 }
