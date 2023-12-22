@@ -8,11 +8,12 @@ import DefaultBtn from '../ui/DefaultBtn'
 import AddBtn from '../ui/AddBtn'
 import MinusBtn from '../ui/MinusBtn'
 
-import {useDispatch} from 'react-redux'
-import { addArticleToCart } from '../../app/redux/reducers/cart';
+import {useDispatch, useSelector} from 'react-redux'
+import { addArticleToCart, incrementArticleQuantity} from '../../app/redux/reducers/cart';
 
 import { addMoney, multiplyMoney} from '@/utils/moneyCalculations'
 
+import findIndexOfArticleInCart from '@/utils/findIndexOfArticleInCart'
 
 export default function ModalFood({food, open, setOpen}) {
   // AU MOI DU FUTUR: n'oublie pas de trier les options par prix au niveau du backend
@@ -23,6 +24,7 @@ export default function ModalFood({food, open, setOpen}) {
   const [chosenOptions, setChosenOptions] = useState( food.options.length > 0 ? food.options.flatMap(optionCategory => optionCategory.items[0]): [])
   const [chosenSupplements, setChosenSupplements] = useState([])
 
+  const cart = useSelector((state) => state.cart)
   const handleClose = () => {
     setOpen(false)
     //reset states on close + Timeout for animations
@@ -36,21 +38,31 @@ export default function ModalFood({food, open, setOpen}) {
   }
   const dispatch = useDispatch()
   const handleAddArticleToCart = () => {
-    const articlePayload = {
+    const newArticle = {
       food: food.value,
       foodPrice: foodPrice,
       quantity: quantity,
       options: chosenOptions,
       supplements: chosenSupplements,
     }
-    dispatch(addArticleToCart(articlePayload))
+    //if cart already contains this article object -> increment
+    // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
+    const articleIndex = findIndexOfArticleInCart(newArticle, cart.articles)
+    
+    if(articleIndex !== -1){
+        dispatch(incrementArticleQuantity({index: articleIndex, increment: newArticle.quantity}))
+    }
+    else{
+    //else add article object to cart
+    dispatch(addArticleToCart(newArticle))
+    }     
     handleClose()
   }
   useEffect(() => {
     //if options and supplements array change, the price for 1 quantity food is recalculate
     const optionsPriceSum = chosenOptions.reduce((accumulator, option) => addMoney(accumulator, option.price), 0);
 
-    const supplementsPriceSum = chosenSupplements.reduce((accumulator, supplement) => addMoney(accumulator + supplement.price), 0);
+    const supplementsPriceSum = chosenSupplements.reduce((accumulator, supplement) => addMoney(accumulator, supplement.price), 0);
 
     setFoodPrice(addMoney(food.price, optionsPriceSum, supplementsPriceSum))
   }, [chosenOptions, chosenSupplements])
@@ -103,7 +115,7 @@ export default function ModalFood({food, open, setOpen}) {
                   {quantity}
                   <AddBtn onClick = {() => setQuantity(quantity+1)}/>
                   </div>
-                  <DefaultBtn value = {`${multiplyMoney(foodPrice, quantity)} €`} className = " w-32 sm:w-40 text-xl font-bold hover:bg-success"  onClick = {handleAddArticleToCart}/>
+                  <DefaultBtn value = {`${multiplyMoney(foodPrice, quantity)} €`} className = " w-32 sm:w-40 text-xl font-bold bg-success hover:opacity-90"  onClick = {handleAddArticleToCart}/>
 
                 </div>
               </Dialog.Panel>

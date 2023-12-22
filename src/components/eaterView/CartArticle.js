@@ -9,7 +9,7 @@ import {multiplyMoney} from "../../utils/moneyCalculations"
 export default function CartArticle({article, index}){
   const dispatch = useDispatch()
   const handleAddBtn = () => {
-    dispatch(incrementArticleQuantity(index))
+    dispatch(incrementArticleQuantity({index: index, increment: 1}))
   }
   const handleMinusBtn = () => {
     dispatch(decrementArticleQuantity(index))

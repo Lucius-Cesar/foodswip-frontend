@@ -2,22 +2,37 @@ import { useEffect, useState } from 'react'
 import AddBtn from '../ui/AddBtn';
 import ModalFood from './ModalFood'
 
-import {useDispatch} from 'react-redux'
-import { addArticleToCart } from '../../app/redux/reducers/cart';
+import {useDispatch, useSelector} from 'react-redux'
+import { addArticleToCart, incrementArticleQuantity} from '../../app/redux/reducers/cart';
 
+import findIndexOfArticleInCart from "../../utils/findIndexOfArticleInCart"
 export default function FoodCard({food}) {
+    const dispatch = useDispatch()
+
     const [isModalOpen, setModalOpen] = useState(false)
 
-    const dispatch = useDispatch()
+    const cart = useSelector((state) => state.cart)
+
+
     const handleAddArticleToCart = () => {
-        const articlePayload = {
+        const newArticle = {
         food: food.value,
         foodPrice: food.price,
         quantity: 1,
         options: [],
         supplements: [],
         }
-        dispatch(addArticleToCart(articlePayload))
+        //if cart already contains this article object -> increment
+        // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
+        const articleIndex = findIndexOfArticleInCart(newArticle, cart.articles)
+    
+        if(articleIndex !== -1){
+            dispatch(incrementArticleQuantity({index: articleIndex, increment: newArticle.quantity}))
+        }
+        else{
+        //else add article object to cart
+        dispatch(addArticleToCart(newArticle))
+        }     
     }
 
     const onClickAddBtn = () => {
