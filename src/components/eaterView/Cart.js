@@ -104,7 +104,7 @@ export default function Cart({ open, setOpen }) {
                             </div>
                           </div>
                         </div>
-                      ) : null}
+                      ) : <p className = "text-4xl text-dark-grey font-bold text-center"> Remplis moi la besace <br/> J'ai trop faim ! </p>}
                     </div>
                   </div>
                 </Dialog.Panel>
