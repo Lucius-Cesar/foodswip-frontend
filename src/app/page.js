@@ -3,7 +3,7 @@ import { useState, useEffect, createRef, useRef} from "react";
 import SideFoodCategories from "../components/eaterView/SideFoodCategories"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import TabBtn from "../components/ui/TabBtn"
+import OrderTabBtn from "../components/eaterView/OrderTabBtn"
 import FoodCard from "../components/eaterView/FoodCard"
 
 import Image from 'next/image';
@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
   const restaurant = useSelector(state => state.restaurant)
-  const commandTypes = ["Livraison", "À emporter"]
 
   // Create a ref for each foodCategory to allow switching active food category while scrolling 
   // and going to the selectedFoodCategory onClick in the sideFoodCategoriesMenu
@@ -81,7 +80,7 @@ return(
           <div className = "h-14 w-56 sm:h-24 sm:w-72">
             <img className = "h-full w-full object-contain" src={`./images/${restaurant.uniqueValue}/logo.png`} alt="Restaurant Logo" />
           </div>
-            <TabBtn values = {commandTypes}/>
+            <OrderTabBtn/>
             {menu.map((foodCategory, i) => (
               <div key={i} ref = {foodCategory.ref} className ="w-full flex flex-col items-center sm:items-start">
                 <h1 className = "text-primary text-3xl mt-3 mb-3 font-bold">{foodCategory.value}</h1>

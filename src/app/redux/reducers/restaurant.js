@@ -13,8 +13,19 @@ const initialState = {
     phoneNumber: "+32407886655",
     menu: exampleMenu,
     orderSettings: {
-        delivery: true,
-        takeaway: true,
+        orderTypes: [
+            {value: 0,
+            label: "Livraison",
+            enabled: true,
+
+        },
+        {
+        value: 1,
+        label: "À emporter",
+        enabled: true
+
+        },
+        ],
         pendingOrderAlert: {
             enabled: true,
             interval: 5

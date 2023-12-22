@@ -16,7 +16,8 @@ export default function Cart({open, setOpen}){
     const [totalSum, setTotalSum] = useState(null)
 
     useEffect(() => {
-      setTotalSum(addMoney(cart.articlesSum, orderSettings.deliveryFees))
+      //0 for delivery orderType
+      cart.orderType == 0 ? setTotalSum(addMoney(cart.articlesSum, orderSettings.deliveryFees)) : setTotalSum(cart.articlesSum)
     }, [cart])
 
   return (
@@ -72,10 +73,10 @@ export default function Cart({open, setOpen}){
                             <p className ="font-medium">{cart.numberOfArticles} articles</p>
                             <p className ="font-medium">{cart.articlesSum} €</p>
                           </div>
-                          <div className = "flex flex-row justify-between">
+                          { cart.orderType == 0 && <div className = "flex flex-row justify-between">
                             <p className ="font-medium">Frais de livraison</p>
                             <p className ="font-medium">{orderSettings.deliveryFees} €</p>
-                          </div>
+                          </div>}
                           <div className = "flex flex-row justify-between">
                             <p className = "font-bold">Total</p>
                             <p className = "font-bold">{totalSum} €</p>
