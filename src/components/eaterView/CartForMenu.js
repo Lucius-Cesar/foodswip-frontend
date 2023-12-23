@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { addMoney } from '@/utils/moneyCalculations';
 import DefaultBtn from '../ui/DefaultBtn';
 
-export default function Cart({ open, setOpen }) {
+export default function CartForMenu({ open, setOpen }) {
   const primary = "#F97247"; //sorry for this
   const cart = useSelector((state) => state.cart);
   const orderSettings = useSelector((state) => state.restaurant.orderSettings);
@@ -50,7 +50,7 @@ export default function Cart({ open, setOpen }) {
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-sm">
                   <div className="flex col h-full flex-col bg-white shadow-xl">
                     <div className>
-                      <div className="flex flex-row items-start justify-between pb-6 px-4  pt-6 sm:px-6">
+                      <div className="flex flex-row items-start justify-between py-6 px-4  sm:px-6">
                         <button
                           type="button"
                           className="sticky rounded-md bg-white text-gray-400 hover:text-gray-500"

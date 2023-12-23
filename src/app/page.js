@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect, createRef, useRef} from "react";
 import SideFoodCategories from "../components/eaterView/SideFoodCategories"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { Bars3Icon } from '@heroicons/react/24/outline';
+
 import OrderTabBtn from "../components/eaterView/OrderTabBtn"
 import FoodCard from "../components/eaterView/FoodCard"
 
 import Image from 'next/image';
 import CartBtn from "../components/eaterView/CartBtn"
-import Cart from "../components/eaterView/Cart"
+import CartForMenu from "../components/eaterView/CartForMenu"
 
 import { useSelector } from "react-redux";
 
@@ -58,9 +58,9 @@ export default function Home() {
 
 return(
   <div ref = {mainContainer} className = {`${isFoodCategoriesMenuOpen ? "overflow-hidden sm:overflow-auto" : "overflow-auto"} relative flex flex-row h-screen`}>
-  <button className = {`${isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"} sticky top-2 left-2 w-fit h-fit`} onClick = {() => setFoodCategoriesMenuOpen(true)}>
-      <FontAwesomeIcon icon = {faBars} size = "2xl"/> 
-      </button>
+  <button className = {`${isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"} sticky top-0 left-2 w-fit h-fit`} onClick = {() => setFoodCategoriesMenuOpen(true)}>
+    <Bars3Icon className="h-11 w-11" aria-hidden="true" />
+    </button>
       <SideFoodCategories 
         open = {isFoodCategoriesMenuOpen}
         setOpen = {setFoodCategoriesMenuOpen}
@@ -82,7 +82,7 @@ return(
           </div>
             <OrderTabBtn/>
             {menu.map((foodCategory, i) => (
-              <div key={i} ref = {foodCategory.ref} className ="w-full flex flex-col items-center sm:items-start">
+              <div key={i} ref = {foodCategory.ref} className ="w-full flex flex-col items-center sm:items-start px-5 sm:px-0 ">
                 <h1 className = "text-primary text-3xl mt-3 mb-3 font-bold">{foodCategory.value}</h1>
                 {foodCategory.foods.map((food, j) => (
                   <FoodCard key={j} food={food} />
@@ -91,8 +91,10 @@ return(
             ))}
           </div>
         </div>
-        <CartBtn className = {`${isFoodCategoriesMenuOpen ? "hidden sm:flex" : "flex"} sticky top-2 sm:top-5 right-0 me-2 sm:me-5`} onClick = {() => setIsCartOpen(!isCartOpen)} isCartOpen = {isCartOpen}/>
-        <Cart open={isCartOpen} setOpen = {setIsCartOpen}/>
+      
+         <CartBtn className = {`${isFoodCategoriesMenuOpen ? "hidden sm:flex" : "flex"} sticky top-2 sm:top-5 right-0 me-2 sm:me-5`} onClick = {() => setIsCartOpen(!isCartOpen)} isCartOpen = {isCartOpen}/>
+        <CartForMenu open={isCartOpen} setOpen = {setIsCartOpen}/>
+
       </div>
   )
 }
