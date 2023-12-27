@@ -1,10 +1,12 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import CartIcon from "../ui/icons/CartIcon";
-import CartArticle from "./CartArticle";
+
 import { useSelector } from "react-redux";
 import { addMoney } from '@/utils/moneyCalculations';
+
+import CartIcon from "../ui/icons/CartIcon";
+import CartArticle from "./CartArticle";
 import DefaultBtn from '../ui/DefaultBtn';
 
 export default function CartForMenu({ open, setOpen }) {
@@ -37,7 +39,7 @@ export default function CartForMenu({ open, setOpen }) {
 
         <div className="fixed inset-0">
           <div className="absolute inset-0">
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+            <div className="pointer-events-none fixed inset-y-0 right-0 flex  m-w-full sm:max-w-screen-sm  pl-10">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -47,10 +49,9 @@ export default function CartForMenu({ open, setOpen }) {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-sm">
+                <Dialog.Panel className="pointer-events-auto w-screen sm:max-w-sm">
                   <div className="flex col h-full flex-col bg-white shadow-xl">
-                    <div className>
-                      <div className="flex flex-row items-start justify-between py-6 px-4  sm:px-6">
+                      <div className="flex flex-row items-start justify-between py-6 px-4  sm:px-6 h-28 ">
                         <button
                           type="button"
                           className="sticky rounded-md bg-white text-gray-400 hover:text-gray-500"
@@ -64,13 +65,12 @@ export default function CartForMenu({ open, setOpen }) {
                           <CartIcon color={primary} />
                         </div>
                       </div>
-                      <div className="flex flex-col space-y-5 max-h-56 overflow-auto px-4 sm:px-6 pb-0.5">
+                      <div className="flex flex-col space-y-5 grow overflow-auto px-4 sm:px-6 pb-0.5">
                         {cart.articles.map((article, i) => (
                           <CartArticle article={article} key={i} index={i} />
                         ))}
                       </div>
-                      {cart.articles.length > 0 ? (
-                        <div className="flex flex-col justify-around mt-5 px-4 sm:px-6 ">
+                        <div className="flex flex-col justify-around mt-5 px-4 sm:px-6 h-56 pb-2">
                           <div className = "border-t-2 border-light-grey mb-1"></div>
                           <div className="flex flex-row justify-between">
                             <p className="font-medium">{cart.numberOfArticles} articles</p>
@@ -103,10 +103,8 @@ export default function CartForMenu({ open, setOpen }) {
                               />
                             </div>
                           </div>
-                        </div>
-                      ) : <p className = "text-4xl text-dark-grey font-bold text-center"> Remplis moi la besace <br/> J'ai trop faim ! </p>}
+                          </div>
                     </div>
-                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
