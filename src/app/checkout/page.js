@@ -40,7 +40,7 @@ export default function Checkout() {
     postCode: "",
     city: "",
     firstname: "",
-    name: "",
+    lastname: "",
     mail: "",
     phoneNumber: "",
   });
@@ -183,15 +183,16 @@ export default function Checkout() {
       }));
     }
 
-    if (
-      Object.values(validationErrors).every((value) => value === "") &&
-      selectedPaymentMethod
-    ) {
-      setOrderError(false);
-      router.push("/checkout/success", { scroll: false });
-    } else {
-      setOrderError(true);
-    }
+    //use set + previous to avoid async problems
+    setValidationErrors((previous) => {
+      if (Object.values(previous).every((value) => value === "")) {
+        setOrderError(false);
+        router.push("/checkout/success", { scroll: false });
+      } else {
+        setOrderError(true);
+      }
+      return previous;
+    });
   };
 
   return (

@@ -1,5 +1,5 @@
 import TabBtn from "../ui/TabBtn";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrderType } from "@/app/redux/reducers/cart";
 
@@ -17,7 +17,7 @@ export default function OrderTabBtn() {
   };
 
   //set the default orderType depending on which one is enabled
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!orderTypes[currentOrderType].enabled) {
       const activeOrderTypes = orderTypes.filter(
         (orderType) => orderType.enabled === true
