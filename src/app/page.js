@@ -82,7 +82,7 @@ export default function Home() {
 
       <div className="relative flex-row justify-center sm:justify-start ps-0 sm:ps-12 w-full">
         <div className="flex flex-col items-center  sm:items-start">
-          <RestaurantLogo path={`images/${restaurant.uniqueValue}/logo.png`} />
+          <RestaurantLogo />
           <OrderTabBtn />
           {menu.map((foodCategory, i) => (
             <div

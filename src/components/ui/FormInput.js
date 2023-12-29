@@ -10,11 +10,11 @@ export default function FormInput({
   validationError,
 }) {
   return (
-    <div>
-      <div>
+    <div className="w-full">
+      <div className="w-full">
         <label
           htmlFor={id}
-          className="ml-px block pl-4 text-sm font-medium leading-6 text-gray-900"
+          className="ml-px block pl-4 text-md font-medium leading-6 text-gray-900"
         >
           {label}
         </label>
@@ -27,7 +27,7 @@ export default function FormInput({
             placeholder={placeholder}
             className={`${
               validationError ? "ring-error-danger" : "ring-gray-300"
-            } block w-full rounded-xl border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6`}
+            } block w-full rounded-xl border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-8`}
             onChange={(e) => onChange(e.target.value)}
             onBlur={(e) => validationFunction(e.target.value)}
           />

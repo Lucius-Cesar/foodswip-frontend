@@ -188,7 +188,7 @@ export default function Checkout() {
       selectedPaymentMethod
     ) {
       setOrderError(false);
-      router.push("/orderConfirmation", { scroll: false });
+      router.push("/checkout/success", { scroll: false });
     } else {
       setOrderError(true);
     }
@@ -196,169 +196,184 @@ export default function Checkout() {
 
   return (
     <div className="relative flex flex-row">
-      <div className="flex flex-col items-start justify-start px-12 space-y-10 mb-10">
-        <RestaurantLogo path={`images/${restaurant.uniqueValue}/logo.png`} />
-        <div className="space-y-4">
-          <h2 className="font-bold text-xl">Informations de commande</h2>
-          <OrderTabBtn />
+      <div className="flex flex-col grow items-start justify-start px-2 sm:px-12 lg:pe-40">
+        <RestaurantLogo />
+        <div className="flex flex-col w-full space-y-10 mb-10">
+          <div className="space-y-4">
+            <h2 className="font-bold text-2xl">Informations de commande</h2>
+            <OrderTabBtn />
 
-          <FormInput
-            label="Adresse"
-            id="adress"
-            onChange={(input) =>
-              setForm({
-                ...form,
-                adress: input,
-              })
-            }
-            value={form.adress}
-            validationFunction={adressValidation}
-            validationError={validationErrors.adress}
-          />
-          <div className="flex flex-row space-x-4">
             <FormInput
-              label="Code postal"
-              id="postcode"
+              label="Adresse"
+              id="adress"
               onChange={(input) =>
                 setForm({
                   ...form,
-                  postCode: input,
+                  adress: input,
                 })
               }
-              value={form.postCode}
-              validationFunction={postCodeValidation}
-              validationError={validationErrors.postCode}
+              value={form.adress}
+              validationFunction={adressValidation}
+              validationError={validationErrors.adress}
             />
-            <FormInput
-              label="Ville"
-              id="city"
-              onChange={(input) =>
-                setForm({
-                  ...form,
-                  city: input,
-                })
-              }
-              value={form.city}
-              validationFunction={cityValidation}
-              validationError={validationErrors.city}
-            />
-          </div>
-          {cart.orderType === 0 ? (
-            <h3 className="font-bold text-lg">
-              Estimation des délais de livraison: entre{" "}
-              {restaurant.orderSettings.deliveryEstimate.min} et{" "}
-              {restaurant.orderSettings.deliveryEstimate.max} min *
-            </h3>
-          ) : cart.orderType === 1 ? (
-            <h3 className="font-bold text-lg">
-              Estimation du délai pour emporter:{" "}
-              {restaurant.orderSettings.takeAwayEstimate} min *
-            </h3>
-          ) : null}
-          <p>
-            * La durée mentionnée est une estimation moyenne à titre indicatif.{" "}
-          </p>
-        </div>
-        <div>
-          <h2 className="font-bold text-xl">Moyen de paiement</h2>
-          <fieldset className="mt-4">
-            <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-              {paymentMethods.map((paymentMethod, i) => (
-                <div key={i} className="flex items-center">
-                  <input
-                    id={i}
-                    name="payment-method"
-                    type="radio"
-                    className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
-                    onChange={() => setSelectedPaymentMethod(paymentMethods[i])}
-                    value={paymentMethod}
-                  />
-                  <label
-                    htmlFor={paymentMethod.value}
-                    className="ml-3 block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    {paymentMethod.value}
-                  </label>
-                </div>
-              ))}
+            <div className="flex flex-row space-x-4">
+              <FormInput
+                label="Code postal"
+                id="postcode"
+                onChange={(input) =>
+                  setForm({
+                    ...form,
+                    postCode: input,
+                  })
+                }
+                value={form.postCode}
+                validationFunction={postCodeValidation}
+                validationError={validationErrors.postCode}
+              />
+              <FormInput
+                label="Ville"
+                id="city"
+                onChange={(input) =>
+                  setForm({
+                    ...form,
+                    city: input,
+                  })
+                }
+                value={form.city}
+                validationFunction={cityValidation}
+                validationError={validationErrors.city}
+              />
             </div>
-          </fieldset>
-        </div>
-        {validationErrors.paymentMethod && (
-          <p className="text-error-danger">{validationErrors.paymentMethod}</p>
-        )}
-
-        <div>
-          <h2 className="font-bold text-xl">Informations personnelles</h2>
-          <div className="flex flex-row space-x-4">
-            <FormInput
-              label="Prénom"
-              id="firstname"
-              onChange={(input) =>
-                setForm({
-                  ...form,
-                  firstname: input,
-                })
-              }
-              value={form.firstname}
-              validationFunction={firstnameValidation}
-              validationError={validationErrors.firstname}
-            />
-            <FormInput
-              label="Nom"
-              id="lastname"
-              onChange={(input) =>
-                setForm({
-                  ...form,
-                  lastname: input,
-                })
-              }
-              value={form.lastname}
-              validationFunction={lastnameValidation}
-              validationError={validationErrors.lastname}
-            />
+            {cart.orderType === 0 ? (
+              <h3 className="font-bold text-lg">
+                Estimation des délais de livraison: entre{" "}
+                {restaurant.orderSettings.deliveryEstimate.min} et{" "}
+                {restaurant.orderSettings.deliveryEstimate.max} min *
+              </h3>
+            ) : cart.orderType === 1 ? (
+              <h3 className="font-bold text-lg">
+                Estimation du délai pour emporter:{" "}
+                {restaurant.orderSettings.takeAwayEstimate} min *
+              </h3>
+            ) : null}
+            <p>
+              * La durée mentionnée est une estimation moyenne à titre
+              indicatif.{" "}
+            </p>
           </div>
-
-          <div className="flex flex-row space-x-4">
-            <FormInput
-              label="Adresse mail"
-              id="mail"
-              placeholder="you@example.com"
-              onChange={(input) =>
-                setForm({
-                  ...form,
-                  mail: input,
-                })
-              }
-              value={form.mail}
-              validationFunction={mailValidation}
-              validationError={validationErrors.mail}
-            />
-            <FormInput
-              label="N° de téléphone"
-              id="phonenumber"
-              onChange={(input) =>
-                setForm({
-                  ...form,
-                  phoneNumber: input,
-                })
-              }
-              value={form.phoneNumber}
-              validationFunction={phoneNumberValidation}
-              validationError={validationErrors.phoneNumber}
-            />
+          <div>
+            <h2 className="font-bold text-2xl">Moyen de paiement</h2>
+            <fieldset className="mt-4">
+              <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                {paymentMethods.map((paymentMethod, i) => (
+                  <div key={i} className="flex items-center">
+                    <input
+                      id={i}
+                      name="payment-method"
+                      type="radio"
+                      className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                      onChange={() => {
+                        setSelectedPaymentMethod(paymentMethods[i]);
+                        setValidationErrors((previous) => ({
+                          ...previous,
+                          paymentMethod: "",
+                        }));
+                      }}
+                      value={paymentMethod}
+                    />
+                    <label
+                      htmlFor={paymentMethod.value}
+                      className="ml-3 block text-md font-medium leading-6 text-gray-900"
+                    >
+                      {paymentMethod.value}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </fieldset>
           </div>
+          {validationErrors.paymentMethod && (
+            <p className="text-error-danger">
+              {validationErrors.paymentMethod}
+            </p>
+          )}
+
+          <div>
+            <h2 className="font-bold text-2xl mb-4">
+              Informations personnelles
+            </h2>
+            <div className="space-y-4">
+              <div className="flex flex-row space-x-4">
+                <FormInput
+                  label="Prénom"
+                  id="firstname"
+                  onChange={(input) =>
+                    setForm({
+                      ...form,
+                      firstname: input,
+                    })
+                  }
+                  value={form.firstname}
+                  validationFunction={firstnameValidation}
+                  validationError={validationErrors.firstname}
+                />
+                <FormInput
+                  label="Nom"
+                  id="lastname"
+                  onChange={(input) =>
+                    setForm({
+                      ...form,
+                      lastname: input,
+                    })
+                  }
+                  value={form.lastname}
+                  validationFunction={lastnameValidation}
+                  validationError={validationErrors.lastname}
+                />
+              </div>
+
+              <div className="flex flex-row space-x-4">
+                <FormInput
+                  label="Adresse mail"
+                  id="mail"
+                  placeholder="you@example.com"
+                  onChange={(input) =>
+                    setForm({
+                      ...form,
+                      mail: input,
+                    })
+                  }
+                  value={form.mail}
+                  validationFunction={mailValidation}
+                  validationError={validationErrors.mail}
+                />
+                <FormInput
+                  label="N° de téléphone"
+                  id="phonenumber"
+                  onChange={(input) =>
+                    setForm({
+                      ...form,
+                      phoneNumber: input,
+                    })
+                  }
+                  value={form.phoneNumber}
+                  validationFunction={phoneNumberValidation}
+                  validationError={validationErrors.phoneNumber}
+                />
+              </div>
+            </div>
+          </div>
+          {orderError && (
+            <p className="text-error-danger self-center">
+              Un ou plusieurs des champs ci-dessus sont invalides
+            </p>
+          )}
+          <DefaultBtn
+            value={"Confirmer la commande"}
+            className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
+            onClick={handleConfirmOrder}
+          />
         </div>
-        {orderError && (
-          <p className="text-error-danger self-center">
-            Un ou plusieurs des champs ci-dessus sont invalides
-          </p>
-        )}
-        <DefaultBtn
-          value={"Confirmer la commande"}
-          className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
-          onClick={handleConfirmOrder}
-        />
       </div>
       <Cart variant="checkout" />
     </div>

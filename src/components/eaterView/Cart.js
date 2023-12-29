@@ -144,7 +144,7 @@ export default function Cart({ open, setOpen, variant }) {
     );
   } else if (variant === "checkout") {
     return (
-      <div className="h-screen fixed w-screen sm:w-96 sm:sticky top-0 sm:start-full">
+      <div className="h-screen fixed w-screen sm:w-72 md:w-80 lg:w-96	 sm:sticky top-0 border border-gravel sm:start-full">
         {cartContent}
       </div>
     );
