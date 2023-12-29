@@ -1,35 +1,48 @@
-import AddBtn from "../ui/AddBtn"
-import MinusBtn from "../ui/MinusBtn"
+import AddBtn from "../ui/AddBtn";
+import MinusBtn from "../ui/MinusBtn";
 
-import { incrementArticleQuantity, decrementArticleQuantity } from "@/app/redux/reducers/cart"
-import { useDispatch } from "react-redux"
+import {
+  incrementArticleQuantity,
+  decrementArticleQuantity,
+} from "@/app/redux/reducers/cart";
+import { useDispatch } from "react-redux";
 
-import {multiplyMoney} from "../../utils/moneyCalculations"
+import { multiplyMoney } from "../../utils/moneyCalculations";
 
-export default function CartArticle({article, index}){
-  const dispatch = useDispatch()
+export default function CartArticle({ article, index }) {
+  const dispatch = useDispatch();
   const handleAddBtn = () => {
-    dispatch(incrementArticleQuantity({index: index, increment: 1}))
-  }
+    dispatch(incrementArticleQuantity({ index: index, increment: 1 }));
+  };
   const handleMinusBtn = () => {
-    dispatch(decrementArticleQuantity(index))
-  }
-    return(
-      <div className = "flex flex-col space-y-2">
-        <div className = "flex flex-row justify-between">
-          <div className = "flex flex-row space-x-1">
-            <p className = "font-bold">{article.quantity}</p> <p>X</p> <p className = "font-medium">{article.food}</p>
-          </div>
-          <p className="font-medium">
-            {multiplyMoney(article.quantity, article.foodPrice)} €
-          </p>
+    dispatch(decrementArticleQuantity(index));
+  };
+  return (
+    <div className="flex flex-col space-y-2">
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row space-x-1">
+          <p className="font-bold">{article.quantity}</p> <p>X</p>{" "}
+          <p className="font-medium">{article.food}</p>
         </div>
-        {article.options.length > 0 && <p> {article.options.map(option => option.value).join(", ")}</p>}
-        {article.supplements.length > 0 && <p> Suppléments: {article.supplements.map(supplements => supplements.value).join(", ")}</p>}
-        <div className = "flex flex-row justify-start space-x-2">
-          <MinusBtn onClick = {handleMinusBtn}/> <AddBtn onClick = {handleAddBtn} />
-        </div>
+        <p className="font-medium">
+          {multiplyMoney(article.quantity, article.foodPrice)} €
+        </p>
       </div>
-
-    )
+      {article.options.length > 0 && (
+        <p> {article.options.map((option) => option.value).join(", ")}</p>
+      )}
+      {article.supplements.length > 0 && (
+        <p>
+          {" "}
+          Suppléments:{" "}
+          {article.supplements
+            .map((supplements) => supplements.value)
+            .join(", ")}
+        </p>
+      )}
+      <div className="flex flex-row justify-start space-x-2">
+        <MinusBtn onClick={handleMinusBtn} /> <AddBtn onClick={handleAddBtn} />
+      </div>
+    </div>
+  );
 }

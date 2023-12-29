@@ -1,143 +1,137 @@
-"use client";
-import { createSlice } from '@reduxjs/toolkit';
-import exampleMenu from '@/utils/exampleMenu';
+import { createSlice } from "@reduxjs/toolkit";
+import exampleMenu from "@/utils/exampleMenu";
 
 const initialState = {
-    name: "Dodopizza",
-    uniqueValue: "dodopizza",
-    mail: 'restaurant@dodopizza.com',
-    website: 'www.dodopizza.com',
-    adresse: '1, Rue des Dodos',
-    postcode: 1000,
-    ville: 'Bruxelles',
-    phoneNumber: "+32407886655",
-    menu: exampleMenu,
-    orderSettings: {
-        orderTypes: [
-            {value: 0,
-            label: "Livraison",
-            enabled: true,
-
-        },
-        {
+  name: "Dodopizza",
+  uniqueValue: "dodopizza",
+  mail: "restaurant@dodopizza.com",
+  website: "www.dodopizza.com",
+  adresse: "1, Rue des Dodos",
+  postcode: 1000,
+  ville: "Bruxelles",
+  phoneNumber: "+32407886655",
+  menu: exampleMenu,
+  orderSettings: {
+    orderTypes: [
+      { value: 0, label: "Livraison", enabled: true },
+      {
         value: 1,
         label: "À emporter",
-        enabled: true
-
+        enabled: true,
+      },
+    ],
+    pendingOrderAlert: {
+      enabled: true,
+      interval: 5,
+    },
+    deliveryEstimate: {
+      min: 30,
+      max: 60,
+    },
+    takeAwayEstimate: 15,
+    deliveryFees: 5,
+    paymentMethods: [
+      {
+        value: "Paypal",
+        delivery: false,
+        takeAway: false,
+      },
+      {
+        value: "Espèces",
+        delivery: true,
+        takeAway: true,
+      },
+      {
+        value: "Carte de crédit",
+        delivery: false,
+        takeAway: true,
+      },
+    ],
+    restaurantSettings: {
+      schedulde: [
+        {
+          day: 0,
+          start: "09:00",
+          end: "14:30",
         },
-        ],
-        pendingOrderAlert: {
-            enabled: true,
-            interval: 5
+        {
+          day: 0,
+          start: "18:00",
+          end: "22:00",
         },
-        deliveryEstimate:{
-            min: 30,
-            max: 60
+        {
+          day: 1,
+          start: "09:00",
+          end: "14:30",
         },
-        deliveryFees: 5,
-        takeAwayPayments: [
-            {
-                value: "Paypal",
-                enabled: true
-            },
-            {
-                value: "Espèces",
-                enabled: true
-
-            },
-            {
-                value: "Carte de crédit",
-                enabled: false
-            }
-        ],
-        restaurantSettings: {
-            schedulde: [
-                {
-                    day:0,
-                    start: "09:00",
-                    end: "14:30"
-                },
-                {
-                    day:0,
-                    start: "18:00",
-                    end: "22:00"
-                },
-                {
-                    day:1,
-                    start: "09:00",
-                    end: "14:30"
-                },
-                {
-                    day:1,
-                    start: "18:00",
-                    end: "22:00"
-                },
-                {
-                    day:2,
-                    start: "09:00",
-                    end: "14:30"
-                },
-                {
-                    day:2,
-                    start: "18:00",
-                    end: "22:00"
-                },
-                {
-                    day:3,
-                    start: "09:00",
-                    end: "14:30"
-                },
-                {
-                    day:3,
-                    start: "18:00",
-                    end: "22:00"
-                },
-                {
-                    day:4,
-                    start: "09:00",
-                    end: "14:30"
-                },
-                {
-                    day:4,
-                    start: "18:00",
-                    end: "22:00"
-                },
-                {
-                    day:5,
-                    start: "09:00",
-                    end: "14:30"
-                },
-                {
-                    day:5,
-                    start: "18:00",
-                    end: "22:00"
-                },
-                
-            ],
-            exceptionnalClosings:[
-                {
-                    start: "2023-12-31T00:00:00Z",
-                    end: "2023-01-01T00:00:00Z" 
-                }
-            ]
-            
-        }
-
-    }
+        {
+          day: 1,
+          start: "18:00",
+          end: "22:00",
+        },
+        {
+          day: 2,
+          start: "09:00",
+          end: "14:30",
+        },
+        {
+          day: 2,
+          start: "18:00",
+          end: "22:00",
+        },
+        {
+          day: 3,
+          start: "09:00",
+          end: "14:30",
+        },
+        {
+          day: 3,
+          start: "18:00",
+          end: "22:00",
+        },
+        {
+          day: 4,
+          start: "09:00",
+          end: "14:30",
+        },
+        {
+          day: 4,
+          start: "18:00",
+          end: "22:00",
+        },
+        {
+          day: 5,
+          start: "09:00",
+          end: "14:30",
+        },
+        {
+          day: 5,
+          start: "18:00",
+          end: "22:00",
+        },
+      ],
+      exceptionnalClosings: [
+        {
+          start: "2023-12-31T00:00:00Z",
+          end: "2023-01-01T00:00:00Z",
+        },
+      ],
+    },
+  },
 };
 
 export const restaurantSlice = createSlice({
- name: 'restaurant',
+  name: "restaurant",
 
   initialState,
- reducers: {
+  reducers: {
     createRefForEachFoodCategory: (state, action) => {
-        state.menu.map((foodCategory) => ({
-            ...foodCategory,
-            ref: createRef(),
-          }));
-      },
- },
+      state.menu.map((foodCategory) => ({
+        ...foodCategory,
+        ref: createRef(),
+      }));
+    },
+  },
 });
 
 export const { createRefForEachFoodCategory } = restaurantSlice.actions;

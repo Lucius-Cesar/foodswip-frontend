@@ -1,4 +1,3 @@
-"use client";
 import { createSlice } from '@reduxjs/toolkit';
 import { addMoney, subtractMoney, multiplyMoney} from '@/utils/moneyCalculations';
 const initialState = {
