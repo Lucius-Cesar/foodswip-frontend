@@ -6,7 +6,8 @@ export default function FormInput({
   placeholder,
   id,
   onChange,
-  additionnalError,
+  validationFunction,
+  validationError,
 }) {
   const [isEmpty, setEmpty] = useState(false);
   const checkEmpty = (string) => {
@@ -15,6 +16,11 @@ export default function FormInput({
     } else {
       setEmpty(false);
     }
+  };
+
+  const onBlur = (value) => {
+    checkEmpty(value);
+    validationFunction && validationFunction(value);
   };
 
   return (
@@ -32,12 +38,12 @@ export default function FormInput({
           id={id}
           placeholder={placeholder}
           className={`${
-            additionnalError || isEmpty ? "ring-error-danger" : "ring-gray-300"
-          } block w-full rounded-xl border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6`}
+            validationError || isEmpty ? "ring-error-danger" : "ring-gray-300"
+          } block w-full rounded-xl border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6`}
           onChange={onChange}
-          onBlur={(e) => checkEmpty(e.target.value)}
+          onBlur={(e) => onBlur(e.target.value)}
         />
-        {isEmpty && (
+        {(isEmpty || validationError) && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <ExclamationCircleIcon
               className="h-5 w-5 text-red-500"
@@ -52,8 +58,8 @@ export default function FormInput({
           Veuillez remplir ce champ
         </p>
       )}
-      {additionnalError && (
-        <p className="mt-2 text-sm text-error-danger">{additionnalError}</p>
+      {validationError && (
+        <p className="mt-2 text-sm text-error-danger">{validationError}</p>
       )}
     </div>
   );

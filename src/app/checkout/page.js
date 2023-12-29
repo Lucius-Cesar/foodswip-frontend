@@ -24,7 +24,66 @@ export default function Checkout() {
     phoneNumber: "",
   });
 
-  const [validationErrors, setValidationErrors] = useState({});
+  //validations forms
+  const [validationErrors, setValidationErrors] = useState({
+    postCode: "",
+    mail: "",
+    phoneNumber: "",
+  });
+
+  const checkIfInputContainsOnlyNumber = (input) => {
+    const numericRegex = /^[0-9]+$/;
+    return numericRegex.test(input);
+  };
+
+  const postCodeValidation = (postcode) => {
+    if (checkIfInputContainsOnlyNumber(postcode) || !postcode) {
+      setValidationErrors({
+        ...validationErrors,
+        postCode: "",
+      });
+    } else {
+      setValidationErrors({
+        ...validationErrors,
+        postCode:
+          "Le code postal doit être consituté uniquement constitué de chiffres",
+      });
+    }
+  };
+
+  const phoneNumberValidation = (phoneNumber) => {
+    if (checkIfInputContainsOnlyNumber(phoneNumber) || !phoneNumber) {
+      setValidationErrors({
+        ...validationErrors,
+        phoneNumber: "",
+      });
+    } else {
+      setValidationErrors({
+        ...validationErrors,
+        phoneNumber:
+          "Le numéro de téléphone doit être uniquement consituté de chiffres",
+      });
+    }
+  };
+
+  const mailValidation = (mail) => {
+    if (mail) {
+      const mailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (mailRegex.test(mail) || !mail) {
+        setValidationErrors({
+          ...validationErrors,
+          mail: "",
+        });
+      } else {
+        setValidationErrors({
+          ...validationErrors,
+          mail: "L'adresse mail entrée n'est pas valide",
+        });
+      }
+    }
+  };
+
+  const paymentMethod = useState(null);
 
   useEffect(() => {
     if (cart.orderType === 0) {
@@ -52,7 +111,18 @@ export default function Checkout() {
 
           <FormInput label="Adresse" id="adress" />
           <div className="flex flex-row space-x-4">
-            <FormInput label="Code postal" id="postcode" />
+            <FormInput
+              label="Code postal"
+              id="postcode"
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  postCode: e.target.value,
+                })
+              }
+              validationFunction={postCodeValidation}
+              validationError={validationErrors.postCode}
+            />
             <FormInput label="Ville" id="city" />
           </div>
           {cart.orderType === 0 ? (
@@ -103,8 +173,31 @@ export default function Checkout() {
           </div>
 
           <div className="flex flex-row space-x-4">
-            <FormInput label="mail" id="mail" placeholder="you@example.com" />
-            <FormInput label="N° de téléphone" id="phonenumber" />
+            <FormInput
+              label="mail"
+              id="mail"
+              placeholder="you@example.com"
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  mail: e.target.value,
+                })
+              }
+              validationFunction={mailValidation}
+              validationError={validationErrors.mail}
+            />
+            <FormInput
+              label="N° de téléphone"
+              id="phonenumber"
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  phoneNumber: e.target.value,
+                })
+              }
+              validationFunction={phoneNumberValidation}
+              validationError={validationErrors.phoneNumber}
+            />
           </div>
         </div>
       </div>
