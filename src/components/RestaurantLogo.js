@@ -5,7 +5,7 @@ export default function RestaurantLogo() {
     (state) => state.restaurant.uniqueValue
   );
   return (
-    <div className="h-14 w-48 sm:h-24 sm:w-72">
+    <div className="h-14 w-56 sm:h-24 sm:w-72">
       <img
         className="h-full w-full object-contain"
         src={`/images/${restaurantUniqueValue}/logo.png`}
