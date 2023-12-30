@@ -27,7 +27,7 @@ export default function CartBtn({ className, onClick, isCartOpen }) {
       onMouseOut={handleMouseOut}
       onClick={onClick}
     >
-      <div className="h-11 w-11 sm:h-16 sm:w-16 relative">
+      <div className="h-10 w-10 sm:h-16 sm:w-16 relative">
         <CartIcon
           color={isHovered || isCartOpen ? primary : "white"}
           className="w-full h-full"

@@ -60,16 +60,29 @@ export default function Home() {
         isFoodCategoriesMenuOpen
           ? "overflow-hidden sm:overflow-auto"
           : "overflow-auto"
-      } relative flex flex-row h-screen`}
+      } relative sm:flex sm:flex-row h-screen w-screen`}
     >
-      <button
-        className={`${
-          isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"
-        } m-1 ms-2 sticky top-1 w-fit h-fit`}
-        onClick={() => setFoodCategoriesMenuOpen(true)}
-      >
-        <BarsIcon className="h-9 w-auto" />
-      </button>
+      <div className="sticky top-0 z-10">
+        <button
+          className={`${
+            isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"
+          } m-1 ms-2 absolute top-1 w-fit h-fit`}
+          onClick={() => setFoodCategoriesMenuOpen(true)}
+        >
+          <BarsIcon className="h-9 w-auto" />
+        </button>
+      </div>
+
+      <div className="sticky top-0 z-10 sm:order-last me-2 sm:me-5">
+        <CartBtn
+          className={`${
+            isFoodCategoriesMenuOpen ? "hidden sm:block" : "block"
+          } absolute sm:relative right-0 top-2 sm:top-5`}
+          onClick={() => setIsCartOpen(!isCartOpen)}
+          isCartOpen={isCartOpen}
+        />
+      </div>
+
       <SideFoodCategories
         open={isFoodCategoriesMenuOpen}
         setOpen={setFoodCategoriesMenuOpen}
@@ -83,57 +96,48 @@ export default function Home() {
           });
         }}
       />
-
-      <div className="relative flex-row justify-center sm:justify-start ps-0 sm:ps-12 w-full">
-        <div className="flex flex-col items-center  sm:items-start">
-          <div className="relative flex flex-row gap-1 sm:gap-2">
-            <RestaurantLogo />
-            <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8 self-center" />
-          </div>
-          {cart.orderType === 0 && (
-            <div className="flex flex-row justify-between w-64 sm:w-96">
-              <div className="flex flex-row gap-1 sm:gap-2 pb-4 sm:pb-2">
-                <DeliveryIcon className="h-4 w-auto" />
-                <div className="flex flex-row gap-1 sm:gap-2">
-                  <p className="text-xs sm:text-sm">Livraison</p>
-                  <p className="text-xs sm:text-sm font-bold">{` ${restaurant.orderSettings.deliveryFees} €`}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-row gap-1 sm:gap-2">
-                <MinOrderIcon className="h-4 w-4" />
-                <div className="flex flex-row gap-1 sm:gap-2">
-                  <p className="text-xs sm:text-sm">Min. commande</p>
-                  <p className="text-xs sm:text-sm font-bold">{`${restaurant.orderSettings.deliveryMin} €`}</p>
-                </div>
-              </div>
-            </div>
-          )}
-          <OrderTabBtn />
-          {menu.map((foodCategory, i) => (
-            <div
-              key={i}
-              ref={foodCategory.ref}
-              className="w-full flex flex-col items-center sm:items-start px-5 sm:px-0 "
-            >
-              <h1 className="text-primary text-3xl mt-3 mb-3 font-bold">
-                {foodCategory.value}
-              </h1>
-              {foodCategory.foods.map((food, j) => (
-                <FoodCard key={j} food={food} />
-              ))}
-            </div>
-          ))}
+      <div className="flex flex-col w-full sm:ps-12 items-center sm:items-start">
+        <div className="relative flex flex-row gap-1 sm:gap-2">
+          <RestaurantLogo />
+          <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8 self-center" />
         </div>
-      </div>
+        {cart.orderType === 0 && (
+          <div className="flex flex-row justify-between w-64 sm:w-96">
+            <div className="flex flex-row gap-1 sm:gap-2">
+              <DeliveryIcon className="h-4 w-auto" />
+              <div className="flex flex-row gap-1 sm:gap-2">
+                <p className="text-xs sm:text-sm">Livraison</p>
+                <p className="text-xs sm:text-sm font-bold">{` ${restaurant.orderSettings.deliveryFees} €`}</p>
+              </div>
+            </div>
 
-      <CartBtn
-        className={`${
-          isFoodCategoriesMenuOpen ? "hidden sm:flex" : "flex"
-        } sticky top-2 sm:top-5 right-0 me-2 sm:me-5`}
-        onClick={() => setIsCartOpen(!isCartOpen)}
-        isCartOpen={isCartOpen}
-      />
+            <div className="flex flex-row gap-1 sm:gap-2">
+              <MinOrderIcon className="h-4 w-4" />
+              <div className="flex flex-row gap-1 sm:gap-2">
+                <p className="text-xs sm:text-sm">Min. commande</p>
+                <p className="text-xs sm:text-sm font-bold">{`${restaurant.orderSettings.deliveryMin} €`}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="sticky sm:relative top-0 w-full sm:w-auto pt-2 flex justify-center sm:block  bg-white sm:bg-none">
+          <OrderTabBtn />
+        </div>
+        {menu.map((foodCategory, i) => (
+          <div
+            key={i}
+            ref={foodCategory.ref}
+            className="w-full flex flex-col items-center sm:items-start  sm:px-4"
+          >
+            <h1 className="text-primary text-3xl mt-3 mb-3 font-bold">
+              {foodCategory.value}
+            </h1>
+            {foodCategory.foods.map((food, j) => (
+              <FoodCard key={j} food={food} />
+            ))}
+          </div>
+        ))}
+      </div>
       <Cart open={isCartOpen} setOpen={setIsCartOpen} variant="menu" />
     </div>
   );
