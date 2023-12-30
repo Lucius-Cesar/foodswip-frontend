@@ -28,8 +28,9 @@ const initialState = {
       min: 30,
       max: 60,
     },
-    takeAwayEstimate: 15,
     deliveryFees: 5,
+    deliveryMin: 20,
+    takeAwayEstimate: 15,
     paymentMethods: [
       {
         value: "Paypal",

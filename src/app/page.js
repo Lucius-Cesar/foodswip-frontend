@@ -1,18 +1,22 @@
 "use client";
 import { useState, useEffect, createRef, useRef } from "react";
 import SideFoodCategories from "../components/eaterView/SideFoodCategories";
-import { Bars3Icon } from "@heroicons/react/24/outline";
 
 import OrderTabBtn from "../components/eaterView/OrderTabBtn";
 import FoodCard from "../components/eaterView/FoodCard";
 import CartBtn from "../components/eaterView/CartBtn";
 import Cart from "../components/eaterView/Cart";
 import RestaurantLogo from "@/components/RestaurantLogo";
+import InfoIcon from "@/components/ui/icons/InfoIcon";
+import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
+import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
+import BarsIcon from "@/components/ui/icons/BarsIcon";
 
 import { useSelector } from "react-redux";
 
 export default function Home() {
   const restaurant = useSelector((state) => state.restaurant);
+  const cart = useSelector((state) => state.cart);
 
   // Create a ref for each foodCategory to allow switching active food category while scrolling
   // and going to the selectedFoodCategory onClick in the sideFoodCategoriesMenu
@@ -61,10 +65,10 @@ export default function Home() {
       <button
         className={`${
           isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"
-        } sticky top-0 left-2 w-fit h-fit`}
+        } m-1 ms-2 sticky top-1 w-fit h-fit`}
         onClick={() => setFoodCategoriesMenuOpen(true)}
       >
-        <Bars3Icon className="h-11 w-11" aria-hidden="true" />
+        <BarsIcon className="h-9 w-auto" />
       </button>
       <SideFoodCategories
         open={isFoodCategoriesMenuOpen}
@@ -82,7 +86,29 @@ export default function Home() {
 
       <div className="relative flex-row justify-center sm:justify-start ps-0 sm:ps-12 w-full">
         <div className="flex flex-col items-center  sm:items-start">
-          <RestaurantLogo />
+          <div className="relative flex flex-row gap-1 sm:gap-2">
+            <RestaurantLogo />
+            <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8 self-center" />
+          </div>
+          {cart.orderType === 0 && (
+            <div className="flex flex-row justify-between w-64 sm:w-96">
+              <div className="flex flex-row gap-1 sm:gap-2 pb-4 sm:pb-2">
+                <DeliveryIcon className="h-4 w-auto" />
+                <div className="flex flex-row gap-1 sm:gap-2">
+                  <p className="text-xs sm:text-sm">Livraison</p>
+                  <p className="text-xs sm:text-sm font-bold">{` ${restaurant.orderSettings.deliveryFees} €`}</p>
+                </div>
+              </div>
+
+              <div className="flex flex-row gap-1 sm:gap-2">
+                <MinOrderIcon className="h-4 w-4" />
+                <div className="flex flex-row gap-1 sm:gap-2">
+                  <p className="text-xs sm:text-sm">Min. commande</p>
+                  <p className="text-xs sm:text-sm font-bold">{`${restaurant.orderSettings.deliveryMin} €`}</p>
+                </div>
+              </div>
+            </div>
+          )}
           <OrderTabBtn />
           {menu.map((foodCategory, i) => (
             <div
