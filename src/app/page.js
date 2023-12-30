@@ -60,7 +60,7 @@ export default function Home() {
         isFoodCategoriesMenuOpen
           ? "overflow-hidden sm:overflow-auto"
           : "overflow-auto"
-      } relative sm:flex sm:flex-row h-screen w-screen`}
+      } relative sm:flex sm:flex-row h-screen w-screen m-0 p-0`}
     >
       <div className="sticky top-0 z-10">
         <button
@@ -127,7 +127,7 @@ export default function Home() {
           <div
             key={i}
             ref={foodCategory.ref}
-            className="w-full flex flex-col items-center sm:items-start  sm:px-4"
+            className="w-full flex flex-col items-center sm:items-start p-2 sm:p-0"
           >
             <h1 className="text-primary text-3xl mt-3 mb-3 font-bold">
               {foodCategory.value}
