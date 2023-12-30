@@ -11,7 +11,6 @@ import FormInput from "../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 
 export default function Checkout() {
-  console.log(window.history);
   const router = useRouter();
 
   const restaurant = useSelector((state) => state.restaurant);
