@@ -203,7 +203,7 @@ export default function Checkout() {
         </div>
         <div className="flex flex-col w-full space-y-10 mb-10">
           <div className="space-y-4">
-            <h2 className="font-bold text-2xl text-center sm:text-right">
+            <h2 className="font-bold text-2xl text-center sm:text-left">
               Informations de commande
             </h2>
             <div className="m-auto sm:m-0 w-fit">
@@ -269,7 +269,7 @@ export default function Checkout() {
             </p>
           </div>
           <div>
-            <h2 className="font-bold text-2xl text-center sm:text-right">
+            <h2 className="font-bold text-2xl text-center sm:text-left">
               Moyen de paiement
             </h2>
             <fieldset className="mt-4">
@@ -280,7 +280,7 @@ export default function Checkout() {
                       id={i}
                       name="payment-method"
                       type="radio"
-                      className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
+                      className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
                       onChange={() => {
                         setSelectedPaymentMethod(paymentMethods[i]);
                         setValidationErrors((previous) => ({
@@ -292,7 +292,7 @@ export default function Checkout() {
                     />
                     <label
                       htmlFor={paymentMethod.value}
-                      className="ml-3 block text-md font-medium leading-6 text-gray-900"
+                      className="ml-3 block text-lg sm:text-base font-medium leading-6 text-gray-900"
                     >
                       {paymentMethod.value}
                     </label>
@@ -308,7 +308,7 @@ export default function Checkout() {
           )}
 
           <div>
-            <h2 className="font-bold text-2xl mb-4 text-center sm:text-right">
+            <h2 className="font-bold text-2xl mb-4 text-center sm:text-left">
               Informations personnelles
             </h2>
             <div className="space-y-4">
