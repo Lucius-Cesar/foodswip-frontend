@@ -142,12 +142,14 @@ export default function Checkout() {
   };
 
   const phoneNumberValidation = (phoneNumber) => {
+    const phoneNumberRegex = /^\+?[0-9]+$/;
+
     if (!phoneNumber) {
       setValidationErrors((previous) => ({
         ...previous,
         phoneNumber: "Le numéro de téléphone est obligatoire",
       }));
-    } else if (!checkIfInputContainsOnlyNumber(phoneNumber)) {
+    } else if (!phoneNumberRegex.test(phoneNumber)) {
       setValidationErrors((previous) => ({
         ...previous,
         phoneNumber:
