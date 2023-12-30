@@ -196,13 +196,19 @@ export default function Checkout() {
   };
 
   return (
-    <div className="relative flex flex-row">
+    <div className="relative flex flex-col sm:flex-row">
       <div className="flex flex-col grow items-start justify-start px-2 sm:px-12 lg:pe-40">
-        <RestaurantLogo />
+        <div className="hidden sm:block">
+          <RestaurantLogo />
+        </div>
         <div className="flex flex-col w-full space-y-10 mb-10">
           <div className="space-y-4">
-            <h2 className="font-bold text-2xl">Informations de commande</h2>
-            <OrderTabBtn />
+            <h2 className="font-bold text-2xl text-center sm:text-right">
+              Informations de commande
+            </h2>
+            <div className="m-auto sm:m-0 w-fit">
+              <OrderTabBtn />
+            </div>
 
             <FormInput
               label="Adresse"
@@ -263,7 +269,9 @@ export default function Checkout() {
             </p>
           </div>
           <div>
-            <h2 className="font-bold text-2xl">Moyen de paiement</h2>
+            <h2 className="font-bold text-2xl text-center sm:text-right">
+              Moyen de paiement
+            </h2>
             <fieldset className="mt-4">
               <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                 {paymentMethods.map((paymentMethod, i) => (
@@ -300,11 +308,11 @@ export default function Checkout() {
           )}
 
           <div>
-            <h2 className="font-bold text-2xl mb-4">
+            <h2 className="font-bold text-2xl mb-4 text-center sm:text-right">
               Informations personnelles
             </h2>
             <div className="space-y-4">
-              <div className="flex flex-row space-x-4">
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <FormInput
                   label="Prénom"
                   id="firstname"
@@ -333,7 +341,7 @@ export default function Checkout() {
                 />
               </div>
 
-              <div className="flex flex-row space-x-4">
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <FormInput
                   label="Adresse mail"
                   id="mail"
@@ -365,7 +373,7 @@ export default function Checkout() {
             </div>
           </div>
           {orderError && (
-            <p className="text-error-danger self-center">
+            <p className="text-error-danger text-center">
               Un ou plusieurs des champs ci-dessus sont invalides
             </p>
           )}
@@ -376,7 +384,9 @@ export default function Checkout() {
           />
         </div>
       </div>
-      <Cart variant="checkout" />
+      <div className="order-first mb-4 sm:mb-0 sm:order-last">
+        <Cart variant="checkout" />
+      </div>
     </div>
   );
 }

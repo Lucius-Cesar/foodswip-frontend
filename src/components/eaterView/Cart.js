@@ -26,16 +26,16 @@ export default function Cart({ open, setOpen, variant }) {
   }, [cart]);
 
   const cartContent = (
-    <div className="flex col h-full flex-col bg-magnolia shadow-xl">
+    <div className="flex col h-full flex-col bg-magnolia">
       <div
         className={`${
-          variant === "checkout" ? "sm:justify-end" : ""
-        } flex flex-row items-start justify-between py-6 px-4  sm:px-6 h-28`}
+          variant === "checkout" ? "justify-end" : "justify-between"
+        } flex flex-row items-start py-6 px-4  sm:px-6 h-28`}
       >
         <button
           type="button"
           className={`${
-            variant === "checkout" ? "sm:hidden" : ""
+            variant === "checkout" ? "hidden" : ""
           } sticky rounded-md bg-white text-gray-400 hover:text-gray-500`}
           onClick={() => setOpen(false)}
         >
@@ -96,9 +96,8 @@ export default function Cart({ open, setOpen, variant }) {
           </div>
         </>
       ) : (
-        <p className="text-4xl text-dark-grey font-bold text-center">
-          {" "}
-          Remplis moi la besace{" "}
+        <p className="text-2xl text-dark-grey font-bold text-center">
+          Remplis moi la besace
         </p>
       )}
     </div>
@@ -144,7 +143,7 @@ export default function Cart({ open, setOpen, variant }) {
     );
   } else if (variant === "checkout") {
     return (
-      <div className="h-screen fixed w-screen sm:w-72 md:w-80 lg:w-96	 sm:sticky top-0 border border-gravel sm:start-full">
+      <div className="h-auto sm:h-screen w-screen sm:w-72 md:w-80 lg:w-96	static sm:sticky top-0 border border-gravel sm:start-full">
         {cartContent}
       </div>
     );
