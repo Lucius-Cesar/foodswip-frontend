@@ -36,7 +36,7 @@ export default function Cart({ open, setOpen, variant }) {
           type="button"
           className={`${
             variant === "checkout" ? "hidden" : ""
-          } sticky rounded-md bg-white text-gray-400 hover:text-gray-500`}
+          } sticky rounded-md text-gray-400 hover:text-gray-500`}
           onClick={() => setOpen(false)}
         >
           <span className="absolute -inset-2.5" />

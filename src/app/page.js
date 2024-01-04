@@ -11,6 +11,7 @@ import InfoIcon from "@/components/ui/icons/InfoIcon";
 import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
 import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
 import BarsIcon from "@/components/ui/icons/BarsIcon";
+import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
 
 import { useSelector } from "react-redux";
 
@@ -29,6 +30,9 @@ export default function Home() {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isFoodCategoriesMenuOpen, setFoodCategoriesMenuOpen] = useState(false);
+
+  const [isModalInfoRestaurantOpen, setModalInfoRestaurantOpen] =
+    useState(false);
 
   //ref of the mainContainer to add scrolling event
   const mainContainer = useRef(null);
@@ -98,11 +102,20 @@ export default function Home() {
       />
       <div className="flex flex-col w-full sm:ps-12 items-center sm:items-start">
         <div className="relative flex flex-row gap-1 sm:gap-2">
-          <RestaurantLogo />
-          <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8 self-center" />
+          <RestaurantLogo className="h-14 w-48" />
+          <button
+            className="self-center"
+            onClick={() => setModalInfoRestaurantOpen(true)}
+          >
+            <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8 hover:" />
+          </button>
+          <ModalInfoRestaurant
+            open={isModalInfoRestaurantOpen}
+            setOpen={setModalInfoRestaurantOpen}
+          />
         </div>
         {cart.orderType === 0 && (
-          <div className="flex flex-row justify-between w-64 sm:w-96">
+          <div className="flex flex-row justify-between w-64 sm:w-96 pb-2">
             <div className="flex flex-row gap-1 sm:gap-2">
               <DeliveryIcon className="h-4 w-auto" />
               <div className="flex flex-row gap-1 sm:gap-2">
@@ -120,7 +133,7 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className="sticky sm:relative top-0 w-full sm:w-auto pt-2 flex justify-center sm:block  bg-white sm:bg-none">
+        <div className="sticky sm:relative top-0 w-full sm:w-auto flex justify-center sm:block  bg-white sm:bg-none">
           <OrderTabBtn />
         </div>
         {menu.map((foodCategory, i) => (

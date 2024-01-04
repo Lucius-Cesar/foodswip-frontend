@@ -6,9 +6,12 @@ const initialState = {
   uniqueValue: "dodopizza",
   mail: "restaurant@dodopizza.com",
   website: "www.dodopizza.com",
-  adresse: "1, Rue des Dodos",
-  postcode: 1000,
-  ville: "Bruxelles",
+  adress: {
+    street: "Rue des Dodos",
+    streetNumber: 1,
+    postCode: 1000,
+    city: "Bruxelles",
+  },
   phoneNumber: "+32407886655",
   menu: exampleMenu,
   orderSettings: {
@@ -43,81 +46,99 @@ const initialState = {
         takeAway: true,
       },
       {
-        value: "Carte de crédit",
+        value: "Bancontact",
         delivery: false,
         takeAway: true,
       },
     ],
-    restaurantSettings: {
-      schedulde: [
-        {
-          day: 0,
-          start: "09:00",
-          end: "14:30",
-        },
-        {
-          day: 0,
-          start: "18:00",
-          end: "22:00",
-        },
-        {
-          day: 1,
-          start: "09:00",
-          end: "14:30",
-        },
-        {
-          day: 1,
-          start: "18:00",
-          end: "22:00",
-        },
-        {
-          day: 2,
-          start: "09:00",
-          end: "14:30",
-        },
-        {
-          day: 2,
-          start: "18:00",
-          end: "22:00",
-        },
-        {
-          day: 3,
-          start: "09:00",
-          end: "14:30",
-        },
-        {
-          day: 3,
-          start: "18:00",
-          end: "22:00",
-        },
-        {
-          day: 4,
-          start: "09:00",
-          end: "14:30",
-        },
-        {
-          day: 4,
-          start: "18:00",
-          end: "22:00",
-        },
-        {
-          day: 5,
-          start: "09:00",
-          end: "14:30",
-        },
-        {
-          day: 5,
-          start: "18:00",
-          end: "22:00",
-        },
-      ],
-      exceptionnalClosings: [
-        {
-          start: "2023-12-31T00:00:00Z",
-          end: "2023-01-01T00:00:00Z",
-        },
-      ],
-    },
+  },
+  restaurantSettings: {
+    schedulde: [
+      {
+        label: "Lundi",
+        services: [
+          {
+            start: "09:00",
+            end: "14:30",
+          },
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
+      },
+      {
+        label: "Mardi",
+        services: [
+          {
+            start: "09:00",
+            end: "14:30",
+          },
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
+      },
+      {
+        label: "Mercredi",
+        services: [
+          {
+            start: "09:00",
+            end: "14:30",
+          },
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
+      },
+      {
+        label: "Jeudi",
+        services: [
+          {
+            start: "09:00",
+            end: "14:30",
+          },
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
+      },
+      {
+        label: "Vendredi",
+        services: [
+          {
+            start: "09:00",
+            end: "14:30",
+          },
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
+      },
+      {
+        label: "Samedi",
+        services: [
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
+      },
+      {
+        label: "Dimanche",
+        services: [],
+      },
+    ],
+    exceptionnalClosings: [
+      {
+        start: "2023-12-31T00:00:00Z",
+        end: "2023-01-01T00:00:00Z",
+      },
+    ],
   },
 };
 

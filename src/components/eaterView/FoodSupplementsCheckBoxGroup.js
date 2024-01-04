@@ -24,25 +24,25 @@ export default function FoodSupplementsCheckBoxGroup({
     <fieldset>
       <label
         htmlFor={label}
-        className="block text-sm font-medium leading-6 text-gray-900"
+        className="block text-medium sm:text-sm font-medium leading-6 text-gray-900 pb-2 sm:pb-0"
       >
         {label}
       </label>
-      <div className="space-y-1">
+      <div className="space-y-2 sm:space-y-1">
         {items.map((item, i) => (
-          <div key={i} className="relative flex items-start">
-            <div className="flex h-6 items-center">
+          <div key={i} className="relative flex items-center">
+            <div className="flex h-8 sm:h-6 justify-center items-center">
               <input
                 aria-describedby={`${item.value}-description`}
                 name={item.value}
                 value={i}
                 onChange={(e) => onChangeCheckBox(e, i)}
                 type="checkbox"
-                className={`h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary`}
+                className={`h-6 w-6 sm:h-4 sm:w-4 rounded border-gray-300 text-primary focus:ring-primary`}
               />
             </div>
-            <div className="ml-3 text-sm leading-6">
-              <label htmlFor={item.value} className="font-medium text-gray-900">
+            <div className="flex flex-row items-center ml-3 text-medium sm:text-sm leading-6">
+              <label htmlFor={item.value} className=" text-gray-900">
                 {item.value}
               </label>{" "}
               <span id={`${item.value}-description`} className="text-gray-500">

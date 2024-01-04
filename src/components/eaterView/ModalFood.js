@@ -7,6 +7,7 @@ import FoodSupplementsCheckBoxGroup from "./FoodSupplementsCheckBoxGroup";
 import DefaultBtn from "../ui/DefaultBtn";
 import AddBtn from "../ui/AddBtn";
 import MinusBtn from "../ui/MinusBtn";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -103,8 +104,8 @@ export default function ModalFood({ food, open, setOpen }) {
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+        <div className="fixed inset-0 z-10 w-screen overflow-hidden">
+          <div className="flex min-h-full items-center justify-center sm:p-4 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -114,9 +115,20 @@ export default function ModalFood({ food, open, setOpen }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col relative h-96 justify-around transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all sm:my-8 sm:w-1/2  px-4 pb-4 pt-5 sm:p-6">
-                <h1 className="font-bold text-2xl p-1">{food.value}</h1>
-                <div className="space-y-3 overflow-y-auto p-1">
+              <Dialog.Panel className="flex flex-col justify-between relative w-screen h-screen sm:w-7/12 sm:h-96 transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
+                <div className="flex fex-row w-full justify-between pb-4">
+                  <h1 className="font-bold text-2xl">{food.value}</h1>
+                  <button
+                    type="button"
+                    className={`rounded-md text-gray-400 hover:text-gray-500`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {" "}
+                    <span className="sr-only">Close panel</span>
+                    <XMarkIcon className="h-8 w-8" aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="space-y-3 overflow-y-auto px-4">
                   {food.options.length > 0 && (
                     <div className="space-y-2">
                       {food.options.map((option, i) => (
@@ -144,7 +156,7 @@ export default function ModalFood({ food, open, setOpen }) {
                     </div>
                   )}
                 </div>
-                <div className="flex flex-row justify-between p-1">
+                <div className="flex flex-row justify-between py-4">
                   <div className="flex flex-row justify-around w-32">
                     <MinusBtn
                       onClick={() => quantity > 1 && setQuantity(quantity - 1)}

@@ -10,8 +10,8 @@ export default function FormInput({
   validationError,
 }) {
   return (
-    <div className="w-full">
-      <div className="w-full">
+    <div className>
+      <div>
         <label
           htmlFor={id}
           className="ml-px block pl-4 text-md font-medium leading-6 text-gray-900"

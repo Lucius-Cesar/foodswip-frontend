@@ -1,0 +1,135 @@
+import { Fragment } from "react";
+import { useSelector } from "react-redux";
+import { Dialog, Transition } from "@headlessui/react";
+
+import { XMarkIcon } from "@heroicons/react/24/outline";
+
+export default function ModalInfoRestaurant({ open, setOpen }) {
+  const restaurant = useSelector((state) => state.restaurant);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function formatExeptionalClosings(dateString) {
+    const options = {
+      weekday: "long",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+
+    const date = new Date(dateString);
+    return date.toLocaleString("fr-FR", options);
+  }
+  return (
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={handleClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 z-10 w-screen overflow-hidden">
+          <div className="flex min-h-full items-center justify-center sm:p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <Dialog.Panel className="flex flex-col relative w-screen h-screen  sm:w-7/12 sm:h-96 transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
+                <div className="flex fex-row w-full justify-between pb-4">
+                  <h1 className="font-bold text-2xl">
+                    Informations du restaurant
+                  </h1>
+                  <button
+                    type="button"
+                    className={`rounded-md text-gray-400 hover:text-gray-500`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {" "}
+                    <span className="sr-only">Close panel</span>
+                    <XMarkIcon className="h-8 w-8" aria-hidden="true" />
+                  </button>
+                </div>
+                <div className="flex flex-col space-y-4 overflow-y-auto px-4">
+                  <div className="flex flex-col">
+                    <h2 className="text-xl font-bold">Adresse</h2>
+                    <div className="flex flex-row space-x-1">
+                      <p>{restaurant.adress.street}</p>
+                      <p>{restaurant.adress.streetNumber}</p>
+                    </div>
+                    <div className="flex flex-row space-x-1">
+                      <p>{restaurant.adress.postCode}</p>
+                      <p>{restaurant.adress.city} </p>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-xl">Horraires</h2>
+                    <div className="flex flex-col space-y-2">
+                      {restaurant.restaurantSettings.schedulde.map(
+                        (daySchedulde, i) => (
+                          <div
+                            key={i}
+                            className="flex flex-row justify-between"
+                          >
+                            <p>{daySchedulde.label}</p>
+                            <div className="flex flex-row">
+                              {daySchedulde.services.length === 0 ? (
+                                <p>Fermé</p>
+                              ) : (
+                                <div className="space-x-4 flex flex-row">
+                                  {daySchedulde.services.map((service, j) => (
+                                    <p key={j}>
+                                      {service.start} - {service.end}
+                                    </p>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  {restaurant.restaurantSettings.exceptionnalClosings.length ===
+                  0 ? null : (
+                    <div className="flex flex-col">
+                      <h2 className="text-xl font-bold text-red-600">
+                        Fermetures exceptionnelles
+                      </h2>
+                      {restaurant.restaurantSettings.exceptionnalClosings.map(
+                        (exceptionnalClosing, i) => (
+                          <p key={i}>
+                            {formatExeptionalClosings(
+                              exceptionnalClosing.start
+                            )}
+                            {" - "}
+                            {formatExeptionalClosings(exceptionnalClosing.end)}
+                          </p>
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
+  );
+}
