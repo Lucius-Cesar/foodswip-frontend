@@ -133,7 +133,7 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className="sticky sm:relative pt-4 sm:pt-0 top-0 w-full sm:w-auto flex justify-center sm:block  bg-white sm:bg-none sm:py-0">
+        <div className="sticky sm:relative pt-2 pb-2 sm:pt-0 top-0 w-full sm:w-auto flex justify-center sm:block  bg-white sm:bg-none sm:py-0">
           <OrderTabBtn />
         </div>
         {menu.map((foodCategory, i) => (
@@ -142,7 +142,9 @@ export default function Home() {
             ref={foodCategory.ref}
             className="w-full flex flex-col items-center sm:items-start p-2 sm:p-0"
           >
-            <h1 className="text-primary mt-3 mb-3">{foodCategory.value}</h1>
+            <h1 className="text-primary mt-3   mb-3  sm:mt-10">
+              {foodCategory.value}
+            </h1>
             {foodCategory.foods.map((food, j) => (
               <FoodCard key={j} food={food} />
             ))}

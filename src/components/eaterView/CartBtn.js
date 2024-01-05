@@ -32,9 +32,9 @@ export default function CartBtn({ className, onClick, isCartOpen }) {
           color={isHovered || isCartOpen ? primary : "white"}
           className="w-full h-full"
         />
-        <div className="absolute leading-6 w-6 sm:leading-7 sm:w-7 -bottom-2 -left-2 rounded-full bg-gravel text-center">
+        <div className="absolute leading-6 w-6 sm:leading-7 sm:w-7 -bottom-2 -left-2 rounded-full bg-gravel flex items-center justify-center">
           {numberOfArticles > 0 && (
-            <p className="text-white font-semibold text-base sm:text-lg">
+            <p className="text-white font-bold text-base sm:text-lg">
               {numberOfArticles}
             </p>
           )}
