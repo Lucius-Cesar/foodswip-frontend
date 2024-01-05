@@ -22,8 +22,8 @@ module.exports = {
       },
 
       fontFamily: {
-        "font-title": ["PublicaSans", "sans-serif"],
-        "font-text": ["URWGeometricBlack", "sans-serif"],
+        title: ["Public Sans", "sans-serif"],
+        body: ["URW Geometric", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

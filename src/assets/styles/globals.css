@@ -1,6 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "URW Geometric";
+  src: url("../fonts/urw-geometric/URWGeometricRegular.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricBlack.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricExtraBold.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricExtraLight.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricHeavy.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricLight.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricMedium.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricSemiBold.otf") format("opentype"),
+    url("../fonts/urw-geometric/URWGeometricThin.otf") format("opentype");
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -19,4 +33,34 @@
 body {
   padding: 0;
   margin: 0;
+  font-family: URW Geometric, sans-serif;
+  text-color: #3f3e3f;
+}
+
+h1 {
+  font-family: "Public Sans", sans-serif;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-family: "Public Sans", sans-serif;
+  font-size: 1.5rem; /* 24px */
+  line-height: 2rem; /* 32px */
+  font-weight: 700;
+}
+
+h3 {
+  font-family: "Public Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+}
+
+h4 {
+  font-family: "Public Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
 }

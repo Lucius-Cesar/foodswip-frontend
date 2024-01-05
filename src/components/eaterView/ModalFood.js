@@ -101,11 +101,11 @@ export default function ModalFood({ food, open, setOpen }) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity " />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 w-screen overflow-hidden">
-          <div className="flex min-h-full items-center justify-center sm:p-4 text-center">
+          <div className="flex min-h-full items-center justify-center text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -115,9 +115,9 @@ export default function ModalFood({ food, open, setOpen }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col justify-between relative w-screen h-screen sm:w-7/12 sm:h-96 transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
+              <Dialog.Panel className="flex flex-col justify-between relative w-screen h-screen sm:w-7/12 sm:h-auto sm:max-h-screen transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
                 <div className="flex fex-row w-full justify-between pb-4">
-                  <h1 className="font-bold text-2xl">{food.value}</h1>
+                  <h2>{food.value}</h2>
                   <button
                     type="button"
                     className={`rounded-md text-gray-400 hover:text-gray-500`}

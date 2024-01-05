@@ -205,7 +205,7 @@ export default function Checkout() {
         </div>
         <div className="flex flex-col w-full space-y-10 mb-10">
           <div className="space-y-4">
-            <h2 className="font-bold text-2xl text-center sm:text-left">
+            <h2 className="text-center sm:text-left">
               Informations de commande
             </h2>
             <div className="m-auto sm:m-0 w-fit">
@@ -254,13 +254,13 @@ export default function Checkout() {
               />
             </div>
             {cart.orderType === 0 ? (
-              <h3 className="font-bold text-lg">
+              <h3>
                 Estimation des délais de livraison: entre{" "}
                 {restaurant.orderSettings.deliveryEstimate.min} et{" "}
                 {restaurant.orderSettings.deliveryEstimate.max} min *
               </h3>
             ) : cart.orderType === 1 ? (
-              <h3 className="font-bold text-lg">
+              <h3>
                 Estimation du délai pour emporter:{" "}
                 {restaurant.orderSettings.takeAwayEstimate} min *
               </h3>
@@ -271,9 +271,7 @@ export default function Checkout() {
             </p>
           </div>
           <div>
-            <h2 className="font-bold text-2xl text-center sm:text-left">
-              Moyen de paiement
-            </h2>
+            <h2 className="sm:text-left">Moyen de paiement</h2>
             <fieldset className="mt-4">
               <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                 {paymentMethods.map((paymentMethod, i) => (
@@ -310,7 +308,7 @@ export default function Checkout() {
           )}
 
           <div>
-            <h2 className="font-bold text-2xl mb-4 text-center sm:text-left">
+            <h2 className="mb-4 text-center sm:text-left">
               Informations personnelles
             </h2>
             <div className="space-y-4">

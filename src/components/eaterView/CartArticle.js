@@ -22,18 +22,19 @@ export default function CartArticle({ article, index }) {
       <div className="flex flex-row justify-between">
         <div className="flex flex-row space-x-1">
           <p className="font-bold">{article.quantity}</p> <p>X</p>{" "}
-          <p className="font-medium">{article.food}</p>
+          <p className="font-bold">{article.food}</p>
         </div>
-        <p className="font-medium">
+        <p className="font-bold">
           {multiplyMoney(article.quantity, article.foodPrice)} €
         </p>
       </div>
       {article.options.length > 0 && (
-        <p> {article.options.map((option) => option.value).join(", ")}</p>
+        <p className="text-sm">
+          {article.options.map((option) => option.value).join(", ")}
+        </p>
       )}
       {article.supplements.length > 0 && (
-        <p>
-          {" "}
+        <p className="text-sm ">
           Suppléments:{" "}
           {article.supplements
             .map((supplements) => supplements.value)

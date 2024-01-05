@@ -39,7 +39,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 w-screen overflow-hidden">
-          <div className="flex min-h-full items-center justify-center sm:p-4 text-center">
+          <div className="flex min-h-full items-center justify-center text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -49,11 +49,9 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col relative w-screen h-screen  sm:w-7/12 sm:h-96 transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
+              <Dialog.Panel className="flex flex-col relative w-screen h-screen  sm:w-7/12 sm:h-auto sm:max-h-full transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
                 <div className="flex fex-row w-full justify-between pb-4">
-                  <h1 className="font-bold text-2xl">
-                    Informations du restaurant
-                  </h1>
+                  <h2>Informations du restaurant</h2>
                   <button
                     type="button"
                     className={`rounded-md text-gray-400 hover:text-gray-500`}
@@ -66,7 +64,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                 </div>
                 <div className="flex flex-col space-y-4 overflow-y-auto px-4">
                   <div className="flex flex-col">
-                    <h2 className="text-xl font-bold">Adresse</h2>
+                    <h3>Adresse</h3>
                     <div className="flex flex-row space-x-1">
                       <p>{restaurant.adress.street}</p>
                       <p>{restaurant.adress.streetNumber}</p>
@@ -77,7 +75,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                     </div>
                   </div>
                   <div>
-                    <h2 className="font-bold text-xl">Horraires</h2>
+                    <h3>Horraires</h3>
                     <div className="flex flex-col space-y-2">
                       {restaurant.restaurantSettings.schedulde.map(
                         (daySchedulde, i) => (
@@ -108,9 +106,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                   {restaurant.restaurantSettings.exceptionnalClosings.length ===
                   0 ? null : (
                     <div className="flex flex-col">
-                      <h2 className="text-xl font-bold text-red-600">
-                        Fermetures exceptionnelles
-                      </h2>
+                      <h3>Fermetures exceptionnelles</h3>
                       {restaurant.restaurantSettings.exceptionnalClosings.map(
                         (exceptionnalClosing, i) => (
                           <p key={i}>

@@ -31,15 +31,15 @@ export default function SideFoodCategories({
         {menu.map((foodCategory, i) => (
           <button
             type="button"
-            className={`font-bold ${
+            className={`${
               foodCategory.value === activeFoodCategory.value
                 ? "text-primary"
                 : "text-medium-grey"
-            } text-3xl mt-3 mb-3`}
+            } mt-3 mb-3`}
             key={i}
             onClick={() => onFoodCategoryClick(i)}
           >
-            {foodCategory.value}
+            <h1>{foodCategory.value}</h1>
           </button>
         ))}
       </div>

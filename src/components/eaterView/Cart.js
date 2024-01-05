@@ -3,7 +3,8 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addNote } from "@/app/redux/reducers/cart";
 import { addMoney } from "@/utils/moneyCalculations";
 
 import CartIcon from "../ui/icons/CartIcon";
@@ -15,6 +16,7 @@ import Link from "next/link";
 export default function Cart({ open, setOpen, variant }) {
   const primary = "#F97247"; //sorry for this
   const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const orderSettings = useSelector((state) => state.restaurant.orderSettings);
   const [totalSum, setTotalSum] = useState(null);
 
@@ -77,6 +79,8 @@ export default function Cart({ open, setOpen, variant }) {
                   name="comment"
                   id="comment"
                   placeholder="Ajouter une note"
+                  onChange={(e) => dispatch(addNote(e.target.value))}
+                  value={cart.note}
                   style={{ resize: "none" }}
                   className="block h-12 w-full rounded-2xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
                   defaultValue={""}

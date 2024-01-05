@@ -41,12 +41,12 @@ export default function FoodSupplementsCheckBoxGroup({
                 className={`h-6 w-6 sm:h-4 sm:w-4 rounded border-gray-300 text-primary focus:ring-primary`}
               />
             </div>
-            <div className="flex flex-row items-center ml-3 text-medium sm:text-sm leading-6">
+            <div className="flex flex-row items-center ml-3 text-medium sm:text-sm leading-6  space-x-1">
               <label htmlFor={item.value} className=" text-gray-900">
                 {item.value}
-              </label>{" "}
+              </label>
               <span id={`${item.value}-description`} className="text-gray-500">
-                <span className="sr-only">{item.value} </span>{" "}
+                <span className="sr-only">{item.value}</span>
                 {item.price && `(+ ${item.price} €)`}
               </span>
             </div>

@@ -50,7 +50,7 @@ export default function FoodCard({ food }) {
   return (
     <div className="flex flex-row items-center justify-between w-full sm:w-11/12 min-h-32 h-auto bg-magnolia rounded-lg border border-gravel mt-3 mb-3 p-4">
       <div className="flex flex-col justify-between h-full">
-        <p className="font-semibold	">{food.value}</p>
+        <p className="font-extrabold">{food.value}</p>
         <p>{food.description}</p>
         <p className="font-bold"> {food.price + " €"}</p>
       </div>
