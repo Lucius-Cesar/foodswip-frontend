@@ -17,7 +17,7 @@ export default function TabBtn({ values, currentTab, onClickTab }) {
               : currentTab === i
               ? "bg-primary focus:bg-primary focus:text-white text-white"
               : "bg-light-grey text-dark-grey hover:bg-light-grey-700"
-          } h-8 w-32 sm:w-48 table ps-5 pe-5 rounded-s-full rounded-e-full`}
+          } h-8 w-32 sm:w-48 table ps-5 pe-5 rounded-s-full rounded-e-full sm:text-lg`}
         >
           {
             typeof value === "string"

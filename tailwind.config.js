@@ -22,6 +22,7 @@ module.exports = {
       },
 
       fontFamily: {
+        sans: ["sans-serif"],
         title: ["Public Sans", "sans-serif"],
         body: ["URW Geometric", "sans-serif"],
       },

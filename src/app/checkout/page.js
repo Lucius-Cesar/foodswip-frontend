@@ -152,8 +152,7 @@ export default function Checkout() {
     } else if (!phoneNumberRegex.test(phoneNumber)) {
       setValidationErrors((previous) => ({
         ...previous,
-        phoneNumber:
-          "Le numéro de téléphone doit être uniquement constitué de chiffres",
+        phoneNumber: "Le numéro de téléphone est invalide",
       }));
     } else {
       setValidationErrors((previous) => ({
@@ -199,7 +198,7 @@ export default function Checkout() {
 
   return (
     <div className="relative flex flex-col sm:flex-row">
-      <div className="flex flex-col grow items-start justify-start px-2 sm:px-12 lg:pe-40">
+      <div className="flex flex-col grow items-start justify-start px-6 sm:px-12 lg:pe-40">
         <div className="hidden sm:block">
           <RestaurantLogo />
         </div>
@@ -211,67 +210,77 @@ export default function Checkout() {
             <div className="m-auto sm:m-0 w-fit">
               <OrderTabBtn />
             </div>
-
-            <FormInput
-              label="Adresse"
-              id="adress"
-              onChange={(input) =>
-                setForm({
-                  ...form,
-                  adress: input,
-                })
-              }
-              value={form.adress}
-              validationFunction={adressValidation}
-              validationError={validationErrors.adress}
-            />
-            <div className="flex flex-row space-x-4">
-              <FormInput
-                label="Code postal"
-                id="postcode"
-                onChange={(input) =>
-                  setForm({
-                    ...form,
-                    postCode: input,
-                  })
-                }
-                value={form.postCode}
-                validationFunction={postCodeValidation}
-                validationError={validationErrors.postCode}
-              />
-              <FormInput
-                label="Ville"
-                id="city"
-                onChange={(input) =>
-                  setForm({
-                    ...form,
-                    city: input,
-                  })
-                }
-                value={form.city}
-                validationFunction={cityValidation}
-                validationError={validationErrors.city}
-              />
+            <div className="flex flex-col justify-between gap-4">
+              <div className="w-full">
+                <FormInput
+                  label="Adresse"
+                  id="adress"
+                  onChange={(input) =>
+                    setForm({
+                      ...form,
+                      adress: input,
+                    })
+                  }
+                  value={form.adress}
+                  validationFunction={adressValidation}
+                  validationError={validationErrors.adress}
+                />
+              </div>
+              <div className="flex flex-row gap-4">
+                <div className="w-full">
+                  <FormInput
+                    label="Code postal"
+                    id="postcode"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        postCode: input,
+                      })
+                    }
+                    value={form.postCode}
+                    validationFunction={postCodeValidation}
+                    validationError={validationErrors.postCode}
+                  />
+                </div>
+                <div className="w-full">
+                  <FormInput
+                    label="Ville"
+                    id="city"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        city: input,
+                      })
+                    }
+                    value={form.city}
+                    validationFunction={cityValidation}
+                    validationError={validationErrors.city}
+                  />
+                </div>
+              </div>
             </div>
-            {cart.orderType === 0 ? (
-              <h3>
-                Estimation des délais de livraison: entre{" "}
-                {restaurant.orderSettings.deliveryEstimate.min} et{" "}
-                {restaurant.orderSettings.deliveryEstimate.max} min *
-              </h3>
-            ) : cart.orderType === 1 ? (
-              <h3>
-                Estimation du délai pour emporter:{" "}
-                {restaurant.orderSettings.takeAwayEstimate} min *
-              </h3>
-            ) : null}
-            <p>
-              * La durée mentionnée est une estimation moyenne à titre
-              indicatif.{" "}
-            </p>
+            <div className="space-y-1">
+              {cart.orderType === 0 ? (
+                <h3 className="text-center sm:text-left">
+                  Estimation des délais de livraison: entre{" "}
+                  {restaurant.orderSettings.deliveryEstimate.min} et{" "}
+                  {restaurant.orderSettings.deliveryEstimate.max} min *
+                </h3>
+              ) : cart.orderType === 1 ? (
+                <h3 className="text-center sm:text-left">
+                  Estimation du délai pour emporter:{" "}
+                  {restaurant.orderSettings.takeAwayEstimate} min *
+                </h3>
+              ) : null}
+
+              <p>
+                * La durée mentionnée est une estimation moyenne à titre
+                indicatif.{" "}
+              </p>
+            </div>
           </div>
           <div>
-            <h2 className="sm:text-left">Moyen de paiement</h2>
+            <h2 className="text-center sm:text-left">Moyen de paiement</h2>
             <fieldset className="mt-4">
               <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                 {paymentMethods.map((paymentMethod, i) => (
@@ -307,68 +316,75 @@ export default function Checkout() {
             </p>
           )}
 
-          <div>
+          <div className="w-full">
             <h2 className="mb-4 text-center sm:text-left">
               Informations personnelles
             </h2>
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <FormInput
-                  label="Prénom"
-                  id="firstname"
-                  onChange={(input) =>
-                    setForm({
-                      ...form,
-                      firstname: input,
-                    })
-                  }
-                  value={form.firstname}
-                  validationFunction={firstnameValidation}
-                  validationError={validationErrors.firstname}
-                />
-                <FormInput
-                  label="Nom"
-                  id="lastname"
-                  onChange={(input) =>
-                    setForm({
-                      ...form,
-                      lastname: input,
-                    })
-                  }
-                  value={form.lastname}
-                  validationFunction={lastnameValidation}
-                  validationError={validationErrors.lastname}
-                />
+            <div className="flex flex-col w-full">
+              <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4">
+                <div className="w-full">
+                  <FormInput
+                    label="Prénom"
+                    id="firstname"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        firstname: input,
+                      })
+                    }
+                    value={form.firstname}
+                    validationFunction={firstnameValidation}
+                    validationError={validationErrors.firstname}
+                  />
+                </div>
+                <div className="w-full">
+                  <FormInput
+                    label="Nom"
+                    id="lastname"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        lastname: input,
+                      })
+                    }
+                    value={form.lastname}
+                    validationFunction={lastnameValidation}
+                    validationError={validationErrors.lastname}
+                  />
+                </div>
               </div>
-
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <FormInput
-                  label="Adresse mail"
-                  id="mail"
-                  placeholder="you@example.com"
-                  onChange={(input) =>
-                    setForm({
-                      ...form,
-                      mail: input,
-                    })
-                  }
-                  value={form.mail}
-                  validationFunction={mailValidation}
-                  validationError={validationErrors.mail}
-                />
-                <FormInput
-                  label="N° de téléphone"
-                  id="phonenumber"
-                  onChange={(input) =>
-                    setForm({
-                      ...form,
-                      phoneNumber: input,
-                    })
-                  }
-                  value={form.phoneNumber}
-                  validationFunction={phoneNumberValidation}
-                  validationError={validationErrors.phoneNumber}
-                />
+              <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4 sm:py-4">
+                <div className="w-full">
+                  <FormInput
+                    label="Adresse mail"
+                    id="mail"
+                    placeholder="you@example.com"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        mail: input,
+                      })
+                    }
+                    value={form.mail}
+                    validationFunction={mailValidation}
+                    validationError={validationErrors.mail}
+                  />
+                </div>
+                <div className="w-full">
+                  <FormInput
+                    label="N° de téléphone"
+                    id="phonenumber"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        phoneNumber: input,
+                      })
+                    }
+                    value={form.phoneNumber}
+                    validationFunction={phoneNumberValidation}
+                    validationError={validationErrors.phoneNumber}
+                  />
+                </div>
               </div>
             </div>
           </div>
