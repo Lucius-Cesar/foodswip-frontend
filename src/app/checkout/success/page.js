@@ -27,7 +27,7 @@ export default function Success() {
   ).padStart(2, "0")}`;
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-between items-center">
+    <div className="w-full h-dvh flex flex-col justify-between items-center">
       <RestaurantLogo className="h-24 w-72" />
 
       <div className="flex flex-col justify-center items-center">
