@@ -38,13 +38,14 @@ export default function Success() {
         </p>
         {cart.orderType === 0 && (
           <p className="text-center text-lg">
-            Elle vous sera livrée à<br></br>
+            Elle vous sera livrée aux alentours de<br></br>
             <span className="font-bold text-3xl">{formattedDeliveryTime}</span>
           </p>
         )}
         {cart.orderType === 1 && (
           <p className="text-center text-lg">
-            Vous pouvez venir la chercher au restaurant à<br></br>
+            Vous pouvez venir la chercher au restaurant aux alentours de
+            <br></br>
             <span className="font-bold text-3xl text-center">
               {formattedTakeAwayTime}
             </span>

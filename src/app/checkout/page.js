@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
+import useRedirectIfCartEmpty from "../../hooks/useRedirectIfCartEmpty";
 import Cart from "../../components/eaterView/Cart";
 import RestaurantLogo from "../../components/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
@@ -12,6 +12,7 @@ import DefaultBtn from "@/components/ui/DefaultBtn";
 
 export default function Checkout() {
   const router = useRouter();
+  useRedirectIfCartEmpty();
 
   const restaurant = useSelector((state) => state.restaurant);
   const cart = useSelector((state) => state.cart);

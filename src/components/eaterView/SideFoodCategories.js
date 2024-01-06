@@ -16,7 +16,7 @@ export default function SideFoodCategories({
     <div
       className={`${
         open ? "fixed bg-white flex" : "hidden"
-      } sm:bg-none z-10 sm:flex flex-row h-screen w-screen sm:sticky top-0 sm:w-80`}
+      } sm:bg-none z-10 sm:flex flex-row h-dvh w-screen sm:sticky top-0 sm:w-80`}
     >
       <button
         type="button"
