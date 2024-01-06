@@ -4,6 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { addNote } from "@/app/redux/reducers/cart";
 import { addMoney } from "@/utils/moneyCalculations";
 
@@ -16,15 +17,41 @@ import Link from "next/link";
 export default function Cart({ open, setOpen, variant }) {
   const primary = "#F97247"; //sorry for this
   const cart = useSelector((state) => state.cart);
+  const restaurant = useSelector((state) => state.restaurant);
+
   const dispatch = useDispatch();
-  const orderSettings = useSelector((state) => state.restaurant.orderSettings);
+  const router = useRouter();
   const [totalSum, setTotalSum] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({
+    deliveryMin: "",
+  });
+
+  const onClickOrderBtn = () => {
+    setValidationErrors((previous) => {
+      if (Object.values(previous).every((value) => value === "")) {
+        router.push("/checkout", { scroll: false });
+      }
+      return previous;
+    });
+  };
 
   useEffect(() => {
     //0 for delivery orderType
-    cart.orderType === 0
-      ? setTotalSum(addMoney(cart.articlesSum, orderSettings.deliveryFees))
-      : setTotalSum(cart.articlesSum);
+    if (cart.orderType === 0) {
+      setTotalSum(
+        addMoney(cart.articlesSum, restaurant.orderSettings.deliveryFees)
+      );
+      cart.articlesSum < restaurant.orderSettings.deliveryMin
+        ? setValidationErrors((previous) => ({
+            ...previous,
+            deliveryMin: `${
+              restaurant.orderSettings.deliveryMin - cart.articlesSum
+            } € d'achats restants pour profiter de la Livraison`,
+          }))
+        : setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
+    } else if (cart.orderType === 1) {
+      setTotalSum(cart.articlesSum);
+    }
   }, [cart]);
 
   const cartContent = (
@@ -63,11 +90,22 @@ export default function Cart({ open, setOpen, variant }) {
               <p className="font-medium">{cart.articlesSum} €</p>
             </div>
             {cart.orderType === 0 && (
-              <div className="flex flex-row justify-between">
-                <p className="font-medium">Frais de livraison</p>
-                <p className="font-medium">{orderSettings.deliveryFees} €</p>
-              </div>
+              <>
+                {validationErrors.deliveryMin ? (
+                  <p className="font-bold text-error-danger self-end">
+                    {validationErrors.deliveryMin}
+                  </p>
+                ) : (
+                  <div className="flex flex-row justify-between">
+                    <p className="font-medium">Frais de livraison</p>
+                    <p className="font-medium">
+                      {restaurant.orderSettings.deliveryFees} €
+                    </p>
+                  </div>
+                )}
+              </>
             )}
+
             <div className="flex flex-row justify-between">
               <p className="font-bold">Total</p>
               <p className="font-bold">{totalSum} €</p>
@@ -86,14 +124,13 @@ export default function Cart({ open, setOpen, variant }) {
                   defaultValue={""}
                 />
                 {variant === "menu" && (
-                  <Link href="/checkout" scroll={false}>
-                    <div className="text-center">
-                      <DefaultBtn
-                        value={"Commander"}
-                        className="w-72 h-10 text-xl font-bold bg-success hover:opacity-90 self-center"
-                      />
-                    </div>
-                  </Link>
+                  <div className="text-center">
+                    <DefaultBtn
+                      value={"Commander"}
+                      className="w-72 h-10 text-xl font-bold bg-success hover:opacity-90 self-center"
+                      onClick={onClickOrderBtn}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -101,7 +138,7 @@ export default function Cart({ open, setOpen, variant }) {
         </>
       ) : (
         <p className="text-2xl text-dark-grey font-bold text-center">
-          Remplis moi la besace
+          Le panier est vide
         </p>
       )}
     </div>
