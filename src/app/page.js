@@ -21,6 +21,7 @@ export default function Home() {
   const restaurant = useSelector((state) => state.restaurant);
   const cart = useSelector((state) => state.cart);
   const [restaurantOpen, setRestaurantOpen] = useState(null);
+  const [scrollBarHeight, setScrollBarHeight] = useState("0px");
 
   // Create a ref for each foodCategory to allow switching active food category while scrolling
   // and going to the selectedFoodCategory onClick in the sideFoodCategoriesMenu
@@ -40,14 +41,13 @@ export default function Home() {
   //ref of the mainContainer to add scrolling event
   const mainContainer = useRef(null);
 
-  let scrollBarHeight;
   useEffect(() => {
     const checkRestaurantOpen = isRestaurantOpen(
       restaurant.restaurantSettings.schedulde,
       restaurant.restaurantSettings.exceptionnalClosings
     );
     setRestaurantOpen(checkRestaurantOpen);
-    scrollBarHeight = checkRestaurantOpen ? "0px" : "-45px";
+    setScrollBarHeight(checkRestaurantOpen ? "0px" : "-45px"); //scrollBarHeight -45bx needed when topBanner
   }, []);
   useEffect(() => {
     const handleScroll = () => {
@@ -110,7 +110,7 @@ export default function Home() {
             setFoodCategoriesMenuOpen(false);
             setActiveFoodCategory(menu[index]);
             //scroll Margin needed because of the top bar when restaurant is closed
-
+            console.log(scrollBarHeight);
             menu[index].ref.current.style.scrollMargin = scrollBarHeight;
             menu[index].ref.current.scrollIntoView({ block: "start" });
           }}
