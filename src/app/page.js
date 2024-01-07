@@ -12,15 +12,15 @@ import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
 import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
 import BarsIcon from "@/components/ui/icons/BarsIcon";
 import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
-TopBannerClosed;
 import { useSelector } from "react-redux";
+
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import isRestaurantOpen from "@/utils/isRestaurantOpen";
 
 export default function Home() {
   const restaurant = useSelector((state) => state.restaurant);
   const cart = useSelector((state) => state.cart);
-  const [restaurantOpen, setRestaurantOpen] = useState(null);
+  const [restaurantOpen, setRestaurantOpen] = useState(true);
   const [scrollBarHeight, setScrollBarHeight] = useState("0px");
 
   // Create a ref for each foodCategory to allow switching active food category while scrolling

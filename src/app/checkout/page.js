@@ -2,14 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import useRedirectIfCartEmpty from "../../hooks/useRedirectIfCartEmpty";
 import Cart from "../../components/eaterView/Cart";
 import RestaurantLogo from "../../components/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
-import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
+
+import isRestaurantOpen from "../../utils/isRestaurantOpen";
 export default function Checkout() {
   const router = useRouter();
   useRedirectIfCartEmpty();
@@ -19,6 +20,15 @@ export default function Checkout() {
 
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [restaurantOpen, setRestaurantOpen] = useState(true);
+
+  useEffect(() => {
+    const checkRestaurantOpen = isRestaurantOpen(
+      restaurant.restaurantSettings.schedulde,
+      restaurant.restaurantSettings.exceptionnalClosings
+    );
+    setRestaurantOpen(checkRestaurantOpen);
+  }, []);
 
   useEffect(() => {
     if (cart.orderType === 0) {
@@ -143,7 +153,7 @@ export default function Checkout() {
   };
 
   const phoneNumberValidation = (phoneNumber) => {
-    const phoneNumberRegex = /^\+?[0-9]+$/;
+    const phoneNumberRegex = /^\+?[0-9]{10,}$/;
 
     if (!phoneNumber) {
       setValidationErrors((previous) => ({
@@ -198,212 +208,214 @@ export default function Checkout() {
   };
 
   return (
-    <div className="relative flex flex-col sm:flex-row">
-      <div className="flex flex-col grow items-start justify-start px-6 sm:px-12 lg:pe-40">
-        <div className="hidden sm:block">
-          <RestaurantLogo />
-        </div>
-        <div className="flex flex-col w-full space-y-10 mb-10">
-          <div className="space-y-4">
-            <h2 className="text-center sm:text-left">
-              Informations de commande
-            </h2>
-            <div className="m-auto sm:m-0 w-fit">
-              <OrderTabBtn />
-            </div>
-            <div className="flex flex-col justify-between gap-4">
-              <div className="w-full">
-                <FormInput
-                  label="Adresse"
-                  id="adress"
-                  onChange={(input) =>
-                    setForm({
-                      ...form,
-                      adress: input,
-                    })
-                  }
-                  value={form.adress}
-                  validationFunction={adressValidation}
-                  validationError={validationErrors.adress}
-                />
-              </div>
-              <div className="flex flex-row gap-4">
-                <div className="w-full">
-                  <FormInput
-                    label="Code postal"
-                    id="postcode"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        postCode: input,
-                      })
-                    }
-                    value={form.postCode}
-                    validationFunction={postCodeValidation}
-                    validationError={validationErrors.postCode}
-                  />
-                </div>
-                <div className="w-full">
-                  <FormInput
-                    label="Ville"
-                    id="city"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        city: input,
-                      })
-                    }
-                    value={form.city}
-                    validationFunction={cityValidation}
-                    validationError={validationErrors.city}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="space-y-1">
-              {cart.orderType === 0 ? (
-                <h3 className="text-center sm:text-left">
-                  Estimation des délais de livraison: entre{" "}
-                  {restaurant.orderSettings.deliveryEstimate.min} et{" "}
-                  {restaurant.orderSettings.deliveryEstimate.max} min *
-                </h3>
-              ) : cart.orderType === 1 ? (
-                <h3 className="text-center sm:text-left">
-                  Estimation du délai pour emporter:{" "}
-                  {restaurant.orderSettings.takeAwayEstimate} min *
-                </h3>
-              ) : null}
-
-              <p>
-                * La durée mentionnée est une estimation moyenne à titre
-                indicatif.{" "}
-              </p>
-            </div>
+    <>
+      <div className="relative flex flex-col sm:flex-row">
+        <div className="flex flex-col grow items-start justify-start px-6 sm:px-12 lg:pe-40">
+          <div className="hidden sm:block">
+            <RestaurantLogo />
           </div>
-          <div>
-            <h2 className="text-center sm:text-left">Moyen de paiement</h2>
-            <fieldset className="mt-4">
-              <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                {paymentMethods.map((paymentMethod, i) => (
-                  <div key={i} className="flex items-center">
-                    <input
-                      id={i}
-                      name="payment-method"
-                      type="radio"
-                      className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
-                      onChange={() => {
-                        setSelectedPaymentMethod(paymentMethods[i]);
-                        setValidationErrors((previous) => ({
-                          ...previous,
-                          paymentMethod: "",
-                        }));
-                      }}
-                      value={paymentMethod}
+          <div className="flex flex-col w-full space-y-10 mb-10">
+            <div className="space-y-4">
+              <h2 className="text-center sm:text-left">
+                Informations de commande
+              </h2>
+              <div className="m-auto sm:m-0 w-fit">
+                <OrderTabBtn />
+              </div>
+              <div className="flex flex-col justify-between gap-4">
+                <div className="w-full">
+                  <FormInput
+                    label="Adresse"
+                    id="adress"
+                    onChange={(input) =>
+                      setForm({
+                        ...form,
+                        adress: input,
+                      })
+                    }
+                    value={form.adress}
+                    validationFunction={adressValidation}
+                    validationError={validationErrors.adress}
+                  />
+                </div>
+                <div className="flex flex-row gap-4">
+                  <div className="w-full">
+                    <FormInput
+                      label="Code postal"
+                      id="postcode"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          postCode: input,
+                        })
+                      }
+                      value={form.postCode}
+                      validationFunction={postCodeValidation}
+                      validationError={validationErrors.postCode}
                     />
-                    <label
-                      htmlFor={paymentMethod.value}
-                      className="ml-3 block text-lg sm:text-base font-medium leading-6 text-gray-900"
-                    >
-                      {paymentMethod.value}
-                    </label>
                   </div>
-                ))}
+                  <div className="w-full">
+                    <FormInput
+                      label="Ville"
+                      id="city"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          city: input,
+                        })
+                      }
+                      value={form.city}
+                      validationFunction={cityValidation}
+                      validationError={validationErrors.city}
+                    />
+                  </div>
+                </div>
               </div>
-            </fieldset>
-          </div>
-          {validationErrors.paymentMethod && (
-            <p className="text-error-danger">
-              {validationErrors.paymentMethod}
-            </p>
-          )}
+              <div className="space-y-1">
+                {cart.orderType === 0 ? (
+                  <h3 className="text-center sm:text-left">
+                    Estimation des délais de livraison: entre{" "}
+                    {restaurant.orderSettings.deliveryEstimate.min} et{" "}
+                    {restaurant.orderSettings.deliveryEstimate.max} min *
+                  </h3>
+                ) : cart.orderType === 1 ? (
+                  <h3 className="text-center sm:text-left">
+                    Estimation du délai pour emporter:{" "}
+                    {restaurant.orderSettings.takeAwayEstimate} min *
+                  </h3>
+                ) : null}
 
-          <div className="w-full">
-            <h2 className="mb-4 text-center sm:text-left">
-              Informations personnelles
-            </h2>
-            <div className="flex flex-col w-full">
-              <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4">
-                <div className="w-full">
-                  <FormInput
-                    label="Prénom"
-                    id="firstname"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        firstname: input,
-                      })
-                    }
-                    value={form.firstname}
-                    validationFunction={firstnameValidation}
-                    validationError={validationErrors.firstname}
-                  />
-                </div>
-                <div className="w-full">
-                  <FormInput
-                    label="Nom"
-                    id="lastname"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        lastname: input,
-                      })
-                    }
-                    value={form.lastname}
-                    validationFunction={lastnameValidation}
-                    validationError={validationErrors.lastname}
-                  />
-                </div>
+                <p>
+                  * La durée mentionnée est une estimation moyenne à titre
+                  indicatif.{" "}
+                </p>
               </div>
-              <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4 sm:py-4">
-                <div className="w-full">
-                  <FormInput
-                    label="Adresse mail"
-                    id="mail"
-                    placeholder="you@example.com"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        mail: input,
-                      })
-                    }
-                    value={form.mail}
-                    validationFunction={mailValidation}
-                    validationError={validationErrors.mail}
-                  />
+            </div>
+            <div>
+              <h2 className="text-center sm:text-left">Moyen de paiement</h2>
+              <fieldset className="mt-4">
+                <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                  {paymentMethods.map((paymentMethod, i) => (
+                    <div key={i} className="flex items-center">
+                      <input
+                        id={i}
+                        name="payment-method"
+                        type="radio"
+                        className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
+                        onChange={() => {
+                          setSelectedPaymentMethod(paymentMethods[i]);
+                          setValidationErrors((previous) => ({
+                            ...previous,
+                            paymentMethod: "",
+                          }));
+                        }}
+                        value={paymentMethod}
+                      />
+                      <label
+                        htmlFor={paymentMethod.value}
+                        className="ml-3 block text-lg sm:text-base font-medium leading-6 text-gray-900"
+                      >
+                        {paymentMethod.value}
+                      </label>
+                    </div>
+                  ))}
                 </div>
-                <div className="w-full">
-                  <FormInput
-                    label="N° de téléphone"
-                    id="phonenumber"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        phoneNumber: input,
-                      })
-                    }
-                    value={form.phoneNumber}
-                    validationFunction={phoneNumberValidation}
-                    validationError={validationErrors.phoneNumber}
-                  />
+              </fieldset>
+            </div>
+            {validationErrors.paymentMethod && (
+              <p className="text-error-danger">
+                {validationErrors.paymentMethod}
+              </p>
+            )}
+
+            <div className="w-full">
+              <h2 className="mb-4 text-center sm:text-left">
+                Informations personnelles
+              </h2>
+              <div className="flex flex-col w-full">
+                <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4">
+                  <div className="w-full">
+                    <FormInput
+                      label="Prénom"
+                      id="firstname"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          firstname: input,
+                        })
+                      }
+                      value={form.firstname}
+                      validationFunction={firstnameValidation}
+                      validationError={validationErrors.firstname}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <FormInput
+                      label="Nom"
+                      id="lastname"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          lastname: input,
+                        })
+                      }
+                      value={form.lastname}
+                      validationFunction={lastnameValidation}
+                      validationError={validationErrors.lastname}
+                    />
+                  </div>
+                </div>
+                <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4 sm:py-4">
+                  <div className="w-full">
+                    <FormInput
+                      label="Adresse mail"
+                      id="mail"
+                      placeholder="you@example.com"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          mail: input,
+                        })
+                      }
+                      value={form.mail}
+                      validationFunction={mailValidation}
+                      validationError={validationErrors.mail}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <FormInput
+                      label="N° de téléphone"
+                      id="phonenumber"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          phoneNumber: input.trim(),
+                        })
+                      }
+                      value={form.phoneNumber}
+                      validationFunction={phoneNumberValidation}
+                      validationError={validationErrors.phoneNumber}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+            {orderError && (
+              <p className="text-error-danger text-center">
+                Un ou plusieurs des champs ci-dessus sont invalides
+              </p>
+            )}
+            <DefaultBtn
+              value={"Confirmer la commande"}
+              className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
+              onClick={handleConfirmOrder}
+            />
           </div>
-          {orderError && (
-            <p className="text-error-danger text-center">
-              Un ou plusieurs des champs ci-dessus sont invalides
-            </p>
-          )}
-          <DefaultBtn
-            value={"Confirmer la commande"}
-            className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
-            onClick={handleConfirmOrder}
-          />
+        </div>
+        <div className="order-first mb-4 sm:mb-0 sm:order-last">
+          <Cart variant="checkout" />
         </div>
       </div>
-      <div className="order-first mb-4 sm:mb-0 sm:order-last">
-        <Cart variant="checkout" />
-      </div>
-    </div>
+    </>
   );
 }

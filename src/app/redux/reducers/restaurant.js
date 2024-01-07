@@ -132,7 +132,7 @@ const initialState = {
         label: "Dimanche",
         services: [
           {
-            start: "09:00",
+            start: "1:00",
             end: "14:30",
           },
           {
