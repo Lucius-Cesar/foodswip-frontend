@@ -16,7 +16,7 @@ export default function SideFoodCategories({
     <div
       className={`${
         open ? "fixed bg-white flex" : "hidden"
-      } sm:bg-none z-10 sm:flex flex-row h-dvh w-screen sm:sticky top-0 sm:w-80`}
+      } sm:bg-none z-10 sm:flex flex-col justify-center h-dvh w-screen sm:sticky top-0 sm:w-80`}
     >
       <button
         type="button"
@@ -27,7 +27,7 @@ export default function SideFoodCategories({
         <span className="sr-only">Close menu</span>
         <XMarkIcon className="h-8 w-8" aria-hidden="true" />
       </button>
-      <div className="self-center flex flex-col justify-center items-center overflow-y-auto  h-5/6 w-screen sm:w-full sm:border-r-2 border-light-grey">
+      <div className="self-center flex flex-col justify-center items-center overflow-y-auto h-5/6 w-screen sm:w-full border-r-2 border-light-grey">
         {menu.map((foodCategory, i) => (
           <button
             type="button"

@@ -5,14 +5,15 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+
 import { addNote } from "@/app/redux/reducers/cart";
-import { addMoney } from "@/utils/moneyCalculations";
+import { addMoney, subtractMoney } from "@/utils/moneyCalculations";
 
 import CartIcon from "../ui/icons/CartIcon";
 import CartArticle from "./CartArticle";
-import DefaultBtn from "../ui/DefaultBtn";
 
-import Link from "next/link";
+import DefaultBtn from "../ui/DefaultBtn";
+import isRestaurantOpen from "@/utils/isRestaurantOpen";
 
 export default function Cart({ open, setOpen, variant }) {
   const primary = "#F97247"; //sorry for this
@@ -24,9 +25,26 @@ export default function Cart({ open, setOpen, variant }) {
   const [totalSum, setTotalSum] = useState(null);
   const [validationErrors, setValidationErrors] = useState({
     deliveryMin: "",
+    restaurantClosed: "",
   });
 
   const onClickOrderBtn = () => {
+    const restaurantOpen = isRestaurantOpen(
+      restaurant.restaurantSettings.schedulde,
+      restaurant.restaurantSettings.exceptionnalClosings
+    );
+    if (!restaurantOpen) {
+      setValidationErrors((previous) => ({
+        ...previous,
+        restaurantClosed: "Le restaurant est actuellement fermé",
+      }));
+    } else {
+      setValidationErrors((previous) => ({
+        ...previous,
+        restaurantClosed: "",
+      }));
+    }
+
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
         router.push("/checkout", { scroll: false });
@@ -44,9 +62,10 @@ export default function Cart({ open, setOpen, variant }) {
       cart.articlesSum < restaurant.orderSettings.deliveryMin
         ? setValidationErrors((previous) => ({
             ...previous,
-            deliveryMin: `${
-              restaurant.orderSettings.deliveryMin - cart.articlesSum
-            } € d'achats restants pour profiter de la Livraison`,
+            deliveryMin: `${subtractMoney(
+              restaurant.orderSettings.deliveryMin,
+              cart.articlesSum
+            )} € d'achats restants pour profiter de la Livraison`,
           }))
         : setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
     } else if (cart.orderType === 1) {
@@ -110,6 +129,11 @@ export default function Cart({ open, setOpen, variant }) {
               <p className="font-bold">Total</p>
               <p className="font-bold">{totalSum} €</p>
             </div>
+            {validationErrors.restaurantClosed && (
+              <p className="font-bold text-error-danger self-center">
+                {validationErrors.restaurantClosed}
+              </p>
+            )}
             <div>
               <div className="mt-2 flex flex-col justify-around space-y-3">
                 <textarea

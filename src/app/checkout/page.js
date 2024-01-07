@@ -9,7 +9,7 @@ import RestaurantLogo from "../../components/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
-
+import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 export default function Checkout() {
   const router = useRouter();
   useRedirectIfCartEmpty();

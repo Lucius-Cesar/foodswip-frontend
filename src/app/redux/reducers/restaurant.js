@@ -124,20 +124,30 @@ const initialState = {
         services: [
           {
             start: "18:00",
-            end: "22:00",
+            end: "20:29",
           },
         ],
       },
       {
         label: "Dimanche",
-        services: [],
+        services: [
+          {
+            start: "09:00",
+            end: "14:30",
+          },
+          {
+            start: "18:00",
+            end: "22:00",
+          },
+        ],
       },
     ],
     exceptionnalClosings: [
       {
-        start: "2023-12-31T00:00:00Z",
-        end: "2023-01-01T00:00:00Z",
+        start: new Date("2024-10-01T00:00:00Z"),
+        end: new Date("2024-11-07T00:00:00Z"),
       },
+      // Ajoutez d'autres fermetures exceptionnelles si nécessaire
     ],
   },
 };
