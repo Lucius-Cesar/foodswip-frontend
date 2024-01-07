@@ -129,11 +129,7 @@ export default function Cart({ open, setOpen, variant }) {
               <p className="font-bold">Total</p>
               <p className="font-bold">{totalSum} €</p>
             </div>
-            {validationErrors.restaurantClosed && (
-              <p className="font-bold text-error-danger self-center">
-                {validationErrors.restaurantClosed}
-              </p>
-            )}
+
             <div>
               <div className="mt-2 flex flex-col justify-around space-y-3">
                 <textarea
@@ -149,6 +145,11 @@ export default function Cart({ open, setOpen, variant }) {
                 />
                 {variant === "menu" && (
                   <div className="text-center">
+                    {validationErrors.restaurantClosed && (
+                      <p className="font-bold text-error-danger self-center">
+                        {validationErrors.restaurantClosed}
+                      </p>
+                    )}
                     <DefaultBtn
                       value={"Commander"}
                       className="w-72 h-10 text-xl font-bold bg-success hover:opacity-90 self-center"
