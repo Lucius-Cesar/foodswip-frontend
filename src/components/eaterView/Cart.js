@@ -69,6 +69,10 @@ export default function Cart({ open, setOpen, variant }) {
           }))
         : setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
     } else if (cart.orderType === 1) {
+      setValidationErrors((previous) => ({
+        ...previous,
+        deliveryMin: "",
+      }));
       setTotalSum(cart.articlesSum);
     }
   }, [cart]);
