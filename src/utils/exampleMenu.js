@@ -8,7 +8,7 @@ const exampleMenu = [
         price: 10.99,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -17,7 +17,7 @@ const exampleMenu = [
           },
 
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -28,7 +28,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -44,7 +44,7 @@ const exampleMenu = [
         price: 11.99,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -52,7 +52,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -63,7 +63,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -80,7 +80,7 @@ const exampleMenu = [
         price: 11.49,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -88,7 +88,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -99,7 +99,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -115,7 +115,7 @@ const exampleMenu = [
         price: 12.49,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -123,7 +123,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -134,7 +134,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -150,7 +150,7 @@ const exampleMenu = [
         price: 12.99,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -158,7 +158,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -169,7 +169,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -185,7 +185,7 @@ const exampleMenu = [
         price: 13.99,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -193,7 +193,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -204,7 +204,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -220,7 +220,7 @@ const exampleMenu = [
         price: 12.99,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -228,7 +228,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -239,7 +239,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -258,7 +258,7 @@ const exampleMenu = [
 
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -266,7 +266,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -277,7 +277,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -294,7 +294,7 @@ const exampleMenu = [
         price: 13.99,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -302,7 +302,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -313,7 +313,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -330,7 +330,7 @@ const exampleMenu = [
         price: 14.49,
         options: [
           {
-            categoryValue: "Choisis ta taille",
+            label: "Choisis ta taille",
             items: [
               { value: "Taille S", price: 0 },
               { value: "Taille M", price: 1.5 },
@@ -338,7 +338,7 @@ const exampleMenu = [
             ],
           },
           {
-            categoryValue: "Choisis ta croute",
+            label: "Choisis ta croute",
             items: [
               { value: "Croûte normale", price: 0 },
               { value: "Croûte aux herbes", price: 1.0 },
@@ -349,7 +349,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Olives noires", price: 1.5 },
               { value: "Champignons", price: 2.0 },
@@ -370,7 +370,7 @@ const exampleMenu = [
         price: 9.99,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -380,7 +380,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -397,7 +397,7 @@ const exampleMenu = [
         price: 11.99,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -407,7 +407,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -424,7 +424,7 @@ const exampleMenu = [
         price: 10.49,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -434,7 +434,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -451,7 +451,7 @@ const exampleMenu = [
         price: 12.49,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -461,7 +461,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -478,7 +478,7 @@ const exampleMenu = [
         price: 11.99,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -488,7 +488,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -505,7 +505,7 @@ const exampleMenu = [
         price: 10.99,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -515,7 +515,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -532,7 +532,7 @@ const exampleMenu = [
         price: 10.99,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -542,7 +542,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -559,7 +559,7 @@ const exampleMenu = [
         price: 13.49,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -569,7 +569,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -586,7 +586,7 @@ const exampleMenu = [
         price: 11.49,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -596,7 +596,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -613,7 +613,7 @@ const exampleMenu = [
         price: 10.99,
         options: [
           {
-            categoryValue: "Choisis ton type de pâtes",
+            label: "Choisis ton type de pâtes",
             items: [
               { value: "Pâtes blanches", price: 0 },
               { value: "Pâtes complètes", price: 0 },
@@ -623,7 +623,7 @@ const exampleMenu = [
         ],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -646,7 +646,7 @@ const exampleMenu = [
         options: [],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -664,7 +664,7 @@ const exampleMenu = [
         options: [],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },
@@ -685,7 +685,7 @@ const exampleMenu = [
         ],
         options: [
           {
-            categoryValue: "Choisis ta portion",
+            label: "Choisis ta portion",
             items: [
               { value: "Portion XL", price: 2 },
               { value: "Portion normale", price: 0 },
@@ -704,7 +704,7 @@ const exampleMenu = [
         options: [],
         supplements: [
           {
-            categoryValue: "Choisis tes suppléments:",
+            label: "Choisis tes suppléments:",
             items: [
               { value: "Parmesan", price: 1 },
               { value: "Tomates ceries", price: 1.5 },

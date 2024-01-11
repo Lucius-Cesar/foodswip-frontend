@@ -134,7 +134,7 @@ export default function ModalFood({ food, open, setOpen }) {
                       {food.options.map((option, i) => (
                         <FoodOptionsFormSelect
                           key={i}
-                          label={option.categoryValue}
+                          label={option.label}
                           items={option.items}
                           chosenOptions={chosenOptions}
                           setChosenOptions={setChosenOptions}
@@ -147,7 +147,7 @@ export default function ModalFood({ food, open, setOpen }) {
                       {food.supplements.map((supplement, i) => (
                         <FoodSupplementsCheckBoxGroup
                           key={i}
-                          label={supplement.categoryValue}
+                          label={supplement.label}
                           items={supplement.items}
                           chosenSupplements={chosenSupplements}
                           setChosenSupplements={setChosenSupplements}
