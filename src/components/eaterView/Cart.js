@@ -30,8 +30,8 @@ export default function Cart({ open, setOpen, variant }) {
 
   const onClickOrderBtn = () => {
     const restaurantOpen = isRestaurantOpen(
-      restaurant.restaurantSettings.schedulde,
-      restaurant.restaurantSettings.exceptionnalClosings
+      restaurant.value.restaurantSettings.schedule,
+      restaurant.value.restaurantSettings.exceptionnalClosings
     );
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
@@ -47,7 +47,9 @@ export default function Cart({ open, setOpen, variant }) {
 
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
-        router.push("/checkout", { scroll: false });
+        router.push(`${restaurant.value.uniqueValue}/checkout`, {
+          scroll: false,
+        });
       }
       return previous;
     });
@@ -57,13 +59,13 @@ export default function Cart({ open, setOpen, variant }) {
     //0 for delivery orderType
     if (cart.orderType === 0) {
       setTotalSum(
-        addMoney(cart.articlesSum, restaurant.orderSettings.deliveryFees)
+        addMoney(cart.articlesSum, restaurant.value.orderSettings.deliveryFees)
       );
-      cart.articlesSum < restaurant.orderSettings.deliveryMin
+      cart.articlesSum < restaurant.value.orderSettings.deliveryMin
         ? setValidationErrors((previous) => ({
             ...previous,
             deliveryMin: `${subtractMoney(
-              restaurant.orderSettings.deliveryMin,
+              restaurant.value.orderSettings.deliveryMin,
               cart.articlesSum
             )} € d'achats restants pour profiter de la Livraison`,
           }))
@@ -122,7 +124,7 @@ export default function Cart({ open, setOpen, variant }) {
                   <div className="flex flex-row justify-between">
                     <p className="font-medium">Frais de livraison</p>
                     <p className="font-medium">
-                      {restaurant.orderSettings.deliveryFees} €
+                      {restaurant.value.orderSettings.deliveryFees} €
                     </p>
                   </div>
                 )}

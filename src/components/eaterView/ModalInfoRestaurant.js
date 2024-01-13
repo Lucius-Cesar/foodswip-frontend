@@ -66,30 +66,30 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                   <div className="flex flex-col">
                     <h3>Adresse</h3>
                     <div className="flex flex-row space-x-1">
-                      <p>{restaurant.adress.street}</p>
-                      <p>{restaurant.adress.streetNumber}</p>
+                      <p>{restaurant.value.adress.street}</p>
+                      <p>{restaurant.value.adress.streetNumber}</p>
                     </div>
                     <div className="flex flex-row space-x-1">
-                      <p>{restaurant.adress.postCode}</p>
-                      <p>{restaurant.adress.city} </p>
+                      <p>{restaurant.value.adress.postCode}</p>
+                      <p>{restaurant.value.adress.city} </p>
                     </div>
                   </div>
                   <div>
                     <h3>Horraires</h3>
                     <div className="flex flex-col space-y-2">
-                      {restaurant.restaurantSettings.schedulde.map(
-                        (daySchedulde, i) => (
+                      {restaurant.value.restaurantSettings.schedule.map(
+                        (dayschedule, i) => (
                           <div
                             key={i}
                             className="flex flex-row justify-between"
                           >
-                            <p>{daySchedulde.label}</p>
+                            <p>{dayschedule.label}</p>
                             <div className="flex flex-row">
-                              {daySchedulde.services.length === 0 ? (
+                              {dayschedule.services.length === 0 ? (
                                 <p>Fermé</p>
                               ) : (
                                 <div className="space-x-4 flex flex-row">
-                                  {daySchedulde.services.map((service, j) => (
+                                  {dayschedule.services.map((service, j) => (
                                     <p key={j}>
                                       {service.start} - {service.end}
                                     </p>
@@ -103,11 +103,11 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                     </div>
                   </div>
 
-                  {restaurant.restaurantSettings.exceptionnalClosings.length ===
-                  0 ? null : (
+                  {restaurant.value.restaurantSettings.exceptionnalClosings
+                    .length === 0 ? null : (
                     <div className="flex flex-col">
                       <h3>Fermetures exceptionnelles</h3>
-                      {restaurant.restaurantSettings.exceptionnalClosings.map(
+                      {restaurant.value.restaurantSettings.exceptionnalClosings.map(
                         (exceptionnalClosing, i) => (
                           <p key={i}>
                             {formatExeptionalClosings(

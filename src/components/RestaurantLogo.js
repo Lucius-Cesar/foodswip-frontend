@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 export default function RestaurantLogo({ className }) {
   const restaurantUniqueValue = useSelector(
-    (state) => state.restaurant.uniqueValue
+    (state) => state.restaurant.value.uniqueValue
   );
   return (
     <div className={`${className} sm:h-auto sm:w-96 sm:pt-2 sm:pb-2`}>

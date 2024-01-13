@@ -3,14 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useState, useEffect, useLayoutEffect } from "react";
-import useRedirectIfCartEmpty from "../../hooks/useRedirectIfCartEmpty";
-import Cart from "../../components/eaterView/Cart";
-import RestaurantLogo from "../../components/RestaurantLogo";
+import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
+import Cart from "../../../../components/eaterView/Cart";
+import RestaurantLogo from "../../../../components/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
-import FormInput from "../../components/ui/FormInput";
+import FormInput from "../../../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 
-import isRestaurantOpen from "../../utils/isRestaurantOpen";
+import isRestaurantOpen from "../../../../utils/isRestaurantOpen";
 export default function Checkout() {
   const router = useRouter();
   useRedirectIfCartEmpty();
@@ -199,7 +199,12 @@ export default function Checkout() {
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
         setOrderError(false);
-        router.push("/checkout/success", { scroll: false });
+        router.push(
+          `/restaurant/${restaurant.value.uniqueValue}/checkout/success`,
+          {
+            scroll: false,
+          }
+        );
       } else {
         setOrderError(true);
       }
