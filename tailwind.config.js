@@ -23,8 +23,8 @@ module.exports = {
 
       fontFamily: {
         sans: ["sans-serif"],
-        title: ["Public Sans", "sans-serif"],
-        body: ["URW Geometric", "sans-serif"],
+        title: ['var(--font-public-sans)", "sans-serif'],
+        body: ["var(--font-urw-geometric)", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
