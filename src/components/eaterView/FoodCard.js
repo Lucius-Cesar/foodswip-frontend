@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addArticleToCart,
   incrementArticleQuantity,
-} from "../../app/redux/reducers/cart";
+} from "../../redux/reducers/cart";
 
 import findIndexOfArticleInCart from "../../utils/findIndexOfArticleInCart";
 export default function FoodCard({ food }) {
@@ -26,7 +26,10 @@ export default function FoodCard({ food }) {
     };
     //if cart already contains this article object -> increment
     // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
-    const articleIndex = findIndexOfArticleInCart(newArticle, cart.articles);
+    const articleIndex = findIndexOfArticleInCart(
+      newArticle,
+      cart.value.articles
+    );
 
     if (articleIndex !== -1) {
       dispatch(

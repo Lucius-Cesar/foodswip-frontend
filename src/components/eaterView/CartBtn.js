@@ -3,7 +3,9 @@ import { useState } from "react";
 
 import { useSelector } from "react-redux";
 export default function CartBtn({ className, onClick, isCartOpen }) {
-  const numberOfArticles = useSelector((state) => state.cart.numberOfArticles);
+  const numberOfArticles = useSelector(
+    (state) => state.cart.value.numberOfArticles
+  );
 
   const [isHovered, setIsHovered] = useState(false);
   const primary = "#F97247";

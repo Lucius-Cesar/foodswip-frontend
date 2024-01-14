@@ -4,10 +4,14 @@ import { useSelector } from "react-redux";
 import RestaurantLogo from "@/components/RestaurantLogo";
 import SuccessIcon from "@/components/ui/icons/SuccessIcon";
 import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon";
+import { useSearchParams } from "next/navigation";
 
 export default function Success() {
-  const cart = useSelector((state) => state.cart);
+  const searchParams = useSearchParams();
+  const orderType = Number(searchParams.get("orderType"));
+
   const restaurant = useSelector((state) => state.restaurant);
+
   const currentDate = new Date();
 
   const deliveryDate = new Date(currentDate);
@@ -37,13 +41,13 @@ export default function Success() {
         <p className="text-lg text-center">
           Votre commande a bien été validée.
         </p>
-        {cart.orderType === 0 && (
+        {orderType === 0 && (
           <p className="text-center text-lg">
             Elle vous sera livrée aux alentours de<br></br>
             <span className="font-bold text-3xl">{formattedDeliveryTime}</span>
           </p>
         )}
-        {cart.orderType === 1 && (
+        {orderType === 1 && (
           <p className="text-center text-lg">
             Vous pouvez venir la chercher au restaurant aux alentours de
             <br></br>

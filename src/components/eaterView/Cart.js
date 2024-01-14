@@ -6,7 +6,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-import { addNote } from "@/app/redux/reducers/cart";
+import { addNote } from "@/redux/reducers/cart";
 import { addMoney, subtractMoney } from "@/utils/moneyCalculations";
 
 import CartIcon from "../ui/icons/CartIcon";
@@ -57,25 +57,28 @@ export default function Cart({ open, setOpen, variant }) {
 
   useEffect(() => {
     //0 for delivery orderType
-    if (cart.orderType === 0) {
+    if (cart.value.orderType === 0) {
       setTotalSum(
-        addMoney(cart.articlesSum, restaurant.value.orderSettings.deliveryFees)
+        addMoney(
+          cart.value.articlesSum,
+          restaurant.value.orderSettings.deliveryFees
+        )
       );
-      cart.articlesSum < restaurant.value.orderSettings.deliveryMin
+      cart.value.articlesSum < restaurant.value.orderSettings.deliveryMin
         ? setValidationErrors((previous) => ({
             ...previous,
             deliveryMin: `${subtractMoney(
               restaurant.value.orderSettings.deliveryMin,
-              cart.articlesSum
+              cart.value.articlesSum
             )} € d'achats restants pour profiter de la Livraison`,
           }))
         : setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
-    } else if (cart.orderType === 1) {
+    } else if (cart.value.orderType === 1) {
       setValidationErrors((previous) => ({
         ...previous,
         deliveryMin: "",
       }));
-      setTotalSum(cart.articlesSum);
+      setTotalSum(cart.value.articlesSum);
     }
   }, [cart]);
 
@@ -101,20 +104,22 @@ export default function Cart({ open, setOpen, variant }) {
           <CartIcon color={primary} />
         </div>
       </div>
-      {cart.articles.length > 0 ? (
+      {cart.value.articles.length > 0 ? (
         <>
           <div className="flex flex-col space-y-5 grow overflow-auto px-4 sm:px-6 pb-0.5">
-            {cart.articles.map((article, i) => (
+            {cart.value.articles.map((article, i) => (
               <CartArticle article={article} key={i} index={i} />
             ))}
           </div>
           <div className="flex flex-col justify-around mt-5 px-4 sm:px-6 h-56 pb-2">
             <div className="border-t-2 border-light-grey mb-1"></div>
             <div className="flex flex-row justify-between">
-              <p className="font-medium">{cart.numberOfArticles} articles</p>
-              <p className="font-medium">{cart.articlesSum} €</p>
+              <p className="font-medium">
+                {cart.value.numberOfArticles} articles
+              </p>
+              <p className="font-medium">{cart.value.articlesSum} €</p>
             </div>
-            {cart.orderType === 0 && (
+            {cart.value.orderType === 0 && (
               <>
                 {validationErrors.deliveryMin ? (
                   <p className="font-bold text-error-danger self-end">
@@ -144,7 +149,7 @@ export default function Cart({ open, setOpen, variant }) {
                   id="comment"
                   placeholder="Ajouter une note"
                   onChange={(e) => dispatch(addNote(e.target.value))}
-                  value={cart.note}
+                  value={cart.value.note}
                   style={{ resize: "none" }}
                   className="block h-12 w-full rounded-2xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
                   defaultValue={""}

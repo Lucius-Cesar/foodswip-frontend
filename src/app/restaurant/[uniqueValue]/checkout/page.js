@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { clearCart } from "@/redux/reducers/cart";
 import { useState, useEffect, useLayoutEffect } from "react";
 import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
 import Cart from "../../../../components/eaterView/Cart";
@@ -10,9 +12,9 @@ import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 
-import isRestaurantOpen from "../../../../utils/isRestaurantOpen";
-export default function Checkout() {
+export default function Checkout({ params }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   useRedirectIfCartEmpty();
 
   const restaurant = useSelector((state) => state.restaurant);
@@ -23,28 +25,20 @@ export default function Checkout() {
   const [restaurantOpen, setRestaurantOpen] = useState(true);
 
   useEffect(() => {
-    const checkRestaurantOpen = isRestaurantOpen(
-      restaurant.value.restaurantSettings.schedule,
-      restaurant.value.restaurantSettings.exceptionnalClosings
-    );
-    setRestaurantOpen(checkRestaurantOpen);
-  }, []);
-
-  useEffect(() => {
-    if (cart.orderType === 0) {
+    if (cart.value.orderType === 0) {
       const paymentMethodsForDelivery =
         restaurant.value.orderSettings.paymentMethods.filter(
           (paymentMethod) => paymentMethod.delivery === true
         );
       setPaymentMethods(paymentMethodsForDelivery);
-    } else if (cart.orderType === 1) {
+    } else if (cart.value.orderType === 1) {
       const paymentMethodsForTakeAway =
         restaurant.value.orderSettings.paymentMethods.filter(
           (paymentMethod) => paymentMethod.takeAway === true
         );
       setPaymentMethods(paymentMethodsForTakeAway);
     }
-  }, [cart.orderType]);
+  }, [cart.value.orderType]);
 
   const [form, setForm] = useState({
     adress: "",
@@ -200,11 +194,15 @@ export default function Checkout() {
       if (Object.values(previous).every((value) => value === "")) {
         setOrderError(false);
         router.push(
-          `/restaurant/${restaurant.value.uniqueValue}/checkout/success`,
+          `/restaurant/${params.uniqueValue}/checkout/success?orderType=${cart.value.orderType}`,
           {
             scroll: false,
           }
         );
+        //workaround to dispatch after router.push is completed (not the best solution)
+        setTimeout(() => {
+          dispatch(clearCart());
+        }, "1000");
       } else {
         setOrderError(true);
       }
@@ -277,13 +275,13 @@ export default function Checkout() {
                 </div>
               </div>
               <div className="space-y-1">
-                {cart.orderType === 0 ? (
+                {cart.value.orderType === 0 ? (
                   <h3 className="text-center sm:text-left">
                     Estimation des délais de livraison: entre{" "}
                     {restaurant.value.orderSettings.deliveryEstimate.min} et{" "}
                     {restaurant.value.orderSettings.deliveryEstimate.max} min *
                   </h3>
-                ) : cart.orderType === 1 ? (
+                ) : cart.value.orderType === 1 ? (
                   <h3 className="text-center sm:text-left">
                     Estimation du délai pour emporter:{" "}
                     {restaurant.value.orderSettings.takeAwayEstimate} min *

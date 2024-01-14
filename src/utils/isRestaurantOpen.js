@@ -7,7 +7,6 @@ function isRestaurantOpen(schedule, exceptionnalClosings) {
   const currentMinutes = currentDate.getMinutes();
   const currentMinutesOfDay = currentHours * 60 + currentMinutes;
 
-  console.log(currentDayOfWeek);
   function isDateWithinStartEnd(date, start, end) {
     return date >= start && date <= end;
   }

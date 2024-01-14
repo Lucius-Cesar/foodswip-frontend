@@ -17,11 +17,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import isRestaurantOpen from "@/utils/isRestaurantOpen";
-import { fetchRestaurant } from "../../redux/reducers/restaurant";
+import { fetchRestaurant } from "../../../redux/reducers/restaurant";
 
-export default function eaterView() {
-  const pathname = usePathname();
-
+export default function eaterView({ params }) {
   //redux
   const dispatch = useDispatch();
   const restaurant = useSelector((state) => state.restaurant);
@@ -43,10 +41,8 @@ export default function eaterView() {
 
   //extract restaurant unique value based on URL and fetch restaurant data
   useEffect(() => {
-    const pathnameParts = pathname.split("/");
-    const restaurantUniqueValue = pathnameParts[pathnameParts.length - 1];
-    dispatch(fetchRestaurant(restaurantUniqueValue));
-  }, [pathname]);
+    dispatch(fetchRestaurant(params.uniqueValue));
+  }, []);
 
   useEffect(() => {
     if (
@@ -72,7 +68,7 @@ export default function eaterView() {
   }, [restaurant.value]);
 
   useEffect(() => {
-    if (menu) {
+    if (menu && !restaurant.error && !restaurant.isLoading) {
       const handleScroll = () => {
         // logic to execute while scrolling
         menu.forEach((foodCategory) => {
@@ -96,7 +92,7 @@ export default function eaterView() {
     <>
       {restaurant.error && <p className="error-danger">{restaurant.error}</p>}
       {restaurant.isLoading && <p>loading ...</p>}
-      {menu && (
+      {!restaurant.error && !restaurant.isLoading && menu && (
         <div className="h-svh overflow-clip">
           {!restaurantOpen && <TopBannerClosed />}
 
@@ -157,7 +153,7 @@ export default function eaterView() {
                   setOpen={setModalInfoRestaurantOpen}
                 />
               </div>
-              {cart.orderType === 0 && (
+              {cart.value.orderType === 0 && (
                 <div className="flex flex-row justify-between w-64 sm:w-96 pb-2">
                   <div className="flex flex-row gap-1 sm:gap-2">
                     <DeliveryIcon className="h-4 w-auto" />

@@ -4,7 +4,7 @@ import MinusBtn from "../ui/MinusBtn";
 import {
   incrementArticleQuantity,
   decrementArticleQuantity,
-} from "@/app/redux/reducers/cart";
+} from "@/redux/reducers/cart";
 import { useDispatch } from "react-redux";
 
 import { multiplyMoney } from "../../utils/moneyCalculations";

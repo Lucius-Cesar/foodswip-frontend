@@ -8,9 +8,9 @@ function useRedirectIfCartEmpty() {
 
   const cart = useSelector((state) => state.cart);
   useEffect(() => {
-    cart.numberOfArticles === 0 && router.push("/");
+    cart.value.numberOfArticles === 0 && router.push("/");
     //Au moi du futur : replace "/" by the url of the restaurant menu
-  }, [cart.numberOfArticles]);
+  }, [cart.value.numberOfArticles]);
 }
 
 export default useRedirectIfCartEmpty;
