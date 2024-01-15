@@ -10,7 +10,7 @@ function useRedirectIfCartEmpty() {
   const restaurant = useSelector((state) => state.restaurant);
   useEffect(() => {
     cart.value.numberOfArticles === 0 &&
-      router.push(`/restaurant/${restaurant.uniqueValue}`);
+      router.push(`/restaurant/${restaurant.value.uniqueValue}`);
     //Au moi du futur : replace "/" by the url of the restaurant menu
   }, [cart.value.numberOfArticles]);
 }
