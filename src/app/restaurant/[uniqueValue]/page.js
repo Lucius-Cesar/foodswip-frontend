@@ -13,6 +13,7 @@ import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
 import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
 import BarsIcon from "@/components/ui/icons/BarsIcon";
 import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
+import Preloader from "@/components/ui/Preloader";
 import { useSelector, useDispatch } from "react-redux";
 
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
@@ -91,7 +92,7 @@ export default function eaterView({ params }) {
   return (
     <>
       {restaurant.error && <p className="error-danger">{restaurant.error}</p>}
-      {restaurant.isLoading && <p>loading ...</p>}
+      {restaurant.isLoading && <Preloader />}
       {!restaurant.error && !restaurant.isLoading && menu && (
         <div className="h-svh overflow-clip">
           {!restaurantOpen && <TopBannerClosed />}
