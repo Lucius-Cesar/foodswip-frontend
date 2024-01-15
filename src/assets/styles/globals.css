@@ -19,33 +19,28 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: URW Geometric, sans-serif;
   color: #3f3e3f;
 }
 
 h1 {
-  font-family: "Public Sans", sans-serif;
   font-size: 1.875rem;
   line-height: 2.25rem;
   font-weight: 700;
 }
 
 h2 {
-  font-family: "Public Sans", sans-serif;
   font-size: 1.5rem; /* 24px */
   line-height: 2rem; /* 32px */
   font-weight: 700;
 }
 
 h3 {
-  font-family: "Public Sans", sans-serif;
   font-weight: 700;
   font-size: 1.25rem; /* 20px */
   line-height: 1.75rem; /* 28px */
 }
 
 h4 {
-  font-family: "Public Sans", sans-serif;
   font-weight: 700;
   font-size: 1.125rem; /* 18px */
   line-height: 1.75rem; /* 28px */

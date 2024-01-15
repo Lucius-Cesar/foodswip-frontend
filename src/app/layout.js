@@ -11,20 +11,41 @@ const publicSans = Public_Sans({
 const urwGeometric = localFont({
   src: [
     {
-      path: "../../public/fonts/urw-geometric/URWGeometricRegular.otf",
+      path: "../../public/fonts/urw-geometric/URWGeometricThin.otf",
+      weight: "100",
     },
-
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricExtraLight.otf",
+      weight: "200",
+    },
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricLight.otf",
+      weight: "300",
+    },
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricRegular.otf",
+      weight: "400",
+    },
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricMedium.otf",
+      weight: "500",
+    },
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricSemiBold.otf",
+      weight: "600",
+    },
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricBold.otf",
+      weight: "700",
+    },
+    {
+      path: "../../public/fonts/urw-geometric/URWGeometricExtraBold.otf",
+      weight: "800",
+    },
     {
       path: "../../public/fonts/urw-geometric/URWGeometricBlack.otf",
+      weight: "900",
     },
-    { path: "../../public/fonts/urw-geometric/URWGeometricExtraBold.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricExtraLight.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricHeavy.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricLight.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricHeavy.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricMedium.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricSemiBold.otf" },
-    { path: "../../public/fonts/urw-geometric/URWGeometricThin.otf" },
   ],
   variable: "--font-urw-geometric",
 });
@@ -40,7 +61,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${(urwGeometric.variable, publicSans.variable)}`}
     >
-      <body className={"body"}>
+      <body className={`body ${urwGeometric.className}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

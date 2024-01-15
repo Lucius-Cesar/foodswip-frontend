@@ -133,7 +133,6 @@ export default function eaterView({ params }) {
                 setFoodCategoriesMenuOpen(false);
                 setActiveFoodCategory(menu[index]);
                 //scroll Margin needed because of the top bar when restaurant is closed
-                console.log(scrollBarHeight);
                 menu[index].ref.current.style.scrollMargin = scrollBarHeight;
                 menu[index].ref.current.scrollIntoView({ block: "start" });
               }}
@@ -182,7 +181,7 @@ export default function eaterView({ params }) {
                     ref={foodCategory.ref}
                     className="w-full flex flex-col items-center sm:items-start p-2 sm:p-0"
                   >
-                    <h1 className="text-primary mt-12 mb-3">
+                    <h1 className="font-title text-primary mt-12 mb-3">
                       {foodCategory.value}
                     </h1>
                     {foodCategory.foods.map((food, j) => (

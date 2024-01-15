@@ -51,7 +51,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
             >
               <Dialog.Panel className="flex flex-col relative w-screen h-dvh  sm:w-7/12 sm:h-auto sm:max-h-full transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
                 <div className="flex fex-row w-full justify-between pb-4">
-                  <h2>Informations du restaurant</h2>
+                  <h2 className="font-title">Informations du restaurant</h2>
                   <button
                     type="button"
                     className={`rounded-md text-gray-400 hover:text-gray-500`}
@@ -64,7 +64,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                 </div>
                 <div className="flex flex-col space-y-4 overflow-y-auto px-4">
                   <div className="flex flex-col">
-                    <h3>Adresse</h3>
+                    <h3 className="font-title">Adresse</h3>
                     <div className="flex flex-row space-x-1">
                       <p>{restaurant.value.adress.street}</p>
                       <p>{restaurant.value.adress.streetNumber}</p>
@@ -75,7 +75,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                     </div>
                   </div>
                   <div>
-                    <h3>Horraires</h3>
+                    <h3 className="font-title">Horraires</h3>
                     <div className="flex flex-col space-y-2">
                       {restaurant.value.restaurantSettings.schedule.map(
                         (dayschedule, i) => (
@@ -106,7 +106,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                   {restaurant.value.restaurantSettings.exceptionnalClosings
                     .length === 0 ? null : (
                     <div className="flex flex-col">
-                      <h3>Fermetures exceptionnelles</h3>
+                      <h3 className="font-title">Fermetures exceptionnelles</h3>
                       {restaurant.value.restaurantSettings.exceptionnalClosings.map(
                         (exceptionnalClosing, i) => (
                           <p key={i}>

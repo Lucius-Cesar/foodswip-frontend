@@ -39,7 +39,7 @@ export default function SideFoodCategories({
             key={i}
             onClick={() => onFoodCategoryClick(i)}
           >
-            <h1>{foodCategory.value}</h1>
+            <h1 className="font-title">{foodCategory.value}</h1>
           </button>
         ))}
       </div>

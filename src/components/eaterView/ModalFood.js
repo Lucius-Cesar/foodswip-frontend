@@ -120,7 +120,7 @@ export default function ModalFood({ food, open, setOpen }) {
             >
               <Dialog.Panel className="flex flex-col justify-between relative w-screen h-dvh sm:w-7/12 sm:h-auto sm:max-h-screen transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
                 <div className="flex fex-row w-full justify-between pb-4">
-                  <h2>{food.value}</h2>
+                  <h2 className="font-title">{food.value}</h2>
                   <button
                     type="button"
                     className={`rounded-md text-gray-400 hover:text-gray-500`}
