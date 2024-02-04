@@ -3,19 +3,20 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchRestaurant = createAsyncThunk(
   "fetchRestaurant",
   async (uniqueValue) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/restaurant/${uniqueValue}`,
+    const data = fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${uniqueValue}`,
       {
         method: "GET",
       }
-    );
-    const data = response.json();
+    )
+      .then((response) => response.json())
+      .catch((err) => console.error(err));
     return data;
   }
 );
 
 const initialState = {
-  value: {},
+  data: {},
   isLoading: false,
   error: false,
 };
@@ -30,7 +31,7 @@ export const restaurantSlice = createSlice({
     });
     builder.addCase(fetchRestaurant.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.value = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchRestaurant.rejected, (state, action) => {
       state.isLoading = false;

@@ -6,7 +6,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-import { addNote } from "@/redux/reducers/cart";
+import { addNote, updateTotalSum } from "@/redux/reducers/cart";
 import { addMoney, subtractMoney } from "@/utils/moneyCalculations";
 
 import CartIcon from "../ui/icons/CartIcon";
@@ -30,8 +30,8 @@ export default function Cart({ open, setOpen, variant }) {
 
   const onClickOrderBtn = () => {
     const restaurantOpen = isRestaurantOpen(
-      restaurant.value.restaurantSettings.schedule,
-      restaurant.value.restaurantSettings.exceptionnalClosings
+      restaurant.data.restaurantSettings.schedule,
+      restaurant.data.restaurantSettings.exceptionnalClosings
     );
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
@@ -47,7 +47,7 @@ export default function Cart({ open, setOpen, variant }) {
 
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
-        router.push(`${restaurant.value.uniqueValue}/checkout`, {
+        router.push(`${restaurant.data.uniqueValue}/checkout`, {
           scroll: false,
         });
       }
@@ -57,30 +57,31 @@ export default function Cart({ open, setOpen, variant }) {
 
   useEffect(() => {
     //0 for delivery orderType
-    if (cart.value.orderType === 0) {
+    if (cart.data.orderType === 0) {
       setTotalSum(
         addMoney(
-          cart.value.articlesSum,
-          restaurant.value.orderSettings.deliveryFees
+          cart.data.articlesSum,
+          restaurant.data.orderSettings.deliveryFees
         )
       );
-      cart.value.articlesSum < restaurant.value.orderSettings.deliveryMin
+      cart.data.articlesSum < restaurant.data.orderSettings.deliveryMin
         ? setValidationErrors((previous) => ({
             ...previous,
             deliveryMin: `${subtractMoney(
-              restaurant.value.orderSettings.deliveryMin,
-              cart.value.articlesSum
+              restaurant.data.orderSettings.deliveryMin,
+              cart.data.articlesSum
             )} € d'achats restants pour profiter de la Livraison`,
           }))
         : setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
-    } else if (cart.value.orderType === 1) {
+    } else if (cart.data.orderType === 1) {
       setValidationErrors((previous) => ({
         ...previous,
         deliveryMin: "",
       }));
-      setTotalSum(cart.value.articlesSum);
+      setTotalSum(cart.data.articlesSum);
     }
-  }, [cart]);
+    dispatch(updateTotalSum(totalSum));
+  }, [cart.data]);
 
   const cartContent = (
     <div className="flex col h-full flex-col bg-magnolia">
@@ -104,10 +105,10 @@ export default function Cart({ open, setOpen, variant }) {
           <CartIcon color={primary} />
         </div>
       </div>
-      {cart.value.articles.length > 0 ? (
+      {cart.data.articles.length > 0 ? (
         <>
           <div className="flex flex-col space-y-5 grow overflow-auto px-4 sm:px-6 pb-0.5">
-            {cart.value.articles.map((article, i) => (
+            {cart.data.articles.map((article, i) => (
               <CartArticle article={article} key={i} index={i} />
             ))}
           </div>
@@ -115,11 +116,11 @@ export default function Cart({ open, setOpen, variant }) {
             <div className="border-t-2 border-light-grey mb-1"></div>
             <div className="flex flex-row justify-between">
               <p className="font-medium">
-                {cart.value.numberOfArticles} articles
+                {cart.data.numberOfArticles} articles
               </p>
-              <p className="font-medium">{cart.value.articlesSum} €</p>
+              <p className="font-medium">{cart.data.articlesSum} €</p>
             </div>
-            {cart.value.orderType === 0 && (
+            {cart.data.orderType === 0 && (
               <>
                 {validationErrors.deliveryMin ? (
                   <p className="font-bold text-error-danger self-end">
@@ -129,7 +130,7 @@ export default function Cart({ open, setOpen, variant }) {
                   <div className="flex flex-row justify-between">
                     <p className="font-medium">Frais de livraison</p>
                     <p className="font-medium">
-                      {restaurant.value.orderSettings.deliveryFees} €
+                      {restaurant.data.orderSettings.deliveryFees} €
                     </p>
                   </div>
                 )}
@@ -149,7 +150,7 @@ export default function Cart({ open, setOpen, variant }) {
                   id="comment"
                   placeholder="Ajouter une note"
                   onChange={(e) => dispatch(addNote(e.target.value))}
-                  value={cart.value.note}
+                  value={cart.data.note}
                   style={{ resize: "none" }}
                   className="block h-12 w-full rounded-2xl border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
                   defaultValue={""}

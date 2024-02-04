@@ -22,10 +22,10 @@ export default function CartArticle({ article, index }) {
       <div className="flex flex-row justify-between">
         <div className="flex flex-row space-x-1">
           <p className="font-bold">{article.quantity}</p> <p>X</p>{" "}
-          <p className="font-bold">{article.food}</p>
+          <p className="font-bold">{article.value}</p>
         </div>
         <p className="font-bold">
-          {multiplyMoney(article.quantity, article.foodPrice)} €
+          {multiplyMoney(article.quantity, article.price)} €
         </p>
       </div>
       {article.options.length > 0 && (

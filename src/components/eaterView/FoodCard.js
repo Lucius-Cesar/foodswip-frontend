@@ -9,7 +9,7 @@ import {
 } from "../../redux/reducers/cart";
 
 import findIndexOfArticleInCart from "../../utils/findIndexOfArticleInCart";
-export default function FoodCard({ food }) {
+export default function FoodCard({ food, foodCategoryIndex }) {
   const dispatch = useDispatch();
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -18,17 +18,19 @@ export default function FoodCard({ food }) {
 
   const handleAddArticleToCart = () => {
     const newArticle = {
-      food: food.value,
-      foodPrice: food.price,
+      value: food.value,
+      food: food._id,
+      price: food.price,
       quantity: 1,
       options: [],
       supplements: [],
+      categoryIndex: foodCategoryIndex,
     };
     //if cart already contains this article object -> increment
     // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
     const articleIndex = findIndexOfArticleInCart(
       newArticle,
-      cart.value.articles
+      cart.data.articles
     );
 
     if (articleIndex !== -1) {
@@ -58,7 +60,12 @@ export default function FoodCard({ food }) {
         <p className="font-bold"> {food.price + " €"}</p>
       </div>
       <AddBtn onClick={onClickAddBtn} />
-      <ModalFood open={isModalOpen} setOpen={setModalOpen} food={food} />
+      <ModalFood
+        open={isModalOpen}
+        setOpen={setModalOpen}
+        food={food}
+        foodCategoryIndex={foodCategoryIndex}
+      />
     </div>
   );
 }

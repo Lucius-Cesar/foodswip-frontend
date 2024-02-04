@@ -7,10 +7,10 @@ export default function OrderTabBtn() {
   const dispatch = useDispatch();
 
   const orderTypes = useSelector(
-    (state) => state.restaurant.value.orderSettings.orderTypes
+    (state) => state.restaurant.data.orderSettings.orderTypes
   );
 
-  const currentOrderType = useSelector((state) => state.cart.value.orderType);
+  const currentOrderType = useSelector((state) => state.cart.data.orderType);
   const changeOrderType = (value) => {
     dispatch(selectOrderType(value));
   };

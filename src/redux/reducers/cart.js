@@ -5,10 +5,11 @@ import {
   multiplyMoney,
 } from "@/utils/moneyCalculations";
 const initialState = {
-  value: {
+  data: {
     articles: [],
     numberOfArticles: 0,
     articlesSum: 0,
+    totalSum: 0,
     orderType: 0,
     note: "",
   },
@@ -19,41 +20,44 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addArticleToCart: (state, action) => {
-      state.value.articles.push(action.payload);
-      state.value.numberOfArticles += action.payload.quantity;
-      state.value.articlesSum = addMoney(
-        state.value.articlesSum,
-        multiplyMoney(action.payload.quantity, action.payload.foodPrice)
+      state.data.articles.push(action.payload);
+      state.data.numberOfArticles += action.payload.quantity;
+      state.data.articlesSum = addMoney(
+        state.data.articlesSum,
+        multiplyMoney(action.payload.quantity, action.payload.price)
       );
     },
     incrementArticleQuantity: (state, action) => {
       const { index, increment } = action.payload;
-      state.value.articles[index].quantity =
-        state.value.articles[index].quantity + increment;
-      state.value.numberOfArticles = state.value.numberOfArticles + increment;
-      state.value.articlesSum = addMoney(
-        state.value.articlesSum,
-        multiplyMoney(state.value.articles[index].foodPrice, increment)
+      state.data.articles[index].quantity =
+        state.data.articles[index].quantity + increment;
+      state.data.numberOfArticles = state.data.numberOfArticles + increment;
+      state.data.articlesSum = addMoney(
+        state.data.articlesSum,
+        multiplyMoney(state.data.articles[index].price, increment)
       );
     },
     decrementArticleQuantity: (state, action) => {
-      state.value.articles[action.payload].quantity--;
-      state.value.numberOfArticles--;
-      state.value.articlesSum = subtractMoney(
-        state.value.articlesSum,
-        state.value.articles[action.payload].foodPrice
+      state.data.articles[action.payload].quantity--;
+      state.data.numberOfArticles--;
+      state.data.articlesSum = subtractMoney(
+        state.data.articlesSum,
+        state.data.articles[action.payload].price
       );
-      state.value.articles[action.payload].quantity === 0 &&
-        state.value.articles.splice(action.payload, 1);
+      state.data.articles[action.payload].quantity === 0 &&
+        state.data.articles.splice(action.payload, 1);
+    },
+    updateTotalSum: (state, action) => {
+      state.data.totalSum = action.payload;
     },
     selectOrderType: (state, action) => {
-      state.value.orderType = action.payload;
+      state.data.orderType = action.payload;
     },
     addNote: (state, action) => {
-      state.value.note = action.payload;
+      state.data.note = action.payload;
     },
     clearCart: (state, action) => {
-      state.value = initialState.value;
+      state.data = initialState.data;
     },
   },
 });
@@ -62,6 +66,7 @@ export const {
   addArticleToCart,
   incrementArticleQuantity,
   decrementArticleQuantity,
+  updateTotalSum,
   selectOrderType,
   addNote,
   clearCart,

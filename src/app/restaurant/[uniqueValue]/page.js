@@ -47,26 +47,26 @@ export default function eaterView({ params }) {
 
   useEffect(() => {
     if (
-      restaurant.value.restaurantSettings?.schedule &&
-      restaurant.value.restaurantSettings?.exceptionnalClosings
+      restaurant.data.restaurantSettings?.schedule &&
+      restaurant.data.restaurantSettings?.exceptionnalClosings
     ) {
       const checkRestaurantOpen = isRestaurantOpen(
-        restaurant.value.restaurantSettings.schedule,
-        restaurant.value.restaurantSettings.exceptionnalClosings
+        restaurant.data.restaurantSettings.schedule,
+        restaurant.data.restaurantSettings.exceptionnalClosings
       );
       setRestaurantOpen(checkRestaurantOpen);
       setScrollBarHeight(checkRestaurantOpen ? "0px" : "-45px"); //scrollBarHeight -45bx needed when topBanner
     }
-    if (restaurant.value.menu) {
+    if (restaurant.data.menu) {
       setMenu(
-        restaurant.value.menu.map((foodCategory) => ({
+        restaurant.data.menu.map((foodCategory) => ({
           ...foodCategory,
           ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
         }))
       );
-      setActiveFoodCategory(restaurant.value.menu[0]);
+      setActiveFoodCategory(restaurant.data.menu[0]);
     }
-  }, [restaurant.value]);
+  }, [restaurant.data]);
 
   useEffect(() => {
     if (menu && !restaurant.error && !restaurant.isLoading) {
@@ -153,13 +153,13 @@ export default function eaterView({ params }) {
                   setOpen={setModalInfoRestaurantOpen}
                 />
               </div>
-              {cart.value.orderType === 0 && (
+              {cart.data.orderType === 0 && (
                 <div className="flex flex-row justify-between w-64 sm:w-96 pb-2">
                   <div className="flex flex-row gap-1 sm:gap-2">
                     <DeliveryIcon className="h-4 w-auto" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Livraison</p>
-                      <p className="text-xs sm:text-sm font-bold">{` ${restaurant.value.orderSettings.deliveryFees} €`}</p>
+                      <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data.orderSettings.deliveryFees} €`}</p>
                     </div>
                   </div>
 
@@ -167,7 +167,7 @@ export default function eaterView({ params }) {
                     <MinOrderIcon className="h-4 w-4" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Min. commande</p>
-                      <p className="text-xs sm:text-sm font-bold">{`${restaurant.value.orderSettings.deliveryMin} €`}</p>
+                      <p className="text-xs sm:text-sm font-bold">{`${restaurant.data.orderSettings.deliveryMin} €`}</p>
                     </div>
                   </div>
                 </div>
@@ -186,7 +186,7 @@ export default function eaterView({ params }) {
                       {foodCategory.value}
                     </h1>
                     {foodCategory.foods.map((food, j) => (
-                      <FoodCard key={j} food={food} />
+                      <FoodCard key={j} food={food} foodCategoryIndex={i} />
                     ))}
                   </div>
                 ))}

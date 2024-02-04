@@ -19,11 +19,13 @@ export default function TabBtn({ values, currentTab, onClickTab }) {
               : "bg-light-grey text-dark-grey hover:bg-light-grey-700"
           } h-8 w-32 sm:w-48 table ps-5 pe-5 rounded-s-full rounded-e-full sm:text-lg`}
         >
-          {
-            typeof value === "string"
-              ? value
-              : value.label /* value.value if object*/
-          }
+          {typeof value === "string"
+            ? value
+            : value.value === 0
+            ? "Livraison"
+            : value.value === 1
+            ? "À emporter"
+            : null}
         </button>
       ))}
     </div>

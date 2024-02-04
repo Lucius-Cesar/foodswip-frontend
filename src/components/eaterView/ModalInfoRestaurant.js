@@ -1,9 +1,8 @@
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
-
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
+import { switchDayLabel } from "@/utils/switchLabel";
 export default function ModalInfoRestaurant({ open, setOpen }) {
   const restaurant = useSelector((state) => state.restaurant);
   const handleClose = () => {
@@ -66,48 +65,52 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                   <div className="flex flex-col">
                     <h3 className="font-title">Adresse</h3>
                     <div className="flex flex-row space-x-1">
-                      <p>{restaurant.value.adress.street}</p>
-                      <p>{restaurant.value.adress.streetNumber}</p>
+                      <p>{restaurant.data.adress.street}</p>
+                      <p>{restaurant.data.adress.streetNumber}</p>
                     </div>
                     <div className="flex flex-row space-x-1">
-                      <p>{restaurant.value.adress.postCode}</p>
-                      <p>{restaurant.value.adress.city} </p>
+                      <p>{restaurant.data.adress.postCode}</p>
+                      <p>{restaurant.data.adress.city} </p>
                     </div>
                   </div>
                   <div>
                     <h3 className="font-title">Horraires</h3>
                     <div className="flex flex-col space-y-2">
-                      {restaurant.value.restaurantSettings.schedule.map(
-                        (dayschedule, i) => (
-                          <div
-                            key={i}
-                            className="flex flex-row justify-between"
-                          >
-                            <p>{dayschedule.label}</p>
-                            <div className="flex flex-row">
-                              {dayschedule.services.length === 0 ? (
-                                <p>Fermé</p>
-                              ) : (
-                                <div className="space-x-4 flex flex-row">
-                                  {dayschedule.services.map((service, j) => (
-                                    <p key={j}>
-                                      {service.start} - {service.end}
-                                    </p>
-                                  ))}
-                                </div>
-                              )}
+                      {restaurant.data.restaurantSettings.schedule.map(
+                        (dayschedule, i) => {
+                          const dayLabel = switchDayLabel(i);
+
+                          return (
+                            <div
+                              key={i}
+                              className="flex flex-row justify-between"
+                            >
+                              <p>{dayLabel}</p>
+                              <div className="flex flex-row">
+                                {dayschedule.services.length === 0 ? (
+                                  <p>Fermé</p>
+                                ) : (
+                                  <div className="space-x-4 flex flex-row">
+                                    {dayschedule.services.map((service, j) => (
+                                      <p key={j}>
+                                        {service.start} - {service.end}
+                                      </p>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )
+                          );
+                        }
                       )}
                     </div>
                   </div>
 
-                  {restaurant.value.restaurantSettings.exceptionnalClosings
+                  {restaurant.data.restaurantSettings.exceptionnalClosings
                     .length === 0 ? null : (
                     <div className="flex flex-col">
                       <h3 className="font-title">Fermetures exceptionnelles</h3>
-                      {restaurant.value.restaurantSettings.exceptionnalClosings.map(
+                      {restaurant.data.restaurantSettings.exceptionnalClosings.map(
                         (exceptionnalClosing, i) => (
                           <p key={i}>
                             {formatExeptionalClosings(

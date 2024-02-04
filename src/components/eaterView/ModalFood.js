@@ -19,9 +19,9 @@ import { addMoney, multiplyMoney } from "@/utils/moneyCalculations";
 
 import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart";
 
-export default function ModalFood({ food, open, setOpen }) {
+export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
   // AU MOI DU FUTUR: n'oublie pas de trier les options par prix au niveau du backend
-  const [foodPrice, setFoodPrice] = useState(food.price);
+  const [articlePrice, setArticlePrice] = useState(food.price);
   const [quantity, setQuantity] = useState(1);
 
   //default chosenOptions are the first of each formSelect
@@ -37,7 +37,7 @@ export default function ModalFood({ food, open, setOpen }) {
     setOpen(false);
     //reset states on close + Timeout for animations
     setTimeout(function () {
-      setFoodPrice(food.price);
+      setArticlePrice(food.price);
       setQuantity(1);
       setChosenOptions([]);
       setChosenSupplements([]);
@@ -51,17 +51,19 @@ export default function ModalFood({ food, open, setOpen }) {
   const dispatch = useDispatch();
   const handleAddArticleToCart = () => {
     const newArticle = {
-      food: food.value,
-      foodPrice: foodPrice,
+      value: food.value,
+      food: food._id,
+      price: articlePrice,
       quantity: quantity,
       options: chosenOptions,
       supplements: chosenSupplements,
+      categoryIndex: foodCategoryIndex,
     };
     //if cart already contains this article object -> increment
     // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
     const articleIndex = findIndexOfArticleInCart(
       newArticle,
-      cart.value.articles
+      cart.data.articles
     );
 
     if (articleIndex !== -1) {
@@ -89,7 +91,7 @@ export default function ModalFood({ food, open, setOpen }) {
       0
     );
 
-    setFoodPrice(addMoney(food.price, optionsPriceSum, supplementsPriceSum));
+    setArticlePrice(addMoney(food.price, optionsPriceSum, supplementsPriceSum));
   }, [chosenOptions, chosenSupplements]);
 
   return (
@@ -168,7 +170,7 @@ export default function ModalFood({ food, open, setOpen }) {
                     <AddBtn onClick={() => setQuantity(quantity + 1)} />
                   </div>
                   <DefaultBtn
-                    value={`${multiplyMoney(foodPrice, quantity)} €`}
+                    value={`${multiplyMoney(articlePrice, quantity)} €`}
                     className=" w-32 sm:w-40 text-xl font-bold bg-success hover:opacity-90"
                     onClick={handleAddArticleToCart}
                   />

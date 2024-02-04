@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearCart } from "@/redux/reducers/cart";
 import { useState, useEffect, useLayoutEffect } from "react";
+import useFetch from "@/hooks/useFetch";
 import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
 import Cart from "../../../../components/eaterView/Cart";
 import RestaurantLogo from "../../../../components/RestaurantLogo";
@@ -12,9 +13,13 @@ import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 
+import { switchPaymentMethodLabel } from "@/utils/switchLabel";
+import { current } from "@reduxjs/toolkit";
+
 export default function Checkout({ params }) {
   const router = useRouter();
   const dispatch = useDispatch();
+  //redirect to menu page if cart modification during checkout leads to empty cart
   useRedirectIfCartEmpty();
 
   const restaurant = useSelector((state) => state.restaurant);
@@ -22,24 +27,6 @@ export default function Checkout({ params }) {
 
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const [restaurantOpen, setRestaurantOpen] = useState(true);
-
-  useEffect(() => {
-    if (cart.value.orderType === 0) {
-      const paymentMethodsForDelivery =
-        restaurant.value.orderSettings.paymentMethods.filter(
-          (paymentMethod) => paymentMethod.delivery === true
-        );
-      setPaymentMethods(paymentMethodsForDelivery);
-    } else if (cart.value.orderType === 1) {
-      const paymentMethodsForTakeAway =
-        restaurant.value.orderSettings.paymentMethods.filter(
-          (paymentMethod) => paymentMethod.takeAway === true
-        );
-      setPaymentMethods(paymentMethodsForTakeAway);
-    }
-  }, [cart.value.orderType]);
-
   const [form, setForm] = useState({
     adress: "",
     postCode: "",
@@ -49,7 +36,6 @@ export default function Checkout({ params }) {
     mail: "",
     phoneNumber: "",
   });
-
   //validations forms
   const [validationErrors, setValidationErrors] = useState({
     adress: "",
@@ -61,8 +47,54 @@ export default function Checkout({ params }) {
     phoneNumber: "",
     paymentMethod: "",
   });
-
   const [orderError, setOrderError] = useState(false);
+
+  const [fetchOptions, setFetchOptions] = useState(null);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
+
+  const newOrder = useFetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/addOrder`,
+    fetchOptions,
+    fetchTrigger
+  );
+
+  useEffect(() => {
+    if (cart.data.orderType === 0) {
+      const paymentMethodsForDelivery =
+        restaurant.data.orderSettings.paymentMethods.filter(
+          (paymentMethod) => paymentMethod.delivery === true
+        );
+
+      setPaymentMethods(paymentMethodsForDelivery);
+    } else if (cart.data.orderType === 1) {
+      const paymentMethodsForTakeAway =
+        restaurant.data.orderSettings.paymentMethods.filter(
+          (paymentMethod) => paymentMethod.takeAway === true
+        );
+      setPaymentMethods(paymentMethodsForTakeAway);
+    }
+  }, [cart.data.orderType]);
+
+  const computeEstimatedArrivalDate = (orderType) => {
+    const currentDate = new Date();
+    let estimatedArrival = currentDate;
+    //delivery
+    if (orderType === 0) {
+      estimatedArrival.setMinutes(
+        currentDate.getMinutes() +
+          restaurant.data.orderSettings.deliveryEstimate.max
+      );
+    }
+
+    //takeAway
+    if (orderType === 1) {
+      estimatedArrival.setMinutes(
+        currentDate.getMinutes() +
+          restaurant.data.orderSettings.takeAwayEstimate
+      );
+    }
+    return estimatedArrival;
+  };
 
   const checkIfInputContainsOnlyNumber = (input) => {
     const numericRegex = /^[0-9]+$/;
@@ -193,22 +225,51 @@ export default function Checkout({ params }) {
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
         setOrderError(false);
-        router.push(
-          `/restaurant/${params.uniqueValue}/checkout/success?orderType=${cart.value.orderType}`,
-          {
-            scroll: false,
-          }
+        //compute estimated arrival Date
+        const estimatedArrivalDate = computeEstimatedArrivalDate(
+          cart.data.orderType
         );
-        //workaround to dispatch after router.push is completed (not the best solution)
-        setTimeout(() => {
-          dispatch(clearCart());
-        }, "1000");
+
+        //fetchOptions triggers the fetch
+        setFetchOptions({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            mail: form.mail,
+            phoneNumber: form.phoneNumber,
+            adress: form.adress,
+            city: form.city,
+            postCode: form.postCode,
+            articles: cart.data.articles,
+            articlesSum: cart.data.articlesSum,
+            totalSum: cart.data.totalSum,
+            note: cart.data.note,
+            orderType: cart.data.orderType,
+            paymentMethod: selectedPaymentMethod,
+            estimatedArrivalDate: estimatedArrivalDate,
+            restaurantId: restaurant.data._id,
+          }),
+        });
+        setFetchTrigger(true);
       } else {
         setOrderError(true);
       }
       return previous;
     });
   };
+
+  //if neworder data has been fetched
+  if (newOrder.data) {
+    router.push(
+      `/restaurant/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
+    );
+    //workaround to dispatch after router.push is completed (not the best solution)
+    setTimeout(() => {
+      dispatch(clearCart());
+    }, "1000");
+  }
 
   return (
     <>
@@ -275,16 +336,16 @@ export default function Checkout({ params }) {
                 </div>
               </div>
               <div className="space-y-1">
-                {cart.value.orderType === 0 ? (
+                {cart.data.orderType === 0 ? (
                   <h3 className="font-title text-center sm:text-left">
                     Estimation des délais de livraison: entre{" "}
-                    {restaurant.value.orderSettings.deliveryEstimate.min} et{" "}
-                    {restaurant.value.orderSettings.deliveryEstimate.max} min *
+                    {restaurant.data.orderSettings.deliveryEstimate.min} et{" "}
+                    {restaurant.data.orderSettings.deliveryEstimate.max} min *
                   </h3>
-                ) : cart.value.orderType === 1 ? (
+                ) : cart.data.orderType === 1 ? (
                   <h3 className="font-title text-center sm:text-left">
                     Estimation du délai pour emporter:{" "}
-                    {restaurant.value.orderSettings.takeAwayEstimate} min *
+                    {restaurant.data.orderSettings.takeAwayEstimate} min *
                   </h3>
                 ) : null}
 
@@ -300,30 +361,36 @@ export default function Checkout({ params }) {
               </h2>
               <fieldset className="mt-4">
                 <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                  {paymentMethods.map((paymentMethod, i) => (
-                    <div key={i} className="flex items-center">
-                      <input
-                        id={i}
-                        name="payment-method"
-                        type="radio"
-                        className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
-                        onChange={() => {
-                          setSelectedPaymentMethod(paymentMethods[i]);
-                          setValidationErrors((previous) => ({
-                            ...previous,
-                            paymentMethod: "",
-                          }));
-                        }}
-                        value={paymentMethod}
-                      />
-                      <label
-                        htmlFor={paymentMethod.value}
-                        className="ml-3 block text-lg sm:text-base font-medium leading-6 text-gray-900"
-                      >
-                        {paymentMethod.value}
-                      </label>
-                    </div>
-                  ))}
+                  {paymentMethods.map((paymentMethod, i) => {
+                    const paymentMethodLabel = switchPaymentMethodLabel(
+                      paymentMethod.value
+                    );
+
+                    return (
+                      <div key={i} className="flex items-center">
+                        <input
+                          id={i}
+                          name="payment-method"
+                          type="radio"
+                          className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
+                          onChange={() => {
+                            setSelectedPaymentMethod(paymentMethods[i].value);
+                            setValidationErrors((previous) => ({
+                              ...previous,
+                              paymentMethod: "",
+                            }));
+                          }}
+                          value={paymentMethod}
+                        />
+                        <label
+                          htmlFor={paymentMethod.value}
+                          className="ml-3 block text-lg sm:text-base font-medium leading-6 text-gray-900"
+                        >
+                          {paymentMethodLabel}
+                        </label>
+                      </div>
+                    );
+                  })}
                 </div>
               </fieldset>
             </div>

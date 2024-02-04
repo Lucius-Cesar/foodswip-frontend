@@ -1,0 +1,74 @@
+"use client";
+import { useSearchParams } from "next/navigation";
+
+//import { useSelector } from "react-redux";
+import RestaurantLogo from "@/components/RestaurantLogo";
+import SuccessIcon from "@/components/ui/icons/SuccessIcon";
+import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon";
+import Preloader from "@/components/ui/Preloader";
+//import { useSearchParams } from "next/navigation";
+import useFetch from "@/hooks/useFetch";
+import { useState, useEffect } from "react";
+
+export default function Order({ params }) {
+  const [formattedEstimatedArrivalDate, setFormattedEstimatedArrivalDate] =
+    useState(null);
+
+  const fetchOptions = { method: "GET" };
+  const order = useFetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
+    fetchOptions
+  );
+
+  useEffect(() => {
+    const estimatedArrivalDate = new Date(order.data?.estimatedArrivalDate);
+    setFormattedEstimatedArrivalDate(
+      estimatedArrivalDate
+        ? `${estimatedArrivalDate.getHours()}:${String(
+            estimatedArrivalDate.getMinutes()
+          ).padStart(2, "0")}`
+        : null
+    );
+  }, [order.data]);
+
+  if (order.isLoading) {
+    return <Preloader />;
+  } else if (order.error) {
+    return <div>error</div>;
+  } else if (order.data) {
+    return (
+      <div className="w-full h-dvh flex flex-col justify-between items-center">
+        <RestaurantLogo className="h-24 w-72" />
+
+        <div className="flex flex-col justify-center items-center">
+          <SuccessIcon className="h-24 w-24 mb-6" />
+          <p className="font-bold text-2xl">
+            Merci pour votre commande # {order.data.orderNumber}
+          </p>
+          <p className="text-lg text-center">
+            Votre commande a bien été validée.
+          </p>
+          {order.data.orderType === 0 && (
+            <p className="text-center text-lg">
+              Elle vous sera livrée aux alentours de<br></br>
+              <span className="font-bold text-3xl">
+                {formattedEstimatedArrivalDate}
+              </span>
+            </p>
+          )}
+          {order.data.orderType === 1 && (
+            <p className="text-center text-lg">
+              Vous pouvez venir la chercher au restaurant aux alentours de
+              <br></br>
+              <span className="font-bold text-3xl text-center">
+                {formattedEstimatedArrivalDate}
+              </span>
+            </p>
+          )}
+        </div>
+
+        <FoodSwipIcon className="h-12 sm:h-10 w-auto" />
+      </div>
+    );
+  }
+}
