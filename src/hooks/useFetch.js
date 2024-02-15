@@ -9,6 +9,7 @@ function useFetch(url, fetchOptions, fetchTrigger = true) {
     data: null,
     isLoading: false,
     error: false,
+    status: null,
   });
 
   useEffect(() => {
@@ -16,17 +17,24 @@ function useFetch(url, fetchOptions, fetchTrigger = true) {
     if (fetchTrigger) {
       setState((prevState) => ({ ...prevState, isLoading: true }));
       fetch(url, fetchOptions, signal).then((response) => {
+        setState((prevState) => ({ ...prevState, status: response.status }));
         response
           .json()
           .then((data) =>
-            setState({ data: data, isLoading: false, error: false })
+            setState((prevState) => ({
+              ...prevState,
+              data: data,
+              isLoading: false,
+              error: false,
+            }))
           )
           .catch((err) => {
-            setState({
+            setState((prevState) => ({
+              ...prevState,
               data: null,
               isLoading: false,
               error: err,
-            });
+            }));
           });
       });
     }

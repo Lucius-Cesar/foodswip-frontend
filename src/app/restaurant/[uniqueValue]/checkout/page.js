@@ -12,21 +12,21 @@ import RestaurantLogo from "../../../../components/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import { current } from "@reduxjs/toolkit";
 
 export default function Checkout({ params }) {
+  //redirect to menu page if cart modification during checkout leads to empty cart
   const router = useRouter();
   const dispatch = useDispatch();
-  //redirect to menu page if cart modification during checkout leads to empty cart
   useRedirectIfCartEmpty();
 
   const restaurant = useSelector((state) => state.restaurant);
   const cart = useSelector((state) => state.cart);
 
   const [paymentMethods, setPaymentMethods] = useState([]);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [form, setForm] = useState({
     adress: "",
     postCode: "",
@@ -48,9 +48,9 @@ export default function Checkout({ params }) {
     paymentMethod: "",
   });
   const [orderError, setOrderError] = useState(false);
-
-  const [fetchOptions, setFetchOptions] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [fetchTrigger, setFetchTrigger] = useState(false);
+  const [fetchOptions, setFetchOptions] = useState(null);
 
   const newOrder = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/addOrder`,
@@ -58,6 +58,7 @@ export default function Checkout({ params }) {
     fetchTrigger
   );
 
+  console.log(newOrder);
   useEffect(() => {
     if (cart.data.orderType === 0) {
       const paymentMethodsForDelivery =
@@ -260,7 +261,6 @@ export default function Checkout({ params }) {
     });
   };
 
-  //if neworder data has been fetched
   if (newOrder.data) {
     router.push(
       `/restaurant/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
@@ -477,11 +477,22 @@ export default function Checkout({ params }) {
                 Un ou plusieurs des champs ci-dessus sont invalides
               </p>
             )}
-            <DefaultBtn
-              value={"Confirmer la commande"}
-              className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
-              onClick={handleConfirmOrder}
-            />
+            {newOrder.status === 429 && (
+              <p className="text-error-danger text-center">
+                Votre commande a déjà été effectuée. Pour modifier celle-ci,
+                veuillez contacter le restaurant au{" "}
+                {restaurant.data.phoneNumber}
+              </p>
+            )}
+            {newOrder?.isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <DefaultBtn
+                value={"Confirmer la commande"}
+                className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
+                onClick={handleConfirmOrder}
+              />
+            )}
           </div>
         </div>
         <div className="order-first mb-4 sm:mb-0 sm:order-last">
