@@ -24,13 +24,13 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
   const [articlePrice, setArticlePrice] = useState(food.price);
   const [quantity, setQuantity] = useState(1);
 
-  //default chosenOptions are the first of each formSelect
-  const [chosenOptions, setChosenOptions] = useState(
+  //default selectedOptions are the first of each formSelect
+  const [selectedOptions, setSelectedOptions] = useState(
     food.options.length > 0
       ? food.options.flatMap((optionCategory) => optionCategory.items[0])
       : []
   );
-  const [chosenSupplements, setChosenSupplements] = useState([]);
+  const [selectedSupplements, setSelectedSupplements] = useState([]);
 
   const cart = useSelector((state) => state.cart);
   const handleClose = () => {
@@ -39,9 +39,9 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
     setTimeout(function () {
       setArticlePrice(food.price);
       setQuantity(1);
-      setChosenOptions([]);
-      setChosenSupplements([]);
-      setChosenOptions(
+      setSelectedOptions([]);
+      setSelectedSupplements([]);
+      setSelectedOptions(
         food.options.length > 0
           ? food.options.flatMap((optionCategory) => optionCategory.items[0])
           : []
@@ -55,9 +55,9 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
       food: food._id,
       price: articlePrice,
       quantity: quantity,
-      options: chosenOptions,
-      supplements: chosenSupplements,
-      categoryIndex: foodCategoryIndex,
+      selectedOptions: selectedOptions,
+      selectedSupplements: selectedSupplements,
+      foodCategoryIndex: foodCategoryIndex,
     };
     //if cart already contains this article object -> increment
     // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
@@ -81,18 +81,18 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
   };
   useEffect(() => {
     //if options and supplements array change, the price for 1 quantity food is recalculate
-    const optionsPriceSum = chosenOptions.reduce(
+    const optionsPriceSum = selectedOptions.reduce(
       (accumulator, option) => addMoney(accumulator, option.price),
       0
     );
 
-    const supplementsPriceSum = chosenSupplements.reduce(
+    const supplementsPriceSum = selectedSupplements.reduce(
       (accumulator, supplement) => addMoney(accumulator, supplement.price),
       0
     );
 
     setArticlePrice(addMoney(food.price, optionsPriceSum, supplementsPriceSum));
-  }, [chosenOptions, chosenSupplements]);
+  }, [selectedOptions, selectedSupplements]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -141,8 +141,8 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                           key={i}
                           label={option.label}
                           items={option.items}
-                          chosenOptions={chosenOptions}
-                          setChosenOptions={setChosenOptions}
+                          selectedOptions={selectedOptions}
+                          setChosenOptions={setSelectedOptions}
                         />
                       ))}
                     </div>
@@ -154,8 +154,8 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                           key={i}
                           label={supplement.label}
                           items={supplement.items}
-                          chosenSupplements={chosenSupplements}
-                          setChosenSupplements={setChosenSupplements}
+                          selectedSupplements={selectedSupplements}
+                          setChosenSupplements={setSelectedSupplements}
                         />
                       ))}
                     </div>

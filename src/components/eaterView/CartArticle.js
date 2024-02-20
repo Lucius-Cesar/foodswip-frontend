@@ -28,15 +28,15 @@ export default function CartArticle({ article, index }) {
           {multiplyMoney(article.quantity, article.price)} €
         </p>
       </div>
-      {article.options.length > 0 && (
+      {article.selectedOptions.length > 0 && (
         <p className="text-sm">
-          {article.options.map((option) => option.value).join(", ")}
+          {article.selectedOptions.map((option) => option.value).join(", ")}
         </p>
       )}
-      {article.supplements.length > 0 && (
+      {article.selectedSupplements.length > 0 && (
         <p className="text-sm ">
           Suppléments:{" "}
-          {article.supplements
+          {article.selectedSupplements
             .map((supplements) => supplements.value)
             .join(", ")}
         </p>

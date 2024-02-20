@@ -183,7 +183,7 @@ export default function eaterView({ params }) {
                     className="w-full flex flex-col items-center sm:items-start p-2 sm:p-0"
                   >
                     <h1 className="font-title text-primary mt-12 mb-3">
-                      {foodCategory.value}
+                      {foodCategory.title}
                     </h1>
                     {foodCategory.foods.map((food, j) => (
                       <FoodCard key={j} food={food} foodCategoryIndex={i} />

@@ -19,7 +19,7 @@ export default function Order({ params }) {
     `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
     fetchOptions
   );
-
+  console.log(order);
   useEffect(() => {
     const estimatedArrivalDate = new Date(order.data?.estimatedArrivalDate);
     setFormattedEstimatedArrivalDate(
@@ -33,39 +33,43 @@ export default function Order({ params }) {
 
   if (order.isLoading) {
     return <Preloader />;
-  } else if (order.error) {
-    return <div>error</div>;
-  } else if (order.data) {
+  } else {
     return (
       <div className="w-full h-dvh flex flex-col justify-between items-center">
         <RestaurantLogo className="h-24 w-72" />
-
-        <div className="flex flex-col justify-center items-center">
-          <SuccessIcon className="h-24 w-24 mb-6" />
-          <p className="font-bold text-2xl">
-            Merci pour votre commande # {order.data.orderNumber}
-          </p>
-          <p className="text-lg text-center">
-            Votre commande a bien été validée.
-          </p>
-          {order.data.orderType === 0 && (
-            <p className="text-center text-lg">
-              Elle vous sera livrée aux alentours de<br></br>
-              <span className="font-bold text-3xl">
-                {formattedEstimatedArrivalDate}
-              </span>
+        {order.data && (
+          <div className="flex flex-col justify-center items-center">
+            <SuccessIcon className="h-24 w-24 mb-6" />
+            <p className="font-bold text-2xl">
+              Merci pour votre commande # {order.data.orderNumber}
             </p>
-          )}
-          {order.data.orderType === 1 && (
-            <p className="text-center text-lg">
-              Vous pouvez venir la chercher au restaurant aux alentours de
-              <br></br>
-              <span className="font-bold text-3xl text-center">
-                {formattedEstimatedArrivalDate}
-              </span>
+            <p className="text-lg text-center">
+              Votre commande a bien été validée.
             </p>
-          )}
-        </div>
+            {order.data.orderType === 0 && (
+              <p className="text-center text-lg">
+                Elle vous sera livrée aux alentours de<br></br>
+                <span className="font-bold text-3xl">
+                  {formattedEstimatedArrivalDate}
+                </span>
+              </p>
+            )}
+            {order.data.orderType === 1 && (
+              <p className="text-center text-lg">
+                Vous pouvez venir la chercher au restaurant aux alentours de
+                <br></br>
+                <span className="font-bold text-3xl text-center">
+                  {formattedEstimatedArrivalDate}
+                </span>
+              </p>
+            )}
+          </div>
+        )}
+        {order.status === 403 && (
+          <p className="text-error-danger text-center text-xl">
+            Vous n'êtes pas autorisé à consulter cette commande
+          </p>
+        )}
 
         <FoodSwipIcon className="h-12 sm:h-10 w-auto" />
       </div>

@@ -20,14 +20,23 @@ function useFetch(url, fetchOptions, fetchTrigger = true) {
         setState((prevState) => ({ ...prevState, status: response.status }));
         response
           .json()
-          .then((data) =>
-            setState((prevState) => ({
-              ...prevState,
-              data: data,
-              isLoading: false,
-              error: false,
-            }))
-          )
+          .then((data) => {
+            if (data.error) {
+              setState((prevState) => ({
+                ...prevState,
+                data: null,
+                isLoading: false,
+                error: data.error,
+              }));
+            } else {
+              setState((prevState) => ({
+                ...prevState,
+                data: data,
+                isLoading: false,
+                error: false,
+              }));
+            }
+          })
           .catch((err) => {
             setState((prevState) => ({
               ...prevState,

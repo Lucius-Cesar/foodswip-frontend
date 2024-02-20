@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 export default function FoodOptionsFormSelect({
   label,
   items,
-  chosenOptions,
+  selectedOptions,
   setChosenOptions,
 }) {
   const [previousOption, setPreviousOption] = useState(items[0]);
 
   const onChangeOption = (newOptionIndex) => {
-    let updatedSelectedOptions = [...chosenOptions];
+    let updatedSelectedOptions = [...selectedOptions];
 
     const newItem = items[newOptionIndex];
     //check the previous selected option and replace it with the new option
-    const indexOfPreviousOption = chosenOptions.findIndex(
+    const indexOfPreviousOption = selectedOptions.findIndex(
       (option) =>
         option.value === previousOption.value &&
         option.price === previousOption.price
@@ -21,7 +21,7 @@ export default function FoodOptionsFormSelect({
     if (indexOfPreviousOption !== -1) {
       updatedSelectedOptions.splice(indexOfPreviousOption, 1, newItem);
     } else {
-      updatedSelectedOptions = [...chosenOptions, newItem];
+      updatedSelectedOptions = [...selectedOptions, newItem];
     }
     setChosenOptions(updatedSelectedOptions);
     //setPrevious option to the current option to allow the futur comparison

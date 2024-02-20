@@ -1,16 +1,16 @@
 export default function FoodSupplementsCheckBoxGroup({
   label,
   items,
-  chosenSupplements,
+  selectedSupplements,
   setChosenSupplements,
 }) {
   const onChangeCheckBox = (event, index) => {
     const concernedSupplement = items[index];
-    let updatedChosenSupplements = [...chosenSupplements];
+    let updatedChosenSupplements = [...selectedSupplements];
     if (event.target.checked) {
       updatedChosenSupplements.push(concernedSupplement);
     } else {
-      //find the index of the concerned Supplement in chosenSupplements array
+      //find the index of the concerned Supplement in selectedSupplements array
       const concernedSupplementDeleteIndex = updatedChosenSupplements.findIndex(
         (supplement) =>
           supplement.value === concernedSupplement.value &&

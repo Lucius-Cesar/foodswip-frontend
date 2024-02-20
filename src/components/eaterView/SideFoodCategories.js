@@ -32,14 +32,14 @@ export default function SideFoodCategories({
           <button
             type="button"
             className={`${
-              foodCategory.value === activeFoodCategory.value
+              foodCategory.title === activeFoodCategory.title
                 ? "text-primary"
                 : "text-medium-grey"
             } mt-3 mb-3`}
             key={i}
             onClick={() => onFoodCategoryClick(i)}
           >
-            <h1 className="font-title">{foodCategory.value}</h1>
+            <h1 className="font-title">{foodCategory.title}</h1>
           </button>
         ))}
       </div>

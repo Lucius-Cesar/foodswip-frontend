@@ -22,9 +22,9 @@ export default function FoodCard({ food, foodCategoryIndex }) {
       food: food._id,
       price: food.price,
       quantity: 1,
-      options: [],
-      supplements: [],
-      categoryIndex: foodCategoryIndex,
+      selectedOptions: [],
+      selectedSupplements: [],
+      foodCategoryIndex: foodCategoryIndex,
     };
     //if cart already contains this article object -> increment
     // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
