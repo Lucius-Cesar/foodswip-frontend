@@ -3,10 +3,29 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchRestaurant = createAsyncThunk(
   "fetchRestaurant",
   async (uniqueValue) => {
-    const data = fetch(
+    const data = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/restaurants/${uniqueValue}`,
       {
         method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .catch((err) => console.error(err));
+    return data;
+  }
+);
+
+export const postRestaurantSettings = createAsyncThunk(
+  "postRestaurantSettings",
+  async (jsonObject) => {
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/restaurants/updateRestaurantSettings`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(jsonObject),
       }
     )
       .then((response) => response.json())
@@ -37,9 +56,21 @@ export const restaurantSlice = createSlice({
       state.isLoading = false;
       state.error = action.error;
     });
+
+    builder.addCase(postRestaurantSettings.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(postRestaurantSettings.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload;
+    });
+    builder.addCase(postRestaurantSettings.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error;
+    });
   },
   reducers: {},
 });
 
-export const {} = restaurantSlice.actions;
+export const { updateRestaurant } = restaurantSlice.actions;
 export default restaurantSlice.reducer;

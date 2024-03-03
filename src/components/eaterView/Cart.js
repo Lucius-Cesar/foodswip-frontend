@@ -31,7 +31,7 @@ export default function Cart({ open, setOpen, variant }) {
   const onClickOrderBtn = () => {
     const restaurantOpen = isRestaurantOpen(
       restaurant.data.restaurantSettings.schedule,
-      restaurant.data.restaurantSettings.exceptionnalClosings
+      restaurant.data.restaurantSettings.exceptionalClosings
     );
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({

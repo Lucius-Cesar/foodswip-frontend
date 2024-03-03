@@ -1,4 +1,4 @@
-function isRestaurantOpen(schedule, exceptionnalClosings) {
+function isRestaurantOpen(schedule, exceptionalClosings) {
   let restaurantOpen = false;
   const currentDate = new Date();
   //by default getDay assign sunday as 0, we want sunday as 6 and monday as 0 to fit the restaurantschedule content
@@ -20,12 +20,12 @@ function isRestaurantOpen(schedule, exceptionnalClosings) {
       currentMinutesOfDay <= serviceEndMinutes
     );
   }
-  for (const exceptionnalClosing of exceptionnalClosings) {
+  for (const exceptionalClosing of exceptionalClosings) {
     if (
       !isDateWithinStartEnd(
         currentDate,
-        exceptionnalClosing.start,
-        exceptionnalClosing.end
+        exceptionalClosing.start,
+        exceptionalClosing.end
       )
     ) {
       restaurantOpen = true;

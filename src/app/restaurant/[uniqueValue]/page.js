@@ -7,7 +7,7 @@ import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FoodCard from "@/components/eaterView/FoodCard";
 import CartBtn from "@/components/eaterView/CartBtn";
 import Cart from "@/components/eaterView/Cart";
-import RestaurantLogo from "@/components/RestaurantLogo";
+import RestaurantLogo from "@/components/ui/RestaurantLogo";
 import InfoIcon from "@/components/ui/icons/InfoIcon";
 import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
 import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
@@ -15,16 +15,14 @@ import BarsIcon from "@/components/ui/icons/BarsIcon";
 import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
 import Preloader from "@/components/ui/Preloader";
 import { useSelector, useDispatch } from "react-redux";
-
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import isRestaurantOpen from "@/utils/isRestaurantOpen";
-import { fetchRestaurant } from "../../../redux/reducers/restaurant";
-
+import useDispatchRestaurantsInfo from "@/hooks/useDispatchRestaurantInfo";
 export default function eaterView({ params }) {
-  //redux
-  const dispatch = useDispatch();
-  const restaurant = useSelector((state) => state.restaurant);
+  useDispatchRestaurantsInfo(params.uniqueValue);
 
+  //redux
+  const restaurant = useSelector((state) => state.restaurant);
   const cart = useSelector((state) => state.cart);
 
   //react states
@@ -41,18 +39,15 @@ export default function eaterView({ params }) {
   const mainContainer = useRef(null);
 
   //extract restaurant unique value based on URL and fetch restaurant data
-  useEffect(() => {
-    dispatch(fetchRestaurant(params.uniqueValue));
-  }, []);
 
   useEffect(() => {
     if (
       restaurant.data.restaurantSettings?.schedule &&
-      restaurant.data.restaurantSettings?.exceptionnalClosings
+      restaurant.data.restaurantSettings?.exceptionalClosings
     ) {
       const checkRestaurantOpen = isRestaurantOpen(
         restaurant.data.restaurantSettings.schedule,
-        restaurant.data.restaurantSettings.exceptionnalClosings
+        restaurant.data.restaurantSettings.exceptionalClosings
       );
       setRestaurantOpen(checkRestaurantOpen);
       setScrollBarHeight(checkRestaurantOpen ? "0px" : "-45px"); //scrollBarHeight -45bx needed when topBanner

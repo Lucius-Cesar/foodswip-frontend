@@ -1,0 +1,130 @@
+"use client";
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { CheckIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import DefaultBtn from "@/components/ui/DefaultBtn";
+import { modalPeriodValidation } from "@/utils/validations";
+export default function ModalPeriod({
+  type,
+  value,
+  setValue,
+  open,
+  setOpen,
+  startLabel,
+  endLabel,
+  validateBtnFunction,
+}) {
+  const [validationErrors, setValidationErrors] = useState({
+    period: "",
+  });
+  const handleClose = () => {
+    setOpen(false);
+    setValue({
+      dayIndex: null,
+      itemIndex: null,
+      start: null,
+      end: null,
+    });
+    setValidationErrors({ period: "" });
+  };
+  return (
+    <Transition.Root show={open} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={handleClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex sm:min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <div className="flex flex-col justify-center items-center space-y-6">
+                  <div className="flex flex-col justify-center items-center space-y-2">
+                    <label
+                      htmlFor={"timeStart"}
+                      className={`ml-px text-xl block font-medium leading-6`}
+                    >
+                      {startLabel}
+                    </label>
+                    <input
+                      type={type}
+                      id={"end"}
+                      min={"00:00"}
+                      max={"23:59"}
+                      value={value.start}
+                      onChange={(e) =>
+                        setValue((previous) => ({
+                          ...previous,
+                          start: e.target.value,
+                        }))
+                      }
+                      className={`rounded-xl border border-1 border-gray-300 focus:border-primary shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-primary sm:leading-8`}
+                    ></input>
+                  </div>
+                  <div className="flex flex-col justify-center items-center space-y-2">
+                    <label
+                      htmlFor={"timeEnd"}
+                      className={`ml-px text-xl block  font-medium leading-6`}
+                    >
+                      {endLabel}
+                    </label>
+                    <input
+                      type={type}
+                      id={"end"}
+                      min={"00:00"}
+                      max={"23:59"}
+                      value={value.end}
+                      onChange={(e) =>
+                        setValue((previous) => ({
+                          ...previous,
+                          end: e.target.value,
+                        }))
+                      }
+                      className={`rounded-xl border border-1 border-gray-300 focus:border-primary shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-primary sm:leading-8`}
+                    ></input>
+                  </div>
+                  <DefaultBtn
+                    value="Valider"
+                    className="text-xl font-bold bg-success hover:opacity-90"
+                    onClick={() => {
+                      modalPeriodValidation(value, setValidationErrors, type);
+                      setValidationErrors((previous) => {
+                        if (!previous.period) {
+                          validateBtnFunction();
+                          handleClose();
+                        }
+                        return previous;
+                      });
+                    }}
+                  />
+                  {validationErrors.period && (
+                    <p className="text-error-danger text-center">
+                      {validationErrors.period}{" "}
+                    </p>
+                  )}
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition.Root>
+  );
+}

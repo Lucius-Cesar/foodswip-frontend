@@ -26,7 +26,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
 
   //default selectedOptions are the first of each formSelect
   const [selectedOptions, setSelectedOptions] = useState(
-    food.options.length > 0
+    food?.options?.length > 0
       ? food.options.flatMap((optionCategory) => optionCategory.items[0])
       : []
   );
@@ -171,7 +171,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                   </div>
                   <DefaultBtn
                     value={`${multiplyMoney(articlePrice, quantity)} €`}
-                    className=" w-32 sm:w-40 text-xl font-bold bg-success hover:opacity-90"
+                    className="py-2 px-12 text-xl font-bold bg-success hover:opacity-90"
                     onClick={handleAddArticleToCart}
                   />
                 </div>

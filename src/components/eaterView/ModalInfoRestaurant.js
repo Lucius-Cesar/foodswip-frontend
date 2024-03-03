@@ -106,18 +106,16 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                     </div>
                   </div>
 
-                  {restaurant.data.restaurantSettings.exceptionnalClosings
+                  {restaurant.data.restaurantSettings.exceptionalClosings
                     .length === 0 ? null : (
                     <div className="flex flex-col">
                       <h3 className="font-title">Fermetures exceptionnelles</h3>
-                      {restaurant.data.restaurantSettings.exceptionnalClosings.map(
-                        (exceptionnalClosing, i) => (
+                      {restaurant.data.restaurantSettings.exceptionalClosings.map(
+                        (exceptionalClosing, i) => (
                           <p key={i}>
-                            {formatExeptionalClosings(
-                              exceptionnalClosing.start
-                            )}
+                            {formatExeptionalClosings(exceptionalClosing.start)}
                             {" - "}
-                            {formatExeptionalClosings(exceptionnalClosing.end)}
+                            {formatExeptionalClosings(exceptionalClosing.end)}
                           </p>
                         )
                       )}

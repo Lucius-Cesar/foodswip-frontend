@@ -8,7 +8,7 @@ import { useState, useEffect, useLayoutEffect } from "react";
 import useFetch from "@/hooks/useFetch";
 import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
 import Cart from "../../../../components/eaterView/Cart";
-import RestaurantLogo from "../../../../components/RestaurantLogo";
+import RestaurantLogo from "@/components/ui/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
@@ -16,6 +16,15 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import { current } from "@reduxjs/toolkit";
+import {
+  adressValidation,
+  cityValidation,
+  firstnameValidation,
+  lastnameValidation,
+  phoneNumberValidation,
+  postCodeValidation,
+  mailValidation,
+} from "@/utils/validations";
 
 export default function Checkout({ params }) {
   //redirect to menu page if cart modification during checkout leads to empty cart
@@ -58,7 +67,6 @@ export default function Checkout({ params }) {
     fetchTrigger
   );
 
-  console.log(newOrder);
   useEffect(() => {
     if (cart.data.orderType === 0) {
       const paymentMethodsForDelivery =
@@ -97,118 +105,15 @@ export default function Checkout({ params }) {
     return estimatedArrival;
   };
 
-  const checkIfInputContainsOnlyNumber = (input) => {
-    const numericRegex = /^[0-9]+$/;
-    return numericRegex.test(input);
-  };
-
-  const adressValidation = (adress) => {
-    !adress
-      ? setValidationErrors((previous) => ({
-          ...previous,
-          adress: "L'adresse est obligatoire",
-        }))
-      : setValidationErrors((previous) => ({ ...previous, adress: "" }));
-  };
-
-  const postCodeValidation = (postCode) => {
-    if (!postCode) {
-      setValidationErrors((previous) => ({
-        ...previous,
-        postCode: "Le code postal est obligatoire",
-      }));
-    } else if (!checkIfInputContainsOnlyNumber(postCode)) {
-      setValidationErrors((previous) => ({
-        ...previous,
-        postCode: "Le code postal doit être uniquement constitué de chiffres",
-      }));
-    } else {
-      setValidationErrors((previous) => ({
-        ...previous,
-        postCode: "",
-      }));
-    }
-  };
-
-  const cityValidation = (city) => {
-    !city
-      ? setValidationErrors((previous) => ({
-          ...previous,
-          city: "La ville est obligatoire",
-        }))
-      : setValidationErrors((previous) => ({ ...previous, city: "" }));
-  };
-
-  const firstnameValidation = (firstname) => {
-    !firstname
-      ? setValidationErrors((previous) => ({
-          ...previous,
-          firstname: "Le prénom est obligatoire",
-        }))
-      : setValidationErrors((previous) => ({ ...previous, firstname: "" }));
-  };
-
-  const lastnameValidation = (lastname) => {
-    !lastname
-      ? setValidationErrors((previous) => ({
-          ...previous,
-          lastname: "Le nom est obligatoire",
-        }))
-      : setValidationErrors((previous) => ({ ...previous, lastname: "" }));
-  };
-
-  const mailValidation = (mail) => {
-    if (!mail) {
-      setValidationErrors((previous) => ({
-        ...previous,
-        mail: "L'adresse mail est obligatoire",
-      }));
-    } else {
-      const mailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      if (mailRegex.test(mail) || !mail) {
-        setValidationErrors((previous) => ({
-          ...previous,
-          mail: "",
-        }));
-      } else {
-        setValidationErrors((previous) => ({
-          ...previous,
-          mail: "L'adresse mail entrée n'est pas valide",
-        }));
-      }
-    }
-  };
-
-  const phoneNumberValidation = (phoneNumber) => {
-    const phoneNumberRegex = /^\+?[0-9]{10,}$/;
-
-    if (!phoneNumber) {
-      setValidationErrors((previous) => ({
-        ...previous,
-        phoneNumber: "Le numéro de téléphone est obligatoire",
-      }));
-    } else if (!phoneNumberRegex.test(phoneNumber)) {
-      setValidationErrors((previous) => ({
-        ...previous,
-        phoneNumber: "Le numéro de téléphone est invalide",
-      }));
-    } else {
-      setValidationErrors((previous) => ({
-        ...previous,
-        phoneNumber: "",
-      }));
-    }
-  };
-
   const handleConfirmOrder = () => {
     //display errors on submit and not only onBlur
-    adressValidation(form.adress);
-    postCodeValidation(form.postCode);
-    cityValidation(form.city);
-    firstnameValidation(form.firstname);
-    lastnameValidation(form.lastname);
-    mailValidation(form.mail);
-    phoneNumberValidation(form.phoneNumber);
+    adressValidation(form.adress, setValidationErrors);
+    postCodeValidation(form.postCode, setValidationErrors);
+    cityValidation(form.city, setValidationErrors);
+    firstnameValidation(form.firstname, setValidationErrors);
+    lastnameValidation(form.lastname, setValidationErrors);
+    mailValidation(form.mail, setValidationErrors);
+    phoneNumberValidation(form.phoneNumber, setValidationErrors);
 
     if (!selectedPaymentMethod) {
       setValidationErrors((previous) => ({
@@ -298,7 +203,9 @@ export default function Checkout({ params }) {
                       })
                     }
                     value={form.adress}
-                    validationFunction={adressValidation}
+                    validationFunction={(e) =>
+                      adressValidation(e, setValidationErrors)
+                    }
                     validationError={validationErrors.adress}
                   />
                 </div>
@@ -314,7 +221,9 @@ export default function Checkout({ params }) {
                         })
                       }
                       value={form.postCode}
-                      validationFunction={postCodeValidation}
+                      validationFunction={(e) =>
+                        postCodeValidation(e, setValidationErrors)
+                      }
                       validationError={validationErrors.postCode}
                     />
                   </div>
@@ -329,7 +238,9 @@ export default function Checkout({ params }) {
                         })
                       }
                       value={form.city}
-                      validationFunction={cityValidation}
+                      validationFunction={(e) =>
+                        cityValidation(e, setValidationErrors)
+                      }
                       validationError={validationErrors.city}
                     />
                   </div>
@@ -417,7 +328,9 @@ export default function Checkout({ params }) {
                         })
                       }
                       value={form.firstname}
-                      validationFunction={firstnameValidation}
+                      validationFunction={(e) =>
+                        firstnameValidation(e, setValidationErrors)
+                      }
                       validationError={validationErrors.firstname}
                     />
                   </div>
@@ -432,7 +345,9 @@ export default function Checkout({ params }) {
                         })
                       }
                       value={form.lastname}
-                      validationFunction={lastnameValidation}
+                      validationFunction={(e) =>
+                        lastnameValidation(e, setValidationErrors)
+                      }
                       validationError={validationErrors.lastname}
                     />
                   </div>
@@ -450,7 +365,9 @@ export default function Checkout({ params }) {
                         })
                       }
                       value={form.mail}
-                      validationFunction={mailValidation}
+                      validationFunction={(e) =>
+                        mailValidation(e, setValidationErrors)
+                      }
                       validationError={validationErrors.mail}
                     />
                   </div>
@@ -465,7 +382,9 @@ export default function Checkout({ params }) {
                         })
                       }
                       value={form.phoneNumber}
-                      validationFunction={phoneNumberValidation}
+                      validationFunction={(e) =>
+                        phoneNumberValidation(e, setValidationErrors)
+                      }
                       validationError={validationErrors.phoneNumber}
                     />
                   </div>

@@ -6,13 +6,17 @@ export default function TabBtn({ values, currentTab, onClickTab }) {
         <button
           type="button"
           onClick={() => {
-            /* click not allowed is value is disabled */ !value?.enabled
+            /* click not allowed is value is disabled */ typeof value !==
+              "string" && !value?.enabled
               ? null
               : onClickTab(i);
           }}
           key={i}
           className={`${
-            /* pointer not allowed if value is disabled */ !value?.enabled
+            /* pointer not allowed if value is disabled */ typeof value !==
+              "string" &&
+            !value?.enabled &&
+            !value?.enabled
               ? "cursor-not-allowed pointer-events-auto"
               : currentTab === i
               ? "bg-primary focus:bg-primary focus:text-white text-white"
