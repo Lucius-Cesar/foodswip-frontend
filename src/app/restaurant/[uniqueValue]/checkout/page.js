@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { clearCart } from "@/redux/reducers/cart";
+import { clearCart } from "@/redux/cart/cartSlice";
 import { useState, useEffect, useLayoutEffect } from "react";
 import useFetch from "@/hooks/useFetch";
 import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
@@ -396,7 +396,7 @@ export default function Checkout({ params }) {
                 Un ou plusieurs des champs ci-dessus sont invalides
               </p>
             )}
-            {newOrder.status === 429 && (
+            {newOrder.error?.status === 429 && (
               <p className="text-error-danger text-center">
                 Votre commande a déjà été effectuée. Pour modifier celle-ci,
                 veuillez contacter le restaurant au{" "}

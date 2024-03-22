@@ -50,7 +50,7 @@ export default function eaterView({ params }) {
         restaurant.data.restaurantSettings.exceptionalClosings
       );
       setRestaurantOpen(checkRestaurantOpen);
-      setScrollBarHeight(checkRestaurantOpen ? "0px" : "-45px"); //scrollBarHeight -45bx needed when topBanner
+      setScrollBarHeight(checkRestaurantOpen ? "-10px" : "-45px"); //scrollBarHeight -45px needed when topBanner
     }
     if (restaurant.data.menu) {
       setMenu(
@@ -170,7 +170,7 @@ export default function eaterView({ params }) {
               <div className="sticky sm:relative pt-2 pb-2 sm:pt-0 top-0 w-full sm:w-auto flex justify-center sm:block  bg-white sm:bg-none sm:py-0">
                 <OrderTabBtn />
               </div>
-              <div className="flex flex-col w-full pb-14">
+              <div className="flex flex-col w-full pb-24">
                 {menu.map((foodCategory, i) => (
                   <div
                     key={i}

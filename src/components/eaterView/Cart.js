@@ -6,7 +6,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-import { addNote, updateTotalSum } from "@/redux/reducers/cart";
+import { addNote, updateTotalSum } from "@/redux/cart/cartSlice";
 import { addMoney, subtractMoney } from "@/utils/moneyCalculations";
 
 import CartIcon from "../ui/icons/CartIcon";

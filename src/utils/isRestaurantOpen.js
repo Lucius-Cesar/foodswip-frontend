@@ -20,19 +20,24 @@ function isRestaurantOpen(schedule, exceptionalClosings) {
       currentMinutesOfDay <= serviceEndMinutes
     );
   }
+
   for (const exceptionalClosing of exceptionalClosings) {
+    console.log(currentDate);
+    console.log(new Date(exceptionalClosing.start));
+    console.log(new Date(exceptionalClosing.end));
+
     if (
       !isDateWithinStartEnd(
         currentDate,
-        exceptionalClosing.start,
-        exceptionalClosing.end
+        new Date(exceptionalClosing.start),
+        new Date(exceptionalClosing.end)
       )
     ) {
       restaurantOpen = true;
       break;
     }
   }
-  if (restaurantOpen) {
+  if (restaurantOpen || exceptionalClosings.length === 0) {
     if (schedule[currentDayOfWeek].services.length === 0) {
       restaurantOpen = false; //restaurant is closed if there are no services for that dayofweek in the schedule
     } else {
@@ -59,7 +64,6 @@ function isRestaurantOpen(schedule, exceptionalClosings) {
       }
     }
   }
-
   return restaurantOpen;
 }
 

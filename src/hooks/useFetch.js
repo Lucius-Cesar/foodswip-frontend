@@ -1,56 +1,47 @@
-//useFetch.js
 import { useState, useEffect } from "react";
+import AppError from "@/utils/AppError";
 
 function useFetch(url, fetchOptions, fetchTrigger = true) {
-  const controller = new AbortController();
-  const signal = controller.signal;
-
   const [state, setState] = useState({
     data: null,
     isLoading: false,
-    error: false,
-    status: null,
+    error: null,
   });
 
   useEffect(() => {
-    //if fetchOptions are present -> trigger the fetch
-    if (fetchTrigger) {
-      setState((prevState) => ({ ...prevState, isLoading: true }));
-      fetch(url, fetchOptions, signal).then((response) => {
-        setState((prevState) => ({ ...prevState, status: response.status }));
-        response
-          .json()
-          .then((data) => {
-            if (data.error) {
-              setState((prevState) => ({
-                ...prevState,
-                data: null,
-                isLoading: false,
-                error: data.error,
-              }));
-            } else {
-              setState((prevState) => ({
-                ...prevState,
-                data: data,
-                isLoading: false,
-                error: false,
-              }));
-            }
-          })
-          .catch((err) => {
-            setState((prevState) => ({
-              ...prevState,
-              data: null,
-              isLoading: false,
-              error: err,
-            }));
-          });
-      });
-    }
+    const fetchData = async () => {
+      try {
+        setState((prevState) => ({ ...prevState, isLoading: true }));
+        let response;
+        response = await fetch(url, fetchOptions);
+        if (!response.ok) {
+          throw new AppError(
+            response.statusText,
+            response.status,
+            `Error${response.statusText}`
+          );
+        }
 
-    return () => {
-      controller.abort();
+        const data = await response.json();
+        setState((prevState) => ({
+          ...prevState,
+          data: data,
+          isLoading: false,
+          error: null,
+        }));
+      } catch (error) {
+        setState((prevState) => ({
+          ...prevState,
+          data: null,
+          isLoading: false,
+          error: error,
+        }));
+      }
     };
+
+    if (fetchTrigger) {
+      fetchData();
+    }
   }, [url, fetchTrigger]);
 
   return state;

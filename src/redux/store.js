@@ -2,8 +2,9 @@
 import { persistStore, persistReducer } from "redux-persist";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import restaurant from "./reducers/restaurant";
-import cart from "./reducers/cart";
+import restaurant from "./restaurant/restaurantSlice";
+import cart from "./cart/cartSlice";
+import auth from "./auth/authSlice";
 
 //workaround (redux-persist failed to create sync storage. falling back to noop storage when you import storage from redux-persist/lib/storage) because you cannot create the local storage in Node.js.
 const createNoopStorage = () => {
@@ -25,8 +26,8 @@ const storage =
     ? createWebStorage("local")
     : createNoopStorage();
 
-const reducers = combineReducers({ restaurant, cart });
-const persistConfig = { key: "foodswip", storage };
+const reducers = combineReducers({ restaurant, cart, auth });
+const persistConfig = { key: "root", storage, blacklist: ["auth"] };
 
 export const store = configureStore({
   reducer: persistReducer(persistConfig, reducers),

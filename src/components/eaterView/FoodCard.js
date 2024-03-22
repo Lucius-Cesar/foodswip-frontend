@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addArticleToCart,
   incrementArticleQuantity,
-} from "../../redux/reducers/cart";
+} from "../../redux/cart/cartSlice";
 
 import findIndexOfArticleInCart from "../../utils/findIndexOfArticleInCart";
 export default function FoodCard({ food, foodCategoryIndex }) {

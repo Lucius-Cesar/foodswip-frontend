@@ -1,7 +1,7 @@
 import TabBtn from "../ui/TabBtn";
 import { useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectOrderType } from "@/redux/reducers/cart";
+import { selectOrderType } from "@/redux/cart/cartSlice";
 
 export default function OrderTabBtn() {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon.js";
@@ -12,58 +12,67 @@ import PeriodItem from "@/components/adminView/settings/PeriodItem";
 import ModalPeriod from "@/components/adminView/settings/ModalPeriod";
 import AddBtn from "@/components/ui/AddBtn";
 import InputNumber from "@/components/ui/InputNumber";
+import moment from "moment";
 
 import TabBtn from "@/components/ui/TabBtn";
 
 import { switchDayLabel } from "@/utils/switchLabel";
-import useDispatchRestaurantsInfo from "@/hooks/useDispatchRestaurantInfo";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { mailValidation, phoneNumberValidation } from "@/utils/validations";
 import deepCopy from "@/utils/deepCopy";
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import FooterSettings from "@/components/adminView/settings/FooterSettings";
+import useDispatchRestaurantsInfo from "@/hooks/useDispatchRestaurantInfo";
+import Preloader from "@/components/ui/Preloader";
+import useRefreshAuth from "@/hooks/useRefreshAuth";
+import useCheckAuth from "@/hooks/useCheckAuth";
+import { logOut } from "@/redux/auth/authSlice";
 
 export default function settings() {
+  useRefreshAuth();
+  useCheckAuth();
   //change this later
+  const dispatch = useDispatch();
+  const router = useRouter();
   const restaurant = useSelector((state) => state.restaurant);
 
+  const auth = useSelector((state) => state.auth);
+  useDispatchRestaurantsInfo(auth.data?.user?.restaurantUniqueValue);
+
+  const [formRestaurantInfo, setFormRestaurantInfo] = useState(null);
+  const [restaurantSettings, setRestaurantSettings] = useState(null);
+  const [orderSettings, setOrderSettings] = useState(null);
+
+  useEffect(() => {
+    if (restaurant.data) {
+      setFormRestaurantInfo({
+        name: restaurant.data.name,
+        website: restaurant.data.website,
+        street: restaurant.data.adress?.street,
+        streetNumber: restaurant.data.adress?.streetNumber,
+        postCode: restaurant.data.adress?.postCode,
+        city: restaurant.data.adress?.city,
+        country: restaurant.data.adress?.country,
+        phoneNumber: restaurant.data.phoneNumber,
+        mail: restaurant.data.mail,
+      });
+      setRestaurantSettings(restaurant.data.restaurantSettings);
+      setOrderSettings(restaurant.data.orderSettings);
+    }
+  }, [restaurant.data]);
   const [validationErrors, setValidationErrors] = useState({
     mail: "",
     phoneNumber: "",
   });
 
   const categoriesData = [
-    {
-      value: "Informations restaurant",
-    },
-    { value: "Paramètres commandes" },
-    { value: "Paramètres du compte" },
+    "Paramètres restaurant",
+    "Paramètres commandes",
+    "Paramètres du compte",
   ];
   const [activeCategory, setActiveCategory] = useState(categoriesData[0]);
-
-  //useDispatchRestaurantsInfo(uniqueValue);
-  //const restaurant = useSelector((state) => state.restaurant);
-
-  const [formRestaurantInfo, setFormRestaurantInfo] = useState({
-    name: restaurant?.data?.name,
-    website: restaurant?.data?.website,
-    street: restaurant?.data?.adress.street,
-    streetNumber: restaurant?.data?.adress.streetNumber,
-    postCode: restaurant?.data?.adress.postCode,
-    city: restaurant?.data?.adress.city,
-    country: restaurant?.data?.adress.country,
-    phoneNumber: restaurant?.data?.phoneNumber,
-    mail: restaurant?.data?.mail,
-  });
-
-  const [restaurantSettings, setRestaurantSettings] = useState(
-    restaurant?.data?.restaurantSettings
-  );
-
-  const [orderSettings, setOrderSettings] = useState(
-    restaurant?.data?.orderSettings
-  );
 
   const optionsDateFormatting = {
     day: "2-digit",
@@ -126,510 +135,584 @@ export default function settings() {
     setRestaurantSettings(updatedRestaurantSettings);
   };
 
-  return (
-    <>
-      <div className="h-dvh flex flex-col overflow-hidden">
-        <Header isSettingsActive={true} />
-        <div className="flex flex-row h-full px-2 sm:ps-10 overflow-y-auto">
-          <SideNavigation
-            categoriesData={categoriesData}
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
-          {activeCategory.value === "Informations restaurant" && (
-            <div className="flex flex-col w-full px-10 h-full space-y-10">
-              <div>
-                <h2 className="mb-4">Informations générales</h2>
-                <p className="font-medium text-xl">Logo restaurant:</p>
-                {<RestaurantLogo />}
-                <div class="flex flex-wrap gap-6">
-                  <div className="w-full sm:w-5/12">
-                    <FormInput
-                      label="Nom du restaurant:"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.name}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          name: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-full sm:w-5/12">
-                    <FormInput
-                      label="Site web:"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.website}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          website: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-full sm:w-5/12">
-                    <FormInput
-                      label="Rue"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.street}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          street: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-2/5 sm:w-1/5">
-                    <FormInput
-                      label="Numéro"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.streetNumber}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          streetNumber: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-2/5 sm:w-5/12">
-                    <FormInput
-                      label="Ville"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.city}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          city: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-2/5 sm:w-1/5">
-                    <FormInput
-                      label="Code Postal"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.postCode}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          postCode: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-2/5 sm:w-1/5">
-                    <FormInput
-                      label="Pays"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.country}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          country: input,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="w-full sm:w-5/12">
-                    <FormInput
-                      label="Numéro de téléphone"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.phoneNumber}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          phoneNumber: input,
-                        })
-                      }
-                      validationFunction={(e) =>
-                        phoneNumberValidation(e, setValidationErrors)
-                      }
-                      validationError={validationErrors.phoneNumber}
-                    />
-                  </div>
-                  <div className="w-full sm:w-5/12">
-                    <FormInput
-                      label="Email"
-                      labelSize="xl"
-                      textSize="lg"
-                      value={formRestaurantInfo.mail}
-                      onChange={(input) =>
-                        setFormRestaurantInfo({
-                          ...formRestaurantInfo,
-                          mail: input,
-                        })
-                      }
-                      validationFunction={(e) =>
-                        mailValidation(e, setValidationErrors)
-                      }
-                      validationError={validationErrors.mail}
-                    />
+  const onClickLogOut = () => {
+    dispatch(logOut());
+    router.push("/admin/login");
+  };
+  if (!(formRestaurantInfo && restaurantSettings && orderSettings)) {
+    return (
+      <>
+        <Preloader />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="h-dvh flex flex-col overflow-hidden">
+          <Header isSettingsActive={true} />
+          <div className="flex flex-row h-full px-2 sm:ps-10 overflow-y-auto">
+            <SideNavigation
+              categoriesData={categoriesData}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
+            {activeCategory === categoriesData[0] && (
+              <div className="flex flex-col w-full px-10 h-full space-y-10">
+                <div>
+                  <h2 className="mb-4">Informations générales</h2>
+                  <p className="font-medium text-xl">Logo restaurant:</p>
+                  {<RestaurantLogo />}
+                  <div class="flex flex-wrap gap-6">
+                    <div className="w-full sm:w-5/12">
+                      <FormInput
+                        label="Nom du restaurant:"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.name}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            name: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-full sm:w-5/12">
+                      <FormInput
+                        label="Site web:"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.website}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            website: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-full sm:w-5/12">
+                      <FormInput
+                        label="Rue"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.street}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            street: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/5 sm:w-1/5">
+                      <FormInput
+                        label="Numéro"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.streetNumber}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            streetNumber: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/5 sm:w-5/12">
+                      <FormInput
+                        label="Ville"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.city}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            city: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/5 sm:w-1/5">
+                      <FormInput
+                        label="Code Postal"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.postCode}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            postCode: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/5 sm:w-1/5">
+                      <FormInput
+                        label="Pays"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.country}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            country: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-full sm:w-5/12">
+                      <FormInput
+                        label="Numéro de téléphone"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.phoneNumber}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            phoneNumber: input,
+                          })
+                        }
+                        validationFunction={(e) =>
+                          phoneNumberValidation(e, setValidationErrors)
+                        }
+                        validationError={validationErrors.phoneNumber}
+                      />
+                    </div>
+                    <div className="w-full sm:w-5/12">
+                      <FormInput
+                        label="Email"
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.mail}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            mail: input,
+                          })
+                        }
+                        validationFunction={(e) =>
+                          mailValidation(e, setValidationErrors)
+                        }
+                        validationError={validationErrors.mail}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-col sm:flex-row sm:justify-between">
-                <div className="flex flex-col">
-                  <h2 className="mb-4">Horraires d'ouverture :</h2>
-                  <ModalPeriod
-                    type={"time"}
-                    value={valueModalPeriod}
-                    setValue={setValueModalPeriod}
-                    open={isModalScheduleOpen}
-                    setOpen={setModalScheduleOpen}
-                    startLabel={"Début du service"}
-                    endLabel={"Fin du service"}
-                    validateBtnFunction={() => {
-                      let functionToUse;
-                      switch (modalPeriodOperation) {
-                        case "create":
-                          functionToUse = createService;
-                          break;
-                        case "update":
-                          functionToUse = updateService;
-                          break;
-                        default:
-                          break;
-                      }
-                      functionToUse(
-                        valueModalPeriod.dayIndex,
-                        valueModalPeriod.itemIndex,
-                        {
-                          start: valueModalPeriod.start,
-                          end: valueModalPeriod.end,
+                <div className="flex flex-col sm:flex-row sm:justify-between">
+                  <div className="flex flex-col">
+                    <h2 className="mb-4">Horraires d'ouverture :</h2>
+                    <ModalPeriod
+                      type={"time"}
+                      value={valueModalPeriod}
+                      setValue={setValueModalPeriod}
+                      open={isModalScheduleOpen}
+                      setOpen={setModalScheduleOpen}
+                      startLabel={"Début du service"}
+                      endLabel={"Fin du service"}
+                      validateBtnFunction={() => {
+                        let functionToUse;
+                        switch (modalPeriodOperation) {
+                          case "create":
+                            functionToUse = createService;
+                            break;
+                          case "update":
+                            functionToUse = updateService;
+                            break;
+                          default:
+                            break;
                         }
-                      );
-                    }}
-                  />
-                  <div className="flex flex-col space-y-6">
-                    {restaurantSettings?.schedule.map((scheduleItem, i) => {
-                      const dayLabel = switchDayLabel(i);
-                      return (
-                        <div
-                          key={i}
-                          className="flex flex-col items-center space-y-4"
-                        >
-                          <p className="self-start text-xl">{dayLabel} :</p>
-                          {scheduleItem.services.length === 0 ? (
-                            <PeriodItem
-                              key={i}
-                              start={null}
-                              end={null}
-                              otherValue={/* if no servce -> closed */ "Fermé"}
-                              closeBtn={false}
-                              onClickMainBtn={() => {
-                                setModalScheduleOpen(true);
+                        functionToUse(
+                          valueModalPeriod.dayIndex,
+                          valueModalPeriod.itemIndex,
+                          {
+                            start: valueModalPeriod.start,
+                            end: valueModalPeriod.end,
+                          }
+                        );
+                      }}
+                    />
+                    <div className="flex flex-col space-y-6">
+                      {restaurantSettings?.schedule.map((scheduleItem, i) => {
+                        const dayLabel = switchDayLabel(i);
+                        return (
+                          <div
+                            key={i}
+                            className="flex flex-col items-center space-y-4"
+                          >
+                            <p className="self-start text-xl">{dayLabel} :</p>
+                            {scheduleItem.services.length === 0 ? (
+                              <PeriodItem
+                                key={i}
+                                start={null}
+                                end={null}
+                                otherValue={
+                                  /* if no servce -> closed */ "Fermé"
+                                }
+                                closeBtn={false}
+                                onClickMainBtn={() => {
+                                  setModalScheduleOpen(true);
+                                  setValueModalPeriod({
+                                    dayIndex: i,
+                                    itemIndex: null,
+                                    start: null,
+                                    end: null,
+                                  });
+                                  setModalPeriodOperation("create");
+                                }}
+                              />
+                            ) : (
+                              scheduleItem.services.map((service, j) => (
+                                <div>
+                                  <PeriodItem
+                                    key={j}
+                                    start={service.start}
+                                    end={service.end}
+                                    otherValue={null}
+                                    closeBtn={true}
+                                    onClickMainBtn={() => {
+                                      setModalPeriodOperation("update");
+                                      setValueModalPeriod({
+                                        dayIndex: i,
+                                        itemIndex: j,
+                                        start: service.start,
+                                        end: service.end,
+                                      });
+                                      setModalScheduleOpen(true);
+                                    }}
+                                    onClickCloseBtn={() => deleteService(i, j)}
+                                  />
+                                </div>
+                              ))
+                            )}
+                            <AddBtn
+                              onClick={() => {
+                                setModalPeriodOperation("create");
                                 setValueModalPeriod({
                                   dayIndex: i,
                                   itemIndex: null,
                                   start: null,
                                   end: null,
                                 });
-                                setModalPeriodOperation("create");
+                                setModalScheduleOpen(true);
                               }}
-                            />
-                          ) : (
-                            scheduleItem.services.map((service, j) => (
-                              <div>
-                                <PeriodItem
-                                  key={j}
-                                  start={service.start}
-                                  end={service.end}
-                                  otherValue={null}
-                                  closeBtn={true}
-                                  onClickMainBtn={() => {
-                                    setModalPeriodOperation("update");
-                                    setValueModalPeriod({
-                                      dayIndex: i,
-                                      itemIndex: j,
-                                      start: service.start,
-                                      end: service.end,
-                                    });
-                                    setModalScheduleOpen(true);
-                                  }}
-                                  onClickCloseBtn={() => deleteService(i, j)}
-                                />
-                              </div>
-                            ))
-                          )}
-                          <AddBtn
-                            onClick={() => {
-                              setModalPeriodOperation("create");
-                              setValueModalPeriod({
-                                dayIndex: i,
-                                itemIndex: null,
-                                start: null,
-                                end: null,
-                              });
-                              setModalScheduleOpen(true);
-                            }}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="pr-20">
-                  <h2 className="mb-4">Fermetures exceptionnelles :</h2>
-                  <ModalPeriod
-                    type={"datetime-local"}
-                    value={valueModalPeriod}
-                    setValue={setValueModalPeriod}
-                    open={isModalExceptionalClosingsOpen}
-                    setOpen={setModalExceptionalClosingOpen}
-                    startLabel={"Début de la fermeture"}
-                    endLabel={"Fin de la fermeture"}
-                    validateBtnFunction={() => {
-                      let functionToUse;
-                      switch (modalPeriodOperation) {
-                        case "create":
-                          console.log("create");
-                          functionToUse = createExceptionalClosing;
-                          break;
-                        case "update":
-                          console.log("update");
-                          functionToUse = updateExceptionalClosing;
-                          break;
-                        default:
-                          console.log("none");
-                          break;
-                      }
-                      console.log(functionToUse);
-                      functionToUse(valueModalPeriod.itemIndex, {
-                        start: valueModalPeriod.start,
-                        end: valueModalPeriod.end,
-                      });
-                    }}
-                  />
-                  <div className="flex flex-col items-center space-y-6">
-                    {restaurantSettings?.exceptionalClosings.map(
-                      (exceptionalClosing, i) => {
-                        let exceptionalClosingDate = {};
-                        exceptionalClosingDate.start = new Date(
-                          exceptionalClosing.start
-                        );
-                        exceptionalClosingDate.end = new Date(
-                          exceptionalClosing.end
-                        );
-
-                        const start =
-                          exceptionalClosingDate.start.toLocaleString(
-                            "fr-FR",
-                            optionsDateFormatting
-                          );
-                        const end = exceptionalClosingDate.end.toLocaleString(
-                          "fr-FR",
-                          optionsDateFormatting
-                        );
-
-                        return (
-                          <div>
-                            <PeriodItem
-                              key={i}
-                              start={start}
-                              end={end}
-                              otherValue={false}
-                              closeBtn={true}
-                              onClickMainBtn={() => {
-                                setModalPeriodOperation("update");
-                                setValueModalPeriod({
-                                  dayIndex: null,
-                                  itemIndex: i,
-                                  start: exceptionalClosing.start,
-                                  end: exceptionalClosing.end,
-                                });
-                                setModalExceptionalClosingOpen(true);
-                              }}
-                              onClickCloseBtn={() =>
-                                deleteExceptionalClosing(i)
-                              }
                             />
                           </div>
                         );
-                      }
-                    )}
-                    <AddBtn
-                      onClick={() => {
-                        setModalExceptionalClosingOpen(true);
-                        setModalPeriodOperation("create");
+                      })}
+                    </div>
+                  </div>
+                  <div className="pr-20">
+                    <h2 className="mb-4">Fermetures exceptionnelles :</h2>
+                    <ModalPeriod
+                      type={"datetime-local"}
+                      value={valueModalPeriod}
+                      setValue={setValueModalPeriod}
+                      open={isModalExceptionalClosingsOpen}
+                      setOpen={setModalExceptionalClosingOpen}
+                      startLabel={"Début de la fermeture"}
+                      endLabel={"Fin de la fermeture"}
+                      validateBtnFunction={() => {
+                        let functionToUse;
+                        switch (modalPeriodOperation) {
+                          case "create":
+                            console.log("create");
+                            functionToUse = createExceptionalClosing;
+                            break;
+                          case "update":
+                            console.log("update");
+                            functionToUse = updateExceptionalClosing;
+                            break;
+                          default:
+                            console.log("none");
+                            break;
+                        }
+                        console.log(functionToUse);
+                        functionToUse(valueModalPeriod.itemIndex, {
+                          start: valueModalPeriod.start,
+                          end: valueModalPeriod.end,
+                        });
+                      }}
+                    />
+                    <div className="flex flex-col items-center space-y-6">
+                      {restaurantSettings?.exceptionalClosings.map(
+                        (exceptionalClosing, i) => {
+                          const exceptionalClosingDate = {
+                            start: new Date(exceptionalClosing.start),
+                            end: new Date(exceptionalClosing.end),
+                          };
+                          const exceptionalClosingLocalString = {
+                            start: exceptionalClosingDate.start.toLocaleString(
+                              "fr-FR",
+                              optionsDateFormatting
+                            ),
+                            end: exceptionalClosingDate.end.toLocaleString(
+                              "fr-FR",
+                              optionsDateFormatting
+                            ),
+                          };
+
+                          return (
+                            <div>
+                              <PeriodItem
+                                key={i}
+                                start={exceptionalClosingLocalString.start}
+                                end={exceptionalClosingLocalString.end}
+                                otherValue={false}
+                                closeBtn={true}
+                                onClickMainBtn={() => {
+                                  setModalPeriodOperation("update");
+                                  setValueModalPeriod({
+                                    dayIndex: null,
+                                    itemIndex: i,
+                                    start: moment(
+                                      exceptionalClosingDate.start
+                                    ).format("YYYY-MM-DDTHH:mm"),
+                                    end: moment(
+                                      exceptionalClosingDate.end
+                                    ).format("YYYY-MM-DDTHH:mm"),
+                                  });
+                                  setModalExceptionalClosingOpen(true);
+                                }}
+                                onClickCloseBtn={() =>
+                                  deleteExceptionalClosing(i)
+                                }
+                              />
+                            </div>
+                          );
+                        }
+                      )}
+                      <AddBtn
+                        onClick={() => {
+                          setModalExceptionalClosingOpen(true);
+                          setModalPeriodOperation("create");
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {activeCategory === categoriesData[1] && (
+              <div className="flex flex-col px-10 w-full h-full space-y-8">
+                <div className="space-y-4">
+                  <h2 className="mb-4">{"Types de commande:"}</h2>
+                  <div className="space-y-2">
+                    <p className="font-medium text-xl">
+                      Fonction "À emporter" :
+                    </p>
+                    <TabBtn
+                      values={["Activer", "Désactiver"]}
+                      currentTab={orderSettings.orderTypes[1].enabled ? 0 : 1}
+                      onClickTab={(i) => {
+                        let updatedOrderType = {
+                          ...orderSettings.orderTypes[1],
+                        };
+                        console.log(updatedOrderType);
+                        if (i === 0) {
+                          //enable
+                          updatedOrderType.enabled = true;
+                        } else if (i === 1) {
+                          //disable
+                          updatedOrderType.enabled = false;
+                        }
+                        setOrderSettings({
+                          ...orderSettings,
+                          orderTypes: [
+                            orderSettings.orderTypes[0],
+                            updatedOrderType,
+                          ],
+                        });
+                      }}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="font-medium text-xl">
+                      Fonction "Livraison" :{" "}
+                    </p>
+                    <TabBtn
+                      values={["Activer", "Désactiver"]}
+                      currentTab={orderSettings.orderTypes[0].enabled ? 0 : 1}
+                      onClickTab={(i) => {
+                        let updatedOrderType = {
+                          ...orderSettings.orderTypes[0],
+                        };
+                        console.log(updatedOrderType);
+                        if (i === 0) {
+                          //enable
+                          updatedOrderType.enabled = true;
+                        } else if (i === 1) {
+                          //disable
+                          updatedOrderType.enabled = false;
+                        }
+                        setOrderSettings({
+                          ...orderSettings,
+                          orderTypes: [
+                            updatedOrderType,
+                            orderSettings.orderTypes[1],
+                          ],
+                        });
                       }}
                     />
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
-          {activeCategory.value === "Paramètres commandes" && (
-            <div className="flex flex-col px-10 w-full h-full space-y-8">
-              <div className="space-y-4">
-                <h2 className="mb-4">{"Types de commande:"}</h2>
-                <div className="space-y-2">
-                  <p className="font-medium text-xl">Fonction "À emporter" :</p>
-                  <TabBtn
-                    values={["Activer", "Désactiver"]}
-                    currentTab={orderSettings.orderTypes[1].enabled ? 0 : 1}
-                    onClickTab={(i) => {
-                      let updatedOrderType = { ...orderSettings.orderTypes[1] };
-                      console.log(updatedOrderType);
-                      if (i === 0) {
-                        //enable
-                        updatedOrderType.enabled = true;
-                      } else if (i === 1) {
-                        //disable
-                        updatedOrderType.enabled = false;
-                      }
-                      setOrderSettings({
-                        ...orderSettings,
-                        orderTypes: [
-                          orderSettings.orderTypes[0],
-                          updatedOrderType,
-                        ],
-                      });
-                    }}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <p className="font-medium text-xl">Fonction "Livraison" : </p>
-                  <TabBtn
-                    values={["Activer", "Désactiver"]}
-                    currentTab={orderSettings.orderTypes[0].enabled ? 0 : 1}
-                    onClickTab={(i) => {
-                      let updatedOrderType = { ...orderSettings.orderTypes[0] };
-                      console.log(updatedOrderType);
-                      if (i === 0) {
-                        //enable
-                        updatedOrderType.enabled = true;
-                      } else if (i === 1) {
-                        //disable
-                        updatedOrderType.enabled = false;
-                      }
-                      setOrderSettings({
-                        ...orderSettings,
-                        orderTypes: [
-                          updatedOrderType,
-                          orderSettings.orderTypes[1],
-                        ],
-                      });
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="space-y-4">
-                <h2 className="mb-4">Commandes à livrer : </h2>
                 <div className="space-y-4">
-                  <div>
-                    <label className="text-xl font-medium">
-                      Minimum d'achat pour la livraison (€):
-                    </label>
-                    <div className="text-center">
-                      <InputNumber
-                        labelSize="xl"
-                        textSize="lg"
-                        id="alertInterval"
-                        value={orderSettings.deliveryMin}
-                        onChange={(value) => {
-                          if (value >= 0) {
+                  <h2 className="mb-4">Commandes à livrer : </h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-xl font-medium">
+                        Minimum d'achat pour la livraison (€):
+                      </label>
+                      <div className="text-center">
+                        <InputNumber
+                          labelSize="xl"
+                          textSize="lg"
+                          id="alertInterval"
+                          value={orderSettings.deliveryMin}
+                          onChange={(value) => {
+                            if (value >= 0) {
+                              setOrderSettings({
+                                ...orderSettings,
+                                deliveryMin: value,
+                              });
+                            }
+                          }}
+                          onIncrement={() => {
+                            let updatedDeliveryMin =
+                              orderSettings.deliveryMin + 1;
+
                             setOrderSettings({
                               ...orderSettings,
-                              deliveryMin: value,
+                              deliveryMin: updatedDeliveryMin,
                             });
-                          }
-                        }}
-                        onIncrement={() => {
-                          let updatedDeliveryMin =
-                            orderSettings.deliveryMin + 1;
+                          }}
+                          onDecrement={() => {
+                            let updatedDeliveryMin =
+                              orderSettings.deliveryMin - 1;
 
-                          setOrderSettings({
-                            ...orderSettings,
-                            deliveryMin: updatedDeliveryMin,
-                          });
-                        }}
-                        onDecrement={() => {
-                          let updatedDeliveryMin =
-                            orderSettings.deliveryMin - 1;
+                            if (updatedDeliveryMin < 0) {
+                              updatedDeliveryMin = 0;
+                            }
+                            setOrderSettings({
+                              ...orderSettings,
+                              deliveryMin: updatedDeliveryMin,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xl font-medium">
+                        Frais de livraison (€):
+                      </label>
+                      <div className="text-center">
+                        <InputNumber
+                          labelSize="xl"
+                          textSize="lg"
+                          id="alertInterval"
+                          value={orderSettings.deliveryFees}
+                          onChange={(value) => {
+                            if (value >= 0) {
+                              setOrderSettings({
+                                ...orderSettings,
+                                deliveryFees: value,
+                              });
+                            }
+                          }}
+                          onIncrement={() => {
+                            let updatedDeliveryFees =
+                              orderSettings.deliveryFees + 1;
 
-                          if (updatedDeliveryMin < 0) {
-                            updatedDeliveryMin = 0;
-                          }
-                          setOrderSettings({
-                            ...orderSettings,
-                            deliveryMin: updatedDeliveryMin,
-                          });
-                        }}
-                      />
+                            setOrderSettings({
+                              ...orderSettings,
+                              deliveryFees: updatedDeliveryFees,
+                            });
+                          }}
+                          onDecrement={() => {
+                            let updatedDeliveryFees =
+                              orderSettings.deliveryFees - 1;
+
+                            if (updatedDeliveryFees < 0) {
+                              updatedDeliveryFees = 0;
+                            }
+                            setOrderSettings({
+                              ...orderSettings,
+                              deliveryFees: updatedDeliveryFees,
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xl font-medium">
+                        Délai de livraison, moyenne basse (minutes) :
+                      </label>
+                      <div className="text-center">
+                        <InputNumber
+                          labelSize="xl"
+                          textSize="lg"
+                          id="alertInterval"
+                          value={orderSettings.deliveryEstimate.min}
+                          onChange={(value) => {
+                            if (value >= 0) {
+                              setOrderSettings({
+                                ...orderSettings,
+                                deliveryEstimate: {
+                                  ...orderSettings.deliveryEstimate,
+                                  min: value,
+                                },
+                              });
+                            }
+                          }}
+                          onIncrement={() => {
+                            let updatedDeliveryEstimate = {
+                              ...orderSettings.deliveryEstimate,
+                            };
+                            updatedDeliveryEstimate.min =
+                              updatedDeliveryEstimate.min + 15;
+
+                            setOrderSettings({
+                              ...orderSettings,
+                              deliveryEstimate: updatedDeliveryEstimate,
+                            });
+                          }}
+                          onDecrement={() => {
+                            let updatedDeliveryEstimate = {
+                              ...orderSettings.deliveryEstimate,
+                            };
+                            updatedDeliveryEstimate.min =
+                              updatedDeliveryEstimate.min - 15;
+
+                            if (updatedDeliveryEstimate.min < 0) {
+                              updatedDeliveryEstimate.min = 0;
+                            }
+                            setOrderSettings({
+                              ...orderSettings,
+                              deliveryEstimate: updatedDeliveryEstimate,
+                            });
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div>
                     <label className="text-xl font-medium">
-                      Frais de livraison (€):
+                      Délai de livraison, moyenne haute (minutes) :
                     </label>
                     <div className="text-center">
                       <InputNumber
                         labelSize="xl"
                         textSize="lg"
                         id="alertInterval"
-                        value={orderSettings.deliveryFees}
-                        onChange={(value) => {
-                          if (value >= 0) {
-                            setOrderSettings({
-                              ...orderSettings,
-                              deliveryFees: value,
-                            });
-                          }
-                        }}
-                        onIncrement={() => {
-                          let updatedDeliveryFees =
-                            orderSettings.deliveryFees + 1;
-
-                          setOrderSettings({
-                            ...orderSettings,
-                            deliveryFees: updatedDeliveryFees,
-                          });
-                        }}
-                        onDecrement={() => {
-                          let updatedDeliveryFees =
-                            orderSettings.deliveryFees - 1;
-
-                          if (updatedDeliveryFees < 0) {
-                            updatedDeliveryFees = 0;
-                          }
-                          setOrderSettings({
-                            ...orderSettings,
-                            deliveryFees: updatedDeliveryFees,
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xl font-medium">
-                      Délai de livraison, moyenne basse (minutes) :
-                    </label>
-                    <div className="text-center">
-                      <InputNumber
-                        labelSize="xl"
-                        textSize="lg"
-                        id="alertInterval"
-                        value={orderSettings.deliveryEstimate.min}
+                        value={orderSettings.deliveryEstimate.max}
                         onChange={(value) => {
                           if (value >= 0) {
                             setOrderSettings({
                               ...orderSettings,
                               deliveryEstimate: {
                                 ...orderSettings.deliveryEstimate,
-                                min: value,
+                                max: value,
                               },
                             });
                           }
@@ -638,8 +721,8 @@ export default function settings() {
                           let updatedDeliveryEstimate = {
                             ...orderSettings.deliveryEstimate,
                           };
-                          updatedDeliveryEstimate.min =
-                            updatedDeliveryEstimate.min + 15;
+                          updatedDeliveryEstimate.max =
+                            updatedDeliveryEstimate.max + 15;
 
                           setOrderSettings({
                             ...orderSettings,
@@ -650,11 +733,11 @@ export default function settings() {
                           let updatedDeliveryEstimate = {
                             ...orderSettings.deliveryEstimate,
                           };
-                          updatedDeliveryEstimate.min =
-                            updatedDeliveryEstimate.min - 15;
+                          updatedDeliveryEstimate.max =
+                            updatedDeliveryEstimate.max - 15;
 
-                          if (updatedDeliveryEstimate.min < 0) {
-                            updatedDeliveryEstimate.min = 0;
+                          if (updatedDeliveryEstimate.max < 0) {
+                            updatedDeliveryEstimate.max = 0;
                           }
                           setOrderSettings({
                             ...orderSettings,
@@ -665,270 +748,314 @@ export default function settings() {
                     </div>
                   </div>
                 </div>
-                <div>
+                <div className="space-y-4">
+                  <h2 className="mb-4">Commandes à emporter : </h2>
                   <label className="text-xl font-medium">
-                    Délai de livraison, moyenne haute (minutes) :
+                    Délai de préparation moyen (minutes):
                   </label>
                   <div className="text-center">
                     <InputNumber
                       labelSize="xl"
                       textSize="lg"
                       id="alertInterval"
-                      value={orderSettings.deliveryEstimate.max}
+                      value={orderSettings.takeAwayEstimate}
                       onChange={(value) => {
                         if (value >= 0) {
                           setOrderSettings({
                             ...orderSettings,
-                            deliveryEstimate: {
-                              ...orderSettings.deliveryEstimate,
-                              max: value,
-                            },
+                            takeAwayEstimate: value,
                           });
                         }
                       }}
                       onIncrement={() => {
-                        let updatedDeliveryEstimate = {
-                          ...orderSettings.deliveryEstimate,
-                        };
-                        updatedDeliveryEstimate.max =
-                          updatedDeliveryEstimate.max + 15;
+                        let updatedTakawayEstimate =
+                          orderSettings.takeAwayEstimate + 5;
 
                         setOrderSettings({
                           ...orderSettings,
-                          deliveryEstimate: updatedDeliveryEstimate,
+                          takeAwayEstimate: updatedTakawayEstimate,
                         });
                       }}
                       onDecrement={() => {
-                        let updatedDeliveryEstimate = {
-                          ...orderSettings.deliveryEstimate,
-                        };
-                        updatedDeliveryEstimate.max =
-                          updatedDeliveryEstimate.max - 15;
+                        let updatedTakawayEstimate =
+                          orderSettings.takeAwayEstimate - 5;
 
-                        if (updatedDeliveryEstimate.max < 0) {
-                          updatedDeliveryEstimate.max = 0;
+                        if (updatedTakawayEstimate < 0) {
+                          updatedTakawayEstimate = 0;
                         }
                         setOrderSettings({
                           ...orderSettings,
-                          deliveryEstimate: updatedDeliveryEstimate,
+                          takeAwayEstimate: updatedTakawayEstimate,
                         });
                       }}
                     />
                   </div>
                 </div>
-              </div>
-              <div className="space-y-4">
-                <h2 className="mb-4">Commandes à emporter : </h2>
-                <label className="text-xl font-medium">
-                  Délai de préparation moyen (minutes):
-                </label>
-                <div className="text-center">
-                  <InputNumber
-                    labelSize="xl"
-                    textSize="lg"
-                    id="alertInterval"
-                    value={orderSettings.takeAwayEstimate}
-                    onChange={(value) => {
-                      if (value >= 0) {
-                        setOrderSettings({
-                          ...orderSettings,
-                          takeAwayEstimate: value,
-                        });
+                <div className="space-y-4">
+                  <h2 className="mb-4">Moyens de paiement : </h2>
+                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                    <p className="text-xl font-medium w-28">Livraison :</p>
+                    {orderSettings.paymentMethods.map((paymentMethod, i) => {
+                      const paymentMethodLabel = switchPaymentMethodLabel(
+                        paymentMethod.value
+                      );
+
+                      return (
+                        <div key={i} className="flex items-center">
+                          <input
+                            id={i}
+                            name="payment-method"
+                            type="checkbox"
+                            className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
+                            checked={paymentMethod.delivery}
+                            onChange={() => {
+                              let updatedPaymentMethods = [
+                                ...orderSettings.paymentMethods,
+                              ]; // Make a copy of paymentMethods array
+                              let updatedPaymentMethod = {
+                                ...updatedPaymentMethods[i],
+                              }; // Make a copy of the specific payment method object
+                              updatedPaymentMethod.delivery =
+                                !updatedPaymentMethod.delivery; // Update the delivery status
+                              updatedPaymentMethods[i] = updatedPaymentMethod; // Update the payment method in the array
+                              setOrderSettings({
+                                ...orderSettings,
+                                paymentMethods: updatedPaymentMethods, // Update the payment methods array in orderSettings
+                              });
+                            }}
+                          />
+                          <label
+                            htmlFor={paymentMethod.value}
+                            className="ml-3 block text-medium font-medium text-lg  leading-6"
+                          >
+                            {paymentMethodLabel}
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                    <p className="text-xl font-medium w-28">À emporter : </p>
+                    {orderSettings.paymentMethods.map((paymentMethod, i) => {
+                      const paymentMethodLabel = switchPaymentMethodLabel(
+                        paymentMethod.value
+                      );
+
+                      return (
+                        <div key={i} className="flex items-center">
+                          <input
+                            id={i}
+                            name="payment-method"
+                            type="checkbox"
+                            className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
+                            checked={paymentMethod.takeAway}
+                            onChange={() => {
+                              let updatedPaymentMethods = [
+                                ...orderSettings.paymentMethods,
+                              ]; // Faites une copie du tableau paymentMethods
+                              updatedPaymentMethods[i] = {
+                                ...updatedPaymentMethods[i], // Copiez l'objet du paiement spécifique
+                                takeAway: !updatedPaymentMethods[i].takeAway, // Mettez à jour le statut takeAway
+                              };
+                              setOrderSettings({
+                                ...orderSettings,
+                                paymentMethods: updatedPaymentMethods, // Mettez à jour le tableau des méthodes de paiement dans orderSettings
+                              });
+                            }}
+                          />
+                          <label
+                            htmlFor={paymentMethod.value}
+                            className="ml-3 block text-medium font-medium text-lg  leading-6"
+                          >
+                            {paymentMethodLabel}
+                          </label>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <h2 className="mb-4">Alertes sonores : </h2>
+                  <div className="space-y-2">
+                    <p className="font-medium text-xl">
+                      Alerte pour les commande en attente :
+                    </p>
+                    <TabBtn
+                      values={["Activer", "Désactiver"]}
+                      currentTab={
+                        orderSettings.pendingOrderAlert.enabled ? 0 : 1
                       }
-                    }}
-                    onIncrement={() => {
-                      let updatedTakawayEstimate =
-                        orderSettings.takeAwayEstimate + 5;
-
-                      setOrderSettings({
-                        ...orderSettings,
-                        takeAwayEstimate: updatedTakawayEstimate,
-                      });
-                    }}
-                    onDecrement={() => {
-                      let updatedTakawayEstimate =
-                        orderSettings.takeAwayEstimate - 5;
-
-                      if (updatedTakawayEstimate < 0) {
-                        updatedTakawayEstimate = 0;
-                      }
-                      setOrderSettings({
-                        ...orderSettings,
-                        takeAwayEstimate: updatedTakawayEstimate,
-                      });
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="space-y-4">
-                <h2 className="mb-4">Moyens de paiement : </h2>
-                <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                  <p className="text-xl font-medium w-28">Livraison :</p>
-                  {orderSettings.paymentMethods.map((paymentMethod, i) => {
-                    const paymentMethodLabel = switchPaymentMethodLabel(
-                      paymentMethod.value
-                    );
-
-                    return (
-                      <div key={i} className="flex items-center">
-                        <input
-                          id={i}
-                          name="payment-method"
-                          type="checkbox"
-                          className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
-                          checked={paymentMethod.delivery}
-                          onChange={() => {
-                            let updatedPaymentMethods = [
-                              ...orderSettings.paymentMethods,
-                            ]; // Make a copy of paymentMethods array
-                            let updatedPaymentMethod = {
-                              ...updatedPaymentMethods[i],
-                            }; // Make a copy of the specific payment method object
-                            updatedPaymentMethod.delivery =
-                              !updatedPaymentMethod.delivery; // Update the delivery status
-                            updatedPaymentMethods[i] = updatedPaymentMethod; // Update the payment method in the array
-                            setOrderSettings({
-                              ...orderSettings,
-                              paymentMethods: updatedPaymentMethods, // Update the payment methods array in orderSettings
-                            });
-                          }}
-                        />
-                        <label
-                          htmlFor={paymentMethod.value}
-                          className="ml-3 block text-medium font-medium text-lg  leading-6"
-                        >
-                          {paymentMethodLabel}
-                        </label>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                  <p className="text-xl font-medium w-28">À emporter : </p>
-                  {orderSettings.paymentMethods.map((paymentMethod, i) => {
-                    const paymentMethodLabel = switchPaymentMethodLabel(
-                      paymentMethod.value
-                    );
-
-                    return (
-                      <div key={i} className="flex items-center">
-                        <input
-                          id={i}
-                          name="payment-method"
-                          type="checkbox"
-                          className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
-                          checked={paymentMethod.takeAway}
-                          onChange={() => {
-                            let updatedPaymentMethods = [
-                              ...orderSettings.paymentMethods,
-                            ]; // Faites une copie du tableau paymentMethods
-                            updatedPaymentMethods[i] = {
-                              ...updatedPaymentMethods[i], // Copiez l'objet du paiement spécifique
-                              takeAway: !updatedPaymentMethods[i].takeAway, // Mettez à jour le statut takeAway
-                            };
-                            setOrderSettings({
-                              ...orderSettings,
-                              paymentMethods: updatedPaymentMethods, // Mettez à jour le tableau des méthodes de paiement dans orderSettings
-                            });
-                          }}
-                        />
-                        <label
-                          htmlFor={paymentMethod.value}
-                          className="ml-3 block text-medium font-medium text-lg  leading-6"
-                        >
-                          {paymentMethodLabel}
-                        </label>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="space-y-4">
-                <h2 className="mb-4">Alertes sonores : </h2>
-                <div className="space-y-2">
-                  <p className="font-medium text-xl">
-                    Alerte pour les commande en attente :
-                  </p>
-                  <TabBtn
-                    values={["Activer", "Désactiver"]}
-                    currentTab={orderSettings.pendingOrderAlert.enabled ? 0 : 1}
-                    onClickTab={(i) => {
-                      let updatedPendingOrderAlert = {
-                        ...orderSettings.pendingOrderAlert,
-                      };
-                      if (i === 0) {
-                        //enable
-                        updatedPendingOrderAlert.enabled = true;
-                      } else if (i === 1) {
-                        //disable
-                        updatedPendingOrderAlert.enabled = false;
-                      }
-                      setOrderSettings({
-                        ...orderSettings,
-                        pendingOrderAlert: updatedPendingOrderAlert,
-                      });
-                    }}
-                  />
-                </div>
-                <div>
-                  <label className="text-xl font-medium">
-                    Rappel sonores (minutes):
-                  </label>
-                  <div className="text-center">
-                    <InputNumber
-                      labelSize="xl"
-                      textSize="lg"
-                      id="alertInterval"
-                      value={orderSettings.pendingOrderAlert.interval}
-                      onChange={(value) => {
+                      onClickTab={(i) => {
                         let updatedPendingOrderAlert = {
                           ...orderSettings.pendingOrderAlert,
                         };
-                        if (value >= 0) {
-                          updatedPendingOrderAlert.interval = value;
+                        if (i === 0) {
+                          //enable
+                          updatedPendingOrderAlert.enabled = true;
+                        } else if (i === 1) {
+                          //disable
+                          updatedPendingOrderAlert.enabled = false;
+                        }
+                        setOrderSettings({
+                          ...orderSettings,
+                          pendingOrderAlert: updatedPendingOrderAlert,
+                        });
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xl font-medium">
+                      Rappel sonores (minutes):
+                    </label>
+                    <div className="text-center">
+                      <InputNumber
+                        labelSize="xl"
+                        textSize="lg"
+                        id="alertInterval"
+                        value={orderSettings.pendingOrderAlert.interval}
+                        onChange={(value) => {
+                          let updatedPendingOrderAlert = {
+                            ...orderSettings.pendingOrderAlert,
+                          };
+                          if (value >= 0) {
+                            updatedPendingOrderAlert.interval = value;
+                            setOrderSettings({
+                              ...orderSettings,
+                              pendingOrderAlert: updatedPendingOrderAlert,
+                            });
+                          }
+                        }}
+                        onIncrement={() => {
+                          let updatedPendingOrderAlert = {
+                            ...orderSettings.pendingOrderAlert,
+                          };
+                          updatedPendingOrderAlert.interval += 5;
                           setOrderSettings({
                             ...orderSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
                           });
-                        }
-                      }}
-                      onIncrement={() => {
-                        let updatedPendingOrderAlert = {
-                          ...orderSettings.pendingOrderAlert,
-                        };
-                        updatedPendingOrderAlert.interval += 5;
-                        setOrderSettings({
-                          ...orderSettings,
-                          pendingOrderAlert: updatedPendingOrderAlert,
-                        });
-                      }}
-                      onDecrement={() => {
-                        let updatedPendingOrderAlert = {
-                          ...orderSettings.pendingOrderAlert,
-                        };
-                        updatedPendingOrderAlert.interval -= 5;
-                        if (updatedPendingOrderAlert.interval < 0) {
-                          updatedPendingOrderAlert.interval = 0;
-                        }
-                        setOrderSettings({
-                          ...orderSettings,
-                          pendingOrderAlert: updatedPendingOrderAlert,
-                        });
-                      }}
-                    />
+                        }}
+                        onDecrement={() => {
+                          let updatedPendingOrderAlert = {
+                            ...orderSettings.pendingOrderAlert,
+                          };
+                          updatedPendingOrderAlert.interval -= 5;
+                          if (updatedPendingOrderAlert.interval < 0) {
+                            updatedPendingOrderAlert.interval = 0;
+                          }
+                          setOrderSettings({
+                            ...orderSettings,
+                            pendingOrderAlert: updatedPendingOrderAlert,
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+            {activeCategory === categoriesData[2] && (
+              <div className="flex flex-col px-10 w-full h-full space-y-8">
+                <div className="space-y-4">
+                  <h2 className="mb-4">Informations du compte</h2>
+                  <div className="space-y-2">
+                    <p className="font-medium text-xl"></p>
+                    <div className="w-full sm:w-5/12">
+                      <FormInput
+                        label="Adresse mail de connection :
+                        "
+                        labelSize="xl"
+                        textSize="lg"
+                        value={formRestaurantInfo.mail}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            mail: input,
+                          })
+                        }
+                        validationFunction={(e) =>
+                          mailValidation(e, setValidationErrors)
+                        }
+                        validationError={validationErrors.mail}
+                      />
+                    </div>
+                  </div>
+                  <h2 className="mb-4">Mot de passe</h2>
+                  <div className="w-full sm:w-5/12 space-y-4 text-center">
+                    <FormInput
+                      placeholder={"Mot de passe actuel"}
+                      labelSize="xl"
+                      textSize="lg"
+                      type="password"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          password: input,
+                        })
+                      }
+                      validationFunction={(e) =>
+                        passwordValidation(e, setValidationErrors)
+                      }
+                      validationError={validationErrors.password}
+                    ></FormInput>
+                    <FormInput
+                      placeholder={"Nouveau mot de passe"}
+                      labelSize="xl"
+                      textSize="lg"
+                      type="password"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          password: input,
+                        })
+                      }
+                      validationFunction={(e) =>
+                        passwordValidation(e, setValidationErrors)
+                      }
+                      validationError={validationErrors.password}
+                    ></FormInput>
+                    <FormInput
+                      placeholder={"Confirmer le nouveau mot de passe"}
+                      labelSize="xl"
+                      textSize="lg"
+                      type="password"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          password: input,
+                        })
+                      }
+                      validationFunction={(e) =>
+                        passwordValidation(e, setValidationErrors)
+                      }
+                      validationError={validationErrors.password}
+                    ></FormInput>
+                    <DefaultBtn
+                      value="Modifier le mot de passe"
+                      className="text-xl font-bold bg-primary hover:opacity-90  focus:text-white text-white self-center"
+                      onClick={() => onClickConnexionBtn(form)}
+                    />
+                  </div>
+                </div>
+                <div className="w-full sm:w-5/12 space-y-4 text-center">
+                  <DefaultBtn
+                    value="Se déconnecter"
+                    className="rounded-s-lg rounded-e-lg text-xl font-bold bg-error-danger hover:opacity-70  focus:text-white text-white self-center"
+                    onClick={() => onClickLogOut()}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <FooterSettings
+            validationErrors={validationErrors}
+            formRestaurantInfo={formRestaurantInfo}
+            restaurantSettings={restaurantSettings}
+            orderSettings={orderSettings}
+          />
         </div>
-        <FooterSettings
-          validationErrors={validationErrors}
-          formRestaurantInfo={formRestaurantInfo}
-          restaurantSettings={restaurantSettings}
-          orderSettings={orderSettings}
-        />
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }

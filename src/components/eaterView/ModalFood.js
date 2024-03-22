@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addArticleToCart,
   incrementArticleQuantity,
-} from "../../redux/reducers/cart";
+} from "../../redux/cart/cartSlice";
 
 import { addMoney, multiplyMoney } from "@/utils/moneyCalculations";
 
@@ -42,7 +42,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
       setSelectedOptions([]);
       setSelectedSupplements([]);
       setSelectedOptions(
-        food.options.length > 0
+        food?.options?.length > 0
           ? food.options.flatMap((optionCategory) => optionCategory.items[0])
           : []
       );
@@ -134,9 +134,9 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                   </button>
                 </div>
                 <div className="space-y-3 overflow-y-auto px-4">
-                  {food.options.length > 0 && (
+                  {food?.options?.length > 0 && (
                     <div className="space-y-2">
-                      {food.options.map((option, i) => (
+                      {food?.options?.map((option, i) => (
                         <FoodOptionsFormSelect
                           key={i}
                           label={option.label}
@@ -147,9 +147,9 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                       ))}
                     </div>
                   )}
-                  {food.supplements.length > 0 && (
+                  {food?.supplements?.length > 0 && (
                     <div>
-                      {food.supplements.map((supplement, i) => (
+                      {food?.supplements?.map((supplement, i) => (
                         <FoodSupplementsCheckBoxGroup
                           key={i}
                           label={supplement.label}

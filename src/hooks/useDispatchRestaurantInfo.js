@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchRestaurant } from "@/redux/reducers/restaurant";
+import { fetchRestaurant } from "@/redux/restaurant/restaurantSlice";
 
 function useDispatchRestaurantsInfo(uniqueValue) {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchRestaurant(uniqueValue));
+    if (uniqueValue) {
+      dispatch(fetchRestaurant(uniqueValue));
+    }
   }, [uniqueValue]);
 }
 export default useDispatchRestaurantsInfo;

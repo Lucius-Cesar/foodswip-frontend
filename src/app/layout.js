@@ -52,7 +52,7 @@ const urwGeometric = localFont({
 
 export const metadata = {
   title: "FoodSwip",
-  description: "Commande de repas en ligne",
+  description: "Commandes de repas en ligne",
 };
 
 export default function RootLayout({ children }) {

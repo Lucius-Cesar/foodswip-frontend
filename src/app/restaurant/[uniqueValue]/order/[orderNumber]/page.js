@@ -2,7 +2,7 @@
 import { useSearchParams } from "next/navigation";
 
 //import { useSelector } from "react-redux";
-import RestaurantLogo from "@/components/RestaurantLogo";
+import RestaurantLogo from "@/components/ui/RestaurantLogo";
 import SuccessIcon from "@/components/ui/icons/SuccessIcon";
 import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon";
 import Preloader from "@/components/ui/Preloader";
@@ -65,7 +65,7 @@ export default function Order({ params }) {
             )}
           </div>
         )}
-        {order.status === 403 && (
+        {order.error?.status === 403 && (
           <p className="text-error-danger text-center text-xl">
             Vous n'êtes pas autorisé à consulter cette commande
           </p>

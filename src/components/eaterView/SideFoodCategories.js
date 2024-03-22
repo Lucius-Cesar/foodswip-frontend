@@ -27,7 +27,7 @@ export default function SideFoodCategories({
         <span className="sr-only">Close menu</span>
         <XMarkIcon className="h-8 w-8" aria-hidden="true" />
       </button>
-      <div className="self-center flex flex-col justify-center items-center overflow-y-auto h-5/6 w-screen sm:w-full border-r-2 border-light-grey">
+      <div className="self-center flex flex-col items-center overflow-y-auto h-5/6 w-screen sm:w-full border-r-2 border-light-grey">
         {menu.map((foodCategory, i) => (
           <button
             type="button"
@@ -35,6 +35,9 @@ export default function SideFoodCategories({
               foodCategory.title === activeFoodCategory.title
                 ? "text-primary"
                 : "text-medium-grey"
+            } ${
+              // mt auto on first item and margin bottom on last item to center , justify-content center bug if y-scroll
+              i === 0 ? "mt-auto" : i === menu.length - 1 ? "mb-auto" : ""
             } mt-3 mb-3`}
             key={i}
             onClick={() => onFoodCategoryClick(i)}
