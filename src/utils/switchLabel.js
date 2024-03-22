@@ -38,7 +38,6 @@ function switchPaymentMethodLabel(paymentMethodValue) {
       paymentMethodlabel = "Bancontact";
       break;
     default:
-      console.log("Inconnue (présente dans la db mais pas de switch value)");
       break;
   }
 

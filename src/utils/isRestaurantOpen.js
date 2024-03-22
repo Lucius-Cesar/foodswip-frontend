@@ -22,10 +22,6 @@ function isRestaurantOpen(schedule, exceptionalClosings) {
   }
 
   for (const exceptionalClosing of exceptionalClosings) {
-    console.log(currentDate);
-    console.log(new Date(exceptionalClosing.start));
-    console.log(new Date(exceptionalClosing.end));
-
     if (
       !isDateWithinStartEnd(
         currentDate,

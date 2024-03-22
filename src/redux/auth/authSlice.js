@@ -46,9 +46,7 @@ export const getAuth = createAsyncThunk(
           method: "GET",
         }
       );
-      console.log(response);
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
         return rejectWithValue(data);
       }
@@ -126,7 +124,6 @@ export const authSlice = createSlice({
       state.error = false;
     });
     builder.addCase(getAuth.rejected, (state, action) => {
-      console.log(action.payload);
       state.isLoading = false;
       state.error = action.payload;
     });

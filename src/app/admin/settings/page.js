@@ -416,18 +416,14 @@ export default function settings() {
                         let functionToUse;
                         switch (modalPeriodOperation) {
                           case "create":
-                            console.log("create");
                             functionToUse = createExceptionalClosing;
                             break;
                           case "update":
-                            console.log("update");
                             functionToUse = updateExceptionalClosing;
                             break;
                           default:
-                            console.log("none");
                             break;
                         }
-                        console.log(functionToUse);
                         functionToUse(valueModalPeriod.itemIndex, {
                           start: valueModalPeriod.start,
                           end: valueModalPeriod.end,
@@ -508,7 +504,6 @@ export default function settings() {
                         let updatedOrderType = {
                           ...orderSettings.orderTypes[1],
                         };
-                        console.log(updatedOrderType);
                         if (i === 0) {
                           //enable
                           updatedOrderType.enabled = true;
@@ -538,7 +533,6 @@ export default function settings() {
                         let updatedOrderType = {
                           ...orderSettings.orderTypes[0],
                         };
-                        console.log(updatedOrderType);
                         if (i === 0) {
                           //enable
                           updatedOrderType.enabled = true;

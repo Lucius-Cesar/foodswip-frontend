@@ -19,7 +19,6 @@ export default function Order({ params }) {
     `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
     fetchOptions
   );
-  console.log(order);
   useEffect(() => {
     const estimatedArrivalDate = new Date(order.data?.estimatedArrivalDate);
     setFormattedEstimatedArrivalDate(
