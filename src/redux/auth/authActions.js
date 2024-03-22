@@ -1,5 +1,4 @@
 import { logOut, setCredentials } from "@/redux/auth/authSlice";
-import { store } from "../store";
 import AppError from "@/utils/AppError";
 
 function authToken() {

@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authFetch } from "../auth/authActions";
 
 export const fetchRestaurant = createAsyncThunk(
   "fetchRestaurant",
