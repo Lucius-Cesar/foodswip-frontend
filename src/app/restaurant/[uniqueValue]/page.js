@@ -17,9 +17,9 @@ import Preloader from "@/components/ui/Preloader";
 import { useSelector, useDispatch } from "react-redux";
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import isRestaurantOpen from "@/utils/isRestaurantOpen";
-import useDispatchRestaurantsInfo from "@/hooks/useDispatchRestaurantInfo";
+import useGetRestaurant from "@/hooks/useGetRestaurant";
 export default function eaterView({ params }) {
-  useDispatchRestaurantsInfo(params.uniqueValue);
+  useGetRestaurant(params.uniqueValue);
 
   //redux
   const restaurant = useSelector((state) => state.restaurant);
@@ -42,12 +42,12 @@ export default function eaterView({ params }) {
 
   useEffect(() => {
     if (
-      restaurant.data.restaurantSettings?.schedule &&
-      restaurant.data.restaurantSettings?.exceptionalClosings
+      restaurant.data.publicSettings?.schedule &&
+      restaurant.data.publicSettings?.exceptionalClosings
     ) {
       const checkRestaurantOpen = isRestaurantOpen(
-        restaurant.data.restaurantSettings.schedule,
-        restaurant.data.restaurantSettings.exceptionalClosings
+        restaurant.data.publicSettings.schedule,
+        restaurant.data.publicSettings.exceptionalClosings
       );
       setRestaurantOpen(checkRestaurantOpen);
       setScrollBarHeight(checkRestaurantOpen ? "-10px" : "-45px"); //scrollBarHeight -45px needed when topBanner
@@ -154,7 +154,7 @@ export default function eaterView({ params }) {
                     <DeliveryIcon className="h-4 w-auto" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Livraison</p>
-                      <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data.orderSettings.deliveryFees} €`}</p>
+                      <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data.publicSettings.deliveryFees} €`}</p>
                     </div>
                   </div>
 
@@ -162,7 +162,7 @@ export default function eaterView({ params }) {
                     <MinOrderIcon className="h-4 w-4" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Min. commande</p>
-                      <p className="text-xs sm:text-sm font-bold">{`${restaurant.data.orderSettings.deliveryMin} €`}</p>
+                      <p className="text-xs sm:text-sm font-bold">{`${restaurant.data.publicSettings.deliveryMin} €`}</p>
                     </div>
                   </div>
                 </div>

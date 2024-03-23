@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { authFetch } from "../auth/authSlice";
 
 export const fetchRestaurant = createAsyncThunk(
   "fetchRestaurant",
@@ -17,7 +18,7 @@ export const fetchRestaurant = createAsyncThunk(
 
 export const postRestaurantSettings = createAsyncThunk(
   "postRestaurantSettings",
-  async (payload) => {
+  async (payload, { getState, dispatch }) => {
     try {
       const data = await authFetch(
         `${process.env.NEXT_PUBLIC_API_URL}/restaurants/updateRestaurantSettings`,
@@ -25,7 +26,9 @@ export const postRestaurantSettings = createAsyncThunk(
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-        }
+        },
+        getState,
+        dispatch
       );
       return data;
     } catch (error) {

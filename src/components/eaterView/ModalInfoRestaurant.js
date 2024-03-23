@@ -76,7 +76,7 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                   <div>
                     <h3 className="font-title">Horraires</h3>
                     <div className="flex flex-col space-y-2">
-                      {restaurant.data.restaurantSettings.schedule.map(
+                      {restaurant.data.publicSettings.schedule.map(
                         (dayschedule, i) => {
                           const dayLabel = switchDayLabel(i);
 
@@ -106,11 +106,11 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                     </div>
                   </div>
 
-                  {restaurant.data.restaurantSettings.exceptionalClosings
-                    .length === 0 ? null : (
+                  {restaurant.data.publicSettings.exceptionalClosings.length ===
+                  0 ? null : (
                     <div className="flex flex-col">
                       <h3 className="font-title">Fermetures exceptionnelles</h3>
-                      {restaurant.data.restaurantSettings.exceptionalClosings.map(
+                      {restaurant.data.publicSettings.exceptionalClosings.map(
                         (exceptionalClosing, i) => (
                           <p key={i}>
                             {formatExeptionalClosings(exceptionalClosing.start)}

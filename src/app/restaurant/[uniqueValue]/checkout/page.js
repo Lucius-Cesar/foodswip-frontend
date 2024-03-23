@@ -70,14 +70,14 @@ export default function Checkout({ params }) {
   useEffect(() => {
     if (cart.data.orderType === 0) {
       const paymentMethodsForDelivery =
-        restaurant.data.orderSettings.paymentMethods.filter(
+        restaurant.data.publicSettings.paymentMethods.filter(
           (paymentMethod) => paymentMethod.delivery === true
         );
 
       setPaymentMethods(paymentMethodsForDelivery);
     } else if (cart.data.orderType === 1) {
       const paymentMethodsForTakeAway =
-        restaurant.data.orderSettings.paymentMethods.filter(
+        restaurant.data.publicSettings.paymentMethods.filter(
           (paymentMethod) => paymentMethod.takeAway === true
         );
       setPaymentMethods(paymentMethodsForTakeAway);
@@ -91,7 +91,7 @@ export default function Checkout({ params }) {
     if (orderType === 0) {
       estimatedArrival.setMinutes(
         currentDate.getMinutes() +
-          restaurant.data.orderSettings.deliveryEstimate.max
+          restaurant.data.publicSettings.deliveryEstimate.max
       );
     }
 
@@ -99,7 +99,7 @@ export default function Checkout({ params }) {
     if (orderType === 1) {
       estimatedArrival.setMinutes(
         currentDate.getMinutes() +
-          restaurant.data.orderSettings.takeAwayEstimate
+          restaurant.data.publicSettings.takeAwayEstimate
       );
     }
     return estimatedArrival;
@@ -250,13 +250,13 @@ export default function Checkout({ params }) {
                 {cart.data.orderType === 0 ? (
                   <h3 className="font-title text-center sm:text-left">
                     Estimation des délais de livraison: entre{" "}
-                    {restaurant.data.orderSettings.deliveryEstimate.min} et{" "}
-                    {restaurant.data.orderSettings.deliveryEstimate.max} min *
+                    {restaurant.data.publicSettings.deliveryEstimate.min} et{" "}
+                    {restaurant.data.publicSettings.deliveryEstimate.max} min *
                   </h3>
                 ) : cart.data.orderType === 1 ? (
                   <h3 className="font-title text-center sm:text-left">
                     Estimation du délai pour emporter:{" "}
-                    {restaurant.data.orderSettings.takeAwayEstimate} min *
+                    {restaurant.data.publicSettings.takeAwayEstimate} min *
                   </h3>
                 ) : null}
 

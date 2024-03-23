@@ -30,8 +30,8 @@ export default function Cart({ open, setOpen, variant }) {
 
   const onClickOrderBtn = () => {
     const restaurantOpen = isRestaurantOpen(
-      restaurant.data.restaurantSettings.schedule,
-      restaurant.data.restaurantSettings.exceptionalClosings
+      restaurant.data.publicSettings.schedule,
+      restaurant.data.publicSettings.exceptionalClosings
     );
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
@@ -61,14 +61,14 @@ export default function Cart({ open, setOpen, variant }) {
       setTotalSum(
         addMoney(
           cart.data.articlesSum,
-          restaurant.data.orderSettings.deliveryFees
+          restaurant.data.publicSettings.deliveryFees
         )
       );
-      cart.data.articlesSum < restaurant.data.orderSettings.deliveryMin
+      cart.data.articlesSum < restaurant.data.publicSettings.deliveryMin
         ? setValidationErrors((previous) => ({
             ...previous,
             deliveryMin: `${subtractMoney(
-              restaurant.data.orderSettings.deliveryMin,
+              restaurant.data.publicSettings.deliveryMin,
               cart.data.articlesSum
             )} € d'achats restants pour profiter de la Livraison`,
           }))
@@ -130,7 +130,7 @@ export default function Cart({ open, setOpen, variant }) {
                   <div className="flex flex-row justify-between">
                     <p className="font-medium">Frais de livraison</p>
                     <p className="font-medium">
-                      {restaurant.data.orderSettings.deliveryFees} €
+                      {restaurant.data.publicSettings.deliveryFees} €
                     </p>
                   </div>
                 )}

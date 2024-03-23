@@ -7,15 +7,17 @@ import FormInput from "@/components/ui/FormInput.js";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 import { mailValidation, passwordValidation } from "@/utils/validations";
 import { logIn } from "@/redux/auth/authSlice";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import useRefreshAuth from "@/hooks/useRefreshAuth";
-
+import useCheckAuth from "@/hooks/useCheckAuth";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-
+import useGetRestaurant from "@/hooks/useGetRestaurant";
 export default function Login() {
-  useRefreshAuth();
+  const auth = useSelector((state) => state.auth);
+
+  useGetRestaurant(auth.data?.user?.restaurantUniqueValue);
+
+  useCheckAuth(true);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -27,10 +29,10 @@ export default function Login() {
   const [form, setForm] = useState(formInitialState);
 
   const [validationErrors, setValidationErrors] = useState(formInitialState);
+  const restaurant = useSelector((state) => state.restaurant);
 
-  const auth = useSelector((state) => state.auth);
   useEffect(() => {
-    if (auth.data?.token) {
+    if (auth.data?.token && restaurant.data) {
       setValidationErrors(formInitialState);
       router.push(`/admin/settings`);
     }
@@ -90,7 +92,7 @@ export default function Login() {
             validationError={validationErrors.password}
           ></FormInput>
         </div>
-        {auth.isLoading ? (
+        {auth.isLoading || restaurant.isLoading ? (
           <LoadingSpinner />
         ) : (
           <DefaultBtn
@@ -106,7 +108,7 @@ export default function Login() {
         )}
         <div classname="flex flex-col items-center">
           <p> Vous souhaitez devenir client ?</p>
-          <Link href="https://erp.foodswip.com/forms/wtl/d5666534a70376742b81a46cfa37bcd0?styled=1">
+          <Link href="https://erp.webwalkers.io/forms/wtl/d5666534a70376742b81a46cfa37bcd0?styled=1">
             <p className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 text-center">
               Contactez-nous
             </p>

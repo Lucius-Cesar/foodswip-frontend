@@ -8,8 +8,8 @@ import { postRestaurantSettings } from "@/redux/restaurant/restaurantSlice";
 export default function FooterSettings({
   validationErrors,
   formRestaurantInfo,
-  restaurantSettings,
-  orderSettings,
+  publicSettings,
+  privateSettings,
 }) {
   const dispatch = useDispatch();
   const [saveError, setSaveError] = useState(false);
@@ -40,8 +40,8 @@ export default function FooterSettings({
                     city: formRestaurantInfo.city,
                     country: formRestaurantInfo.country,
                   },
-                  restaurantSettings: restaurantSettings,
-                  orderSettings: orderSettings,
+                  publicSettings: publicSettings,
+                  privateSettings: privateSettings,
                 };
                 dispatch(postRestaurantSettings(payload));
               } else {

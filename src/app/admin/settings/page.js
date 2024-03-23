@@ -24,7 +24,6 @@ import deepCopy from "@/utils/deepCopy";
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import FooterSettings from "@/components/adminView/settings/FooterSettings";
-import useDispatchRestaurantsInfo from "@/hooks/useDispatchRestaurantInfo";
 import Preloader from "@/components/ui/Preloader";
 import useRefreshAuth from "@/hooks/useRefreshAuth";
 import useCheckAuth from "@/hooks/useCheckAuth";
@@ -39,11 +38,9 @@ export default function settings() {
   const restaurant = useSelector((state) => state.restaurant);
 
   const auth = useSelector((state) => state.auth);
-  useDispatchRestaurantsInfo(auth.data?.user?.restaurantUniqueValue);
-
   const [formRestaurantInfo, setFormRestaurantInfo] = useState(null);
-  const [restaurantSettings, setRestaurantSettings] = useState(null);
-  const [orderSettings, setOrderSettings] = useState(null);
+  const [publicSettings, setPublicSettings] = useState(null);
+  const [privateSettings, setPrivateSettings] = useState(null);
 
   useEffect(() => {
     if (restaurant.data) {
@@ -58,8 +55,8 @@ export default function settings() {
         phoneNumber: restaurant.data.phoneNumber,
         mail: restaurant.data.mail,
       });
-      setRestaurantSettings(restaurant.data.restaurantSettings);
-      setOrderSettings(restaurant.data.orderSettings);
+      setPublicSettings(restaurant.data.publicSettings);
+      setPrivateSettings(restaurant.data.privateSettings);
     }
   }, [restaurant.data]);
   const [validationErrors, setValidationErrors] = useState({
@@ -99,47 +96,46 @@ export default function settings() {
   const [modalPeriodOperation, setModalPeriodOperation] = useState(null);
   // for Schedule
   const createService = (dayIndex, itemIndex = null, newValue) => {
-    let updatedRestaurantSettings = deepCopy(restaurantSettings);
-    updatedRestaurantSettings.schedule[dayIndex].services.push(newValue);
-    setRestaurantSettings(updatedRestaurantSettings);
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.schedule[dayIndex].services.push(newValue);
+    setPublicSettings(updatedRestaurantSettings);
   };
 
   const updateService = (dayIndex, itemIndex, newValue) => {
-    let updatedRestaurantSettings = deepCopy(restaurantSettings);
-    updatedRestaurantSettings.schedule[dayIndex].services[itemIndex] = newValue;
-    setRestaurantSettings(updatedRestaurantSettings);
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.schedule[dayIndex].services[itemIndex] = newValue;
+    setPublicSettings(updatedPublicSettings);
   };
 
   const deleteService = (dayIndex, itemIndex, newValue = null) => {
-    let updatedRestaurantSettings = deepCopy(restaurantSettings);
-    updatedRestaurantSettings.schedule[dayIndex].services.splice(itemIndex, 1);
-    setRestaurantSettings(updatedRestaurantSettings);
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.schedule[dayIndex].services.splice(itemIndex, 1);
+    setPublicSettings(updatedPublicSettings);
   };
 
   // for exceptionalClosings
   const createExceptionalClosing = (itemIndex = null, newValue) => {
-    let updatedRestaurantSettings = deepCopy(restaurantSettings);
-    updatedRestaurantSettings.exceptionalClosings.push(newValue);
-    setRestaurantSettings(updatedRestaurantSettings);
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.exceptionalClosings.push(newValue);
+    setPublicSettings(updatedPublicSettings);
   };
 
   const updateExceptionalClosing = (itemIndex, newValue) => {
-    let updatedRestaurantSettings = deepCopy(restaurantSettings);
-    updatedRestaurantSettings.exceptionalClosings[itemIndex] = newValue;
-    setRestaurantSettings(updatedRestaurantSettings);
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.exceptionalClosings[itemIndex] = newValue;
+    setPublicSettings(updatedPublicSettings);
   };
 
   const deleteExceptionalClosing = (itemIndex, newValue = null) => {
-    let updatedRestaurantSettings = deepCopy(restaurantSettings);
-    updatedRestaurantSettings.exceptionalClosings.splice(itemIndex, 1);
-    setRestaurantSettings(updatedRestaurantSettings);
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.exceptionalClosings.splice(itemIndex, 1);
+    setPublicSettings(updatedPublicSettings);
   };
 
   const onClickLogOut = () => {
     dispatch(logOut());
-    router.push("/admin/login");
   };
-  if (!(formRestaurantInfo && restaurantSettings && orderSettings)) {
+  if (!(formRestaurantInfo && publicSettings && privateSettings)) {
     return (
       <>
         <Preloader />
@@ -333,7 +329,7 @@ export default function settings() {
                       }}
                     />
                     <div className="flex flex-col space-y-6">
-                      {restaurantSettings?.schedule.map((scheduleItem, i) => {
+                      {publicSettings?.schedule.map((scheduleItem, i) => {
                         const dayLabel = switchDayLabel(i);
                         return (
                           <div
@@ -431,7 +427,7 @@ export default function settings() {
                       }}
                     />
                     <div className="flex flex-col items-center space-y-6">
-                      {restaurantSettings?.exceptionalClosings.map(
+                      {publicSettings?.exceptionalClosings.map(
                         (exceptionalClosing, i) => {
                           const exceptionalClosingDate = {
                             start: new Date(exceptionalClosing.start),
@@ -499,10 +495,10 @@ export default function settings() {
                     </p>
                     <TabBtn
                       values={["Activer", "Désactiver"]}
-                      currentTab={orderSettings.orderTypes[1].enabled ? 0 : 1}
+                      currentTab={publicSettings.orderTypes[1].enabled ? 0 : 1}
                       onClickTab={(i) => {
                         let updatedOrderType = {
-                          ...orderSettings.orderTypes[1],
+                          ...publicSettings.orderTypes[1],
                         };
                         if (i === 0) {
                           //enable
@@ -511,10 +507,10 @@ export default function settings() {
                           //disable
                           updatedOrderType.enabled = false;
                         }
-                        setOrderSettings({
-                          ...orderSettings,
+                        setPublicSettings({
+                          ...publicSettings,
                           orderTypes: [
-                            orderSettings.orderTypes[0],
+                            publicSettings.orderTypes[0],
                             updatedOrderType,
                           ],
                         });
@@ -528,10 +524,10 @@ export default function settings() {
                     </p>
                     <TabBtn
                       values={["Activer", "Désactiver"]}
-                      currentTab={orderSettings.orderTypes[0].enabled ? 0 : 1}
+                      currentTab={publicSettings.orderTypes[0].enabled ? 0 : 1}
                       onClickTab={(i) => {
                         let updatedOrderType = {
-                          ...orderSettings.orderTypes[0],
+                          ...publicSettings.orderTypes[0],
                         };
                         if (i === 0) {
                           //enable
@@ -540,11 +536,11 @@ export default function settings() {
                           //disable
                           updatedOrderType.enabled = false;
                         }
-                        setOrderSettings({
-                          ...orderSettings,
+                        setPublicSettings({
+                          ...publicSettings,
                           orderTypes: [
                             updatedOrderType,
-                            orderSettings.orderTypes[1],
+                            publicSettings.orderTypes[1],
                           ],
                         });
                       }}
@@ -563,33 +559,33 @@ export default function settings() {
                           labelSize="xl"
                           textSize="lg"
                           id="alertInterval"
-                          value={orderSettings.deliveryMin}
+                          value={publicSettings.deliveryMin}
                           onChange={(value) => {
                             if (value >= 0) {
-                              setOrderSettings({
-                                ...orderSettings,
+                              setPublicSettings({
+                                ...publicSettings,
                                 deliveryMin: value,
                               });
                             }
                           }}
                           onIncrement={() => {
                             let updatedDeliveryMin =
-                              orderSettings.deliveryMin + 1;
+                              publicSettings.deliveryMin + 1;
 
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryMin: updatedDeliveryMin,
                             });
                           }}
                           onDecrement={() => {
                             let updatedDeliveryMin =
-                              orderSettings.deliveryMin - 1;
+                              publicSettings.deliveryMin - 1;
 
                             if (updatedDeliveryMin < 0) {
                               updatedDeliveryMin = 0;
                             }
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryMin: updatedDeliveryMin,
                             });
                           }}
@@ -605,33 +601,33 @@ export default function settings() {
                           labelSize="xl"
                           textSize="lg"
                           id="alertInterval"
-                          value={orderSettings.deliveryFees}
+                          value={publicSettings.deliveryFees}
                           onChange={(value) => {
                             if (value >= 0) {
-                              setOrderSettings({
-                                ...orderSettings,
+                              setPublicSettings({
+                                ...publicSettings,
                                 deliveryFees: value,
                               });
                             }
                           }}
                           onIncrement={() => {
                             let updatedDeliveryFees =
-                              orderSettings.deliveryFees + 1;
+                              publicSettings.deliveryFees + 1;
 
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryFees: updatedDeliveryFees,
                             });
                           }}
                           onDecrement={() => {
                             let updatedDeliveryFees =
-                              orderSettings.deliveryFees - 1;
+                              publicSettings.deliveryFees - 1;
 
                             if (updatedDeliveryFees < 0) {
                               updatedDeliveryFees = 0;
                             }
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryFees: updatedDeliveryFees,
                             });
                           }}
@@ -647,13 +643,13 @@ export default function settings() {
                           labelSize="xl"
                           textSize="lg"
                           id="alertInterval"
-                          value={orderSettings.deliveryEstimate.min}
+                          value={publicSettings.deliveryEstimate.min}
                           onChange={(value) => {
                             if (value >= 0) {
-                              setOrderSettings({
-                                ...orderSettings,
+                              setPublicSettings({
+                                ...publicSettings,
                                 deliveryEstimate: {
-                                  ...orderSettings.deliveryEstimate,
+                                  ...publicSettings.deliveryEstimate,
                                   min: value,
                                 },
                               });
@@ -661,19 +657,19 @@ export default function settings() {
                           }}
                           onIncrement={() => {
                             let updatedDeliveryEstimate = {
-                              ...orderSettings.deliveryEstimate,
+                              ...publicSettings.deliveryEstimate,
                             };
                             updatedDeliveryEstimate.min =
                               updatedDeliveryEstimate.min + 15;
 
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryEstimate: updatedDeliveryEstimate,
                             });
                           }}
                           onDecrement={() => {
                             let updatedDeliveryEstimate = {
-                              ...orderSettings.deliveryEstimate,
+                              ...publicSettings.deliveryEstimate,
                             };
                             updatedDeliveryEstimate.min =
                               updatedDeliveryEstimate.min - 15;
@@ -681,8 +677,8 @@ export default function settings() {
                             if (updatedDeliveryEstimate.min < 0) {
                               updatedDeliveryEstimate.min = 0;
                             }
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryEstimate: updatedDeliveryEstimate,
                             });
                           }}
@@ -699,13 +695,13 @@ export default function settings() {
                         labelSize="xl"
                         textSize="lg"
                         id="alertInterval"
-                        value={orderSettings.deliveryEstimate.max}
+                        value={publicSettings.deliveryEstimate.max}
                         onChange={(value) => {
                           if (value >= 0) {
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPublicSettings({
+                              ...publicSettings,
                               deliveryEstimate: {
-                                ...orderSettings.deliveryEstimate,
+                                ...publicSettings.deliveryEstimate,
                                 max: value,
                               },
                             });
@@ -713,19 +709,19 @@ export default function settings() {
                         }}
                         onIncrement={() => {
                           let updatedDeliveryEstimate = {
-                            ...orderSettings.deliveryEstimate,
+                            ...publicSettings.deliveryEstimate,
                           };
                           updatedDeliveryEstimate.max =
                             updatedDeliveryEstimate.max + 15;
 
-                          setOrderSettings({
-                            ...orderSettings,
+                          setPublicSettings({
+                            ...publicSettings,
                             deliveryEstimate: updatedDeliveryEstimate,
                           });
                         }}
                         onDecrement={() => {
                           let updatedDeliveryEstimate = {
-                            ...orderSettings.deliveryEstimate,
+                            ...publicSettings.deliveryEstimate,
                           };
                           updatedDeliveryEstimate.max =
                             updatedDeliveryEstimate.max - 15;
@@ -733,8 +729,8 @@ export default function settings() {
                           if (updatedDeliveryEstimate.max < 0) {
                             updatedDeliveryEstimate.max = 0;
                           }
-                          setOrderSettings({
-                            ...orderSettings,
+                          setPublicSettings({
+                            ...publicSettings,
                             deliveryEstimate: updatedDeliveryEstimate,
                           });
                         }}
@@ -752,33 +748,33 @@ export default function settings() {
                       labelSize="xl"
                       textSize="lg"
                       id="alertInterval"
-                      value={orderSettings.takeAwayEstimate}
+                      value={publicSettings.takeAwayEstimate}
                       onChange={(value) => {
                         if (value >= 0) {
-                          setOrderSettings({
-                            ...orderSettings,
+                          setPublicSettings({
+                            ...publicSettings,
                             takeAwayEstimate: value,
                           });
                         }
                       }}
                       onIncrement={() => {
                         let updatedTakawayEstimate =
-                          orderSettings.takeAwayEstimate + 5;
+                          publicSettings.takeAwayEstimate + 5;
 
-                        setOrderSettings({
-                          ...orderSettings,
+                        setPublicSettings({
+                          ...publicSettings,
                           takeAwayEstimate: updatedTakawayEstimate,
                         });
                       }}
                       onDecrement={() => {
                         let updatedTakawayEstimate =
-                          orderSettings.takeAwayEstimate - 5;
+                          publicSettings.takeAwayEstimate - 5;
 
                         if (updatedTakawayEstimate < 0) {
                           updatedTakawayEstimate = 0;
                         }
-                        setOrderSettings({
-                          ...orderSettings,
+                        setPublicSettings({
+                          ...publicSettings,
                           takeAwayEstimate: updatedTakawayEstimate,
                         });
                       }}
@@ -789,7 +785,7 @@ export default function settings() {
                   <h2 className="mb-4">Moyens de paiement : </h2>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                     <p className="text-xl font-medium w-28">Livraison :</p>
-                    {orderSettings.paymentMethods.map((paymentMethod, i) => {
+                    {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
                       );
@@ -804,7 +800,7 @@ export default function settings() {
                             checked={paymentMethod.delivery}
                             onChange={() => {
                               let updatedPaymentMethods = [
-                                ...orderSettings.paymentMethods,
+                                ...publicSettings.paymentMethods,
                               ]; // Make a copy of paymentMethods array
                               let updatedPaymentMethod = {
                                 ...updatedPaymentMethods[i],
@@ -812,9 +808,9 @@ export default function settings() {
                               updatedPaymentMethod.delivery =
                                 !updatedPaymentMethod.delivery; // Update the delivery status
                               updatedPaymentMethods[i] = updatedPaymentMethod; // Update the payment method in the array
-                              setOrderSettings({
-                                ...orderSettings,
-                                paymentMethods: updatedPaymentMethods, // Update the payment methods array in orderSettings
+                              setPublicSettings({
+                                ...publicSettings,
+                                paymentMethods: updatedPaymentMethods,
                               });
                             }}
                           />
@@ -830,7 +826,7 @@ export default function settings() {
                   </div>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                     <p className="text-xl font-medium w-28">À emporter : </p>
-                    {orderSettings.paymentMethods.map((paymentMethod, i) => {
+                    {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
                       );
@@ -845,15 +841,15 @@ export default function settings() {
                             checked={paymentMethod.takeAway}
                             onChange={() => {
                               let updatedPaymentMethods = [
-                                ...orderSettings.paymentMethods,
+                                ...publicSettings.paymentMethods,
                               ]; // Faites une copie du tableau paymentMethods
                               updatedPaymentMethods[i] = {
-                                ...updatedPaymentMethods[i], // Copiez l'objet du paiement spécifique
-                                takeAway: !updatedPaymentMethods[i].takeAway, // Mettez à jour le statut takeAway
+                                ...updatedPaymentMethods[i],
+                                takeAway: !updatedPaymentMethods[i].takeAway,
                               };
-                              setOrderSettings({
-                                ...orderSettings,
-                                paymentMethods: updatedPaymentMethods, // Mettez à jour le tableau des méthodes de paiement dans orderSettings
+                              setPublicSettings({
+                                ...publicSettings,
+                                paymentMethods: updatedPaymentMethods,
                               });
                             }}
                           />
@@ -877,11 +873,11 @@ export default function settings() {
                     <TabBtn
                       values={["Activer", "Désactiver"]}
                       currentTab={
-                        orderSettings.pendingOrderAlert.enabled ? 0 : 1
+                        privateSettings.pendingOrderAlert.enabled ? 0 : 1
                       }
                       onClickTab={(i) => {
                         let updatedPendingOrderAlert = {
-                          ...orderSettings.pendingOrderAlert,
+                          ...privateSettings.pendingOrderAlert,
                         };
                         if (i === 0) {
                           //enable
@@ -890,8 +886,8 @@ export default function settings() {
                           //disable
                           updatedPendingOrderAlert.enabled = false;
                         }
-                        setOrderSettings({
-                          ...orderSettings,
+                        setPrivateSettings({
+                          ...publicSettings,
                           pendingOrderAlert: updatedPendingOrderAlert,
                         });
                       }}
@@ -906,39 +902,39 @@ export default function settings() {
                         labelSize="xl"
                         textSize="lg"
                         id="alertInterval"
-                        value={orderSettings.pendingOrderAlert.interval}
+                        value={privateSettings.pendingOrderAlert.interval}
                         onChange={(value) => {
                           let updatedPendingOrderAlert = {
-                            ...orderSettings.pendingOrderAlert,
+                            ...privateSettings.pendingOrderAlert,
                           };
                           if (value >= 0) {
                             updatedPendingOrderAlert.interval = value;
-                            setOrderSettings({
-                              ...orderSettings,
+                            setPrivateSettings({
+                              ...privateSettings,
                               pendingOrderAlert: updatedPendingOrderAlert,
                             });
                           }
                         }}
                         onIncrement={() => {
                           let updatedPendingOrderAlert = {
-                            ...orderSettings.pendingOrderAlert,
+                            ...privateSettings.pendingOrderAlert,
                           };
                           updatedPendingOrderAlert.interval += 5;
-                          setOrderSettings({
-                            ...orderSettings,
+                          setPrivateSettings({
+                            ...privateSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
                           });
                         }}
                         onDecrement={() => {
                           let updatedPendingOrderAlert = {
-                            ...orderSettings.pendingOrderAlert,
+                            ...privateSettings.pendingOrderAlert,
                           };
                           updatedPendingOrderAlert.interval -= 5;
                           if (updatedPendingOrderAlert.interval < 0) {
                             updatedPendingOrderAlert.interval = 0;
                           }
                           setOrderSettings({
-                            ...orderSettings,
+                            ...privateSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
                           });
                         }}
@@ -1045,8 +1041,8 @@ export default function settings() {
           <FooterSettings
             validationErrors={validationErrors}
             formRestaurantInfo={formRestaurantInfo}
-            restaurantSettings={restaurantSettings}
-            orderSettings={orderSettings}
+            publicSettings={publicSettings}
+            privateSettings={privateSettings}
           />
         </div>
       </>
