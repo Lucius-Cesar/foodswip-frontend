@@ -17,12 +17,12 @@ import Preloader from "@/components/ui/Preloader";
 import { useSelector, useDispatch } from "react-redux";
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import isRestaurantOpen from "@/utils/isRestaurantOpen";
-import useGetRestaurant from "@/hooks/useGetRestaurant";
+import useRestaurantData from "@/hooks/useRestaurantData";
 export default function eaterView({ params }) {
-  useGetRestaurant(params.uniqueValue);
+  useRestaurantData(params.uniqueValue, "restaurantPublic");
 
   //redux
-  const restaurant = useSelector((state) => state.restaurant);
+  const restaurant = useSelector((state) => state.restaurantPublic);
   const cart = useSelector((state) => state.cart);
 
   //react states
@@ -136,7 +136,10 @@ export default function eaterView({ params }) {
 
             <div className="flex flex-col w-full sm:ps-12 items-center sm:items-start">
               <div className="relative flex flex-row gap-1 sm:gap-2">
-                <RestaurantLogo className="h-14 w-48" />
+                <RestaurantLogo
+                  className="h-14 w-48"
+                  from={"restaurantPublic"}
+                />
                 <button
                   className="self-center"
                   onClick={() => setModalInfoRestaurantOpen(true)}
@@ -154,7 +157,7 @@ export default function eaterView({ params }) {
                     <DeliveryIcon className="h-4 w-auto" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Livraison</p>
-                      <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data.publicSettings.deliveryFees} €`}</p>
+                      <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data?.publicSettings?.deliveryFees} €`}</p>
                     </div>
                   </div>
 
@@ -162,7 +165,7 @@ export default function eaterView({ params }) {
                     <MinOrderIcon className="h-4 w-4" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Min. commande</p>
-                      <p className="text-xs sm:text-sm font-bold">{`${restaurant.data.publicSettings.deliveryMin} €`}</p>
+                      <p className="text-xs sm:text-sm font-bold">{`${restaurant.data?.publicSettings?.deliveryMin} €`}</p>
                     </div>
                   </div>
                 </div>

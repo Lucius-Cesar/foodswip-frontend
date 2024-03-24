@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { switchDayLabel } from "@/utils/switchLabel";
 export default function ModalInfoRestaurant({ open, setOpen }) {
-  const restaurant = useSelector((state) => state.restaurant);
+  const restaurant = useSelector((state) => state.restaurantPublic);
   const handleClose = () => {
     setOpen(false);
   };

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
-import { postRestaurantSettings } from "@/redux/restaurant/restaurantSlice";
+import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
 
 export default function FooterSettings({
   validationErrors,
@@ -13,7 +13,7 @@ export default function FooterSettings({
 }) {
   const dispatch = useDispatch();
   const [saveError, setSaveError] = useState(false);
-  const restaurant = useSelector((state) => state.restaurant);
+  const restaurant = useSelector((state) => state.restaurantAdmin);
   return (
     <div className="h-20 w-full pt-6 flex flex-col justify-end items-end sm:p-4 sm:pe-24">
       <div className="h-20 w-10 flex flex-col justify-center items-center">
@@ -43,7 +43,7 @@ export default function FooterSettings({
                   publicSettings: publicSettings,
                   privateSettings: privateSettings,
                 };
-                dispatch(postRestaurantSettings(payload));
+                dispatch(updateRestaurantSettings(payload));
               } else {
                 setSaveError(true);
               }

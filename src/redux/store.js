@@ -2,7 +2,9 @@
 import { persistStore, persistReducer } from "redux-persist";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import restaurant from "@/redux/restaurant/restaurantSlice";
+import restaurantPublic from "@/redux/restaurantPublic/restaurantPublicSlice";
+import restaurantAdmin from "@/redux/restaurantAdmin/restaurantAdminSlice";
+
 import cart from "@/redux/cart/cartSlice";
 import auth from "@/redux/auth/authSlice";
 
@@ -26,7 +28,12 @@ const storage =
     ? createWebStorage("local")
     : createNoopStorage();
 
-const reducers = combineReducers({ restaurant, cart, auth });
+const reducers = combineReducers({
+  restaurantPublic,
+  restaurantAdmin,
+  cart,
+  auth,
+});
 const persistConfig = { key: "root", storage, blacklist: ["auth"] };
 
 export const store = configureStore({

@@ -18,7 +18,7 @@ import isRestaurantOpen from "@/utils/isRestaurantOpen";
 export default function Cart({ open, setOpen, variant }) {
   const primary = "#F97247"; //sorry for this
   const cart = useSelector((state) => state.cart);
-  const restaurant = useSelector((state) => state.restaurant);
+  const restaurant = useSelector((state) => state.restaurantPublic);
 
   const dispatch = useDispatch();
   const router = useRouter();

@@ -11,13 +11,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import useCheckAuth from "@/hooks/useCheckAuth";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import useGetRestaurant from "@/hooks/useGetRestaurant";
+import useRestaurantData from "@/hooks/useRestaurantData";
 export default function Login() {
   const auth = useSelector((state) => state.auth);
-
-  useGetRestaurant(auth.data?.user?.restaurantUniqueValue);
-
   useCheckAuth(true);
+  useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin");
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -29,7 +28,7 @@ export default function Login() {
   const [form, setForm] = useState(formInitialState);
 
   const [validationErrors, setValidationErrors] = useState(formInitialState);
-  const restaurant = useSelector((state) => state.restaurant);
+  const restaurant = useSelector((state) => state.restaurantAdmin);
 
   useEffect(() => {
     if (auth.data?.token && restaurant.data) {
@@ -37,13 +36,14 @@ export default function Login() {
       router.push(`/admin/settings`);
     }
     if (auth.error) {
-      auth.error.name === "ErrorInvalidCredentials";
-      setValidationErrors({
-        ...validationErrors,
-        login: "Adresse email ou mot de passe incorrecte",
-      });
+      if (auth.error.name === "ErrorInvalidCredentials") {
+        setValidationErrors({
+          ...validationErrors,
+          login: "Adresse email ou mot de passe incorrecte",
+        });
+      }
     }
-  }, [auth]);
+  }, [auth, restaurant]);
 
   const onClickConnexionBtn = (form) => {
     setValidationErrors({ ...validationErrors, login: "" });

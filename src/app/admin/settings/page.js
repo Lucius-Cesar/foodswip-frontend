@@ -27,17 +27,18 @@ import FooterSettings from "@/components/adminView/settings/FooterSettings";
 import Preloader from "@/components/ui/Preloader";
 import useRefreshAuth from "@/hooks/useRefreshAuth";
 import useCheckAuth from "@/hooks/useCheckAuth";
+import useRestaurantData from "@/hooks/useRestaurantData";
+
 import { logOut } from "@/redux/auth/authSlice";
 
 export default function settings() {
+  const auth = useSelector((state) => state.auth);
   useRefreshAuth();
   useCheckAuth();
+  useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin");
   //change this later
   const dispatch = useDispatch();
-  const router = useRouter();
-  const restaurant = useSelector((state) => state.restaurant);
-
-  const auth = useSelector((state) => state.auth);
+  const restaurant = useSelector((state) => state.restaurantAdmin);
   const [formRestaurantInfo, setFormRestaurantInfo] = useState(null);
   const [publicSettings, setPublicSettings] = useState(null);
   const [privateSettings, setPrivateSettings] = useState(null);
@@ -157,7 +158,7 @@ export default function settings() {
                 <div>
                   <h2 className="mb-4">Informations générales</h2>
                   <p className="font-medium text-xl">Logo restaurant:</p>
-                  {<RestaurantLogo />}
+                  {<RestaurantLogo from={"restaurantAdmin"} />}
                   <div class="flex flex-wrap gap-6">
                     <div className="w-full sm:w-5/12">
                       <FormInput

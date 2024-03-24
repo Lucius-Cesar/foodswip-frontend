@@ -35,7 +35,7 @@ export default function Order({ params }) {
   } else {
     return (
       <div className="w-full h-dvh flex flex-col justify-between items-center">
-        <RestaurantLogo className="h-24 w-72" />
+        <RestaurantLogo className="h-24 w-72" from="restaurantPublic" />
         {order.data && (
           <div className="flex flex-col justify-center items-center">
             <SuccessIcon className="h-24 w-24 mb-6" />

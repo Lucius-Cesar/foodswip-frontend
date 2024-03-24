@@ -11,7 +11,7 @@ export default function SideFoodCategories({
   open,
   setOpen,
 }) {
-  const menu = useSelector((state) => state.restaurant.data.menu);
+  const menu = useSelector((state) => state.restaurantPublic.data.menu);
   return (
     <div
       className={`${
