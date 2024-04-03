@@ -30,6 +30,8 @@ import useCheckAuth from "@/hooks/useCheckAuth";
 import useRestaurantData from "@/hooks/useRestaurantData";
 
 import { logOut } from "@/redux/auth/authSlice";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import PasswordUpdate from "@/components/adminView/settings/PasswordUpdate";
 
 export default function settings() {
   const auth = useSelector((state) => state.auth);
@@ -42,27 +44,35 @@ export default function settings() {
   const [formRestaurantInfo, setFormRestaurantInfo] = useState(null);
   const [publicSettings, setPublicSettings] = useState(null);
   const [privateSettings, setPrivateSettings] = useState(null);
-
+  const [accountSettings, setAccountSettings] = useState(null);
   useEffect(() => {
     if (restaurant.data) {
       setFormRestaurantInfo({
         name: restaurant.data.name,
         website: restaurant.data.website,
-        street: restaurant.data.adress?.street,
-        streetNumber: restaurant.data.adress?.streetNumber,
-        postCode: restaurant.data.adress?.postCode,
-        city: restaurant.data.adress?.city,
-        country: restaurant.data.adress?.country,
+        street: restaurant.data.address?.street,
+        streetNumber: restaurant.data.address?.streetNumber,
+        postCode: restaurant.data.address?.postCode,
+        city: restaurant.data.address?.city,
+        country: restaurant.data.address?.country,
         phoneNumber: restaurant.data.phoneNumber,
         mail: restaurant.data.mail,
       });
       setPublicSettings(restaurant.data.publicSettings);
       setPrivateSettings(restaurant.data.privateSettings);
+      setAccountSettings({
+        password: {
+          current: "",
+          new: "",
+          confirmNew: "",
+        },
+      });
     }
   }, [restaurant.data]);
   const [validationErrors, setValidationErrors] = useState({
     mail: "",
     phoneNumber: "",
+    orderMailReception: "",
   });
 
   const categoriesData = [
@@ -99,7 +109,7 @@ export default function settings() {
   const createService = (dayIndex, itemIndex = null, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
     updatedPublicSettings.schedule[dayIndex].services.push(newValue);
-    setPublicSettings(updatedRestaurantSettings);
+    setPublicSettings(updatedPublicSettings);
   };
 
   const updateService = (dayIndex, itemIndex, newValue) => {
@@ -136,6 +146,7 @@ export default function settings() {
   const onClickLogOut = () => {
     dispatch(logOut());
   };
+
   if (!(formRestaurantInfo && publicSettings && privateSettings)) {
     return (
       <>
@@ -147,14 +158,14 @@ export default function settings() {
       <>
         <div className="h-dvh flex flex-col overflow-hidden">
           <Header isSettingsActive={true} />
-          <div className="flex flex-row h-full px-2 sm:ps-10 overflow-y-auto">
+          <div className="flex flex-col sm:flex-row sm:h-full px-2 sm:ps-10 overflow-hidden">
             <SideNavigation
               categoriesData={categoriesData}
               activeCategory={activeCategory}
               setActiveCategory={setActiveCategory}
             />
             {activeCategory === categoriesData[0] && (
-              <div className="flex flex-col w-full px-10 h-full space-y-10">
+              <div className="flex flex-col w-full px-10 h-full space-y-8 overflow-y-auto pb-2">
                 <div>
                   <h2 className="mb-4">Informations générales</h2>
                   <p className="font-medium text-xl">Logo restaurant:</p>
@@ -296,7 +307,7 @@ export default function settings() {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:justify-between">
+                <div className="flex flex-col space-y-8 sm:space-y-0 sm:flex-row justify-between sm:gap-20 sm:pr-20">
                   <div className="flex flex-col">
                     <h2 className="mb-4">Horraires d'ouverture :</h2>
                     <ModalPeriod
@@ -399,7 +410,7 @@ export default function settings() {
                       })}
                     </div>
                   </div>
-                  <div className="pr-20">
+                  <div className="">
                     <h2 className="mb-4">Fermetures exceptionnelles :</h2>
                     <ModalPeriod
                       type={"datetime-local"}
@@ -487,7 +498,7 @@ export default function settings() {
               </div>
             )}
             {activeCategory === categoriesData[1] && (
-              <div className="flex flex-col px-10 w-full h-full space-y-8">
+              <div className="flex flex-col px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
                 <div className="space-y-4">
                   <h2 className="mb-4">{"Types de commande:"}</h2>
                   <div className="space-y-2">
@@ -866,6 +877,105 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
+                  <h2 className="mb-4">
+                    {"Réceptions des commandes par mail:"}
+                  </h2>
+                  <div className="space-y-2 flex flex-col w-fit">
+                    <TabBtn
+                      values={["Activer", "Désactiver"]}
+                      currentTab={
+                        privateSettings.orderMailReception.enabled ? 0 : 1
+                      }
+                      onClickTab={(i) => {
+                        let updatedOrderMailreception = {
+                          ...privateSettings.orderMailReception,
+                        };
+
+                        if (i === 0) {
+                          //enable
+                          updatedOrderMailreception.enabled = true;
+                        } else if (i === 1) {
+                          //disable
+                          updatedOrderMailreception.enabled = false;
+                        }
+                        setPrivateSettings({
+                          ...privateSettings,
+                          orderMailReception: updatedOrderMailreception,
+                        });
+                      }}
+                    />
+                    {privateSettings.orderMailReception.mails.map((mail, i) => (
+                      <div>
+                        <label
+                          className={`ml-px block text-lg font-medium leading-6 mb-2`}
+                        >
+                          Adresse mail {i + 1}
+                        </label>
+                        <div className="relative">
+                          <FormInput
+                            textSize="lg"
+                            value={mail}
+                            onChange={(input) => {
+                              let updatedOrderMailReceptionMails = [
+                                ...privateSettings.orderMailReception.mails,
+                              ];
+                              updatedOrderMailReceptionMails[i] = input;
+                              setPrivateSettings({
+                                ...privateSettings,
+                                orderMailReception: {
+                                  ...privateSettings.orderMailReception,
+                                  mails: updatedOrderMailReceptionMails,
+                                },
+                              });
+                            }}
+                            validationFunction={(e) =>
+                              mailValidation(e, setValidationErrors)
+                            }
+                            validationError={
+                              validationErrors.orderMailReception
+                            }
+                          />
+                          <button
+                            onClick={() => {
+                              let updatedOrderMailReceptionMails = [
+                                ...privateSettings.orderMailReception.mails,
+                              ];
+                              updatedOrderMailReceptionMails.splice(i, 1);
+                              setPrivateSettings({
+                                ...privateSettings,
+                                orderMailReception: {
+                                  ...privateSettings.orderMailReception,
+                                  mails: updatedOrderMailReceptionMails,
+                                },
+                              });
+                            }}
+                            className="absolute -right-8 top-0 bottom-0"
+                          >
+                            <XMarkIcon className="h-8 w-8 text-gray-400 hover:text-dark-grey" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    <div className="self-center pt-2">
+                      <AddBtn
+                        onClick={() => {
+                          let updatedOrderMailreceptionMails = [
+                            ...privateSettings.orderMailReception.mails,
+                          ];
+                          updatedOrderMailreceptionMails.push("");
+                          setPrivateSettings({
+                            ...privateSettings,
+                            orderMailReception: {
+                              ...privateSettings.orderMailReception,
+                              mails: updatedOrderMailreceptionMails,
+                            },
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-4">
                   <h2 className="mb-4">Alertes sonores : </h2>
                   <div className="space-y-2">
                     <p className="font-medium text-xl">
@@ -888,7 +998,7 @@ export default function settings() {
                           updatedPendingOrderAlert.enabled = false;
                         }
                         setPrivateSettings({
-                          ...publicSettings,
+                          ...privateSettings,
                           pendingOrderAlert: updatedPendingOrderAlert,
                         });
                       }}
@@ -946,9 +1056,10 @@ export default function settings() {
               </div>
             )}
             {activeCategory === categoriesData[2] && (
-              <div className="flex flex-col px-10 w-full h-full space-y-8">
+              <div className="flex flex-col px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
                 <div className="space-y-4">
-                  <h2 className="mb-4">Informations du compte</h2>
+                  {/*
+                     <h2 className="mb-4">Informations du compte</h2>
                   <div className="space-y-2">
                     <p className="font-medium text-xl"></p>
                     <div className="w-full sm:w-5/12">
@@ -971,62 +1082,9 @@ export default function settings() {
                       />
                     </div>
                   </div>
-                  <h2 className="mb-4">Mot de passe</h2>
-                  <div className="w-full sm:w-5/12 space-y-4 text-center">
-                    <FormInput
-                      placeholder={"Mot de passe actuel"}
-                      labelSize="xl"
-                      textSize="lg"
-                      type="password"
-                      onChange={(input) =>
-                        setForm({
-                          ...form,
-                          password: input,
-                        })
-                      }
-                      validationFunction={(e) =>
-                        passwordValidation(e, setValidationErrors)
-                      }
-                      validationError={validationErrors.password}
-                    ></FormInput>
-                    <FormInput
-                      placeholder={"Nouveau mot de passe"}
-                      labelSize="xl"
-                      textSize="lg"
-                      type="password"
-                      onChange={(input) =>
-                        setForm({
-                          ...form,
-                          password: input,
-                        })
-                      }
-                      validationFunction={(e) =>
-                        passwordValidation(e, setValidationErrors)
-                      }
-                      validationError={validationErrors.password}
-                    ></FormInput>
-                    <FormInput
-                      placeholder={"Confirmer le nouveau mot de passe"}
-                      labelSize="xl"
-                      textSize="lg"
-                      type="password"
-                      onChange={(input) =>
-                        setForm({
-                          ...form,
-                          password: input,
-                        })
-                      }
-                      validationFunction={(e) =>
-                        passwordValidation(e, setValidationErrors)
-                      }
-                      validationError={validationErrors.password}
-                    ></FormInput>
-                    <DefaultBtn
-                      value="Modifier le mot de passe"
-                      className="text-xl font-bold bg-primary hover:opacity-90  focus:text-white text-white self-center"
-                      onClick={() => onClickConnexionBtn(form)}
-                    />
-                  </div>
+                
+            */}
+                  <PasswordUpdate />
                 </div>
                 <div className="w-full sm:w-5/12 space-y-4 text-center">
                   <DefaultBtn
@@ -1038,13 +1096,14 @@ export default function settings() {
               </div>
             )}
           </div>
-
-          <FooterSettings
-            validationErrors={validationErrors}
-            formRestaurantInfo={formRestaurantInfo}
-            publicSettings={publicSettings}
-            privateSettings={privateSettings}
-          />
+          {activeCategory !== categoriesData[2] && (
+            <FooterSettings
+              validationErrors={validationErrors}
+              formRestaurantInfo={formRestaurantInfo}
+              publicSettings={publicSettings}
+              privateSettings={privateSettings}
+            />
+          )}
         </div>
       </>
     );

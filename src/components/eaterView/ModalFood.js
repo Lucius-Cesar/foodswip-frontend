@@ -92,7 +92,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
     );
 
     setArticlePrice(addMoney(food.price, optionsPriceSum, supplementsPriceSum));
-  }, [selectedOptions, selectedSupplements]);
+  }, [food, selectedOptions, selectedSupplements]);
 
   return (
     <Transition.Root show={open} as={Fragment}>

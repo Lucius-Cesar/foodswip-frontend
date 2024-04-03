@@ -65,12 +65,12 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                   <div className="flex flex-col">
                     <h3 className="font-title">Adresse</h3>
                     <div className="flex flex-row space-x-1">
-                      <p>{restaurant.data.adress.street}</p>
-                      <p>{restaurant.data.adress.streetNumber}</p>
+                      <p>{restaurant.data.address.street}</p>
+                      <p>{restaurant.data.address.streetNumber}</p>
                     </div>
                     <div className="flex flex-row space-x-1">
-                      <p>{restaurant.data.adress.postCode}</p>
-                      <p>{restaurant.data.adress.city} </p>
+                      <p>{restaurant.data.address.postCode}</p>
+                      <p>{restaurant.data.address.city} </p>
                     </div>
                   </div>
                   <div>

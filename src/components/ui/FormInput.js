@@ -15,13 +15,16 @@ export default function FormInput({
   return (
     <div className>
       <div>
-        <label
-          htmlFor={id}
-          className={`ml-px block text-${labelSize} font-medium leading-6`}
-        >
-          {label}
-        </label>
-        <div className="mt-2 relative">
+        {label && (
+          <label
+            htmlFor={id}
+            className={`ml-px block text-${labelSize} font-medium leading-6 mb-2`}
+          >
+            {label}
+          </label>
+        )}
+
+        <div className="relative">
           <input
             type={type}
             name={id}

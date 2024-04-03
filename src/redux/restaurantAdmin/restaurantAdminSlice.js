@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authFetch } from "../auth/authSlice";
+import { authFetch } from "../auth/authActions";
 
 export const getRestaurantAdminData = createAsyncThunk(
   "GetRestaurantAdminData",

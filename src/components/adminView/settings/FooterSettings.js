@@ -15,8 +15,8 @@ export default function FooterSettings({
   const [saveError, setSaveError] = useState(false);
   const restaurant = useSelector((state) => state.restaurantAdmin);
   return (
-    <div className="h-20 w-full pt-6 flex flex-col justify-end items-end sm:p-4 sm:pe-24">
-      <div className="h-20 w-10 flex flex-col justify-center items-center">
+    <div className="mt-auto h-auto z-10 w-full pt-6 flex flex-col justify-end items-center sm:items-end sm:p-4 sm:pe-24">
+      <div className="h-20 w-10 flex flex-col justify-center items-center w-full">
         {restaurant.isLoading ? (
           <LoadingSpinner className="text-success" />
         ) : (
@@ -33,7 +33,7 @@ export default function FooterSettings({
                   name: formRestaurantInfo.name,
                   mail: formRestaurantInfo.mail,
                   website: formRestaurantInfo.website,
-                  adress: {
+                  address: {
                     street: formRestaurantInfo.street,
                     streetNumber: formRestaurantInfo.streetNumber,
                     postCode: formRestaurantInfo.postCode,

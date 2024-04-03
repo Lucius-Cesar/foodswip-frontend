@@ -17,7 +17,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import { current } from "@reduxjs/toolkit";
 import {
-  adressValidation,
+  addressValidation,
   cityValidation,
   firstnameValidation,
   lastnameValidation,
@@ -37,7 +37,7 @@ export default function Checkout({ params }) {
 
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [form, setForm] = useState({
-    adress: "",
+    address: "",
     postCode: "",
     city: "",
     firstname: "",
@@ -47,7 +47,7 @@ export default function Checkout({ params }) {
   });
   //validations forms
   const [validationErrors, setValidationErrors] = useState({
-    adress: "",
+    address: "",
     postCode: "",
     city: "",
     firstname: "",
@@ -64,7 +64,8 @@ export default function Checkout({ params }) {
   const newOrder = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/addOrder`,
     fetchOptions,
-    fetchTrigger
+    fetchTrigger,
+    setFetchTrigger
   );
 
   useEffect(() => {
@@ -107,7 +108,7 @@ export default function Checkout({ params }) {
 
   const handleConfirmOrder = () => {
     //display errors on submit and not only onBlur
-    adressValidation(form.adress, setValidationErrors);
+    addressValidation(form.address, setValidationErrors);
     postCodeValidation(form.postCode, setValidationErrors);
     cityValidation(form.city, setValidationErrors);
     firstnameValidation(form.firstname, setValidationErrors);
@@ -144,8 +145,10 @@ export default function Checkout({ params }) {
           },
           body: JSON.stringify({
             mail: form.mail,
+            firstname: form.firstname,
+            lastname: form.lastname,
             phoneNumber: form.phoneNumber,
-            adress: form.adress,
+            address: form.address,
             city: form.city,
             postCode: form.postCode,
             articles: cart.data.articles,
@@ -195,18 +198,18 @@ export default function Checkout({ params }) {
                 <div className="w-full">
                   <FormInput
                     label="Adresse"
-                    id="adress"
+                    id="address"
                     onChange={(input) =>
                       setForm({
                         ...form,
-                        adress: input,
+                        address: input,
                       })
                     }
-                    value={form.adress}
+                    value={form.address}
                     validationFunction={(e) =>
-                      adressValidation(e, setValidationErrors)
+                      addressValidation(e, setValidationErrors)
                     }
-                    validationError={validationErrors.adress}
+                    validationError={validationErrors.address}
                   />
                 </div>
                 <div className="flex flex-row gap-4">
@@ -396,13 +399,27 @@ export default function Checkout({ params }) {
                 Un ou plusieurs des champs ci-dessus sont invalides
               </p>
             )}
-            {newOrder.error?.status === 429 && (
+            {newOrder.error?.status === 429 ? (
               <p className="text-error-danger text-center">
                 Votre commande a déjà été effectuée. Pour modifier celle-ci,
                 veuillez contacter le restaurant au{" "}
                 {restaurant.data.phoneNumber}
               </p>
+            ) : (
+              newOrder.error && (
+                <p className="text-error-danger text-center">
+                  Nous avons rencontré une difficulté lors du traitement de
+                  votre commande. Veuillez réessayer ultérieurement. Si vous le
+                  souhaitez, vous pouvez nous aider à améliorer l'expérience en
+                  signalant ce problème
+                  <a href="https://erp.webwalkers.io/forms/ticket?styled=1">
+                    ici
+                  </a>
+                  .
+                </p>
+              )
             )}
+
             {newOrder?.isLoading ? (
               <LoadingSpinner />
             ) : (
