@@ -35,6 +35,7 @@ import PasswordUpdate from "@/components/adminView/settings/PasswordUpdate";
 
 export default function settings() {
   const auth = useSelector((state) => state.auth);
+  const router = useRouter();
   useRefreshAuth();
   useCheckAuth();
   useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin");
@@ -144,7 +145,7 @@ export default function settings() {
   };
 
   const onClickLogOut = () => {
-    dispatch(logOut());
+    dispatch(logOut()).then(() => router.push("/admin/login"));
   };
 
   if (!(formRestaurantInfo && publicSettings && privateSettings)) {

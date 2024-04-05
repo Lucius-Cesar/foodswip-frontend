@@ -16,7 +16,7 @@ export default function FooterSettings({
   const restaurant = useSelector((state) => state.restaurantAdmin);
   return (
     <div className="mt-auto h-auto z-10 w-full pt-6 flex flex-col justify-end items-center sm:items-end sm:p-4 sm:pe-24">
-      <div className="h-20 w-10 flex flex-col justify-center items-center w-full">
+      <div className="h-20 w-10 flex flex-col justify-center items-center sm:items-end w-full">
         {restaurant.isLoading ? (
           <LoadingSpinner className="text-success" />
         ) : (

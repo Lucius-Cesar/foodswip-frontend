@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { clearRestaurantAdminData } from "../restaurantAdmin/restaurantAdminSlice";
+
 import Cookies from "js-cookie";
 const initialState = {
   data: null,
@@ -35,7 +37,7 @@ export const logIn = createAsyncThunk(
 
 export const logOut = createAsyncThunk(
   "logOut",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/users/logOut`,
@@ -46,6 +48,8 @@ export const logOut = createAsyncThunk(
       );
       const data = await response.json();
       Cookies.remove("token");
+      dispatch(clearRestaurantAdminData());
+
       if (!response.ok) {
         return rejectWithValue(data.error);
       }

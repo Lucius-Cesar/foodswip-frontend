@@ -14,10 +14,10 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import useRestaurantData from "@/hooks/useRestaurantData";
 export default function Login() {
   const auth = useSelector((state) => state.auth);
+  const router = useRouter();
   useCheckAuth(true);
   useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin");
 
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const formInitialState = {
@@ -31,7 +31,7 @@ export default function Login() {
   const restaurant = useSelector((state) => state.restaurantAdmin);
 
   useEffect(() => {
-    if (auth.data?.token && restaurant.data) {
+    if (auth.data?.token) {
       setValidationErrors(formInitialState);
       router.push(`/admin/settings`);
     }
@@ -46,10 +46,19 @@ export default function Login() {
   }, [auth, restaurant]);
 
   const onClickConnexionBtn = (form) => {
-    setValidationErrors({ ...validationErrors, login: "" });
-    dispatch(logIn(form));
+    if (
+      validationErrors.password === "" &&
+      validationErrors.mail === "" &&
+      form.mail !== "" &&
+      form.password !== ""
+    ) {
+      setValidationErrors({ ...validationErrors, login: "" });
+      dispatch(logIn(form));
+    }
   };
 
+  console.log(validationErrors);
+  console.log(form);
   return (
     <>
       <div className="flex flex-col justify-center items-center h-dvh space-y-6 xl:scale-100">
