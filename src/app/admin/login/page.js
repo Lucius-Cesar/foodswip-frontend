@@ -99,15 +99,15 @@ export default function Login() {
             validationError={validationErrors.password}
           ></FormInput>
         </div>
-        {auth.isLoading || restaurant.isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <DefaultBtn
-            value="Connexion"
-            className="w-36 h-10 text-2xl bg-primary hover:opacity-90  focus:text-white text-white self-center"
-            onClick={() => onClickConnexionBtn(form)}
-          />
-        )}
+
+        <DefaultBtn
+          value="Connexion"
+          className="w-36 h-10 text-2xl hover:opacity-90  focus:text-white text-white self-center"
+          onClick={() => onClickConnexionBtn(form)}
+          isLoading={auth.isLoading}
+          color="primary"
+        />
+
         {validationErrors.login && (
           <p className="text-error-danger font-bold">
             {validationErrors.login}

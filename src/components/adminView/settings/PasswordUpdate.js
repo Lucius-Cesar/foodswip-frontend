@@ -35,8 +35,10 @@ export default function PasswordUpdate() {
   });
 
   const onClickPasswordUpdate = () => {
-    if (Object.values(validationErrors).every((value) => value === "")) {
-      setFetchTrigger(true);
+    if (Object.values(passwordForm).every((value) => value !== "")) {
+      if (Object.values(validationErrors).every((value) => value === "")) {
+        setFetchTrigger(true);
+      }
     }
   };
 
@@ -83,11 +85,15 @@ export default function PasswordUpdate() {
           }
           validationError={validationErrors.confirmNewPassword}
         ></FormInput>
-        <DefaultBtn
-          value="Modifier le mot de passe"
-          className="text-xl  self-center font-bold bg-primary hover:opacity-90  focus:text-white text-white"
-          onClick={() => onClickPasswordUpdate()}
-        />
+        <div className="text-center">
+          <DefaultBtn
+            value="Modifier le mot de passe"
+            className="text-xl font-bol hover:opacity-90  focus:text-white text-white"
+            onClick={() => onClickPasswordUpdate()}
+            isLoading={passwordUpdate.isLoading}
+            color="primary"
+          />
+        </div>
         {passwordUpdate?.data?.success ? (
           <p className="text-success text-center font-bold">
             Le mot de passe a été modifié avec succès

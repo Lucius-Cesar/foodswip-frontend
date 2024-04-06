@@ -413,6 +413,7 @@ export default function Checkout({ params }) {
                   souhaitez, vous pouvez nous aider à améliorer l'expérience en
                   signalant ce problème
                   <a href="https://erp.webwalkers.io/forms/ticket?styled=1">
+                    {" "}
                     ici
                   </a>
                   .
@@ -420,15 +421,13 @@ export default function Checkout({ params }) {
               )
             )}
 
-            {newOrder?.isLoading ? (
-              <LoadingSpinner />
-            ) : (
-              <DefaultBtn
-                value={"Confirmer la commande"}
-                className="w-72 h-12 text-xl font-bold bg-success hover:opacity-90 self-center"
-                onClick={handleConfirmOrder}
-              />
-            )}
+            <DefaultBtn
+              value={"Confirmer la commande"}
+              className="w-72 h-12 text-xl font-bold self-center"
+              onClick={handleConfirmOrder}
+              color="success"
+              isLoading={newOrder?.isLoading}
+            />
           </div>
         </div>
         <div className="order-first mb-4 sm:mb-0 sm:order-last">

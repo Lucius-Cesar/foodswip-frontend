@@ -169,12 +169,12 @@ export default function settings() {
               <div className="flex flex-col w-full px-10 h-full space-y-8 overflow-y-auto pb-2">
                 <div>
                   <h2 className="mb-4">Informations générales</h2>
-                  <p className="font-medium text-xl">Logo restaurant:</p>
+                  <p className="font-medium text-xl">Logo</p>
                   {<RestaurantLogo from={"restaurantAdmin"} />}
                   <div class="flex flex-wrap gap-6">
                     <div className="w-full sm:w-5/12">
                       <FormInput
-                        label="Nom du restaurant:"
+                        label="Nom de l'établissement"
                         labelSize="xl"
                         textSize="lg"
                         value={formRestaurantInfo.name}
@@ -188,7 +188,7 @@ export default function settings() {
                     </div>
                     <div className="w-full sm:w-5/12">
                       <FormInput
-                        label="Site web:"
+                        label="Site web"
                         labelSize="xl"
                         textSize="lg"
                         value={formRestaurantInfo.website}
@@ -310,7 +310,7 @@ export default function settings() {
                 </div>
                 <div className="flex flex-col space-y-8 sm:space-y-0 sm:flex-row justify-between sm:gap-20 sm:pr-20">
                   <div className="flex flex-col">
-                    <h2 className="mb-4">Horraires d'ouverture :</h2>
+                    <h2 className="mb-4">Horraires d'ouverture</h2>
                     <ModalPeriod
                       type={"time"}
                       value={valueModalPeriod}
@@ -412,7 +412,7 @@ export default function settings() {
                     </div>
                   </div>
                   <div className="">
-                    <h2 className="mb-4">Fermetures exceptionnelles :</h2>
+                    <h2 className="mb-4">Fermetures exceptionnelles</h2>
                     <ModalPeriod
                       type={"datetime-local"}
                       value={valueModalPeriod}
@@ -503,9 +503,7 @@ export default function settings() {
                 <div className="space-y-4">
                   <h2 className="mb-4">{"Types de commande:"}</h2>
                   <div className="space-y-2">
-                    <p className="font-medium text-xl">
-                      Fonction "À emporter" :
-                    </p>
+                    <p className="font-medium text-xl">Fonction "À emporter"</p>
                     <TabBtn
                       values={["Activer", "Désactiver"]}
                       currentTab={publicSettings.orderTypes[1].enabled ? 0 : 1}
@@ -532,9 +530,7 @@ export default function settings() {
                   </div>
 
                   <div className="space-y-2">
-                    <p className="font-medium text-xl">
-                      Fonction "Livraison" :{" "}
-                    </p>
+                    <p className="font-medium text-xl">Fonction "Livraison"</p>
                     <TabBtn
                       values={["Activer", "Désactiver"]}
                       currentTab={publicSettings.orderTypes[0].enabled ? 0 : 1}
@@ -561,11 +557,11 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Commandes à livrer : </h2>
+                  <h2 className="mb-4">Commandes à livrer</h2>
                   <div className="space-y-4">
                     <div>
                       <label className="text-xl font-medium">
-                        Minimum d'achat pour la livraison (€):
+                        Minimum d'achat pour la livraison (€)
                       </label>
                       <div className="text-center">
                         <InputNumber
@@ -607,7 +603,7 @@ export default function settings() {
                     </div>
                     <div>
                       <label className="text-xl font-medium">
-                        Frais de livraison (€):
+                        Frais de livraison (€)
                       </label>
                       <div className="text-center">
                         <InputNumber
@@ -649,7 +645,7 @@ export default function settings() {
                     </div>
                     <div>
                       <label className="text-xl font-medium">
-                        Délai de livraison, moyenne basse (minutes) :
+                        Délai de livraison, moyenne basse (minutes)
                       </label>
                       <div className="text-center">
                         <InputNumber
@@ -701,7 +697,7 @@ export default function settings() {
                   </div>
                   <div>
                     <label className="text-xl font-medium">
-                      Délai de livraison, moyenne haute (minutes) :
+                      Délai de livraison, moyenne haute (minutes)
                     </label>
                     <div className="text-center">
                       <InputNumber
@@ -752,9 +748,9 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Commandes à emporter : </h2>
+                  <h2 className="mb-4">Commandes à emporter</h2>
                   <label className="text-xl font-medium">
-                    Délai de préparation moyen (minutes):
+                    Délai de préparation moyen (minutes)
                   </label>
                   <div className="text-center">
                     <InputNumber
@@ -795,9 +791,9 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Moyens de paiement : </h2>
+                  <h2 className="mb-4">Moyens de paiement</h2>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    <p className="text-xl font-medium w-28">Livraison :</p>
+                    <p className="text-xl font-medium w-28">Livraison</p>
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
@@ -838,7 +834,7 @@ export default function settings() {
                     })}
                   </div>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    <p className="text-xl font-medium w-28">À emporter : </p>
+                    <p className="text-xl font-medium w-28">À emporter</p>
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
@@ -977,10 +973,10 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Alertes sonores : </h2>
+                  <h2 className="mb-4">Alertes sonores</h2>
                   <div className="space-y-2">
                     <p className="font-medium text-xl">
-                      Alerte pour les commande en attente :
+                      Alerte pour les commande en attente
                     </p>
                     <TabBtn
                       values={["Activer", "Désactiver"]}
@@ -1007,7 +1003,7 @@ export default function settings() {
                   </div>
                   <div>
                     <label className="text-xl font-medium">
-                      Rappel sonores (minutes):
+                      Rappel sonores (minutes)
                     </label>
                     <div className="text-center">
                       <InputNumber
@@ -1090,8 +1086,9 @@ export default function settings() {
                 <div className="w-full sm:w-5/12 space-y-4 text-center">
                   <DefaultBtn
                     value="Se déconnecter"
-                    className="rounded-s-lg rounded-e-lg text-xl font-bold bg-error-danger hover:opacity-70  focus:text-white text-white self-center"
+                    className=" hover:opacity-70 rounded-s-lg rounded-e-lg text-xl font-bold  focus:text-white text-white self-center"
                     onClick={() => onClickLogOut()}
+                    color="error-danger"
                   />
                 </div>
               </div>
