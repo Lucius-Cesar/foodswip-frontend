@@ -171,7 +171,7 @@ export default function Checkout({ params }) {
 
   if (newOrder.data) {
     router.push(
-      `/restaurant/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
+      `/menu/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
     );
     //workaround to dispatch after router.push is completed (not the best solution)
     setTimeout(() => {
@@ -402,7 +402,7 @@ export default function Checkout({ params }) {
             {newOrder.error?.status === 429 ? (
               <p className="text-error-danger text-center">
                 Votre commande a déjà été effectuée. Pour modifier celle-ci,
-                veuillez contacter le restaurant au{" "}
+                veuillez contacter l'établissement au{" "}
                 {restaurant.data.phoneNumber}
               </p>
             ) : (

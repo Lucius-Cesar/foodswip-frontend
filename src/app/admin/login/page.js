@@ -57,8 +57,6 @@ export default function Login() {
     }
   };
 
-  console.log(validationErrors);
-  console.log(form);
   return (
     <>
       <div className="flex flex-col justify-center items-center h-dvh space-y-6 xl:scale-100">

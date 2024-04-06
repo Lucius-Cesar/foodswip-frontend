@@ -28,7 +28,6 @@ export default function PasswordUpdate() {
     fetchTrigger,
     setFetchTrigger
   );
-  console.log(passwordUpdate);
   const [validationErrors, setValidationErrors] = useState({
     password: "",
     newPassword: "",

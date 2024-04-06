@@ -2,8 +2,6 @@ import { setCredentials, logOut } from "./authSlice";
 import AppError from "@/utils/AppError";
 
 function authToken(getState) {
-  console.log(typeof getState);
-
   return getState().auth.data.token;
 }
 
@@ -46,7 +44,6 @@ export const authFetch = async (url, fetchOptions, getState, dispatch) => {
 
         const retryResponse = await fetch(url, fetchOptions);
         const retryResponseData = await retryResponse.json();
-        console.log(retryResponseData);
 
         if (retryResponse.ok) {
           return retryResponseData;
