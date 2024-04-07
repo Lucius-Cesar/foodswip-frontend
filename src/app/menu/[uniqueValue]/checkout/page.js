@@ -214,7 +214,7 @@ export default function Checkout({ params }) {
                     <FormInput
                       label="Rue"
                       id="streetName"
-                      autoComplete="off"
+                      autoComplete="on"
                       name="streetName"
                       onChange={(input) =>
                         setForm({
@@ -233,7 +233,7 @@ export default function Checkout({ params }) {
                     <FormInput
                       label="Numéro de maison"
                       id="streetNumber"
-                      autoComplete="off"
+                      autoComplete="on"
                       name="streetNumber"
                       onChange={(input) =>
                         setForm({
@@ -254,7 +254,7 @@ export default function Checkout({ params }) {
                     <FormInput
                       label="Code postal"
                       id="postalCode"
-                      autoComplete="off"
+                      autoComplete="on"
                       name="postalCode"
                       onChange={(input) =>
                         setForm({
@@ -273,7 +273,7 @@ export default function Checkout({ params }) {
                     <FormInput
                       label="Ville"
                       id="city"
-                      autoComplete="off"
+                      autoComplete="on"
                       name="city"
                       onChange={(input) =>
                         setForm({
@@ -362,9 +362,9 @@ export default function Checkout({ params }) {
                   <div className="w-full">
                     <FormInput
                       label="Prénom"
-                      id="firstName"
-                      autoComplete="off"
-                      name="firstName"
+                      id="given-name"
+                      autoComplete="on"
+                      name="given-name"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -381,9 +381,9 @@ export default function Checkout({ params }) {
                   <div className="w-full">
                     <FormInput
                       label="Nom"
-                      id="lastName"
-                      autoComplete="off"
-                      name="lastName"
+                      id="family-name"
+                      autoComplete="on"
+                      name="family-name"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -403,7 +403,7 @@ export default function Checkout({ params }) {
                     <FormInput
                       label="Adresse mail"
                       id="email"
-                      autoComplete="off"
+                      autoComplete="on"
                       name="email"
                       placeholder="you@example.com"
                       onChange={(input) =>
@@ -422,9 +422,9 @@ export default function Checkout({ params }) {
                   <div className="w-full">
                     <FormInput
                       label="N° de téléphone"
-                      id="phoneNumber"
-                      autoComplete="off"
-                      name="phoneNumber"
+                      id="tel"
+                      autoComplete="on"
+                      name="tel"
                       onChange={(input) =>
                         setForm({
                           ...form,
