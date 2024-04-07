@@ -171,7 +171,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                   </div>
 
                   <DefaultBtn
-                    value={` Ajouter au panier | ${multiplyMoney(
+                    value={` Ajouter | ${multiplyMoney(
                       articlePrice,
                       quantity
                     )} €`}
