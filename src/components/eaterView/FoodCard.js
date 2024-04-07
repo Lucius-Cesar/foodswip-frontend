@@ -11,10 +11,31 @@ import {
 import findIndexOfArticleInCart from "../../utils/findIndexOfArticleInCart";
 export default function FoodCard({ food, foodCategoryIndex }) {
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
 
   const [isModalOpen, setModalOpen] = useState(false);
+  const [foodQuantityInCart, setFoodQuantityInCart] = useState(null);
 
-  const cart = useSelector((state) => state.cart);
+  function sumFoodQuantityInCart() {
+    // check if food is already in cart articles to display food quantity instead of add btn
+    let totalQuantity = 0;
+
+    // Vérifier si le panier et la nourriture sont définis
+    // Parcourir tous les articles dans le panier
+    cart.data.articles.forEach((article) => {
+      // Vérifier si l'ID de la nourriture correspond à l'ID de la nourriture de l'article
+      if (article.food === food._id) {
+        // Si la correspondance est trouvée, ajouter la quantité de l'article à la somme totale
+        totalQuantity += article.quantity;
+      }
+    });
+    totalQuantity !== foodQuantityInCart &&
+      setFoodQuantityInCart(totalQuantity);
+  }
+
+  useEffect(() => {
+    sumFoodQuantityInCart();
+  }, [cart.data.articles]);
 
   const handleAddArticleToCart = () => {
     const newArticle = {
@@ -53,19 +74,31 @@ export default function FoodCard({ food, foodCategoryIndex }) {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between w-full sm:w-11/12 min-h-32 h-auto bg-magnolia rounded-lg border border-gravel mt-3 mb-3 p-4">
-      <div className="flex flex-col justify-between h-full">
-        <p className="font-extrabold">{food.value}</p>
-        <p>{food.description}</p>
-        <p className="font-bold"> {food.price + " €"}</p>
-      </div>
-      <AddBtn onClick={onClickAddBtn} />
+    <>
+      <button
+        className="flex flex-row items-center justify-between w-full sm:w-11/12 min-h-32 h-auto bg-magnolia rounded-lg border border-gravel mt-3 mb-3 p-4 sm:hover:brightness-95"
+        onClick={onClickAddBtn}
+      >
+        <div className="flex flex-col justify-between items-start h-full">
+          <p className="font-extrabold">{food.value}</p>
+          <p>{food.description}</p>
+          <p className="font-bold"> {food.price + " €"}</p>
+        </div>
+        {foodQuantityInCart ? (
+          <button className="rounded-full l-8 w-8 pt-1 outline outline-primary  flex justify-center items-center font-bold text-xl text-primary">
+            {foodQuantityInCart}
+          </button>
+        ) : (
+          <AddBtn />
+        )}
+      </button>
+
       <ModalFood
         open={isModalOpen}
         setOpen={setModalOpen}
         food={food}
         foodCategoryIndex={foodCategoryIndex}
       />
-    </div>
+    </>
   );
 }

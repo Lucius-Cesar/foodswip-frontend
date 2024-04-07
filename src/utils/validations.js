@@ -3,13 +3,22 @@ const checkIfInputContainsOnlyNumber = (input) => {
   return numericRegex.test(input);
 };
 
-export const addressValidation = (address, setValidationErrors) => {
-  !address
+export const streetValidation = (street, setValidationErrors) => {
+  !street
     ? setValidationErrors((previous) => ({
         ...previous,
-        address: "L'addresse est obligatoire",
+        street: "La rue est obligatoire",
       }))
-    : setValidationErrors((previous) => ({ ...previous, address: "" }));
+    : setValidationErrors((previous) => ({ ...previous, street: "" }));
+};
+
+export const streetNumberValidation = (street, setValidationErrors) => {
+  !street
+    ? setValidationErrors((previous) => ({
+        ...previous,
+        streetNumber: "Le numéro de maison est obligatoire",
+      }))
+    : setValidationErrors((previous) => ({ ...previous, streetNumber: "" }));
 };
 
 export const postCodeValidation = (postCode, setValidationErrors) => {

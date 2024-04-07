@@ -7,6 +7,8 @@ export default function FormInput({
   type = "text",
   placeholder,
   id,
+  name,
+  autoComplete,
   value,
   onChange,
   validationFunction = null,
@@ -27,7 +29,7 @@ export default function FormInput({
         <div className="relative">
           <input
             type={type}
-            name={id}
+            name={name ? name : id}
             id={id}
             value={value}
             placeholder={placeholder}
@@ -39,6 +41,7 @@ export default function FormInput({
             onBlur={(e) =>
               validationFunction && validationFunction(e.target.value)
             }
+            autoComplete={autoComplete}
           />
           {validationError && (
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

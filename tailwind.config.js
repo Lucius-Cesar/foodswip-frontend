@@ -31,6 +31,18 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      keyframes: {
+        "tilt-shaking-delay": {
+          "0%": { transform: "rotate(0deg)" },
+          "12.5%": { transform: "rotate(10deg)" },
+          "25%": { transform: "rotate(-10deg)" },
+          "32.5%": { transform: "rotate(0)" },
+          "100%": { transform: "rotate(0deg)" },
+        },
+      },
+      animation: {
+        "tilt-shaking-delay": "tilt-shaking-delay 4s ease-in-out infinite",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

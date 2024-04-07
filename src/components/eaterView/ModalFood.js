@@ -96,7 +96,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={handleClose}>
+      <Dialog as="div" className="relative z-10" onClose={() => handleClose()}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -120,13 +120,13 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="flex flex-col justify-between relative w-screen h-dvh sm:w-7/12 sm:h-auto sm:max-h-screen transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
+              <Dialog.Panel className="flex flex-col relative w-screen h-dvh  sm:w-7/12 sm:h-auto sm:max-h-full transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
                 <div className="flex fex-row w-full justify-between pb-4">
                   <h2 className="font-title">{food.value}</h2>
                   <button
                     type="button"
                     className={`rounded-md text-gray-400 hover:text-gray-500`}
-                    onClick={() => setOpen(false)}
+                    onClick={() => handleClose()}
                   >
                     {" "}
                     <span className="sr-only">Close panel</span>

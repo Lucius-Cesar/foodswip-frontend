@@ -1,6 +1,5 @@
 import CartIcon from "../ui/icons/CartIcon";
 import { useState } from "react";
-
 import { useSelector } from "react-redux";
 export default function CartBtn({ className, onClick, isCartOpen }) {
   const numberOfArticles = useSelector(
@@ -20,16 +19,19 @@ export default function CartBtn({ className, onClick, isCartOpen }) {
   return (
     <button
       type="button"
-      className={`flex justify-center items-center rounded-3xl ${
+      className={`${
+        numberOfArticles > 0 && "animate-tilt-shaking-delay"
+      } ${className} ${
         isHovered || isCartOpen
           ? "bg-white outline outline-primary"
           : "bg-primary"
-      } rounded-xl h-fit w-fit sm:rounded-2xl ${className}`}
+      }
+       flex justify-center items-center rounded-3xl rounded-xl h-fit w-fit sm:rounded-2xl`}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
       onClick={onClick}
     >
-      <div className="h-10 w-10 sm:h-16 sm:w-16 relative">
+      <div className={`h-10 w-10 sm:h-16 sm:w-16 relative`}>
         <CartIcon
           color={isHovered || isCartOpen ? primary : "white"}
           className="w-full h-full"

@@ -40,7 +40,7 @@ export default function Order({ params }) {
           <div className="flex flex-col justify-center items-center">
             <SuccessIcon className="h-24 w-24 mb-6" />
             <p className="font-bold text-2xl">
-              Merci pour votre commande # {order.data.orderNumber}
+              Merci pour votre commande #{order.data.orderNumber}
             </p>
             <p className="text-lg text-center">
               Votre commande a bien été validée.

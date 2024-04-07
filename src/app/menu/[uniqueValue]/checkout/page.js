@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { clearCart } from "@/redux/cart/cartSlice";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useFetch from "@/hooks/useFetch";
 import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
 import Cart from "../../../../components/eaterView/Cart";
@@ -17,7 +17,8 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import { current } from "@reduxjs/toolkit";
 import {
-  addressValidation,
+  streetValidation,
+  streetNumberValidation,
   cityValidation,
   firstnameValidation,
   lastnameValidation,
@@ -32,12 +33,15 @@ export default function Checkout({ params }) {
   const dispatch = useDispatch();
   useRedirectIfCartEmpty();
 
+  const mobileScrollRef = useRef(null);
+
   const restaurant = useSelector((state) => state.restaurantPublic);
   const cart = useSelector((state) => state.cart);
 
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [form, setForm] = useState({
-    address: "",
+    street: "",
+    streetNumber: "",
     postCode: "",
     city: "",
     firstname: "",
@@ -47,7 +51,8 @@ export default function Checkout({ params }) {
   });
   //validations forms
   const [validationErrors, setValidationErrors] = useState({
-    address: "",
+    street: "",
+    streetNumber: "",
     postCode: "",
     city: "",
     firstname: "",
@@ -106,9 +111,16 @@ export default function Checkout({ params }) {
     return estimatedArrival;
   };
 
+  useEffect(() => {
+    if (window.innerWidth <= 640 && mobileScrollRef.current) {
+      mobileScrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   const handleConfirmOrder = () => {
     //display errors on submit and not only onBlur
-    addressValidation(form.address, setValidationErrors);
+    streetValidation(form.street, setValidationErrors);
+    streetNumberValidation(form.streetNumber, setValidationErrors);
     postCodeValidation(form.postCode, setValidationErrors);
     cityValidation(form.city, setValidationErrors);
     firstnameValidation(form.firstname, setValidationErrors);
@@ -148,7 +160,8 @@ export default function Checkout({ params }) {
             firstname: form.firstname,
             lastname: form.lastname,
             phoneNumber: form.phoneNumber,
-            address: form.address,
+            street: form.street,
+            streetNumber: form.streetNumber,
             city: form.city,
             postCode: form.postCode,
             articles: cart.data.articles,
@@ -186,37 +199,63 @@ export default function Checkout({ params }) {
           <div className="hidden sm:block">
             <RestaurantLogo from="restaurantPublic" />
           </div>
-          <div className="flex flex-col w-full space-y-10 mb-10">
+          <div
+            ref={mobileScrollRef}
+            className="flex flex-col w-full space-y-10 mb-10"
+          >
             <div className="space-y-4">
-              <h2 className="font-title text-center sm:text-left">
-                Informations de commande
-              </h2>
-              <div className="m-auto sm:m-0 w-fit">
+              <h2 className="font-title text-left">Informations de commande</h2>
+              <div className="w-fit">
                 <OrderTabBtn />
               </div>
               <div className="flex flex-col justify-between gap-4">
-                <div className="w-full">
-                  <FormInput
-                    label="Adresse"
-                    id="address"
-                    onChange={(input) =>
-                      setForm({
-                        ...form,
-                        address: input,
-                      })
-                    }
-                    value={form.address}
-                    validationFunction={(e) =>
-                      addressValidation(e, setValidationErrors)
-                    }
-                    validationError={validationErrors.address}
-                  />
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full">
+                    <FormInput
+                      label="Rue"
+                      id="streetName"
+                      autoComplete="off"
+                      name="streetName"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          street: input,
+                        })
+                      }
+                      value={form.street}
+                      validationFunction={(e) =>
+                        streetValidation(e, setValidationErrors)
+                      }
+                      validationError={validationErrors.street}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <FormInput
+                      label="Numéro de maison"
+                      id="streetNumber"
+                      autoComplete="off"
+                      name="streetNumber"
+                      onChange={(input) =>
+                        setForm({
+                          ...form,
+                          streetNumber: input,
+                        })
+                      }
+                      value={form.streetNumber}
+                      validationFunction={(e) =>
+                        streetNumberValidation(e, setValidationErrors)
+                      }
+                      validationError={validationErrors.streetNumber}
+                    />
+                  </div>
                 </div>
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <div className="w-full">
                     <FormInput
                       label="Code postal"
-                      id="postcode"
+                      id="postalCode"
+                      autoComplete="off"
+                      name="postalCode"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -234,6 +273,8 @@ export default function Checkout({ params }) {
                     <FormInput
                       label="Ville"
                       id="city"
+                      autoComplete="off"
+                      name="city"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -251,13 +292,13 @@ export default function Checkout({ params }) {
               </div>
               <div className="space-y-1">
                 {cart.data.orderType === 0 ? (
-                  <h3 className="font-title text-center sm:text-left">
+                  <h3 className="font-title text-left">
                     Estimation des délais de livraison: entre{" "}
                     {restaurant.data.publicSettings.deliveryEstimate.min} et{" "}
                     {restaurant.data.publicSettings.deliveryEstimate.max} min *
                   </h3>
                 ) : cart.data.orderType === 1 ? (
-                  <h3 className="font-title text-center sm:text-left">
+                  <h3 className="font-title text-left">
                     Estimation du délai pour emporter:{" "}
                     {restaurant.data.publicSettings.takeAwayEstimate} min *
                   </h3>
@@ -270,9 +311,7 @@ export default function Checkout({ params }) {
               </div>
             </div>
             <div>
-              <h2 className="font-title text-center sm:text-left">
-                Moyen de paiement
-              </h2>
+              <h2 className="font-title text-left">Moyen de paiement</h2>
               <fieldset className="mt-4">
                 <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                   {paymentMethods.map((paymentMethod, i) => {
@@ -315,7 +354,7 @@ export default function Checkout({ params }) {
             )}
 
             <div className="w-full">
-              <h2 className="font-title mb-4 text-center sm:text-left">
+              <h2 className="font-title mb-4 text-left">
                 Informations personnelles
               </h2>
               <div className="flex flex-col w-full">
@@ -323,7 +362,9 @@ export default function Checkout({ params }) {
                   <div className="w-full">
                     <FormInput
                       label="Prénom"
-                      id="firstname"
+                      id="firstName"
+                      autoComplete="off"
+                      name="firstName"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -340,7 +381,9 @@ export default function Checkout({ params }) {
                   <div className="w-full">
                     <FormInput
                       label="Nom"
-                      id="lastname"
+                      id="lastName"
+                      autoComplete="off"
+                      name="lastName"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -355,11 +398,13 @@ export default function Checkout({ params }) {
                     />
                   </div>
                 </div>
-                <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4 sm:py-4">
+                <div className="w-full flex flex-col sm:flex-row sm:justify-between gap-4 py-4">
                   <div className="w-full">
                     <FormInput
                       label="Adresse mail"
-                      id="mail"
+                      id="email"
+                      autoComplete="off"
+                      name="email"
                       placeholder="you@example.com"
                       onChange={(input) =>
                         setForm({
@@ -377,7 +422,9 @@ export default function Checkout({ params }) {
                   <div className="w-full">
                     <FormInput
                       label="N° de téléphone"
-                      id="phonenumber"
+                      id="phoneNumber"
+                      autoComplete="off"
+                      name="phoneNumber"
                       onChange={(input) =>
                         setForm({
                           ...form,
@@ -420,14 +467,15 @@ export default function Checkout({ params }) {
                 </p>
               )
             )}
-
-            <DefaultBtn
-              value={"Confirmer la commande"}
-              className="w-72 h-12 text-xl font-bold self-center"
-              onClick={handleConfirmOrder}
-              color="success"
-              isLoading={newOrder?.isLoading}
-            />
+            <div className="self-center w-fit">
+              <DefaultBtn
+                value={"Confirmer la commande"}
+                className="sm:w-72 h-12 text-xl font-bold"
+                onClick={handleConfirmOrder}
+                color="success"
+                isLoading={newOrder?.isLoading}
+              />
+            </div>
           </div>
         </div>
         <div className="order-first mb-4 sm:mb-0 sm:order-last">

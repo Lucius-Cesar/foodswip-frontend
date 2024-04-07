@@ -170,7 +170,7 @@ export default function eaterView({ params }) {
                   </div>
                 </div>
               )}
-              <div className="sticky sm:relative pt-2 pb-2 sm:pt-0 top-0 w-full sm:w-auto flex justify-center sm:block  bg-white sm:bg-none sm:py-0">
+              <div className="sticky sm:relative pt-2 pb-2 sm:pt-0 top-0 w-full sm:w-auto flex justify-center sm:block bg-white sm:bg-none sm:py-0">
                 <OrderTabBtn />
               </div>
               <div className="flex flex-col w-full pb-24">

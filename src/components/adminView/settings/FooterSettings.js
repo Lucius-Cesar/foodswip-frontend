@@ -1,4 +1,3 @@
-import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";

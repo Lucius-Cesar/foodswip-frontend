@@ -50,10 +50,11 @@ const DoubleBounce = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  animation: ${bounce} 1s infinite ease-in-out;
+  animation: ${bounce} 2s infinite ease-in-out;
 
   &:nth-child(2) {
-    animation-delay: -0.5s;
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s;
   }
 `;
 
