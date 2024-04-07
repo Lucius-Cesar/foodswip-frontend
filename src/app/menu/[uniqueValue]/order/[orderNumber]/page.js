@@ -36,10 +36,12 @@ export default function Order({ params }) {
     return (
       <div className="w-full h-dvh flex flex-col justify-between items-center">
         <RestaurantLogo className="h-24 w-72" from="restaurantPublic" />
+
         {order.data && (
           <div className="flex flex-col justify-center items-center">
             <SuccessIcon className="h-24 w-24 mb-6" />
-            <p className="font-bold text-2xl">
+
+            <p className="font-bold text-2xl text-center">
               Merci pour votre commande #{order.data.orderNumber}
             </p>
             <p className="text-lg text-center">
@@ -69,7 +71,6 @@ export default function Order({ params }) {
             Vous n'êtes pas autorisé à consulter cette commande
           </p>
         )}
-
         <FoodSwipIcon className="h-12 sm:h-10 w-auto" />
       </div>
     );

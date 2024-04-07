@@ -169,9 +169,13 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                     {quantity}
                     <AddBtn onClick={() => setQuantity(quantity + 1)} />
                   </div>
+
                   <DefaultBtn
-                    value={`${multiplyMoney(articlePrice, quantity)} €`}
-                    className="py-2 px-12 text-xl font-bold bg-success hover:opacity-90"
+                    value={` Ajouter au panier | ${multiplyMoney(
+                      articlePrice,
+                      quantity
+                    )} €`}
+                    className="animate-[bounce_1s_ease_8s_infinite] relative py-2 px-12 text-xl font-bold bg-success hover:opacity-90"
                     onClick={handleAddArticleToCart}
                   />
                 </div>
