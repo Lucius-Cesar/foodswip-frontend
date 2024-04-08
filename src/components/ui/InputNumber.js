@@ -26,7 +26,7 @@ export default function InputNumber({
               validationError ? "ring-error-danger" : "ring-gray-300"
             }
             text-center rounded-xl border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary text-${textSize} sm:leading-8`}
-            onChange={(e) => onChange(Number(e.target.value))}
+            onChange={(e) => onChange(e.target.value)}
             onBlur={(e) =>
               validationFunction && validationFunction(e.target.value)
             }

@@ -12,12 +12,14 @@ import { useRouter } from "next/navigation";
 import useCheckAuth from "@/hooks/useCheckAuth";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import useRestaurantData from "@/hooks/useRestaurantData";
+
+import Cookies from "js-cookie";
+import useRefreshAuth from "@/hooks/useRefreshAuth";
 export default function Login() {
   const auth = useSelector((state) => state.auth);
   const router = useRouter();
-  useCheckAuth(true);
+  useRefreshAuth();
   useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin");
-
   const dispatch = useDispatch();
 
   const formInitialState = {

@@ -570,16 +570,14 @@ export default function settings() {
                           id="alertInterval"
                           value={publicSettings.deliveryMin}
                           onChange={(value) => {
-                            if (value >= 0) {
-                              setPublicSettings({
-                                ...publicSettings,
-                                deliveryMin: value,
-                              });
-                            }
+                            setPublicSettings({
+                              ...publicSettings,
+                              deliveryMin: value,
+                            });
                           }}
                           onIncrement={() => {
                             let updatedDeliveryMin =
-                              publicSettings.deliveryMin + 1;
+                              Number(publicSettings.deliveryMin) + 1;
 
                             setPublicSettings({
                               ...publicSettings,
@@ -588,7 +586,7 @@ export default function settings() {
                           }}
                           onDecrement={() => {
                             let updatedDeliveryMin =
-                              publicSettings.deliveryMin - 1;
+                              Number(publicSettings.deliveryMin) - 1;
 
                             if (updatedDeliveryMin < 0) {
                               updatedDeliveryMin = 0;
@@ -621,7 +619,7 @@ export default function settings() {
                           }}
                           onIncrement={() => {
                             let updatedDeliveryFees =
-                              publicSettings.deliveryFees + 1;
+                              Number(publicSettings.deliveryFees) + 1;
 
                             setPublicSettings({
                               ...publicSettings,
@@ -630,7 +628,7 @@ export default function settings() {
                           }}
                           onDecrement={() => {
                             let updatedDeliveryFees =
-                              publicSettings.deliveryFees - 1;
+                              Number(publicSettings.deliveryFees) - 1;
 
                             if (updatedDeliveryFees < 0) {
                               updatedDeliveryFees = 0;
@@ -669,7 +667,7 @@ export default function settings() {
                               ...publicSettings.deliveryEstimate,
                             };
                             updatedDeliveryEstimate.min =
-                              updatedDeliveryEstimate.min + 15;
+                              Number(updatedDeliveryEstimate.min) + 15;
 
                             setPublicSettings({
                               ...publicSettings,
@@ -681,7 +679,7 @@ export default function settings() {
                               ...publicSettings.deliveryEstimate,
                             };
                             updatedDeliveryEstimate.min =
-                              updatedDeliveryEstimate.min - 15;
+                              Number(updatedDeliveryEstimate.min) - 15;
 
                             if (updatedDeliveryEstimate.min < 0) {
                               updatedDeliveryEstimate.min = 0;
@@ -721,7 +719,7 @@ export default function settings() {
                             ...publicSettings.deliveryEstimate,
                           };
                           updatedDeliveryEstimate.max =
-                            updatedDeliveryEstimate.max + 15;
+                            Number(updatedDeliveryEstimate.max) + 15;
 
                           setPublicSettings({
                             ...publicSettings,
@@ -733,7 +731,7 @@ export default function settings() {
                             ...publicSettings.deliveryEstimate,
                           };
                           updatedDeliveryEstimate.max =
-                            updatedDeliveryEstimate.max - 15;
+                            Number(updatedDeliveryEstimate.max) - 15;
 
                           if (updatedDeliveryEstimate.max < 0) {
                             updatedDeliveryEstimate.max = 0;
@@ -768,7 +766,7 @@ export default function settings() {
                       }}
                       onIncrement={() => {
                         let updatedTakawayEstimate =
-                          publicSettings.takeAwayEstimate + 5;
+                          Number(publicSettings.takeAwayEstimate) + 5;
 
                         setPublicSettings({
                           ...publicSettings,
@@ -777,7 +775,7 @@ export default function settings() {
                       }}
                       onDecrement={() => {
                         let updatedTakawayEstimate =
-                          publicSettings.takeAwayEstimate - 5;
+                          Number(publicSettings.takeAwayEstimate) - 5;
 
                         if (updatedTakawayEstimate < 0) {
                           updatedTakawayEstimate = 0;
@@ -1027,7 +1025,8 @@ export default function settings() {
                           let updatedPendingOrderAlert = {
                             ...privateSettings.pendingOrderAlert,
                           };
-                          updatedPendingOrderAlert.interval += 5;
+                          updatedPendingOrderAlert.interval =
+                            Number(updatedPendingOrderAlert.interval) + 5;
                           setPrivateSettings({
                             ...privateSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
@@ -1037,11 +1036,12 @@ export default function settings() {
                           let updatedPendingOrderAlert = {
                             ...privateSettings.pendingOrderAlert,
                           };
-                          updatedPendingOrderAlert.interval -= 5;
+                          updatedPendingOrderAlert.interval =
+                            Number(updatedPendingOrderAlert.interval) - 5;
                           if (updatedPendingOrderAlert.interval < 0) {
                             updatedPendingOrderAlert.interval = 0;
                           }
-                          setOrderSettings({
+                          setPrivateSettings({
                             ...privateSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
                           });
@@ -1086,7 +1086,7 @@ export default function settings() {
                 <div className="w-full sm:w-5/12 space-y-4 text-center">
                   <DefaultBtn
                     value="Se déconnecter"
-                    className=" hover:opacity-70 rounded-s-lg rounded-e-lg text-xl font-bold  focus:text-white text-white self-center"
+                    className="bg-error-danger hover:opacity-70 rounded-s-lg rounded-e-lg text-xl font-bold  focus:text-white text-white self-center"
                     onClick={() => onClickLogOut()}
                     color="error-danger"
                   />
