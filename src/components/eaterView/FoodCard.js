@@ -76,7 +76,7 @@ export default function FoodCard({ food, foodCategoryIndex }) {
   return (
     <>
       <button
-        className="flex flex-row items-center justify-between w-full sm:w-11/12 min-h-32 h-auto bg-magnolia rounded-lg border border-gravel mt-3 mb-3 p-4 hover:brightness-95"
+        className="flex flex-row items-center justify-between w-full sm:w-11/12 min-h-32 h-auto bg-magnolia rounded-lg border border-gravel mt-3 mb-3 p-4 sm:hover:brightness-95"
         onClick={onClickAddBtn}
       >
         <div className="flex flex-col justify-between items-start h-full">
