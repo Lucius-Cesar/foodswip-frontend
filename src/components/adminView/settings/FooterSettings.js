@@ -19,7 +19,6 @@ export default function FooterSettings({
     if (Object.values(validationErrors).every((value) => value === "")) {
       setSaveError(false);
       const payload = {
-        ...restaurant.data,
         name: formRestaurantInfo.name,
         mail: formRestaurantInfo.mail,
         website: formRestaurantInfo.website,
@@ -45,7 +44,7 @@ export default function FooterSettings({
   return (
     <div className="mt-auto h-fit z-10 w-full flex flex-col justify-center sm:justify-end items-center sm:items-end py-2 sm:pe-10">
       <div className="flex flex-col justify-center items-center sm:items-end sm:flex-row gap-2 sm:gap-4">
-        {!saveError && !restaurant.error && (
+        {(!saveError || !restaurant.error) && (
           <SuccesAlert
             message="Les paramètres ont été sauvegardés avec succès"
             open={alertOpen}
@@ -53,7 +52,6 @@ export default function FooterSettings({
             openTime={10000}
           />
         )}
-
         {restaurant.error && (
           <ErrorAlert
             message="La sauvegarde des paramètres a échoué, veuillez réessayer ultérieurement"
