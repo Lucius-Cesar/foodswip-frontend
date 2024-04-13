@@ -17,11 +17,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import { current } from "@reduxjs/toolkit";
 import {
-  streetValidation,
-  streetNumberValidation,
-  cityValidation,
-  firstnameValidation,
-  lastnameValidation,
+  missingInformationValidation,
   phoneNumberValidation,
   postCodeValidation,
   mailValidation,
@@ -119,14 +115,39 @@ export default function Checkout({ params }) {
 
   const handleConfirmOrder = () => {
     //display errors on submit and not only onBlur
-    streetValidation(form.street, setValidationErrors);
-    streetNumberValidation(form.streetNumber, setValidationErrors);
-    postCodeValidation(form.postCode, setValidationErrors);
-    cityValidation(form.city, setValidationErrors);
-    firstnameValidation(form.firstname, setValidationErrors);
-    lastnameValidation(form.lastname, setValidationErrors);
-    mailValidation(form.mail, setValidationErrors);
-    phoneNumberValidation(form.phoneNumber, setValidationErrors);
+    missingInformationValidation(
+      form.street,
+      setValidationErrors,
+      "street",
+      "La rue est obligatoire"
+    );
+    missingInformationValidation(
+      form.streetNumber,
+      setValidationErrors,
+      "streetNumber",
+      "Le numéro de maison est obligatoire"
+    );
+    postCodeValidation(form.postCode, setValidationErrors, "postCode");
+    missingInformationValidation(
+      form.city,
+      setValidationErrors,
+      "city",
+      "La ville est obligatoire"
+    );
+    missingInformationValidation(
+      form.firstname,
+      setValidationErrors,
+      "firstname",
+      "Le prénom est obligatoire"
+    );
+    missingInformationValidation(
+      form.lastname,
+      setValidationErrors,
+      "lastname",
+      "Le nom est obligatoire"
+    );
+    mailValidation(form.mail, setValidationErrors, "mail");
+    phoneNumberValidation(form.phoneNumber, setValidationErrors, "phoneNumber");
 
     if (!selectedPaymentMethod) {
       setValidationErrors((previous) => ({
@@ -224,7 +245,12 @@ export default function Checkout({ params }) {
                       }
                       value={form.street}
                       validationFunction={(e) =>
-                        streetValidation(e, setValidationErrors)
+                        missingInformationValidation(
+                          form.street,
+                          setValidationErrors,
+                          "street",
+                          "La rue est obligatoire"
+                        )
                       }
                       validationError={validationErrors.street}
                     />
@@ -243,7 +269,12 @@ export default function Checkout({ params }) {
                       }
                       value={form.streetNumber}
                       validationFunction={(e) =>
-                        streetNumberValidation(e, setValidationErrors)
+                        missingInformationValidation(
+                          e,
+                          setValidationErrors,
+                          "streetNumber",
+                          "Le numéro de maison est obligatoire"
+                        )
                       }
                       validationError={validationErrors.streetNumber}
                     />
@@ -264,7 +295,7 @@ export default function Checkout({ params }) {
                       }
                       value={form.postCode}
                       validationFunction={(e) =>
-                        postCodeValidation(e, setValidationErrors)
+                        postCodeValidation(e, setValidationErrors, "postCode")
                       }
                       validationError={validationErrors.postCode}
                     />
@@ -283,7 +314,12 @@ export default function Checkout({ params }) {
                       }
                       value={form.city}
                       validationFunction={(e) =>
-                        cityValidation(e, setValidationErrors)
+                        missingInformationValidation(
+                          e,
+                          setValidationErrors,
+                          "city",
+                          "La ville est obligatoire"
+                        )
                       }
                       validationError={validationErrors.city}
                     />
@@ -373,7 +409,12 @@ export default function Checkout({ params }) {
                       }
                       value={form.firstname}
                       validationFunction={(e) =>
-                        firstnameValidation(e, setValidationErrors)
+                        missingInformationValidation(
+                          e,
+                          setValidationErrors,
+                          "firstname",
+                          "Le prénom est obligatoire"
+                        )
                       }
                       validationError={validationErrors.firstname}
                     />
@@ -392,7 +433,12 @@ export default function Checkout({ params }) {
                       }
                       value={form.lastname}
                       validationFunction={(e) =>
-                        lastnameValidation(e, setValidationErrors)
+                        missingInformationValidation(
+                          e,
+                          setValidationErrors,
+                          "lastname",
+                          "Le nom est obligatoire"
+                        )
                       }
                       validationError={validationErrors.lastname}
                     />
@@ -414,7 +460,7 @@ export default function Checkout({ params }) {
                       }
                       value={form.mail}
                       validationFunction={(e) =>
-                        mailValidation(e, setValidationErrors)
+                        mailValidation(e, setValidationErrors, "mail")
                       }
                       validationError={validationErrors.mail}
                     />
@@ -433,7 +479,11 @@ export default function Checkout({ params }) {
                       }
                       value={form.phoneNumber}
                       validationFunction={(e) =>
-                        phoneNumberValidation(e, setValidationErrors)
+                        phoneNumberValidation(
+                          e,
+                          setValidationErrors,
+                          "phoneNumber"
+                        )
                       }
                       validationError={validationErrors.phoneNumber}
                     />

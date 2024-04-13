@@ -20,13 +20,15 @@ export default function ModalPeriod({
   });
   const handleClose = () => {
     setOpen(false);
-    setValue({
-      dayIndex: null,
-      itemIndex: null,
-      start: null,
-      end: null,
-    });
-    setValidationErrors({ period: "" });
+    setTimeout(function () {
+      setValue({
+        dayIndex: null,
+        itemIndex: null,
+        start: null,
+        end: null,
+      });
+      setValidationErrors({ period: "" });
+    }, 300);
   };
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -104,7 +106,12 @@ export default function ModalPeriod({
                     value="Valider"
                     className="text-xl font-bold bg-success hover:opacity-90"
                     onClick={() => {
-                      modalPeriodValidation(value, setValidationErrors, type);
+                      modalPeriodValidation(
+                        value,
+                        setValidationErrors,
+                        type,
+                        "period"
+                      );
                       setValidationErrors((previous) => {
                         if (!previous.period) {
                           validateBtnFunction();

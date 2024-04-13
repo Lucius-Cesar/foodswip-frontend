@@ -1,5 +1,5 @@
 import {
-  currentPasswordValidation,
+  missingInformationValidation,
   newPasswordValidation,
   confirmNewPasswordValidation,
 } from "@/utils/validations";
@@ -29,7 +29,7 @@ export default function PasswordUpdate() {
     setFetchTrigger
   );
   const [validationErrors, setValidationErrors] = useState({
-    password: "",
+    currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
   });
@@ -55,9 +55,14 @@ export default function PasswordUpdate() {
             setPasswordForm({ ...passwordForm, currentPassword: input })
           }
           validationFunction={(e) =>
-            currentPasswordValidation(e, setValidationErrors)
+            missingInformationValidation(
+              e,
+              setValidationErrors,
+              "currentPassword",
+              "Le mot de passe actuel est obligatoire"
+            )
           }
-          validationError={validationErrors.password}
+          validationError={validationErrors.currentPassword}
         ></FormInput>
         <FormInput
           label="Nouveau mot de passe"
@@ -68,7 +73,7 @@ export default function PasswordUpdate() {
             setPasswordForm({ ...passwordForm, newPassword: input })
           }
           validationFunction={(e) =>
-            newPasswordValidation(e, setValidationErrors)
+            newPasswordValidation(e, setValidationErrors, "newPassword")
           }
           validationError={validationErrors.newPassword}
         ></FormInput>
@@ -81,7 +86,11 @@ export default function PasswordUpdate() {
             setPasswordForm({ ...passwordForm, confirmNewPassword: input })
           }
           validationFunction={() =>
-            confirmNewPasswordValidation(passwordForm, setValidationErrors)
+            confirmNewPasswordValidation(
+              passwordForm,
+              setValidationErrors,
+              "confirmNewPassword"
+            )
           }
           validationError={validationErrors.confirmNewPassword}
         ></FormInput>

@@ -19,7 +19,11 @@ import TabBtn from "@/components/ui/TabBtn";
 import { switchDayLabel } from "@/utils/switchLabel";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { mailValidation, phoneNumberValidation } from "@/utils/validations";
+import {
+  mailValidation,
+  phoneNumberValidation,
+  missingInformationValidation,
+} from "@/utils/validations";
 import deepCopy from "@/utils/deepCopy";
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
@@ -159,20 +163,20 @@ export default function settings() {
       <>
         <div className="h-dvh flex flex-col overflow-hidden">
           <Header isSettingsActive={true} />
-          <div className="flex flex-col sm:flex-row sm:h-full px-2 sm:ps-10 overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:h-full sm:ps-10  overflow-hidden">
             <SideNavigation
               categoriesData={categoriesData}
               activeCategory={activeCategory}
               setActiveCategory={setActiveCategory}
             />
             {activeCategory === categoriesData[0] && (
-              <div className="flex flex-col w-full px-10 h-full space-y-8 overflow-y-auto pb-2">
+              <div className="flex flex-col w-full px-4 sm:px-10 h-full space-y-8 overflow-y-auto pb-2">
                 <div>
                   <h2 className="mb-4">Informations générales</h2>
                   <p className="font-medium text-xl">Logo</p>
                   {<RestaurantLogo from={"restaurantAdmin"} />}
-                  <div class="flex flex-wrap gap-6">
-                    <div className="w-full sm:w-5/12">
+                  <div class="grid grid-cols1 sm:grid-cols-2 gap-6">
+                    <div className="w-full">
                       <FormInput
                         label="Nom de l'établissement"
                         labelSize="xl"
@@ -186,7 +190,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-full sm:w-5/12">
+                    <div className="w-full">
                       <FormInput
                         label="Site web"
                         labelSize="xl"
@@ -200,7 +204,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-full sm:w-5/12">
+                    <div className="w-full">
                       <FormInput
                         label="Rue"
                         labelSize="xl"
@@ -214,7 +218,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-2/5 sm:w-1/5">
+                    <div className="w-full">
                       <FormInput
                         label="Numéro"
                         labelSize="xl"
@@ -228,7 +232,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-2/5 sm:w-5/12">
+                    <div className="w-full">
                       <FormInput
                         label="Ville"
                         labelSize="xl"
@@ -242,7 +246,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-2/5 sm:w-1/5">
+                    <div className="w-full">
                       <FormInput
                         label="Code Postal"
                         labelSize="xl"
@@ -256,7 +260,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-2/5 sm:w-1/5">
+                    <div className="w-full">
                       <FormInput
                         label="Pays"
                         labelSize="xl"
@@ -270,7 +274,7 @@ export default function settings() {
                         }
                       />
                     </div>
-                    <div className="w-full sm:w-5/12">
+                    <div className="w-full">
                       <FormInput
                         label="Numéro de téléphone"
                         labelSize="xl"
@@ -283,12 +287,16 @@ export default function settings() {
                           })
                         }
                         validationFunction={(e) =>
-                          phoneNumberValidation(e, setValidationErrors)
+                          phoneNumberValidation(
+                            e,
+                            setValidationErrors,
+                            "phoneNumber"
+                          )
                         }
                         validationError={validationErrors.phoneNumber}
                       />
                     </div>
-                    <div className="w-full sm:w-5/12">
+                    <div className="w-full">
                       <FormInput
                         label="Email"
                         labelSize="xl"
@@ -301,14 +309,14 @@ export default function settings() {
                           })
                         }
                         validationFunction={(e) =>
-                          mailValidation(e, setValidationErrors)
+                          mailValidation(e, setValidationErrors, "mail")
                         }
                         validationError={validationErrors.mail}
                       />
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col space-y-8 sm:space-y-0 sm:flex-row justify-between sm:gap-20 sm:pr-20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="flex flex-col">
                     <h2 className="mb-4">Horraires d'ouverture</h2>
                     <ModalPeriod
@@ -341,7 +349,7 @@ export default function settings() {
                         );
                       }}
                     />
-                    <div className="flex flex-col space-y-6">
+                    <div className="flex flex-col items-start space-y-6">
                       {publicSettings?.schedule.map((scheduleItem, i) => {
                         const dayLabel = switchDayLabel(i);
                         return (
@@ -352,6 +360,7 @@ export default function settings() {
                             <p className="self-start text-xl">{dayLabel} :</p>
                             {scheduleItem.services.length === 0 ? (
                               <PeriodItem
+                                className="w-40"
                                 key={i}
                                 start={null}
                                 end={null}
@@ -411,8 +420,8 @@ export default function settings() {
                       })}
                     </div>
                   </div>
-                  <div className="">
-                    <h2 className="mb-4">Fermetures exceptionnelles</h2>
+                  <div className="flex flex-col items-start space-y-6">
+                    <h2 className="">Fermetures exceptionnelles</h2>
                     <ModalPeriod
                       type={"datetime-local"}
                       value={valueModalPeriod}
@@ -439,7 +448,7 @@ export default function settings() {
                         });
                       }}
                     />
-                    <div className="flex flex-col items-center space-y-6">
+                    <div className="flex flex-col items-center space-y-4">
                       {publicSettings?.exceptionalClosings.map(
                         (exceptionalClosing, i) => {
                           const exceptionalClosingDate = {
@@ -501,7 +510,7 @@ export default function settings() {
             {activeCategory === categoriesData[1] && (
               <div className="flex flex-col px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
                 <div className="space-y-4">
-                  <h2 className="mb-4">{"Types de commande:"}</h2>
+                  <h2 className="mb-4">{"Types de commande"}</h2>
                   <div className="space-y-2">
                     <p className="font-medium text-xl">Fonction "À emporter"</p>
                     <TabBtn
@@ -899,74 +908,38 @@ export default function settings() {
                         });
                       }}
                     />
-                    {privateSettings.orderMailReception.mails.map((mail, i) => (
-                      <div>
-                        <label
-                          className={`ml-px block text-lg font-medium leading-6 mb-2`}
-                        >
-                          Adresse mail {i + 1}
-                        </label>
-                        <div className="relative">
-                          <FormInput
-                            textSize="lg"
-                            value={mail}
-                            onChange={(input) => {
-                              let updatedOrderMailReceptionMails = [
-                                ...privateSettings.orderMailReception.mails,
-                              ];
-                              updatedOrderMailReceptionMails[i] = input;
-                              setPrivateSettings({
-                                ...privateSettings,
-                                orderMailReception: {
-                                  ...privateSettings.orderMailReception,
-                                  mails: updatedOrderMailReceptionMails,
-                                },
-                              });
-                            }}
-                            validationFunction={(e) =>
-                              mailValidation(e, setValidationErrors)
-                            }
-                            validationError={
-                              validationErrors.orderMailReception
-                            }
-                          />
-                          <button
-                            onClick={() => {
-                              let updatedOrderMailReceptionMails = [
-                                ...privateSettings.orderMailReception.mails,
-                              ];
-                              updatedOrderMailReceptionMails.splice(i, 1);
-                              setPrivateSettings({
-                                ...privateSettings,
-                                orderMailReception: {
-                                  ...privateSettings.orderMailReception,
-                                  mails: updatedOrderMailReceptionMails,
-                                },
-                              });
-                            }}
-                            className="absolute -right-8 top-0 bottom-0"
-                          >
-                            <XMarkIcon className="h-8 w-8 text-gray-400 hover:text-dark-grey" />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="self-center pt-2">
-                      <AddBtn
-                        onClick={() => {
-                          let updatedOrderMailreceptionMails = [
-                            ...privateSettings.orderMailReception.mails,
-                          ];
-                          updatedOrderMailreceptionMails.push("");
-                          setPrivateSettings({
-                            ...privateSettings,
-                            orderMailReception: {
+                    <div>
+                      <label
+                        className={`ml-px block text-lg font-medium leading-6 mb-2`}
+                      >
+                        Adresse mail
+                      </label>
+                      <div className="relative">
+                        <FormInput
+                          textSize="lg"
+                          value={privateSettings.orderMailReception.mail}
+                          onChange={(input) => {
+                            let updatedOrderMailReception = {
                               ...privateSettings.orderMailReception,
-                              mails: updatedOrderMailreceptionMails,
-                            },
-                          });
-                        }}
-                      />
+                            };
+                            updatedOrderMailReception.mail = input;
+                            setPrivateSettings({
+                              ...privateSettings,
+                              orderMailReception: {
+                                ...updatedOrderMailReception,
+                              },
+                            });
+                          }}
+                          validationFunction={(e) =>
+                            mailValidation(
+                              e,
+                              setValidationErrors,
+                              "orderMailReception"
+                            )
+                          }
+                          validationError={validationErrors.orderMailReception}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

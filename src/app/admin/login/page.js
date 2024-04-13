@@ -5,7 +5,10 @@ import Link from "next/link";
 import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon.js";
 import FormInput from "@/components/ui/FormInput.js";
 import DefaultBtn from "@/components/ui/DefaultBtn";
-import { mailValidation, passwordValidation } from "@/utils/validations";
+import {
+  mailValidation,
+  missingInformationValidation,
+} from "@/utils/validations";
 import { logIn } from "@/redux/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -41,7 +44,7 @@ export default function Login() {
       if (auth.error.name === "ErrorInvalidCredentials") {
         setValidationErrors({
           ...validationErrors,
-          login: "Adresse email ou mot de passe incorrecte",
+          login: "Adresse email ou mot de passe incorrect",
         });
       }
     }
@@ -96,7 +99,12 @@ export default function Login() {
               })
             }
             validationFunction={(e) =>
-              passwordValidation(e, setValidationErrors)
+              missingInformationValidation(
+                e,
+                setValidationErrors,
+                "password",
+                "Le mot de passe est obligatoire"
+              )
             }
             validationError={validationErrors.password}
           ></FormInput>

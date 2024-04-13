@@ -64,6 +64,14 @@ export default function Order({ params }) {
                 </span>
               </p>
             )}
+            <p className="text-center">
+              <br></br>
+              Un mail de confirmation de votre commande vous sera envoyé,{" "}
+              <br></br>
+              <span className="font-bold text-error-danger">
+                pensez à vérifier vos spams
+              </span>
+            </p>
           </div>
         )}
         {order.error?.status === 403 && (

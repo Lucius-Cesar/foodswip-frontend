@@ -10,13 +10,14 @@ export default function PeriodItem({
   closeBtn = false,
   onClickMainBtn = null,
   onClickCloseBtn = null,
+  className,
 }) {
   return (
     <div className="flex flex-col">
       <div className="relative">
         <DefaultBtn
           value={otherValue ? otherValue : `${start} - ${end}`}
-          className="text-xl bg-primary hover:opacity-90  focus:text-white text-white self-center"
+          className={`${className} text-xl bg-primary hover:opacity-90  focus:text-white text-white self-center`}
           onClick={() => onClickMainBtn()}
         />
         {closeBtn && (
