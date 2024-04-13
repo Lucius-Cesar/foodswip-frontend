@@ -19,6 +19,7 @@ export default function FooterSettings({
     if (Object.values(validationErrors).every((value) => value === "")) {
       setSaveError(false);
       const payload = {
+        uniqueValue: restaurant.data.uniqueValue,
         name: formRestaurantInfo.name,
         mail: formRestaurantInfo.mail,
         website: formRestaurantInfo.website,
