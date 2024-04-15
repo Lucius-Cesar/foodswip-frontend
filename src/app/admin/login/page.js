@@ -83,7 +83,9 @@ export default function Login() {
                 mail: input,
               })
             }
-            validationFunction={(e) => mailValidation(e, setValidationErrors)}
+            validationFunction={(e) =>
+              mailValidation(e, setValidationErrors, "mail")
+            }
             validationError={validationErrors.mail}
           />
 

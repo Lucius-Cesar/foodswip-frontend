@@ -508,7 +508,7 @@ export default function settings() {
               </div>
             )}
             {activeCategory === categoriesData[1] && (
-              <div className="flex flex-col px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
+              <div className="flex flex-col px-4 sm:px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
                 <div className="space-y-4">
                   <h2 className="mb-4">{"Types de commande"}</h2>
                   <div className="space-y-2">
@@ -1026,7 +1026,7 @@ export default function settings() {
               </div>
             )}
             {activeCategory === categoriesData[2] && (
-              <div className="flex flex-col px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
+              <div className="flex flex-col px-4 sm:px-10  w-full h-full space-y-8 overflow-y-auto pb-2">
                 <div className="space-y-4">
                   {/*
                      <h2 className="mb-4">Informations du compte</h2>
