@@ -15,7 +15,7 @@ function useRestaurantData(uniqueValue, target) {
       if (uniqueValue !== restaurantPublic.data?.uniqueValue) {
         dispatch(clearCart());
       }
-    }, [uniqueValue]);
+    }, [uniqueValue, restaurantPublic.data?.uniqueValue]);
   } else if (target === "restaurantAdmin") {
     // auth token is necessary to fetch these data
     const auth = useSelector((state) => state.auth);

@@ -17,16 +17,23 @@ export const missingInformationValidation = (
     : setValidationErrors((previous) => ({ ...previous, [field]: "" }));
 };
 
-export const postCodeValidation = (postCode, setValidationErrors, field) => {
+export const postCodeValidation = (
+  postCode,
+  setValidationErrors,
+  field,
+  deliveryPostCodes,
+  orderType,
+  restaurantPhoneNumber
+) => {
   if (!postCode) {
     setValidationErrors((previous) => ({
       ...previous,
       [field]: "Le code postal est obligatoire",
     }));
-  } else if (!checkIfInputContainsOnlyNumber(postCode)) {
+  } else if (!deliveryPostCodes.includes(postCode) && orderType === 0) {
     setValidationErrors((previous) => ({
       ...previous,
-      [field]: "Le code postal doit être uniquement constitué de chiffres",
+      [field]: `La livraison ne couvre pas votre zone actuellement. Vous pouvez opter pour la commande à emporter ou contacter directement l'établissement pour obtenir plus d'informations au ${restaurantPhoneNumber}`,
     }));
   } else {
     setValidationErrors((previous) => ({

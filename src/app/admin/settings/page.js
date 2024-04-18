@@ -572,7 +572,7 @@ export default function settings() {
                       <label className="text-xl font-medium block mb-2">
                         Minimum d'achat pour la livraison (€)
                       </label>
-                      <div className="text-center">
+                      <div className="text-center w-48">
                         <InputNumber
                           labelSize="xl"
                           textSize="lg"
@@ -612,7 +612,7 @@ export default function settings() {
                       <label className="text-xl font-medium">
                         Frais de livraison (€)
                       </label>
-                      <div className="text-center">
+                      <div className="text-center  w-48">
                         <InputNumber
                           labelSize="xl"
                           textSize="lg"
@@ -654,7 +654,7 @@ export default function settings() {
                       <label className="text-xl font-medium block mb-2">
                         Délai de livraison, moyenne basse (minutes)
                       </label>
-                      <div className="text-center">
+                      <div className="text-center  w-48">
                         <InputNumber
                           labelSize="xl"
                           textSize="lg"
@@ -706,7 +706,7 @@ export default function settings() {
                     <label className="text-xl font-medium block mb-2">
                       Délai de livraison, moyenne haute (minutes)
                     </label>
-                    <div className="text-center">
+                    <div className="text-center  w-48">
                       <InputNumber
                         labelSize="xl"
                         textSize="lg"
@@ -813,45 +813,47 @@ export default function settings() {
                 </div>
                 <div className="space-y-4">
                   <h2 className="mb-4">Commandes à emporter</h2>
-                  <label className="text-xl font-medium">
-                    Délai de préparation moyen (minutes)
-                  </label>
-                  <div className="text-center">
-                    <InputNumber
-                      labelSize="xl"
-                      textSize="lg"
-                      id="alertInterval"
-                      value={publicSettings.takeAwayEstimate}
-                      onChange={(value) => {
-                        if (value >= 0) {
+                  <div>
+                    <label className="text-xl font-medium block mb-2">
+                      Délai de préparation moyen (minutes)
+                    </label>
+                    <div className="text-center w-48">
+                      <InputNumber
+                        labelSize="xl"
+                        textSize="lg"
+                        id="alertInterval"
+                        value={publicSettings.takeAwayEstimate}
+                        onChange={(value) => {
+                          if (value >= 0) {
+                            setPublicSettings({
+                              ...publicSettings,
+                              takeAwayEstimate: value,
+                            });
+                          }
+                        }}
+                        onIncrement={() => {
+                          let updatedTakawayEstimate =
+                            Number(publicSettings.takeAwayEstimate) + 5;
+
                           setPublicSettings({
                             ...publicSettings,
-                            takeAwayEstimate: value,
+                            takeAwayEstimate: updatedTakawayEstimate,
                           });
-                        }
-                      }}
-                      onIncrement={() => {
-                        let updatedTakawayEstimate =
-                          Number(publicSettings.takeAwayEstimate) + 5;
+                        }}
+                        onDecrement={() => {
+                          let updatedTakawayEstimate =
+                            Number(publicSettings.takeAwayEstimate) - 5;
 
-                        setPublicSettings({
-                          ...publicSettings,
-                          takeAwayEstimate: updatedTakawayEstimate,
-                        });
-                      }}
-                      onDecrement={() => {
-                        let updatedTakawayEstimate =
-                          Number(publicSettings.takeAwayEstimate) - 5;
-
-                        if (updatedTakawayEstimate < 0) {
-                          updatedTakawayEstimate = 0;
-                        }
-                        setPublicSettings({
-                          ...publicSettings,
-                          takeAwayEstimate: updatedTakawayEstimate,
-                        });
-                      }}
-                    />
+                          if (updatedTakawayEstimate < 0) {
+                            updatedTakawayEstimate = 0;
+                          }
+                          setPublicSettings({
+                            ...publicSettings,
+                            takeAwayEstimate: updatedTakawayEstimate,
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="space-y-4">
@@ -1033,7 +1035,7 @@ export default function settings() {
                     <label className="text-xl font-medium">
                       Rappel sonores (minutes)
                     </label>
-                    <div className="text-center">
+                    <div className="text-center  w-48">
                       <InputNumber
                         labelSize="xl"
                         textSize="lg"

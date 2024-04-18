@@ -22,6 +22,8 @@ import {
   postCodeValidation,
   mailValidation,
 } from "@/utils/validations";
+import InputNumber from "@/components/ui/InputNumber";
+import isRestaurantOpen from "@/utils/isRestaurantOpen";
 
 export default function Checkout({ params }) {
   //redirect to menu page if cart modification during checkout leads to empty cart
@@ -56,6 +58,7 @@ export default function Checkout({ params }) {
     mail: "",
     phoneNumber: "",
     paymentMethod: "",
+    restaurantOpen: "",
   });
   const [orderError, setOrderError] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
@@ -70,6 +73,7 @@ export default function Checkout({ params }) {
   );
 
   useEffect(() => {
+    //change payment method choices based on orderType
     if (cart.data.orderType === 0) {
       const paymentMethodsForDelivery =
         restaurant.data.publicSettings.paymentMethods.filter(
@@ -83,6 +87,18 @@ export default function Checkout({ params }) {
           (paymentMethod) => paymentMethod.takeAway === true
         );
       setPaymentMethods(paymentMethodsForTakeAway);
+    }
+
+    //postCode Validation based on orderType
+    if (form.postCode !== "") {
+      postCodeValidation(
+        form.postCode,
+        setValidationErrors,
+        "postCode",
+        restaurant.data.publicSettings.deliveryPostCodes,
+        cart.data.orderType,
+        restaurant.data.phoneNumber
+      );
     }
   }, [cart.data.orderType]);
 
@@ -127,7 +143,14 @@ export default function Checkout({ params }) {
       "streetNumber",
       "Le numéro de maison est obligatoire"
     );
-    postCodeValidation(form.postCode, setValidationErrors, "postCode");
+    postCodeValidation(
+      form.postCode,
+      setValidationErrors,
+      "postCode",
+      restaurant.data.publicSettings.deliveryPostCodes,
+      cart.data.orderType,
+      restaurant.data.phoneNumber
+    );
     missingInformationValidation(
       form.city,
       setValidationErrors,
@@ -161,6 +184,16 @@ export default function Checkout({ params }) {
       }));
     }
 
+    const restaurantOpen = isRestaurantOpen(
+      restaurant.data.publicSettings.schedule,
+      restaurant.data.publicSettings.exceptionalClosings
+    );
+    if (!restaurantOpen) {
+      setValidationErrors((previous) => ({
+        ...previous,
+        restaurantOpen: "Le restaurant est actuellement fermé",
+      }));
+    }
     //use set + previous to avoid async problems
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
@@ -282,8 +315,10 @@ export default function Checkout({ params }) {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="w-full">
-                    <FormInput
-                      label="Code postal"
+                    <label className="font-medium block mb-2">
+                      Code Postal
+                    </label>
+                    <InputNumber
                       id="postalCode"
                       autoComplete="on"
                       name="postalCode"
@@ -295,7 +330,14 @@ export default function Checkout({ params }) {
                       }
                       value={form.postCode}
                       validationFunction={(e) =>
-                        postCodeValidation(e, setValidationErrors, "postCode")
+                        postCodeValidation(
+                          e,
+                          setValidationErrors,
+                          "postCode",
+                          restaurant.data.publicSettings.deliveryPostCodes,
+                          cart.data.orderType,
+                          restaurant.data.phoneNumber
+                        )
                       }
                       validationError={validationErrors.postCode}
                     />
@@ -491,6 +533,11 @@ export default function Checkout({ params }) {
                 </div>
               </div>
             </div>
+            {validationErrors.restaurantOpen && (
+              <p className="text-error-danger text-center">
+                Le restaurant est actuellement fermé
+              </p>
+            )}
             {orderError && (
               <p className="text-error-danger text-center">
                 Un ou plusieurs des champs ci-dessus sont invalides

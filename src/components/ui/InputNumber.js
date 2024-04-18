@@ -1,4 +1,6 @@
 "use client";
+import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
+
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export default function InputNumber({
@@ -13,9 +15,9 @@ export default function InputNumber({
   validationError = null,
 }) {
   return (
-    <div className="w-fit">
+    <div className="w-full">
       <div className="w-full">
-        <div className="w-full flex flex-row gap-1">
+        <div className="w-full flex flex-row gap-1 relative">
           <input
             type={"number"}
             name={id}
@@ -48,7 +50,7 @@ export default function InputNumber({
             </div>
           )}
           {validationError && (
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+            <div className="pointer-events-none absolute inset-y-0 right-0 top-0 bottom-0 flex items-center pr-3">
               <ExclamationCircleIcon
                 className="h-5 w-5 text-red-500"
                 aria-hidden="true"
@@ -56,12 +58,12 @@ export default function InputNumber({
             </div>
           )}
         </div>
+        {validationError && (
+          <p className={`mt-2 text-${textSize} text-error-danger`}>
+            {validationError}
+          </p>
+        )}
       </div>
-      {validationError && (
-        <p className={`mt-2 text-${textSize} text-error-danger`}>
-          {validationError}
-        </p>
-      )}
     </div>
   );
 }
