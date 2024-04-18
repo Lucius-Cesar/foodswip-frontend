@@ -23,6 +23,7 @@ export default function FooterSettings({
         name: formRestaurantInfo.name,
         mail: formRestaurantInfo.mail,
         website: formRestaurantInfo.website,
+        phoneNumber: formRestaurantInfo.phoneNumber.replace(/\s/g, ""),
         address: {
           street: formRestaurantInfo.street,
           streetNumber: formRestaurantInfo.streetNumber,
@@ -45,7 +46,7 @@ export default function FooterSettings({
   return (
     <div className="mt-auto h-fit z-10 w-full flex flex-col justify-center sm:justify-end items-center sm:items-end py-2 sm:pe-10">
       <div className="flex flex-col justify-center items-center sm:items-end sm:flex-row gap-2 sm:gap-4">
-        {(!saveError || !restaurant.error) && (
+        {!saveError && !restaurant.error && (
           <SuccesAlert
             message="Les paramètres ont été sauvegardés avec succès"
             open={alertOpen}

@@ -4,6 +4,6 @@ import useRefreshAuth from "@/hooks/useRefreshAuth";
 import { useRouter } from "next/navigation";
 
 export default function admin() {
-  router = useRouter();
+  const router = useRouter();
   router.push("/admin/login");
 }

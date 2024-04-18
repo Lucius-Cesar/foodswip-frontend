@@ -569,7 +569,7 @@ export default function settings() {
                   <h2 className="mb-4">Commandes à livrer</h2>
                   <div className="space-y-4">
                     <div>
-                      <label className="text-xl font-medium">
+                      <label className="text-xl font-medium block mb-2">
                         Minimum d'achat pour la livraison (€)
                       </label>
                       <div className="text-center">
@@ -651,7 +651,7 @@ export default function settings() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-xl font-medium">
+                      <label className="text-xl font-medium block mb-2">
                         Délai de livraison, moyenne basse (minutes)
                       </label>
                       <div className="text-center">
@@ -703,7 +703,7 @@ export default function settings() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-xl font-medium">
+                    <label className="text-xl font-medium block mb-2">
                       Délai de livraison, moyenne haute (minutes)
                     </label>
                     <div className="text-center">
@@ -748,6 +748,63 @@ export default function settings() {
                           setPublicSettings({
                             ...publicSettings,
                             deliveryEstimate: updatedDeliveryEstimate,
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xl font-medium block mb-2">
+                      Codes postaux éligibles pour la livraison{" "}
+                    </label>
+                    <div className="grid grid-cols1 sm:grid-cols-3 w-fit gap-x-10 gap-y-4">
+                      {publicSettings.deliveryPostCodes.map((postCode, i) => (
+                        <div>
+                          <div className="relative w-fit">
+                            <div className="w-32">
+                              <InputNumber
+                                textSize="lg"
+                                value={postCode}
+                                onChange={(input) => {
+                                  let updatedDeliveryPostCodes = [
+                                    ...publicSettings.deliveryPostCodes,
+                                  ];
+                                  updatedDeliveryPostCodes[i] = input;
+                                  setPublicSettings({
+                                    ...publicSettings,
+                                    deliveryPostCodes: updatedDeliveryPostCodes,
+                                  });
+                                }}
+                              />
+                            </div>
+                            <button
+                              onClick={() => {
+                                let updatedDeliveryPostCodes = [
+                                  ...publicSettings.deliveryPostCodes,
+                                ];
+                                updatedDeliveryPostCodes.splice(i, 1);
+                                setPublicSettings({
+                                  ...publicSettings,
+                                  deliveryPostCodes: updatedDeliveryPostCodes,
+                                });
+                              }}
+                              className="absolute -right-8 top-0 bottom-0"
+                            >
+                              <XMarkIcon className="h-8 w-8 text-gray-400 hover:text-dark-grey" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      <AddBtn
+                        className="self-center m-auto sm:m-0"
+                        onClick={() => {
+                          let updatedDeliveryPostCodes = [
+                            ...publicSettings.deliveryPostCodes,
+                          ];
+                          updatedDeliveryPostCodes.push("");
+                          setPublicSettings({
+                            ...publicSettings,
+                            deliveryPostCodes: updatedDeliveryPostCodes,
                           });
                         }}
                       />

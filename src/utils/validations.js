@@ -64,7 +64,7 @@ export const phoneNumberValidation = (
   field
 ) => {
   const phoneNumberRegex = /^\+?[0-9]{10,}$/;
-
+  phoneNumber = phoneNumber.replace(/\s/g, "");
   if (!phoneNumber) {
     setValidationErrors((previous) => ({
       ...previous,
