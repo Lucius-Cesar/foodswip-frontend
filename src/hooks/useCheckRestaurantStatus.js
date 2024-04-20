@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 const checkingIntervalInMs = 1 * 60 * 1000; //1 minute
 
@@ -13,8 +13,8 @@ export default function useCheckRestaurantStatus(restaurantState) {
       setRestaurantOpen(updatedRestaurantOpen);
     }
   };
-  useLayoutEffect(() => {
-    if (restaurantState.data) {
+  useEffect(() => {
+    if (restaurantState.data && !restaurantState.isLoading) {
       checkRestaurantStatus();
       clearInterval(); //clear interval if restaurant.data changed and put a new one
       intervalId = setInterval(() => {
