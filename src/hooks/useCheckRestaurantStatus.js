@@ -14,13 +14,15 @@ export default function useCheckRestaurantStatus(restaurantState) {
     }
   };
   useLayoutEffect(() => {
-    checkRestaurantStatus();
-    clearInterval(); //clear interval if restaurant.data changed and put a new one
-    intervalId = setInterval(() => {
-      // Effectuer le check à intervalles réguliers (toutes les 5 minutes)
+    if (restaurantState.data) {
       checkRestaurantStatus();
-    }, checkingIntervalInMs);
-    return () => clearInterval(intervalId); //component destruction => clearInterval
+      clearInterval(); //clear interval if restaurant.data changed and put a new one
+      intervalId = setInterval(() => {
+        // Effectuer le check à intervalles réguliers (toutes les 5 minutes)
+        checkRestaurantStatus();
+      }, checkingIntervalInMs);
+      return () => clearInterval(intervalId);
+    } //component destruction => clearInterval
   }, [restaurantState.data]);
   return { restaurantOpen, setRestaurantOpen };
 }
