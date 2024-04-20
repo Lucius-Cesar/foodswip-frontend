@@ -5,7 +5,7 @@ export default function SideNavigation({
 }) {
   return (
     <>
-      <div className="sticky top-0 pt-2 pb-2 sm:pt-0 sm:pb-2 w-full sm:w-fit bg-white sm:bg-none">
+      <div className="sticky top-0 pb-8 sm:pt-0 sm:pb-2 w-full sm:w-fit bg-white sm:bg-none">
         <div className="sticky top-0 flex flex-row sm:flex-col justify-center sm:w-fit sm:whitespace-nowrap	h-fit items-start py-2 sm:px-4 sm:py-4 bg-magnolia border border-1 border-gravel rounded-lg sm:space-y-2">
           {categoriesData.map((category, i) => (
             <button

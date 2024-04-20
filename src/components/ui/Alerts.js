@@ -2,6 +2,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
   XMarkIcon,
+  ExclamationTriangleIcon,
 } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 
@@ -12,9 +13,11 @@ export const SuccesAlert = ({
   setOpen,
   openTime,
 }) => {
+  let timeoutId;
   useEffect(() => {
+    clearTimeout(timeoutId);
     if (openTime) {
-      const timeoutId = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         onClose();
       }, openTime);
 
@@ -60,9 +63,11 @@ export const SuccesAlert = ({
 };
 
 export const ErrorAlert = ({ message, className, open, setOpen, openTime }) => {
+  let timeoutId;
   useEffect(() => {
+    clearTimeout(timeoutId);
     if (openTime) {
-      const timeoutId = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         onClose();
       }, openTime);
 
@@ -96,6 +101,24 @@ export const ErrorAlert = ({ message, className, open, setOpen, openTime }) => {
               <XMarkIcon className="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const WarningAlert = ({ children }) => {
+  return (
+    <div className="border-l-4 border-yellow-400 bg-yellow-50 p-4">
+      <div className="flex">
+        <div className="flex-shrink-0">
+          <ExclamationTriangleIcon
+            className="h-5 w-5 text-yellow-400"
+            aria-hidden="true"
+          />
+        </div>
+        <div className="ml-3">
+          <p className="text-sm text-yellow-700">{children}</p>
         </div>
       </div>
     </div>

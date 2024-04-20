@@ -16,17 +16,18 @@ import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
 import Preloader from "@/components/ui/Preloader";
 import { useSelector, useDispatch } from "react-redux";
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
-import isRestaurantOpen from "@/utils/isRestaurantOpen";
+import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 import useRestaurantData from "@/hooks/useRestaurantData";
+import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 export default function eaterView({ params }) {
   useRestaurantData(params.uniqueValue, "restaurantPublic");
-
   //redux
   const restaurant = useSelector((state) => state.restaurantPublic);
   const cart = useSelector((state) => state.cart);
 
   //react states
-  const [restaurantOpen, setRestaurantOpen] = useState(true);
+  const { restaurantOpen, setRestaurantOpen } =
+    useCheckRestaurantStatus(restaurant);
   const [scrollBarHeight, setScrollBarHeight] = useState("0px");
   const [menu, setMenu] = useState(null);
   const [activeFoodCategory, setActiveFoodCategory] = useState(null);
@@ -45,12 +46,7 @@ export default function eaterView({ params }) {
       restaurant.data.publicSettings?.schedule &&
       restaurant.data.publicSettings?.exceptionalClosings
     ) {
-      const checkRestaurantOpen = isRestaurantOpen(
-        restaurant.data.publicSettings.schedule,
-        restaurant.data.publicSettings.exceptionalClosings
-      );
-      setRestaurantOpen(checkRestaurantOpen);
-      setScrollBarHeight(checkRestaurantOpen ? "-10px" : "-45px"); //scrollBarHeight -45px needed when topBanner
+      setScrollBarHeight(restaurantOpen ? "-10px" : "-45px"); //scrollBarHeight -45px needed when topBanner
     }
     if (restaurant.data.menu) {
       setMenu(

@@ -13,7 +13,7 @@ import CartIcon from "../ui/icons/CartIcon";
 import CartArticle from "./CartArticle";
 
 import DefaultBtn from "../ui/DefaultBtn";
-import isRestaurantOpen from "@/utils/isRestaurantOpen";
+import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 
 export default function Cart({ open, setOpen, variant }) {
   const primary = "#F97247"; //sorry for this
@@ -29,10 +29,7 @@ export default function Cart({ open, setOpen, variant }) {
   });
 
   const onClickOrderBtn = () => {
-    const restaurantOpen = isRestaurantOpen(
-      restaurant.data.publicSettings.schedule,
-      restaurant.data.publicSettings.exceptionalClosings
-    );
+    const restaurantOpen = checkIfRestaurantOpen(restaurant);
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
         ...previous,

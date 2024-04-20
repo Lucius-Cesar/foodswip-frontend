@@ -1,8 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-
-import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon.js";
 import FormInput from "@/components/ui/FormInput.js";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 import Header from "@/components/adminView/Header";
@@ -12,6 +9,7 @@ import PeriodItem from "@/components/adminView/settings/PeriodItem";
 import ModalPeriod from "@/components/adminView/settings/ModalPeriod";
 import AddBtn from "@/components/ui/AddBtn";
 import InputNumber from "@/components/ui/InputNumber";
+import RestaurantStatusOverrideBtn from "@/components/adminView/RestaurantStatusOverrideBtn";
 import moment from "moment";
 
 import TabBtn from "@/components/ui/TabBtn";
@@ -25,7 +23,6 @@ import {
   missingInformationValidation,
 } from "@/utils/validations";
 import deepCopy from "@/utils/deepCopy";
-
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
 import FooterSettings from "@/components/adminView/settings/FooterSettings";
 import Preloader from "@/components/ui/Preloader";
@@ -170,7 +167,9 @@ export default function settings() {
               setActiveCategory={setActiveCategory}
             />
             {activeCategory === categoriesData[0] && (
-              <div className="flex flex-col w-full px-4 sm:px-10 h-full space-y-8 overflow-y-auto pb-2">
+              <div className="relative flex flex-col w-full px-4 sm:px-10 h-full space-y-8 overflow-y-auto pb-2">
+                <RestaurantStatusOverrideBtn className="self-start md:absolute top-0 bottom-0 right-10" />
+
                 <div>
                   <h2 className="mb-4">Informations générales</h2>
                   <p className="font-medium text-xl">Logo</p>
@@ -428,8 +427,8 @@ export default function settings() {
                       setValue={setValueModalPeriod}
                       open={isModalExceptionalClosingsOpen}
                       setOpen={setModalExceptionalClosingOpen}
-                      startLabel={"Début de la fermeture"}
-                      endLabel={"Fin de la fermeture"}
+                      startLabel={"Début de la période de fermeture"}
+                      endLabel={"Fin de la période de fermeture"}
                       validateBtnFunction={() => {
                         let functionToUse;
                         switch (modalPeriodOperation) {
@@ -1118,7 +1117,7 @@ export default function settings() {
                 <div className="w-full sm:w-5/12 space-y-4 text-center">
                   <DefaultBtn
                     value="Se déconnecter"
-                    className="bg-error-danger hover:opacity-70 rounded-s-lg rounded-e-lg text-xl font-bold  focus:text-white text-white self-center"
+                    className="bg-error-danger hover:brightness-95 rounded-s-lg rounded-e-lg text-xl font-bold  focus:text-white text-white self-center"
                     onClick={() => onClickLogOut()}
                     color="error-danger"
                   />

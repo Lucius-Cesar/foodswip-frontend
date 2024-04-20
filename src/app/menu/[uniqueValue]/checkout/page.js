@@ -23,7 +23,7 @@ import {
   mailValidation,
 } from "@/utils/validations";
 import InputNumber from "@/components/ui/InputNumber";
-import isRestaurantOpen from "@/utils/isRestaurantOpen";
+import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 
 export default function Checkout({ params }) {
   //redirect to menu page if cart modification during checkout leads to empty cart
@@ -184,10 +184,7 @@ export default function Checkout({ params }) {
       }));
     }
 
-    const restaurantOpen = isRestaurantOpen(
-      restaurant.data.publicSettings.schedule,
-      restaurant.data.publicSettings.exceptionalClosings
-    );
+    const restaurantOpen = checkIfRestaurantOpen(restaurant);
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
         ...previous,

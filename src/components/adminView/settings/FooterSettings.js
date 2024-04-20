@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SuccesAlert, ErrorAlert } from "@/components/ui/Alerts";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
@@ -15,6 +15,24 @@ export default function FooterSettings({
   //alert is only displayed after save btn is pressed
   const [alertOpen, setAlertOpen] = useState(false);
   const restaurant = useSelector((state) => state.restaurantAdmin);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (!isFirstRender.current) {
+      setAlertOpen((previous) => {
+        if (!previous) return true;
+      });
+    } else if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+  }, [restaurant.data]);
+
+  useEffect(() => {
+    if (restaurant.isLoading) {
+      setAlertOpen(false);
+    }
+  }, [restaurant.isLoading]);
   const onClickSaveBtn = () => {
     if (Object.values(validationErrors).every((value) => value === "")) {
       setSaveError(false);
@@ -34,10 +52,7 @@ export default function FooterSettings({
         publicSettings: publicSettings,
         privateSettings: privateSettings,
       };
-      setAlertOpen(false);
-      dispatch(updateRestaurantSettings(payload)).then(() => {
-        setAlertOpen(true);
-      });
+      dispatch(updateRestaurantSettings(payload));
     } else {
       setSaveError(true);
       setAlertOpen(true);
