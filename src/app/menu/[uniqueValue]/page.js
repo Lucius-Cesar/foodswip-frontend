@@ -19,7 +19,6 @@ import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 import useRestaurantData from "@/hooks/useRestaurantData";
 import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
-import useMouseFlow from "@/hooks/useMouseFlow";
 
 export default function eaterView({ params }) {
   useRestaurantData(params.uniqueValue, "restaurantPublic");
