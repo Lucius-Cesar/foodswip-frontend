@@ -11,12 +11,10 @@ export default function RestaurantLogo({ className, from }) {
     }
   });
   return (
-    <div className={`${className} sm:h-auto sm:w-96 sm:pt-2 sm:pb-2`}>
-      <img
-        className="h-full w-full object-contain"
-        src={`/images/${uniqueValue}/logo.png`}
-        alt="Restaurant Logo"
-      />
-    </div>
+    <img
+      className="max-h-24 max-w-48 sm:max-w-96 sm:max-h-40"
+      src={`/images/${uniqueValue}/logo.png`}
+      alt="Restaurant Logo"
+    />
   );
 }

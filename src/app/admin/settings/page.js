@@ -173,7 +173,9 @@ export default function settings() {
                 <div>
                   <h2 className="mb-4">Informations générales</h2>
                   <p className="font-medium text-xl">Logo</p>
-                  {<RestaurantLogo from={"restaurantAdmin"} />}
+                  <div className="me-4 mt-2 mb-4  sm:me-6 sm:my-6">
+                    <RestaurantLogo from={"restaurantAdmin"} />
+                  </div>
                   <div class="grid grid-cols1 sm:grid-cols-2 gap-6">
                     <div className="w-full">
                       <FormInput

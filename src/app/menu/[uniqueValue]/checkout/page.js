@@ -247,7 +247,7 @@ export default function Checkout({ params }) {
     <>
       <div className="relative flex flex-col sm:flex-row">
         <div className="flex flex-col grow items-start justify-start px-6 sm:px-12 lg:pe-40">
-          <div className="hidden sm:block">
+          <div className="hidden sm:block me-4 mt-2 mb-4  sm:me-6 sm:my-6">
             <RestaurantLogo from="restaurantPublic" />
           </div>
           <div

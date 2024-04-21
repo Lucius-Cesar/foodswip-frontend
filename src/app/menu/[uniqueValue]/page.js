@@ -133,16 +133,13 @@ export default function eaterView({ params }) {
             />
 
             <div className="flex flex-col w-full sm:ps-12 items-center sm:items-start">
-              <div className="relative flex flex-row gap-1 sm:gap-2">
-                <RestaurantLogo
-                  className="h-14 w-48"
-                  from={"restaurantPublic"}
-                />
+              <div className="relative flex flex-row items-center justify-center   me-4 mt-2 mb-4  sm:me-6 sm:my-6">
+                <RestaurantLogo from={"restaurantPublic"} />
                 <button
-                  className="self-center"
+                  className="absolute -right-8 sm:-right-14"
                   onClick={() => setModalInfoRestaurantOpen(true)}
                 >
-                  <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8 hover:" />
+                  <InfoIcon className="h-6 w-6 sm:h-8 sm:w-8" />
                 </button>
                 <ModalInfoRestaurant
                   open={isModalInfoRestaurantOpen}
