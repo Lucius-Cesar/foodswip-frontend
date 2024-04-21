@@ -33,15 +33,17 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
   const [selectedSupplements, setSelectedSupplements] = useState([]);
   const cart = useSelector((state) => state.cart);
   useEffect(() => {
-    setArticlePrice(food.price);
-    setQuantity(1);
-    setSelectedOptions([]);
-    setSelectedSupplements([]);
-    setSelectedOptions(
-      food?.options?.length > 0
-        ? food.options.flatMap((optionCategory) => optionCategory.items[0])
-        : []
-    );
+    if (open) {
+      setArticlePrice(food.price);
+      setQuantity(1);
+      setSelectedOptions([]);
+      setSelectedSupplements([]);
+      setSelectedOptions(
+        food?.options?.length > 0
+          ? food.options.flatMap((optionCategory) => optionCategory.items[0])
+          : []
+      );
+    }
   }, [open, food]);
   const handleClose = () => {
     setOpen(false);

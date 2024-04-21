@@ -32,7 +32,7 @@ export default function eaterView({ params }) {
     useCheckRestaurantStatus(restaurant);
   const [scrollBarHeight, setScrollBarHeight] = useState("0px");
   const [menu, setMenu] = useState(null);
-  const [activeFoodCategory, setActiveFoodCategory] = useState(null);
+  const [activeFoodCategoryIndex, setActiveFoodCategoryIndex] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isFoodCategoriesMenuOpen, setFoodCategoriesMenuOpen] = useState(false);
   const [isModalInfoRestaurantOpen, setModalInfoRestaurantOpen] =
@@ -48,7 +48,7 @@ export default function eaterView({ params }) {
       restaurant.data.publicSettings?.schedule &&
       restaurant.data.publicSettings?.exceptionalClosings
     ) {
-      setScrollBarHeight(restaurantOpen ? "-10px" : "-45px"); //scrollBarHeight -45px needed when topBanner
+      setScrollBarHeight(restaurantOpen ? "0px" : "-45px"); //scrollBarHeight -45px needed when topBanner
     }
     if (restaurant.data.menu) {
       setMenu(
@@ -57,7 +57,7 @@ export default function eaterView({ params }) {
           ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
         }))
       );
-      setActiveFoodCategory(restaurant.data.menu[0]);
+      setActiveFoodCategoryIndex(restaurant.data.menu[0]);
     }
   }, [restaurant.data]);
 
@@ -65,14 +65,14 @@ export default function eaterView({ params }) {
     if (menu && !restaurant.error && !restaurant.isLoading) {
       const handleScroll = () => {
         // logic to execute while scrolling
-        menu.forEach((foodCategory) => {
+        menu.forEach((foodCategory, i) => {
           const ref = foodCategory.ref;
           if (ref.current) {
             const rect = ref.current.getBoundingClientRect();
             const isInsideTheFoodCategory = rect.top <= 0 && rect.bottom >= 0;
 
             if (isInsideTheFoodCategory) {
-              setActiveFoodCategory(foodCategory);
+              setActiveFoodCategoryIndex(i);
             }
           }
         });
@@ -122,13 +122,15 @@ export default function eaterView({ params }) {
             <SideFoodCategories
               open={isFoodCategoriesMenuOpen}
               setOpen={setFoodCategoriesMenuOpen}
-              activeFoodCategory={activeFoodCategory}
+              activeFoodCategoryIndex={activeFoodCategoryIndex}
               onFoodCategoryClick={(index) => {
                 setFoodCategoriesMenuOpen(false);
-                setActiveFoodCategory(menu[index]);
+                setActiveFoodCategoryIndex(menu[index]);
                 //scroll Margin needed because of the top bar when restaurant is closed
                 menu[index].ref.current.style.scrollMargin = scrollBarHeight;
-                menu[index].ref.current.scrollIntoView({ block: "start" });
+                menu[index].ref.current.scrollIntoView({
+                  block: "start",
+                });
               }}
             />
 
