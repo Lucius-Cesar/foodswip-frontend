@@ -47,7 +47,7 @@ export default function eaterView({ params }) {
       restaurant.data.publicSettings?.schedule &&
       restaurant.data.publicSettings?.exceptionalClosings
     ) {
-      setScrollBarHeight(restaurantOpen ? "0px" : "-45px"); //scrollBarHeight -45px needed when topBanner
+      setScrollBarHeight(restaurantOpen ? "-5px" : "-45px"); //scrollBarHeight -45px needed when topBanner
     }
     if (restaurant.data.menu) {
       setMenu(
