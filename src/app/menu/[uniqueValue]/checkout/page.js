@@ -24,12 +24,14 @@ import {
 } from "@/utils/validations";
 import InputNumber from "@/components/ui/InputNumber";
 import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
+import useRestaurantData from "@/hooks/useRestaurantData";
 
 export default function Checkout({ params }) {
   //redirect to menu page if cart modification during checkout leads to empty cart
   const router = useRouter();
   const dispatch = useDispatch();
   useRedirectIfCartEmpty();
+  useRestaurantData(params.uniqueValue, "restaurantPublic");
 
   const mobileScrollRef = useRef(null);
 

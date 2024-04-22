@@ -10,12 +10,14 @@ function useRestaurantData(uniqueValue, target) {
   if (target === "restaurantPublic") {
     const restaurantPublic = useSelector((state) => state.restaurantPublic);
     useLayoutEffect(() => {
-      dispatch(getRestaurantPublicData(uniqueValue));
-      //if restaurant is not the same in localStorage => clear cart
-      if (uniqueValue !== restaurantPublic.data?.uniqueValue) {
-        dispatch(clearCart());
+      if (uniqueValue) {
+        dispatch(getRestaurantPublicData(uniqueValue));
+        //if restaurant is not the same in localStorage => clear cart
+        if (uniqueValue !== restaurantPublic.data?.uniqueValue) {
+          dispatch(clearCart());
+        }
       }
-    }, [uniqueValue, restaurantPublic.data?.uniqueValue]);
+    }, [uniqueValue]);
   } else if (target === "restaurantAdmin") {
     // auth token is necessary to fetch these data
     const auth = useSelector((state) => state.auth);
@@ -27,9 +29,11 @@ function useRestaurantData(uniqueValue, target) {
         auth.data?.token &&
         uniqueValue !== restaurantAdmin.data?.uniqueValue
       ) {
+        console.log("hello");
+
         dispatch(getRestaurantAdminData(uniqueValue));
       }
-    }, [uniqueValue, auth.data?.token]);
+    }, []);
   }
 }
 export default useRestaurantData;

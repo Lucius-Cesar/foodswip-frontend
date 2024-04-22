@@ -116,7 +116,7 @@ export default function Login() {
           value="Connexion"
           className="w-36 h-10 text-2xl hover:opacity-90  focus:text-white text-white self-center"
           onClick={() => onClickConnexionBtn(form)}
-          isLoading={auth.isLoading}
+          isLoading={auth.isLoading || restaurant.data.isLoading}
           color="primary"
         />
 
