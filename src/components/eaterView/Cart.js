@@ -75,13 +75,25 @@ export default function Cart({ open, setOpen, variant }) {
         )
       );
       setTotalSum(cart.data.articlesSum);
+      //if there is already a validation error.deliveryMin compute the remaining sum to reach deliveryMin
+      if (validationErrors.deliveryMin) {
+        setValidationErrors((previous) => ({
+          ...previous,
+          deliveryMin: `${subtractMoney(
+            restaurant.data.publicSettings.deliveryMin,
+            cart.data.articlesSum
+          )} € d'achats restants pour profiter de la Livraison`,
+        }));
+      }
     }
+    //if take away or if the sum for deliveryMin is reached
     if (
       cart.data.orderType === 1 ||
       cart.data.articlesSum >= restaurant.data.publicSettings.deliveryMin
     ) {
       setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
     }
+
     dispatch(updateTotalSum(totalSum));
   }, [cart.data]);
 
@@ -161,11 +173,12 @@ export default function Cart({ open, setOpen, variant }) {
                         {validationErrors.restaurantClosed}
                       </p>
                     )}
-                    {validationErrors.deliveryMin && (
-                      <p className="font-bold text-error-danger self-end">
-                        {validationErrors.deliveryMin}
-                      </p>
-                    )}
+                    {validationErrors.deliveryMin &&
+                      !validationErrors.restaurantClosed && (
+                        <p className="font-bold text-error-danger self-end">
+                          {validationErrors.deliveryMin}
+                        </p>
+                      )}
                     <DefaultBtn
                       value={"Commander"}
                       className="w-72 h-10 text-xl font-bold bg-success hover:opacity-90 self-center"
