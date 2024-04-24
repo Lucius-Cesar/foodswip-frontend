@@ -74,7 +74,6 @@ export default function Cart({ open, setOpen, variant }) {
           restaurant.data.publicSettings.deliveryFees
         )
       );
-      setTotalSum(cart.data.articlesSum);
       //if there is already a validation error.deliveryMin compute the remaining sum to reach deliveryMin
       if (validationErrors.deliveryMin) {
         setValidationErrors((previous) => ({
@@ -85,6 +84,9 @@ export default function Cart({ open, setOpen, variant }) {
           )} € d'achats restants pour profiter de la Livraison`,
         }));
       }
+    }
+    if (cart.data.orderType === 1) {
+      setTotalSum(cart.data.articlesSum);
     }
     //if take away or if the sum for deliveryMin is reached
     if (
