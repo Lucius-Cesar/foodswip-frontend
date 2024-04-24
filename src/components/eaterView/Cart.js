@@ -41,6 +41,19 @@ export default function Cart({ open, setOpen, variant }) {
         restaurantClosed: "",
       }));
     }
+    if (
+      cart.data.articlesSum < restaurant.data.publicSettings.deliveryMin &&
+      cart.data.orderType === 0
+    ) {
+      setValidationErrors((previous) => ({
+        ...previous,
+        deliveryMin: `${subtractMoney(
+          restaurant.data.publicSettings.deliveryMin,
+          cart.data.articlesSum
+        )} € d'achats restants pour profiter de la Livraison`,
+      }));
+    } else
+      setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
 
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
@@ -61,21 +74,13 @@ export default function Cart({ open, setOpen, variant }) {
           restaurant.data.publicSettings.deliveryFees
         )
       );
-      cart.data.articlesSum < restaurant.data.publicSettings.deliveryMin
-        ? setValidationErrors((previous) => ({
-            ...previous,
-            deliveryMin: `${subtractMoney(
-              restaurant.data.publicSettings.deliveryMin,
-              cart.data.articlesSum
-            )} € d'achats restants pour profiter de la Livraison`,
-          }))
-        : setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
-    } else if (cart.data.orderType === 1) {
-      setValidationErrors((previous) => ({
-        ...previous,
-        deliveryMin: "",
-      }));
       setTotalSum(cart.data.articlesSum);
+    }
+    if (
+      cart.data.orderType === 1 ||
+      cart.data.articlesSum >= restaurant.data.publicSettings.deliveryMin
+    ) {
+      setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
     }
     dispatch(updateTotalSum(totalSum));
   }, [cart.data]);
@@ -98,9 +103,14 @@ export default function Cart({ open, setOpen, variant }) {
           <span className="sr-only">Close panel</span>
           <XMarkIcon className="h-8 w-8" aria-hidden="true" />
         </button>
-        <div className="rounded-3xl h-fit w-fit b-white outline outline-primary">
+        <button
+          onClick={() => setOpen(false)}
+          className={`rounded-3xl h-fit w-fit b-white outline outline-primary ${
+            variant === "checkout" ? "pointer-events-none" : ""
+          }`}
+        >
           <CartIcon color={primary} />
-        </div>
+        </button>
       </div>
       {cart.data.articles.length > 0 ? (
         <>
@@ -118,20 +128,12 @@ export default function Cart({ open, setOpen, variant }) {
               <p className="font-medium">{cart.data.articlesSum} €</p>
             </div>
             {cart.data.orderType === 0 && (
-              <>
-                {validationErrors.deliveryMin ? (
-                  <p className="font-bold text-error-danger self-end">
-                    {validationErrors.deliveryMin}
-                  </p>
-                ) : (
-                  <div className="flex flex-row justify-between">
-                    <p className="font-medium">Frais de livraison</p>
-                    <p className="font-medium">
-                      {restaurant.data.publicSettings.deliveryFees} €
-                    </p>
-                  </div>
-                )}
-              </>
+              <div className="flex flex-row justify-between">
+                <p className="font-medium">Frais de livraison</p>
+                <p className="font-medium">
+                  {restaurant.data.publicSettings.deliveryFees} €
+                </p>
+              </div>
             )}
 
             <div className="flex flex-row justify-between">
@@ -157,6 +159,11 @@ export default function Cart({ open, setOpen, variant }) {
                     {validationErrors.restaurantClosed && (
                       <p className="font-bold text-error-danger self-center">
                         {validationErrors.restaurantClosed}
+                      </p>
+                    )}
+                    {validationErrors.deliveryMin && (
+                      <p className="font-bold text-error-danger self-end">
+                        {validationErrors.deliveryMin}
                       </p>
                     )}
                     <DefaultBtn

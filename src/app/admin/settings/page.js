@@ -106,17 +106,32 @@ export default function settings() {
     end: null,
   });
   // crud string "create", "update", "delete" are used to trigger the adequate functions
+  const sortServices = (services) =>
+    services.sort((a, b) => {
+      function convertStartTimeToComparable(time) {
+        // Convertit "hh:mm" en minutes depuis minuit
+        const [hours, minutes] = time.split(":").map(Number);
+        return hours * 60 + minutes;
+      }
+
+      return (
+        convertStartTimeToComparable(a.start) -
+        convertStartTimeToComparable(b.start)
+      );
+    });
   const [modalPeriodOperation, setModalPeriodOperation] = useState(null);
   // for Schedule
   const createService = (dayIndex, itemIndex = null, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
     updatedPublicSettings.schedule[dayIndex].services.push(newValue);
+    sortServices(updatedPublicSettings.schedule[dayIndex].services);
     setPublicSettings(updatedPublicSettings);
   };
 
   const updateService = (dayIndex, itemIndex, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
     updatedPublicSettings.schedule[dayIndex].services[itemIndex] = newValue;
+    sortServices(updatedPublicSettings.schedule[dayIndex].services);
     setPublicSettings(updatedPublicSettings);
   };
 
@@ -351,7 +366,7 @@ export default function settings() {
                       }}
                     />
                     <div className="flex flex-col items-start space-y-6">
-                      {publicSettings?.schedule.map((scheduleItem, i) => {
+                      {publicSettings?.schedule?.map((scheduleItem, i) => {
                         const dayLabel = switchDayLabel(i);
                         return (
                           <div
