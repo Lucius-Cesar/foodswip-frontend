@@ -29,8 +29,6 @@ function useRestaurantData(uniqueValue, target) {
         auth.data?.token &&
         uniqueValue !== restaurantAdmin.data?.uniqueValue
       ) {
-        console.log("hello");
-
         dispatch(getRestaurantAdminData(uniqueValue));
       }
     }, []);

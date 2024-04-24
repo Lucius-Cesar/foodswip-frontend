@@ -3,8 +3,11 @@ import { useSelector } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { switchDayLabel } from "@/utils/switchLabel";
+import { getDayIndex } from "@/utils/checkIfRestaurantOpen";
 export default function ModalInfoRestaurant({ open, setOpen }) {
   const restaurant = useSelector((state) => state.restaurantPublic);
+  const currentDate = new Date();
+  const currentDayIndex = getDayIndex(currentDate);
   const handleClose = () => {
     setOpen(false);
   };
@@ -85,7 +88,11 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                           return (
                             <div
                               key={i}
-                              className="flex flex-row justify-between"
+                              className={`flex flex-row justify-between ${
+                                i === currentDayIndex
+                                  ? "text-primary font-bold"
+                                  : ""
+                              }`}
                             >
                               <p>{dayLabel}</p>
                               <div className="flex flex-row">

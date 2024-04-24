@@ -87,7 +87,9 @@ export default function eaterView({ params }) {
       {restaurant.isLoading && <Preloader />}
       {!restaurant.error && !restaurant.isLoading && menu && (
         <div className="h-svh overflow-clip">
-          {!restaurantOpen && <TopBannerClosed />}
+          {!restaurantOpen && (
+            <TopBannerClosed onClick={() => setModalInfoRestaurantOpen(true)} />
+          )}
 
           <div
             ref={mainContainer}
