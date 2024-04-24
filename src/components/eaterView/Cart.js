@@ -50,7 +50,7 @@ export default function Cart({ open, setOpen, variant }) {
         deliveryMin: `${subtractMoney(
           restaurant.data.publicSettings.deliveryMin,
           cart.data.articlesSum
-        )} € d'achats restants pour profiter de la Livraison`,
+        )} € d'achats restants pour la livraison`,
       }));
     } else
       setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
@@ -81,7 +81,7 @@ export default function Cart({ open, setOpen, variant }) {
           deliveryMin: `${subtractMoney(
             restaurant.data.publicSettings.deliveryMin,
             cart.data.articlesSum
-          )} € d'achats restants pour profiter de la Livraison`,
+          )} € d'achats restants pour la livraison`,
         }));
       }
     }
