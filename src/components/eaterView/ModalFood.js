@@ -148,7 +148,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                     </div>
                   )}
                   {food?.supplements?.length > 0 && (
-                    <div>
+                    <div className="space-y-2">
                       {food?.supplements?.map((supplement, i) => (
                         <FoodSupplementsCheckBoxGroup
                           key={i}

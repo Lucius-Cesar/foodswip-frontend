@@ -24,7 +24,7 @@ export default function FoodSupplementsCheckBoxGroup({
     <fieldset>
       <label
         htmlFor={label}
-        className="block text-medium sm:text-sm font-medium leading-6 text-gray-900 pb-2 sm:pb-0"
+        className="block text-medium sm:text-sm font-medium leading-6 text-gray-900 mb-2"
       >
         {label}
       </label>
@@ -47,7 +47,7 @@ export default function FoodSupplementsCheckBoxGroup({
               </label>
               <span id={`${item.value}-description`} className="text-gray-500">
                 <span className="sr-only">{item.value}</span>
-                {item.price && `(+ ${item.price} €)`}
+                {item.price !== 0 && `(+ ${item.price} €)`}
               </span>
             </div>
           </div>
