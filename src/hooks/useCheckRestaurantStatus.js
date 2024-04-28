@@ -25,7 +25,7 @@ export default function useCheckRestaurantStatus(restaurant) {
     }
   };
   useLayoutEffect(() => {
-    if (restaurant.data.publicSettings && !restaurant.isLoading) {
+    if (restaurant?.data?.publicSettings && !restaurant?.isLoading) {
       clearInterval(); //clear interval if restaurant.data changed and put a new one
       checkRestaurantStatusChanges();
       intervalId = setInterval(() => {
@@ -34,7 +34,7 @@ export default function useCheckRestaurantStatus(restaurant) {
       }, checkingIntervalInMs);
       return () => clearInterval(intervalId);
     } //component destruction => clearInterval
-  }, [restaurant.data.publicSettings]);
+  }, [restaurant?.data?.publicSettings]);
 
   return {
     restaurantOpen,

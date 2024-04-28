@@ -275,7 +275,7 @@ export default function SelectArrivalTimeBtn({
       >
         <ClockLinesIcon />
         <div className="flex flex-col items-start">
-          <p className="font-semibold">
+          <p className="font-semibold text-start">
             {
               // current service & ti
               currentService?.start &&

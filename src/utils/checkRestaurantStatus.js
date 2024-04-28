@@ -10,7 +10,7 @@ export default function checkRestaurantStatus(restaurant) {
   let overrideRestaurantOpen;
   let currentService = null;
   let remainingServicesForCurrentDay = [];
-  if (restaurant.data.publicSettings) {
+  if (restaurant?.data?.publicSettings) {
     const schedule = restaurant.data.publicSettings.schedule;
     const exceptionalClosings =
       restaurant.data.publicSettings.exceptionalClosings;
