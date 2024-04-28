@@ -124,7 +124,7 @@ export default function eaterView({ params }) {
                 setActiveFoodCategoryIndex(menu[index]);
                 //scroll Margin needed because of the top bar when restaurant is closed
                 menu[index].ref.current.style.scrollMargin = restaurantOpen
-                  ? "0px"
+                  ? "-5px"
                   : "-45px";
                 menu[index].ref.current.scrollIntoView({
                   block: "start",
