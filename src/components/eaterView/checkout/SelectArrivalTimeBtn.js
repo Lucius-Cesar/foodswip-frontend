@@ -285,7 +285,8 @@ export default function SelectArrivalTimeBtn({
                     ? "Estimation du délai de livraison :"
                     : "Estimation du délai pour emporter :"}
                 </p>
-              ) : timeString === defaultOptionArrivalTimeSelect ? (
+              ) : !timeString ||
+                timeString === defaultOptionArrivalTimeSelect ? (
                 <p>
                   {cart.data.orderType === 0
                     ? "Selectionnez une heure pour la livraison"
