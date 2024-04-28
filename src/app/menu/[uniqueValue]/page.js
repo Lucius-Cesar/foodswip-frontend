@@ -16,7 +16,6 @@ import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
 import Preloader from "@/components/ui/Preloader";
 import { useSelector, useDispatch } from "react-redux";
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
-import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 import useRestaurantData from "@/hooks/useRestaurantData";
 import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 
@@ -27,9 +26,7 @@ export default function eaterView({ params }) {
   const cart = useSelector((state) => state.cart);
 
   //react states
-  const { restaurantOpen, setRestaurantOpen } =
-    useCheckRestaurantStatus(restaurant);
-  const [scrollBarHeight, setScrollBarHeight] = useState("0px");
+  const { restaurantOpen } = useCheckRestaurantStatus(restaurant);
   const [menu, setMenu] = useState(null);
   const [activeFoodCategoryIndex, setActiveFoodCategoryIndex] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -46,18 +43,16 @@ export default function eaterView({ params }) {
     if (
       restaurant.data.publicSettings?.schedule &&
       restaurant.data.publicSettings?.exceptionalClosings
-    ) {
-      setScrollBarHeight(restaurantOpen ? "-10px" : "-45px"); //scrollBarHeight -45px needed when topBanner
-    }
-    if (restaurant.data.menu) {
-      setMenu(
-        restaurant.data.menu.map((foodCategory) => ({
-          ...foodCategory,
-          ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
-        }))
-      );
-      setActiveFoodCategoryIndex(restaurant.data.menu[0]);
-    }
+    )
+      if (restaurant.data.menu) {
+        setMenu(
+          restaurant.data.menu.map((foodCategory) => ({
+            ...foodCategory,
+            ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
+          }))
+        );
+        setActiveFoodCategoryIndex(restaurant.data.menu[0]);
+      }
   }, [restaurant.data]);
 
   useEffect(() => {
@@ -128,7 +123,9 @@ export default function eaterView({ params }) {
                 setFoodCategoriesMenuOpen(false);
                 setActiveFoodCategoryIndex(menu[index]);
                 //scroll Margin needed because of the top bar when restaurant is closed
-                menu[index].ref.current.style.scrollMargin = scrollBarHeight;
+                menu[index].ref.current.style.scrollMargin = restaurantOpen
+                  ? "0px"
+                  : "-45px";
                 menu[index].ref.current.scrollIntoView({
                   block: "start",
                 });

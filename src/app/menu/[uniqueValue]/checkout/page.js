@@ -12,19 +12,25 @@ import RestaurantLogo from "@/components/ui/RestaurantLogo";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
 import FormInput from "../../../../components/ui/FormInput";
 import DefaultBtn from "@/components/ui/DefaultBtn";
+import SelectArrivalTimeBtn from "@/components/eaterView/checkout/SelectArrivalTimeBtn";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel";
-import { current } from "@reduxjs/toolkit";
 import {
   missingInformationValidation,
   phoneNumberValidation,
   postCodeValidation,
   mailValidation,
+  arrivalTimeValidation,
 } from "@/utils/validations";
+
+import {
+  isValidTimeString,
+  compteNewDateBasedOnTimeString,
+} from "@/utils/dateAndTime";
 import InputNumber from "@/components/ui/InputNumber";
-import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
 import useRestaurantData from "@/hooks/useRestaurantData";
+import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 
 export default function Checkout({ params }) {
   //redirect to menu page if cart modification during checkout leads to empty cart
@@ -33,11 +39,11 @@ export default function Checkout({ params }) {
   useRedirectIfCartEmpty();
   useRestaurantData(params.uniqueValue, "restaurantPublic");
 
+  //mobileScrollRef is used to scroll directly behind the card on checkout
   const mobileScrollRef = useRef(null);
 
   const restaurant = useSelector((state) => state.restaurantPublic);
   const cart = useSelector((state) => state.cart);
-
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [form, setForm] = useState({
     street: "",
@@ -61,11 +67,22 @@ export default function Checkout({ params }) {
     phoneNumber: "",
     paymentMethod: "",
     restaurantOpen: "",
+    arrivalTime: "",
   });
   const [orderError, setOrderError] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+
+  //fetchTrigger triggers the useFetch hook on confirmOrder
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const [fetchOptions, setFetchOptions] = useState(null);
+  const [timeString, setTimeString] = useState(null);
+
+  //this part of the code are designed for the SelectedArrivalTimeBtn
+  const timeInterval = 15;
+  //this variable is the defaultValue of the formSelect to choose arrivalTime
+  const defaultOptionArrivalTimeSelect = "Choisissez une heure";
+  const { restaurantOpen, currentService, remainingServicesForCurrentDay } =
+    useCheckRestaurantStatus(restaurant);
 
   const newOrder = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/addOrder`,
@@ -73,6 +90,18 @@ export default function Checkout({ params }) {
     fetchTrigger,
     setFetchTrigger
   );
+
+  //this useEffect is used to leave the checkout page if needed to avoid problems
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      //every timeInterval => leave checkout
+      router.push(`/menu/${restaurant.data.uniqueValue}`);
+    }, timeInterval * 60 * 1000);
+    if (restaurantOpen === false) {
+      router.push(`/menu/${restaurant.data.uniqueValue}`);
+    }
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     //change payment method choices based on orderType
@@ -106,22 +135,32 @@ export default function Checkout({ params }) {
 
   const computeEstimatedArrivalDate = (orderType) => {
     const currentDate = new Date();
-    let estimatedArrival = currentDate;
-    //delivery
-    if (orderType === 0) {
-      estimatedArrival.setMinutes(
-        currentDate.getMinutes() +
-          restaurant.data.publicSettings.deliveryEstimate.max
+    let estimatedArrival;
+    //if no timeString haveBeen selected or is not in the expected format (for example with the "As soon as possible" value)
+    if (!timeString || !isValidTimeString(timeString)) {
+      estimatedArrival = currentDate;
+      //delivery
+      if (orderType === 0) {
+        estimatedArrival.setMinutes(
+          currentDate.getMinutes() +
+            restaurant.data.publicSettings.deliveryEstimate.max
+        );
+      }
+
+      //takeAway
+      else if (orderType === 1) {
+        estimatedArrival.setMinutes(
+          currentDate.getMinutes() +
+            restaurant.data.publicSettings.takeAwayEstimate
+        );
+      }
+    } else {
+      estimatedArrival = compteNewDateBasedOnTimeString(
+        currentDate,
+        timeString
       );
     }
 
-    //takeAway
-    if (orderType === 1) {
-      estimatedArrival.setMinutes(
-        currentDate.getMinutes() +
-          restaurant.data.publicSettings.takeAwayEstimate
-      );
-    }
     return estimatedArrival;
   };
 
@@ -132,6 +171,13 @@ export default function Checkout({ params }) {
   }, []);
 
   const handleConfirmOrder = () => {
+    arrivalTimeValidation(
+      timeString,
+      defaultOptionArrivalTimeSelect,
+      setValidationErrors,
+      currentService,
+      "arrivalTime"
+    );
     //display errors on submit and not only onBlur
     missingInformationValidation(
       form.street,
@@ -185,14 +231,13 @@ export default function Checkout({ params }) {
         paymentMethod: "",
       }));
     }
-
-    const restaurantOpen = checkIfRestaurantOpen(restaurant);
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
         ...previous,
         restaurantOpen: "Le restaurant est actuellement fermé",
       }));
     }
+
     //use set + previous to avoid async problems
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
@@ -259,7 +304,19 @@ export default function Checkout({ params }) {
             <div className="space-y-4">
               <h2 className="font-title text-left">Informations de commande</h2>
               <div className="w-fit">
-                <OrderTabBtn />
+                <OrderTabBtn
+                  onChange={() => {
+                    const updatedTimeString = defaultOptionArrivalTimeSelect;
+                    setTimeString(defaultOptionArrivalTimeSelect);
+                    arrivalTimeValidation(
+                      updatedTimeString,
+                      defaultOptionArrivalTimeSelect,
+                      setValidationErrors,
+                      currentService,
+                      "arrivalTime"
+                    );
+                  }}
+                />
               </div>
               <div className="flex flex-col justify-between gap-4">
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -367,25 +424,20 @@ export default function Checkout({ params }) {
                   </div>
                 </div>
               </div>
-              <div className="space-y-1">
-                {cart.data.orderType === 0 ? (
-                  <h3 className="font-title text-left">
-                    Estimation des délais de livraison: entre{" "}
-                    {restaurant.data.publicSettings.deliveryEstimate.min} et{" "}
-                    {restaurant.data.publicSettings.deliveryEstimate.max} min *
-                  </h3>
-                ) : cart.data.orderType === 1 ? (
-                  <h3 className="font-title text-left">
-                    Estimation du délai pour emporter:{" "}
-                    {restaurant.data.publicSettings.takeAwayEstimate} min *
-                  </h3>
-                ) : null}
+            </div>
+            <div className="space-y-4">
+              <h2 className="font-title text-left">Délai de commande</h2>
 
-                <p>
-                  * La durée mentionnée est une estimation moyenne à titre
-                  indicatif.{" "}
-                </p>
-              </div>
+              <SelectArrivalTimeBtn
+                currentService={currentService}
+                remainingServicesForCurrentDay={remainingServicesForCurrentDay}
+                timeString={timeString}
+                setTimeString={setTimeString}
+                validationError={validationErrors.arrivalTime}
+                setValidationErrors={setValidationErrors}
+                timeInterval={timeInterval}
+                defaultOptionArrivalTimeSelect={defaultOptionArrivalTimeSelect}
+              />
             </div>
             <div>
               <h2 className="font-title text-left">Moyen de paiement</h2>

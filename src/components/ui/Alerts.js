@@ -36,7 +36,7 @@ export const SuccesAlert = ({
       <div className="flex">
         <div className="flex-shrink-0">
           <CheckCircleIcon
-            className="h-5 w-5 text-green-400"
+            className="h-5 w-5 text-success"
             aria-hidden="true"
           />
         </div>

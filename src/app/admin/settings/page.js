@@ -11,7 +11,7 @@ import AddBtn from "@/components/ui/AddBtn";
 import InputNumber from "@/components/ui/InputNumber";
 import RestaurantStatusOverrideBtn from "@/components/adminView/RestaurantStatusOverrideBtn";
 import moment from "moment";
-
+import { formatEndTimeStringIfAfterMidnightForDatabase } from "@/utils/dateAndTime";
 import TabBtn from "@/components/ui/TabBtn";
 
 import { switchDayLabel } from "@/utils/switchLabel";
@@ -123,6 +123,10 @@ export default function settings() {
   // for Schedule
   const createService = (dayIndex, itemIndex = null, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
+    newValue.end = formatEndTimeStringIfAfterMidnightForDatabase(
+      newValue.start,
+      newValue.end
+    );
     updatedPublicSettings.schedule[dayIndex].services.push(newValue);
     sortServices(updatedPublicSettings.schedule[dayIndex].services);
     setPublicSettings(updatedPublicSettings);
@@ -130,6 +134,10 @@ export default function settings() {
 
   const updateService = (dayIndex, itemIndex, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
+    newValue.end = formatEndTimeStringIfAfterMidnightForDatabase(
+      newValue.start,
+      newValue.end
+    );
     updatedPublicSettings.schedule[dayIndex].services[itemIndex] = newValue;
     sortServices(updatedPublicSettings.schedule[dayIndex].services);
     setPublicSettings(updatedPublicSettings);
@@ -394,6 +402,7 @@ export default function settings() {
                                   });
                                   setModalPeriodOperation("create");
                                 }}
+                                type="time"
                               />
                             ) : (
                               scheduleItem.services.map((service, j) => (
@@ -415,6 +424,7 @@ export default function settings() {
                                       setModalScheduleOpen(true);
                                     }}
                                     onClickCloseBtn={() => deleteService(i, j)}
+                                    type="time"
                                   />
                                 </div>
                               ))

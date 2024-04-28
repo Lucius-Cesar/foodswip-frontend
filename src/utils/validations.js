@@ -104,11 +104,8 @@ export const modalPeriodValidation = (
         "Veuillez entrer à la fois une valeur de début et une valeur de fin",
     }));
   } else if (
-    (type === "time" &&
-      parseInt(valueModalPeriod.start.replace(":", "")) >=
-        parseInt(valueModalPeriod.end.replace(":", ""))) ||
-    (type === "datetime-local" &&
-      new Date(valueModalPeriod.start) > new Date(valueModalPeriod.end))
+    type === "datetime-local" &&
+    new Date(valueModalPeriod.start) > new Date(valueModalPeriod.end)
   ) {
     setValidationErrors((previous) => ({
       ...previous,
@@ -195,5 +192,26 @@ export const confirmNewPasswordValidation = (
       ...previous,
       [field]: "",
     }));
+  }
+};
+
+export const arrivalTimeValidation = (
+  timeString,
+  defaultOptionArrivalTimeSelect,
+  setValidationErrors,
+  currentService,
+  field
+) => {
+  //if no arrivalTime selected and we are not in a current service (order in advance)
+  if (
+    timeString === defaultOptionArrivalTimeSelect ||
+    (!timeString && !currentService?.start)
+  ) {
+    setValidationErrors((previous) => ({
+      ...previous,
+      [field]: "Veuillez choisir une heure",
+    }));
+  } else {
+    setValidationErrors((previous) => ({ ...previous, [field]: "" }));
   }
 };

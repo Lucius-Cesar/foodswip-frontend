@@ -3,7 +3,7 @@ import { useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrderType } from "@/redux/cart/cartSlice";
 
-export default function OrderTabBtn() {
+export default function OrderTabBtn({ onChange }) {
   const dispatch = useDispatch();
 
   const orderTypes = useSelector(
@@ -13,6 +13,9 @@ export default function OrderTabBtn() {
   const currentOrderType = useSelector((state) => state.cart.data.orderType);
   const changeOrderType = (value) => {
     dispatch(selectOrderType(value));
+    if (onChange) {
+      onChange();
+    }
   };
 
   //set the default orderType depending on which one is enabled

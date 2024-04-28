@@ -1,8 +1,7 @@
 "use client";
 import DefaultBtn from "@/components/ui/DefaultBtn";
-import AddBtn from "@/components/ui/AddBtn";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
+import { formatTimeStringAfterMidnightForDisplay } from "@/utils/dateAndTime";
 export default function PeriodItem({
   start,
   end,
@@ -16,7 +15,11 @@ export default function PeriodItem({
     <div className="flex flex-col">
       <div className="relative">
         <DefaultBtn
-          value={otherValue ? otherValue : `${start} - ${end}`}
+          value={
+            otherValue
+              ? otherValue
+              : `${start} - ${formatTimeStringAfterMidnightForDisplay(end)}`
+          }
           className={`${className} text-xl bg-primary hover:opacity-90  focus:text-white text-white self-center`}
           onClick={() => onClickMainBtn()}
         />

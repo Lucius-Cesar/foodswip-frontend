@@ -6,7 +6,10 @@ import ToggleBtn from "../ui/ToggleBtn";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 import DefaultModal from "../ui/DefaultModal";
 import { WarningAlert } from "@/components/ui/Alerts";
-import { getDayIndex } from "@/utils/checkIfRestaurantOpen";
+import {
+  getDayIndex,
+  compteNewDateBasedOnTimeString,
+} from "@/utils/dateAndTime";
 import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
 import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 
@@ -18,33 +21,19 @@ function getEndOfOverrideStatusPeriode(currentDate, restaurantState) {
 
   //loop one week
   for (let i = 0; i < 7; i++) {
-    const yearOfDateToCompare = dateToCompare.getFullYear();
-    const monthOfDateToCompare = dateToCompare.getMonth();
-    const dayOfMonthOfDateToCompare = dateToCompare.getDate();
     const dayIndexOfDateToCompare = getDayIndex(dateToCompare);
     for (const service of restaurantState.data.publicSettings.schedule[
       dayIndexOfDateToCompare
     ].services) {
       //service.start
-      const serviceStartNumberOfHours = Number(service.start.split(":")[0]);
-      const serviceStartNumberOfMinutes = service.start.split(":")[1];
-      const serviceStartDate = new Date(
-        yearOfDateToCompare,
-        monthOfDateToCompare,
-        dayOfMonthOfDateToCompare,
-        serviceStartNumberOfHours,
-        serviceStartNumberOfMinutes
+      const serviceStartDate = compteNewDateBasedOnTimeString(
+        dateToCompare,
+        service.start
       );
-
       //service.end
-      const serviceEndNumberOfHours = Number(service.end.split(":")[0]);
-      const serviceEndNumberOfMinutes = service.end.split(":")[1];
-      const serviceEndDate = new Date(
-        yearOfDateToCompare,
-        monthOfDateToCompare,
-        dayOfMonthOfDateToCompare,
-        serviceEndNumberOfHours,
-        serviceEndNumberOfMinutes
+      const serviceEndDate = compteNewDateBasedOnTimeString(
+        dateToCompare,
+        service.end
       );
 
       //if current date is within service hour
@@ -162,7 +151,7 @@ const ModalStatusOverride = ({
 
 export default function RestaurantStatusOverrideBtn({ className }) {
   const restaurant = useSelector((state) => state.restaurantAdmin);
-  //const [toggle, setToggle] = useState(checkIfRestaurantOpen(restaurant));
+  //const [toggle, setToggle] = useState(checkRestaurantStatus(restaurant));
   const { restaurantOpen, setRestaurantOpen } =
     useCheckRestaurantStatus(restaurant);
   const [modalOpen, setModalOpen] = useState(false);

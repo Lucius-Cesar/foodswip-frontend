@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 export default function DefaultModal({ children, open, setOpen }) {
   const handleClose = () => {

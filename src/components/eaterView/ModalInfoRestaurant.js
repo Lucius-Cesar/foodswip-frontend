@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { switchDayLabel } from "@/utils/switchLabel";
-import { getDayIndex } from "@/utils/checkIfRestaurantOpen";
+import {
+  formatTimeStringAfterMidnightForDisplay,
+  getDayIndex,
+} from "@/utils/dateAndTime";
 export default function ModalInfoRestaurant({ open, setOpen }) {
   const restaurant = useSelector((state) => state.restaurantPublic);
   const currentDate = new Date();
@@ -102,7 +105,10 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                                   <div className="space-x-4 flex flex-row">
                                     {dayschedule.services.map((service, j) => (
                                       <p key={j}>
-                                        {service.start} - {service.end}
+                                        {service.start} -{" "}
+                                        {formatTimeStringAfterMidnightForDisplay(
+                                          service.end
+                                        )}
                                       </p>
                                     ))}
                                   </div>

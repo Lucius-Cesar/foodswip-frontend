@@ -13,7 +13,7 @@ import CartIcon from "../ui/icons/CartIcon";
 import CartArticle from "./CartArticle";
 
 import DefaultBtn from "../ui/DefaultBtn";
-import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
+import checkRestaurantStatus from "@/utils/checkRestaurantStatus";
 
 export default function Cart({ open, setOpen, variant }) {
   const primary = "#F97247"; //sorry for this
@@ -29,7 +29,7 @@ export default function Cart({ open, setOpen, variant }) {
   });
 
   const onClickOrderBtn = () => {
-    const restaurantOpen = checkIfRestaurantOpen(restaurant);
+    const { restaurantOpen } = checkRestaurantStatus(restaurant);
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
         ...previous,

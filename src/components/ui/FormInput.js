@@ -46,7 +46,7 @@ export default function FormInput({
           {validationError && (
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
               <ExclamationCircleIcon
-                className="h-5 w-5 text-red-500"
+                className="h-5 w-5 text-error-danger"
                 aria-hidden="true"
               />
             </div>

@@ -1,28 +1,45 @@
 import { useLayoutEffect, useState } from "react";
-import checkIfRestaurantOpen from "@/utils/checkIfRestaurantOpen";
+import checkRestaurantStatus from "@/utils/checkRestaurantStatus";
 const checkingIntervalInMs = 1 * 60 * 1000; //1 minute
 
 //the first useEffect check if restaurant Status change while restaurant.data change
 let intervalId;
 
-export default function useCheckRestaurantStatus(restaurantState) {
-  const [restaurantOpen, setRestaurantOpen] = useState();
-  const checkRestaurantStatus = () => {
-    const updatedRestaurantOpen = checkIfRestaurantOpen(restaurantState);
+export default function useCheckRestaurantStatus(restaurant) {
+  const {
+    restaurantOpen: checkRestaurantOpen,
+    currentService: checkCurrentService,
+    remainingServicesForCurrentDay: checkRemainingServicesForCurrentDay,
+  } = checkRestaurantStatus(restaurant);
+
+  const [restaurantOpen, setRestaurantOpen] = useState(checkRestaurantOpen);
+  const [currentService, setCurrentService] = useState(checkCurrentService);
+  const [remainingServicesForCurrentDay, setRemainingServicesForCurrentDay] =
+    useState(checkRemainingServicesForCurrentDay);
+
+  const checkRestaurantStatusChanges = () => {
+    const { restaurantOpen: updatedRestaurantOpen } =
+      checkRestaurantStatus(restaurant);
     if (updatedRestaurantOpen !== restaurantOpen) {
       setRestaurantOpen(updatedRestaurantOpen);
     }
   };
   useLayoutEffect(() => {
-    if (restaurantState.data.publicSettings && !restaurantState.isLoading) {
-      checkRestaurantStatus();
+    if (restaurant.data.publicSettings && !restaurant.isLoading) {
       clearInterval(); //clear interval if restaurant.data changed and put a new one
+      checkRestaurantStatusChanges();
       intervalId = setInterval(() => {
-        // Effectuer le check à intervalles réguliers (toutes les 5 minutes)
-        checkRestaurantStatus();
+        // Effectuer le check à intervalles réguliers (toutes les minutes)
+        checkRestaurantStatusChanges();
       }, checkingIntervalInMs);
       return () => clearInterval(intervalId);
     } //component destruction => clearInterval
-  }, [restaurantState.data.publicSettings]);
-  return { restaurantOpen, setRestaurantOpen };
+  }, [restaurant.data.publicSettings]);
+
+  return {
+    restaurantOpen,
+    setRestaurantOpen,
+    currentService,
+    remainingServicesForCurrentDay,
+  };
 }

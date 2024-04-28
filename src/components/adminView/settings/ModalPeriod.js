@@ -5,6 +5,10 @@ import { CheckIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 import { modalPeriodValidation } from "@/utils/validations";
+import {
+  formatEndTimeStringIfAfterMidnightForDatabase,
+  formatTimeStringAfterMidnightForDisplay,
+} from "@/utils/dateAndTime";
 export default function ModalPeriod({
   type,
   value,
@@ -92,13 +96,17 @@ export default function ModalPeriod({
                       id={"end"}
                       min={"00:00"}
                       max={"23:59"}
-                      value={value.end}
-                      onChange={(e) =>
+                      value={
+                        value?.end && type === "time"
+                          ? formatTimeStringAfterMidnightForDisplay(value?.end)
+                          : value.end
+                      }
+                      onChange={(e) => {
                         setValue((previous) => ({
                           ...previous,
                           end: e.target.value,
-                        }))
-                      }
+                        }));
+                      }}
                       className={`rounded-xl border border-1 border-gray-300 focus:border-primary shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-primary sm:leading-8`}
                     ></input>
                   </div>
