@@ -6,34 +6,37 @@ const checkingIntervalInMs = 1 * 60 * 1000; //1 minute
 let intervalId;
 
 export default function useCheckRestaurantStatus(restaurant) {
-  const {
-    restaurantOpen: checkRestaurantOpen,
-    currentService: checkCurrentService,
-    remainingServicesForCurrentDay: checkRemainingServicesForCurrentDay,
-  } = checkRestaurantStatus(restaurant);
-
-  const [restaurantOpen, setRestaurantOpen] = useState(checkRestaurantOpen);
-  const [currentService, setCurrentService] = useState(checkCurrentService);
+  const [restaurantOpen, setRestaurantOpen] = useState(null);
+  const [currentService, setCurrentService] = useState(null);
   const [remainingServicesForCurrentDay, setRemainingServicesForCurrentDay] =
-    useState(checkRemainingServicesForCurrentDay);
+    useState(null);
 
-  const checkRestaurantStatusChanges = () => {
-    const { restaurantOpen: updatedRestaurantOpen } =
-      checkRestaurantStatus(restaurant);
-    if (updatedRestaurantOpen !== restaurantOpen) {
-      setRestaurantOpen(updatedRestaurantOpen);
+  const updateRestaurantStatus = () => {
+    const {
+      restaurantOpen: newRestaurantOpen,
+      currentService: newCurrentService,
+      remainingServicesForCurrentDay: newRemainingServicesForCurrentDay,
+    } = checkRestaurantStatus(restaurant);
+
+    if (newRestaurantOpen !== restaurantOpen) {
+      setRestaurantOpen(newRestaurantOpen);
+    }
+    if (newCurrentService !== currentService) {
+      setCurrentService(newCurrentService);
+    }
+    if (newRemainingServicesForCurrentDay !== remainingServicesForCurrentDay) {
+      setRemainingServicesForCurrentDay(newRemainingServicesForCurrentDay);
     }
   };
   useLayoutEffect(() => {
-    if (restaurant?.data?.publicSettings && !restaurant?.isLoading) {
-      clearInterval(); //clear interval if restaurant.data changed and put a new one
-      checkRestaurantStatusChanges();
-      intervalId = setInterval(() => {
-        // Effectuer le check à intervalles réguliers (toutes les minutes)
-        checkRestaurantStatusChanges();
-      }, checkingIntervalInMs);
-      return () => clearInterval(intervalId);
-    } //component destruction => clearInterval
+    if (!restaurant?.data?.publicSettings) return;
+    clearInterval(); //clear interval if restaurant.data changed and put a new one
+    updateRestaurantStatus();
+    intervalId = setInterval(() => {
+      // Effectuer le check à intervalles réguliers (toutes les minutes)
+      updateRestaurantStatus();
+    }, checkingIntervalInMs);
+    return () => clearInterval(intervalId);
   }, [restaurant?.data?.publicSettings]);
 
   return {

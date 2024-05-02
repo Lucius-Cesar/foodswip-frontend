@@ -305,6 +305,7 @@ export default function Checkout({ params }) {
               <h2 className="font-title text-left">Informations de commande</h2>
               <div className="w-fit">
                 <OrderTabBtn
+                  orderTypes={restaurant.data.publicSettings.orderTypes}
                   onChange={() => {
                     const updatedTimeString = defaultOptionArrivalTimeSelect;
                     setTimeString(defaultOptionArrivalTimeSelect);

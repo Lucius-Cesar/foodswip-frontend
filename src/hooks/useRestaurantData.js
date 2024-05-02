@@ -1,6 +1,9 @@
 import { useLayoutEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRestaurantPublicData } from "@/redux/restaurantPublic/restaurantPublicSlice";
+import {
+  clearRestaurantPublic,
+  getRestaurantPublicData,
+} from "@/redux/restaurantPublic/restaurantPublicSlice";
 import { getRestaurantAdminData } from "@/redux/restaurantAdmin/restaurantAdminSlice";
 
 import { clearCart } from "@/redux/cart/cartSlice";

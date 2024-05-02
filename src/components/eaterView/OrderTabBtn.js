@@ -3,12 +3,8 @@ import { useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOrderType } from "@/redux/cart/cartSlice";
 
-export default function OrderTabBtn({ onChange }) {
+export default function OrderTabBtn({ onChange, orderTypes }) {
   const dispatch = useDispatch();
-
-  const orderTypes = useSelector(
-    (state) => state.restaurantPublic.data.publicSettings.orderTypes
-  );
 
   const currentOrderType = useSelector((state) => state.cart.data.orderType);
   const changeOrderType = (value) => {

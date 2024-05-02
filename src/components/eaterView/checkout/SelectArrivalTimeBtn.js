@@ -221,6 +221,7 @@ export default function SelectArrivalTimeBtn({
   const [timeChoicesArray, setTimeChoiceArray] = useState(null);
 
   useEffect(() => {
+    if (!currentService || !remainingServicesForCurrentDay) return;
     setTimeChoiceArray(() => {
       if (currentService?.start) {
         return [

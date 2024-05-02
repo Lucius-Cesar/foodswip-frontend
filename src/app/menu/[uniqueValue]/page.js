@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect, createRef, useRef } from "react";
-import { usePathname } from "next/navigation";
 
 import SideFoodCategories from "../../../components/eaterView/SideFoodCategories";
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn";
@@ -14,7 +13,7 @@ import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
 import BarsIcon from "@/components/ui/icons/BarsIcon";
 import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
 import Preloader from "@/components/ui/Preloader";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import useRestaurantData from "@/hooks/useRestaurantData";
 import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
@@ -40,20 +39,14 @@ export default function eaterView({ params }) {
   //extract restaurant unique value based on URL and fetch restaurant data
 
   useEffect(() => {
-    if (
-      restaurant.data.publicSettings?.schedule &&
-      restaurant.data.publicSettings?.exceptionalClosings
-    )
-      if (restaurant.data.menu) {
-        setMenu(
-          restaurant.data.menu.map((foodCategory) => ({
-            ...foodCategory,
-            ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
-          }))
-        );
-        setActiveFoodCategoryIndex(restaurant.data.menu[0]);
-      }
-  }, [restaurant.data]);
+    if (!restaurant?.data?.menu) return;
+    setMenu(
+      restaurant.data.menu.map((foodCategory) => ({
+        ...foodCategory,
+        ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
+      }))
+    );
+  }, [restaurant?.data?.menu]);
 
   useEffect(() => {
     if (menu && !restaurant.error && !restaurant.isLoading) {
@@ -79,7 +72,7 @@ export default function eaterView({ params }) {
   return (
     <>
       {restaurant.error && <p className="error-danger">{restaurant.error}</p>}
-      {restaurant.isLoading && <Preloader />}
+      {(restaurant.isLoading || !menu) && <Preloader />}
       {!restaurant.error && !restaurant.isLoading && menu && (
         <div className="h-svh overflow-clip">
           {!restaurantOpen && (
@@ -166,7 +159,9 @@ export default function eaterView({ params }) {
                 </div>
               )}
               <div className="sticky sm:relative pt-2 pb-2 sm:pt-0 top-0 w-full sm:w-auto flex justify-center sm:block bg-white sm:bg-none sm:py-0">
-                <OrderTabBtn />
+                <OrderTabBtn
+                  orderTypes={restaurant.data.publicSettings.orderTypes}
+                />
               </div>
               <div className="flex flex-col w-full pb-24">
                 {menu.map((foodCategory, i) => (
