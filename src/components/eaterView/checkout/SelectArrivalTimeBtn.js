@@ -220,12 +220,10 @@ export default function SelectArrivalTimeBtn({
   const cart = useSelector((state) => state.cart);
   const [modalOpen, setModalOpen] = useState(false);
   const [timeChoicesArray, setTimeChoiceArray] = useState(null);
-  console.log(currentService);
-  console.log(remainingServicesForCurrentDay);
   useEffect(() => {
     setTimeChoiceArray(() => {
       // if status open is forced -> no end to current service (it is not really true but it is a marker to avoid order in advance for forced opening periods)
-
+      if (!remainingServicesForCurrentDay) return;
       if (currentService?.start) {
         return [
           "Dès que possible",
