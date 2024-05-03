@@ -6,79 +6,78 @@ import ToggleBtn from "../ui/ToggleBtn";
 import DefaultBtn from "@/components/ui/DefaultBtn";
 import DefaultModal from "../ui/DefaultModal";
 import { WarningAlert } from "@/components/ui/Alerts";
-import {
-  getDayIndex,
-  compteNewDateBasedOnTimeString,
-} from "@/utils/dateAndTime";
+import { compteNewDateBasedOnTimeString } from "@/utils/dateAndTime";
 import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
 import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 
-function getEndOfOverrideStatusPeriode(currentDate, restaurantState) {
+function getEndOfOverrideStatusPeriod(
+  currentService,
+  remainingServicesForCurrentDay,
+  untilNextDay
+) {
   //this function loop over all the services of the week, current date is within a service => put the end of the overrideStatusPeriode to the end of the current service
   //if we are not in a service: put the end of the overrideStatusPeriode to the start of the next periode
-  let dateToCompare = new Date(currentDate);
-  let endOfOverrideStatusPeriode;
 
-  //loop one week
-  for (let i = 0; i < 7; i++) {
-    const dayIndexOfDateToCompare = getDayIndex(dateToCompare);
-    for (const service of restaurantState.data.publicSettings.schedule[
-      dayIndexOfDateToCompare
-    ].services) {
-      //service.start
-      const serviceStartDate = compteNewDateBasedOnTimeString(
-        dateToCompare,
-        service.start
-      );
-      //service.end
-      const serviceEndDate = compteNewDateBasedOnTimeString(
-        dateToCompare,
-        service.end
-      );
-
-      //if current date is within service hour
-      if (currentDate >= serviceStartDate && currentDate < serviceEndDate) {
-        endOfOverrideStatusPeriode = serviceEndDate;
-        return endOfOverrideStatusPeriode;
-      }
-
-      if (currentDate < serviceStartDate) {
-        endOfOverrideStatusPeriode = serviceStartDate;
-        return endOfOverrideStatusPeriode;
-      }
-    }
-    //iterate date to compare to the next day
-    dateToCompare.setDate(dateToCompare.getDate() + 1);
-  }
-  if (endOfOverrideStatusPeriode) {
-    return endOfOverrideStatusPeriode;
+  let currentDate = new Date();
+  let endOfService;
+  if (untilNextDay) {
+    const nextDayTimestamp = new Date(
+      currentDate.setDate(currentDate.getDate() + 1)
+    );
+    nextDayTimestamp.setHours(0, 0, 0, 0);
+    return nextDayTimestamp;
   }
 
-  return endOfOverrideStatusPeriode;
+  //if currently in service
+  else if (currentService?.start) {
+    //demander si toute la journées ou jusqu'au prochain service
+
+    const currentServiceEndDate = compteNewDateBasedOnTimeString(
+      currentDate,
+      currentService.end
+    );
+
+    endOfService = currentServiceEndDate;
+  } else if (remainingServicesForCurrentDay.length) {
+    const nextServiceEndDate = compteNewDateBasedOnTimeString(
+      currentDate,
+      remainingServicesForCurrentDay[0].end
+    );
+    endOfService = nextServiceEndDate;
+  } else {
+    // else end of overrideStatusPeriode the next day
+    const nextDayTimestamp = new Date(
+      currentDate.setDate(currentDate.getDate() + 1)
+    );
+    nextDayTimestamp.setHours(0, 0, 0, 0);
+    return nextDayTimestamp;
+  }
+  return endOfService;
 }
 
 const ModalStatusOverride = ({
   open,
   setOpen,
   restaurantOpen,
-  setRestaurantOpen,
+  currentService,
+  initialRestaurantStatus,
+  remainingServicesForCurrentDay,
 }) => {
   const dispatch = useDispatch();
   const restaurant = useSelector((state) => state.restaurantAdmin);
-  const onClickConfirmBtn = () => {
+  const onClickBtn = (untilNextDay) => {
     const updatedRestaurantOpen = !restaurantOpen;
     const currentDate = new Date();
-    const endOfOverrideStatusPeriode = getEndOfOverrideStatusPeriode(
-      currentDate,
-      restaurant
+    const endOfOverrideStatusPeriod = getEndOfOverrideStatusPeriod(
+      currentService,
+      remainingServicesForCurrentDay,
+      untilNextDay
     );
     const updatedStatusOverride = {
       open: updatedRestaurantOpen,
       start: currentDate,
-      //if no next service , end of the overrideStatus is arbitrary one day after the currentDate
-      end: endOfOverrideStatusPeriode
-        ? endOfOverrideStatusPeriode
-        : new Date(currentDate.getTime() + 24 * 60 * 60 * 1000),
+      //if no next service , end of the overrideStatus is arbitrary next day midnight
+      end: endOfOverrideStatusPeriod,
     };
 
     const restaurantSettingsPayload = {
@@ -90,60 +89,122 @@ const ModalStatusOverride = ({
     };
     dispatch(updateRestaurantSettings(restaurantSettingsPayload)).then(() => {
       setOpen(false);
-      setRestaurantOpen(updatedRestaurantOpen);
     });
   };
 
-  const [initialRestaurantOpen, setInitialRestaurantOpen] =
-    useState(restaurantOpen);
   //workaround to avoid modal data changes during the closing animation, change later if possible
-  useEffect(() => {
-    if (open) {
-      setInitialRestaurantOpen(restaurantOpen);
-    }
-  }, [open]);
+
   return (
     <DefaultModal open={open} setOpen={setOpen}>
       <div className="flex flex-col justify-center items-center space-y-6">
-        {!initialRestaurantOpen && (
-          <WarningAlert>
-            <p className="text-lg">
-              Êtes-vous sûr de vouloir ouvrir ?<br></br> <br></br>{" "}
-              <span className="text-sm">
-                L'établissement apparaîtra comme ouvert à partir de maintenant
-                jusqu'au prochain service planifié.
-              </span>
+        {initialRestaurantStatus === "open" &&
+        remainingServicesForCurrentDay.length >= 1 ? (
+          <>
+            <h2 className="text-center">Choisissez la durée de fermeture</h2>
+
+            <div className="flex flex-row gap-8">
+              <DefaultBtn
+                className="text-xl font-bold h-16 rounded-s-lg rounded-e-lg"
+                color="primary"
+                value={`Jusque ${remainingServicesForCurrentDay[0].start}`}
+                onClick={() => onClickBtn(false)}
+              />
+              <DefaultBtn
+                className="text-xl font-bold h-16 rounded-s-lg rounded-e-lg"
+                color="primary"
+                value={"Toute la journée"}
+                onClick={() => onClickBtn(true)}
+              />
+            </div>
+            <p className="text-sm text-center">
+              Si vous désirez fermer sur une plus longue période, veuillez
+              ajouter une fermeture exceptionnelle.
             </p>
-          </WarningAlert>
-        )}
-        {initialRestaurantOpen && (
-          <WarningAlert>
-            <p className="text-lg">
-              Êtes-vous sûr de vouloir fermer ?<br></br> <br></br>{" "}
-              <span className="text-sm">
-                L'établissement apparaîtra comme fermé et réouvrira
-                automatiquement au prochain service planifié. <br></br>{" "}
-                <br></br>Si vous désirez fermer sur une plus longue période,
-                veuillez ajouter une fermeture exceptionnelle.
-              </span>
+          </>
+        ) : (initialRestaurantStatus === "orders in advance" ||
+            initialRestaurantStatus === "forced open") &&
+          remainingServicesForCurrentDay.length >= 2 ? (
+          <>
+            <h2 className="text-center">Choisissez la durée de fermeture</h2>
+
+            <div className="flex flex-row gap-8">
+              <DefaultBtn
+                className="text-xl font-bold h-16 rounded-s-lg rounded-e-lg"
+                color="primary"
+                value={`Jusque ${remainingServicesForCurrentDay[1]?.start}`}
+                onClick={() => onClickBtn(false)}
+              />
+              <DefaultBtn
+                className="text-xl font-bold h-16 rounded-s-lg rounded-e-lg"
+                color="primary"
+                value={"Toute la journée"}
+                onClick={() => onClickBtn(true)}
+              />
+            </div>
+            <p className="text-sm text-center">
+              Si vous désirez fermer sur une plus longue période, veuillez
+              ajouter une fermeture exceptionnelle.
             </p>
-          </WarningAlert>
-        )}
-      </div>
-      <div className="flex flex-row justify-between w-full">
-        <DefaultBtn
-          className="text-lg hover:brightness-95"
-          value="Annuler"
-          color="error-danger"
-          onClick={() => setOpen(false)}
-        ></DefaultBtn>
-        <DefaultBtn
-          className="text-lg"
-          value="Confirmer"
-          color="success"
-          onClick={onClickConfirmBtn}
-          isLoading={restaurant.isLoading}
-        ></DefaultBtn>
+          </>
+        ) : initialRestaurantStatus === "open" ||
+          initialRestaurantStatus === "forced open" ? (
+          <div className="flex flex-col gap-4">
+            <WarningAlert>
+              <div className="flex flex-col gap-2">
+                <h2 className="text-lg">Êtes-vous sûr de vouloir fermer ?</h2>{" "}
+                <p className="text-sm">
+                  L'établissement apparaîtra comme fermé pour le reste de la
+                  journée<br></br> <br></br>
+                  Si vous désirez fermer sur une plus longue période, veuillez
+                  ajouter une fermeture exceptionnelle.
+                </p>
+              </div>
+            </WarningAlert>
+            <div className="flex flex-row justify-between w-full">
+              <DefaultBtn
+                className="text-xl hover:brightness-95"
+                value="Annuler"
+                color="error-danger"
+                onClick={() => setOpen(false)}
+              ></DefaultBtn>
+              <DefaultBtn
+                className="text-xl"
+                value="Confirmer"
+                color="success"
+                onClick={() => onClickBtn(false)}
+                isLoading={restaurant.isLoading}
+              ></DefaultBtn>
+            </div>
+          </div>
+        ) : initialRestaurantStatus === "closed" ? (
+          <div className="flex flex-col gap-4">
+            <WarningAlert>
+              <div className="flex flex-col gap-2">
+                <h2 className="text-lg">Êtes-vous sûr de vouloir ouvrir ? </h2>
+
+                <p className="text-sm">
+                  L'établissement apparaîtra comme ouvert jusqu'à la fin du
+                  prochain service
+                </p>
+              </div>
+            </WarningAlert>
+            <div className="flex flex-row justify-between w-full">
+              <DefaultBtn
+                className="text-xl hover:brightness-95"
+                value="Annuler"
+                color="error-danger"
+                onClick={() => setOpen(false)}
+              ></DefaultBtn>
+              <DefaultBtn
+                className="text-xl"
+                value="Confirmer"
+                color="success"
+                onClick={() => onClickBtn(false)}
+                isLoading={restaurant.isLoading}
+              ></DefaultBtn>
+            </div>
+          </div>
+        ) : null}
       </div>
     </DefaultModal>
   );
@@ -152,10 +213,16 @@ const ModalStatusOverride = ({
 export default function RestaurantStatusOverrideBtn({ className }) {
   const restaurant = useSelector((state) => state.restaurantAdmin);
   //const [toggle, setToggle] = useState(checkRestaurantStatus(restaurant));
-  const { restaurantOpen, setRestaurantOpen } =
-    useCheckRestaurantStatus(restaurant);
+  const {
+    restaurantOpen,
+    setRestaurantOpen,
+    currentService,
+    remainingServicesForCurrentDay,
+    restaurantStatus,
+  } = useCheckRestaurantStatus(restaurant);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [initialRestaurantStatus, setInitialRestaurantStatus] =
+    useState(restaurantStatus);
   return (
     <>
       <div
@@ -166,16 +233,32 @@ export default function RestaurantStatusOverrideBtn({ className }) {
           <ToggleBtn
             enabled={restaurantOpen}
             setEnabled={setRestaurantOpen}
-            onChange={() => setModalOpen(true)}
+            onChange={() => {
+              setModalOpen(true);
+              setInitialRestaurantStatus(restaurantStatus);
+            }}
             className="w-20"
           />
         </div>
         <p
           className={`${
-            restaurantOpen ? "text-success" : "text-error-danger"
+            restaurantStatus === "orders in advance"
+              ? "text-primary"
+              : restaurantStatus === "open" ||
+                restaurantStatus === "forced open"
+              ? "text-success"
+              : restaurantStatus === "closed"
+              ? "text-error-danger"
+              : null
           } font-bold text-xl`}
         >
-          {restaurantOpen ? "Ouvert" : "Fermé"}
+          {restaurantStatus === "orders in advance"
+            ? "Commandes à l'avance"
+            : restaurantStatus === "open" || restaurantStatus === "forced open"
+            ? "Ouvert"
+            : restaurantStatus === "closed"
+            ? "Fermé"
+            : null}
         </p>
       </div>
       <ModalStatusOverride
@@ -183,6 +266,9 @@ export default function RestaurantStatusOverrideBtn({ className }) {
         setOpen={setModalOpen}
         restaurantOpen={restaurantOpen}
         setRestaurantOpen={setRestaurantOpen}
+        initialRestaurantStatus={initialRestaurantStatus}
+        currentService={currentService}
+        remainingServicesForCurrentDay={remainingServicesForCurrentDay}
       />
     </>
   );

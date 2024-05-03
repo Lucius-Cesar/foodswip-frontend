@@ -2,7 +2,7 @@ import { Public_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "../assets/styles/globals.css";
 import Hotjar from "@/components/Hotjar";
-import Providers from "../redux/provider";
+import StoreProvider from "../redux/StoreProvider";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -63,7 +63,7 @@ export default function RootLayout({ children }) {
     >
       <body className={`body ${urwGeometric.className}`}>
         <Hotjar>
-          <Providers>{children}</Providers>
+          <StoreProvider>{children}</StoreProvider>
         </Hotjar>
       </body>
     </html>

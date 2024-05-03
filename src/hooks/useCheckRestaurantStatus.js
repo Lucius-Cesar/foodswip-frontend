@@ -10,12 +10,14 @@ export default function useCheckRestaurantStatus(restaurant) {
   const [currentService, setCurrentService] = useState(null);
   const [remainingServicesForCurrentDay, setRemainingServicesForCurrentDay] =
     useState(null);
+  const [restaurantStatus, setRestaurantStatus] = useState(null);
 
   const updateRestaurantStatus = () => {
     const {
       restaurantOpen: newRestaurantOpen,
       currentService: newCurrentService,
       remainingServicesForCurrentDay: newRemainingServicesForCurrentDay,
+      restaurantStatus: newRestaurantStatus,
     } = checkRestaurantStatus(restaurant);
 
     if (newRestaurantOpen !== restaurantOpen) {
@@ -26,6 +28,9 @@ export default function useCheckRestaurantStatus(restaurant) {
     }
     if (newRemainingServicesForCurrentDay !== remainingServicesForCurrentDay) {
       setRemainingServicesForCurrentDay(newRemainingServicesForCurrentDay);
+    }
+    if (newRestaurantStatus !== restaurantStatus) {
+      setRestaurantStatus(newRestaurantStatus);
     }
   };
   useLayoutEffect(() => {
@@ -44,5 +49,6 @@ export default function useCheckRestaurantStatus(restaurant) {
     setRestaurantOpen,
     currentService,
     remainingServicesForCurrentDay,
+    restaurantStatus,
   };
 }

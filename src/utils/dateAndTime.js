@@ -1,3 +1,6 @@
+export const dateToTimeString = (date) => {
+  return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
+};
 export const isValidTimeString = (timeString) => {
   // format 00:10 23:59 //it can also be 27h:01 for 03:01
   return /^\d{2}:\d{2}$/.test(timeString);

@@ -104,7 +104,7 @@ export const modalPeriodValidation = (
         "Veuillez entrer à la fois une valeur de début et une valeur de fin",
     }));
   } else if (
-    type === "datetime-local" &&
+    type === "date" &&
     new Date(valueModalPeriod.start) > new Date(valueModalPeriod.end)
   ) {
     setValidationErrors((previous) => ({

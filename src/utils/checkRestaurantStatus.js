@@ -3,6 +3,7 @@ import {
   isDateWithinStartEnd,
   isWithinServiceHours,
   getTotalNumberOfMinutesSinceBeginningOfTheDay,
+  dateToTimeString,
 } from "@/utils/dateAndTime";
 
 export default function checkRestaurantStatus(restaurant) {
@@ -10,6 +11,7 @@ export default function checkRestaurantStatus(restaurant) {
   let overrideRestaurantOpen;
   let currentService = null;
   let remainingServicesForCurrentDay = [];
+  let restaurantStatus;
   const schedule = restaurant.data.publicSettings.schedule;
   const exceptionalClosings =
     restaurant.data.publicSettings.exceptionalClosings;
@@ -34,13 +36,16 @@ export default function checkRestaurantStatus(restaurant) {
     if (statusOverride.open) {
       restaurantOpen = true;
       overrideRestaurantOpen = true;
+      // if status open is forced -> no end to current service (it is not really true but it is a marker to avoid order in advance for forced opening periods)
+      currentService = {
+        start: dateToTimeString(new Date(statusOverride.start)),
+        end: dateToTimeString(new Date(statusOverride.end)),
+      };
+      restaurantStatus = "forced open";
     } else {
       restaurantOpen = false;
-      return {
-        restaurantOpen,
-        currentService,
-        remainingServicesForCurrentDay,
-      };
+      restaurantStatus = "closed";
+      overrideRestaurantOpen = false;
     }
   }
 
@@ -102,9 +107,22 @@ export default function checkRestaurantStatus(restaurant) {
     }
   }
   // if there is an oveerideRestaurantOpen True , override the result
-  restaurantOpen = overrideRestaurantOpen
-    ? overrideRestaurantOpen
-    : restaurantOpen;
+  restaurantOpen =
+    overrideRestaurantOpen != null ? overrideRestaurantOpen : restaurantOpen;
+  if (overrideRestaurantOpen) {
+    restaurantStatus = "forced open";
+  } else if (restaurantOpen && currentService?.start) {
+    restaurantStatus = "open";
+  } else if (restaurantOpen && remainingServicesForCurrentDay.length) {
+    restaurantStatus = "orders in advance";
+  } else if (!restaurantOpen) {
+    restaurantStatus = "closed";
+  }
 
-  return { restaurantOpen, currentService, remainingServicesForCurrentDay };
+  return {
+    restaurantOpen,
+    currentService,
+    remainingServicesForCurrentDay,
+    restaurantStatus,
+  };
 }

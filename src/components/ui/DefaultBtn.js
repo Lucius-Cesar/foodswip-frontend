@@ -12,7 +12,7 @@ export default function DefaultBtn({
       <button
         type="button"
         onClick={onClick}
-        className={` ${color ? `bg-${color}` : ""} ${className} ${
+        className={` ${className} ${color ? `bg-${color}` : ""} ${
           isLoading ? "invisible" : ""
         }
         py-1 px-4 text-white font-bold rounded-s-full rounded-e-full text-center hover:opacity-90 `}

@@ -88,8 +88,6 @@ export default function settings() {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
     hour12: false, // Utiliser le format 24 heures
   };
 
@@ -449,7 +447,7 @@ export default function settings() {
                   <div className="flex flex-col items-start space-y-6">
                     <h2 className="">Fermetures exceptionnelles</h2>
                     <ModalPeriod
-                      type={"datetime-local"}
+                      type={"date"}
                       value={valueModalPeriod}
                       setValue={setValueModalPeriod}
                       open={isModalExceptionalClosingsOpen}
@@ -507,10 +505,10 @@ export default function settings() {
                                     itemIndex: i,
                                     start: moment(
                                       exceptionalClosingDate.start
-                                    ).format("YYYY-MM-DDTHH:mm"),
+                                    ).format("YYYY-MM-DD"),
                                     end: moment(
                                       exceptionalClosingDate.end
-                                    ).format("YYYY-MM-DDTHH:mm"),
+                                    ).format("YYYY-MM-DD"),
                                   });
                                   setModalExceptionalClosingOpen(true);
                                 }}

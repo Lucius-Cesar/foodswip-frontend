@@ -15,25 +15,9 @@ export default function FooterSettings({
   //alert is only displayed after save btn is pressed
   const [alertOpen, setAlertOpen] = useState(false);
   const restaurant = useSelector((state) => state.restaurantAdmin);
-  const isFirstRender = useRef(true);
 
-  useEffect(() => {
-    if (!isFirstRender.current) {
-      setAlertOpen((previous) => {
-        if (!previous) return true;
-      });
-    } else if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-  }, [restaurant.data]);
-
-  useEffect(() => {
-    if (restaurant.isLoading) {
-      setAlertOpen(false);
-    }
-  }, [restaurant.isLoading]);
   const onClickSaveBtn = () => {
+    setAlertOpen(false);
     if (Object.values(validationErrors).every((value) => value === "")) {
       setSaveError(false);
       const payload = {
@@ -52,7 +36,9 @@ export default function FooterSettings({
         publicSettings: publicSettings,
         privateSettings: privateSettings,
       };
-      dispatch(updateRestaurantSettings(payload));
+      dispatch(updateRestaurantSettings(payload)).then(() =>
+        setAlertOpen(true)
+      );
     } else {
       setSaveError(true);
       setAlertOpen(true);
