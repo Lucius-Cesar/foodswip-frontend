@@ -58,6 +58,7 @@ function getTimeChoicesArray(
   const numberOfMinuteCurrentDay =
     getTotalNumberOfMinutesSinceBeginningOfTheDay(currentDate, "Date");
   //if we are in current service
+
   if (currentService?.start && currentService?.end) {
     const numberOfMinutesServiceEnd =
       getTotalNumberOfMinutesSinceBeginningOfTheDay(
@@ -219,9 +220,9 @@ export default function SelectArrivalTimeBtn({
   const cart = useSelector((state) => state.cart);
   const [modalOpen, setModalOpen] = useState(false);
   const [timeChoicesArray, setTimeChoiceArray] = useState(null);
-
+  console.log(currentService);
+  console.log(remainingServicesForCurrentDay);
   useEffect(() => {
-    if (!currentService || !remainingServicesForCurrentDay) return;
     setTimeChoiceArray(() => {
       // if status open is forced -> no end to current service (it is not really true but it is a marker to avoid order in advance for forced opening periods)
 
