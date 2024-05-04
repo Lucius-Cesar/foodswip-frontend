@@ -147,7 +147,8 @@ const ModalStatusOverride = ({
             </p>
           </>
         ) : initialRestaurantStatus === "open" ||
-          initialRestaurantStatus === "forced open" ? (
+          initialRestaurantStatus === "forced open" ||
+          initialRestaurantStatus === "orders in advance" ? (
           <div className="flex flex-col gap-4">
             <WarningAlert>
               <div className="flex flex-col gap-2">
