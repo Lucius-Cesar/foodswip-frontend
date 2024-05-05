@@ -28,19 +28,12 @@ export default function CartArticle({ article, index }) {
           {multiplyMoney(article.quantity, article.price)} €
         </p>
       </div>
-      {article.selectedOptions.length > 0 && (
+      {article.selectedOptions?.length > 0 && (
         <p className="text-sm">
           {article.selectedOptions.map((option) => option.value).join(", ")}
         </p>
       )}
-      {article.selectedSupplements.length > 0 && (
-        <p className="text-sm ">
-          Suppléments:{" "}
-          {article.selectedSupplements
-            .map((supplements) => supplements.value)
-            .join(", ")}
-        </p>
-      )}
+
       <div className="flex flex-row justify-start space-x-2">
         <MinusBtn onClick={handleMinusBtn} /> <AddBtn onClick={handleAddBtn} />
       </div>

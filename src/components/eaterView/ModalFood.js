@@ -2,8 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/24/outline";
 
-import FoodOptionsFormSelect from "./FoodOptionsFormSelect";
-import FoodSupplementsCheckBoxGroup from "./FoodSupplementsCheckBoxGroup";
+import FoodOptions from "./FoodOptions";
 import DefaultBtn from "../ui/DefaultBtn";
 import AddBtn from "../ui/AddBtn";
 import MinusBtn from "../ui/MinusBtn";
@@ -15,61 +14,64 @@ import {
   incrementArticleQuantity,
 } from "../../redux/cart/cartSlice";
 
-import { addMoney, multiplyMoney } from "@/utils/moneyCalculations";
+import {
+  addMoney,
+  multiplyMoney,
+  subtractMoney,
+} from "@/utils/moneyCalculations";
 
 import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart";
 
-export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
+export default function ModalFood({ open, setOpen, food }) {
   // AU MOI DU FUTUR: n'oublie pas de trier les options par prix au niveau du backend
-  const [articlePrice, setArticlePrice] = useState(food.price);
+  const [articlePrice, setArticlePrice] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   //default selectedOptions are the first of each formSelect
-  const [selectedOptions, setSelectedOptions] = useState(
-    food?.options?.length > 0
-      ? food.options.flatMap((optionCategory) => optionCategory.items[0])
-      : []
-  );
-  const [selectedSupplements, setSelectedSupplements] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState(null);
   const cart = useSelector((state) => state.cart);
+
   useEffect(() => {
-    if (open) {
-      setArticlePrice(food.price);
-      setQuantity(1);
-      setSelectedOptions([]);
-      setSelectedSupplements([]);
-      setSelectedOptions(
-        food?.options?.length > 0
-          ? food.options.flatMap((optionCategory) => optionCategory.items[0])
-          : []
-      );
-    }
+    if (!open || !food) return;
+    setArticlePrice(food.price);
+    setQuantity(1);
+    const optionsFlatMap =
+      food?.optionGroups?.length > 0
+        ? food.optionGroups
+            //skip optionGroups with no entries required
+            .filter((optionGroup) => !optionGroup.isMultiChoices)
+            .flatMap((optionGroup) => optionGroup.options[0])
+        : [];
+    setSelectedOptions(optionsFlatMap);
   }, [open, food]);
+
   const handleClose = () => {
     setOpen(false);
   };
   const dispatch = useDispatch();
   const handleAddArticleToCart = () => {
+    const updatedSelectedOptions = selectedOptions.filter(
+      (option) => option.isNeededInOrder
+    );
+
     const newArticle = {
       value: food.value,
       food: food._id,
       price: articlePrice,
       quantity: quantity,
-      selectedOptions: selectedOptions,
-      selectedSupplements: selectedSupplements,
-      foodCategoryIndex: foodCategoryIndex,
+      selectedOptions: updatedSelectedOptions,
     };
+
     //if cart already contains this article object -> increment
     // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
-    const articleIndex = findIndexOfArticleInCart(
+    const newArticleIndex = findIndexOfArticleInCart(
       newArticle,
       cart.data.articles
     );
-
-    if (articleIndex !== -1) {
+    if (newArticleIndex !== -1) {
       dispatch(
         incrementArticleQuantity({
-          index: articleIndex,
+          index: newArticleIndex,
           increment: newArticle.quantity,
         })
       );
@@ -79,20 +81,18 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
     }
     handleClose();
   };
+
   useEffect(() => {
+    if (!selectedOptions || !food) return;
+
     //if options and supplements array change, the price for 1 quantity food is recalculate
     const optionsPriceSum = selectedOptions.reduce(
       (accumulator, option) => addMoney(accumulator, option.price),
       0
     );
 
-    const supplementsPriceSum = selectedSupplements.reduce(
-      (accumulator, supplement) => addMoney(accumulator, supplement.price),
-      0
-    );
-
-    setArticlePrice(addMoney(food.price, optionsPriceSum, supplementsPriceSum));
-  }, [food, selectedOptions, selectedSupplements]);
+    setArticlePrice(addMoney(food.price, optionsPriceSum));
+  }, [food, selectedOptions]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -122,7 +122,7 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
             >
               <Dialog.Panel className="flex flex-col justify-between relative w-screen h-dvh sm:w-7/12 sm:h-auto sm:max-h-screen transform overflow-hidden rounded-lg bg-magnolia text-left shadow-xl transition-all  px-4 pb-4 pt-5">
                 <div className="flex fex-row w-full justify-between pb-4">
-                  <h2 className="font-title">{food.value}</h2>
+                  <h2 className="font-title">{food?.value}</h2>
                   <button
                     type="button"
                     className={`rounded-md text-gray-400 hover:text-gray-500`}
@@ -134,30 +134,23 @@ export default function ModalFood({ food, foodCategoryIndex, open, setOpen }) {
                   </button>
                 </div>
                 <div className="space-y-3 overflow-y-auto px-4">
-                  {food?.options?.length > 0 && (
+                  {food?.optionGroups?.length > 0 && (
                     <div className="space-y-2">
-                      {food?.options?.map((option, i) => (
-                        <FoodOptionsFormSelect
-                          key={i}
-                          label={option.label}
-                          items={option.items}
-                          selectedOptions={selectedOptions}
-                          setChosenOptions={setSelectedOptions}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  {food?.supplements?.length > 0 && (
-                    <div className="space-y-2">
-                      {food?.supplements?.map((supplement, i) => (
-                        <FoodSupplementsCheckBoxGroup
-                          key={i}
-                          label={supplement.label}
-                          items={supplement.items}
-                          selectedSupplements={selectedSupplements}
-                          setChosenSupplements={setSelectedSupplements}
-                        />
-                      ))}
+                      {food?.optionGroups?.map((optionGroup, i) => {
+                        // options can be food references
+                        let items = optionGroup.options;
+
+                        return (
+                          <FoodOptions
+                            key={i}
+                            label={optionGroup.label}
+                            isMultiChoices={optionGroup.isMultiChoices}
+                            items={items}
+                            selectedOptions={selectedOptions}
+                            setSelectedOptions={setSelectedOptions}
+                          />
+                        );
+                      })}
                     </div>
                   )}
                 </div>
