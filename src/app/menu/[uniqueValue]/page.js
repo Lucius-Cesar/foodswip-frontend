@@ -12,18 +12,25 @@ import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
 import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
 import BarsIcon from "@/components/ui/icons/BarsIcon";
 import ModalInfoRestaurant from "@/components/eaterView/ModalInfoRestaurant";
+import ModalFood from "@/components/eaterView/ModalFood";
 import Preloader from "@/components/ui/Preloader";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import TopBannerClosed from "@/components/eaterView/TopBannerClosed";
 import useRestaurantData from "@/hooks/useRestaurantData";
 import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
+import {
+  addArticleToCart,
+  incrementArticleQuantity,
+} from "@/redux/cart/cartSlice";
+
+import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart";
 
 export default function eaterView({ params }) {
+  const dispatch = useDispatch();
   useRestaurantData(params.uniqueValue, "restaurantPublic");
   //redux
   const restaurant = useSelector((state) => state.restaurantPublic);
   const cart = useSelector((state) => state.cart);
-
   //react states
   const { restaurantOpen } = useCheckRestaurantStatus(restaurant);
   const [menu, setMenu] = useState(null);
@@ -32,9 +39,37 @@ export default function eaterView({ params }) {
   const [isFoodCategoriesMenuOpen, setFoodCategoriesMenuOpen] = useState(false);
   const [isModalInfoRestaurantOpen, setModalInfoRestaurantOpen] =
     useState(false);
+  const [isModalFoodOpen, setIsModalFoodOpen] = useState(false);
+  const [food, setFood] = useState(null);
 
   //ref of the mainContainer to add scrolling event
   const mainContainer = useRef(null);
+
+  const handleAddArticleToCart = (food) => {
+    const newArticle = {
+      value: food.value,
+      food: food._id,
+      price: food.price,
+      quantity: 1,
+      selectedOptions: [],
+    };
+    const articleIndex = findIndexOfArticleInCart(
+      newArticle,
+      cart.data.articles
+    );
+
+    if (articleIndex !== -1) {
+      dispatch(
+        incrementArticleQuantity({
+          index: articleIndex,
+          increment: newArticle.quantity,
+        })
+      );
+    } else {
+      //else add article object to cart
+      dispatch(addArticleToCart(newArticle));
+    }
+  };
 
   //extract restaurant unique value based on URL and fetch restaurant data
 
@@ -174,11 +209,28 @@ export default function eaterView({ params }) {
                       {foodCategory.title}
                     </h1>
                     {foodCategory.foods.map((food, j) => (
-                      <FoodCard key={j} food={food} foodCategoryIndex={i} />
+                      <FoodCard
+                        key={j}
+                        food={food}
+                        setFood={setFood}
+                        onClick={() => {
+                          if (food.optionGroups.length > 0) {
+                            setFood(food);
+                            setIsModalFoodOpen(true);
+                          } else {
+                            handleAddArticleToCart(food);
+                          }
+                        }}
+                      />
                     ))}
                   </div>
                 ))}
               </div>
+              <ModalFood
+                open={isModalFoodOpen}
+                setOpen={setIsModalFoodOpen}
+                food={food}
+              />
             </div>
             <Cart open={isCartOpen} setOpen={setIsCartOpen} variant="menu" />
           </div>

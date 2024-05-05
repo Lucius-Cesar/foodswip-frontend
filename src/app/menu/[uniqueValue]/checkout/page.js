@@ -262,14 +262,18 @@ export default function Checkout({ params }) {
             streetNumber: form.streetNumber,
             city: form.city,
             postCode: form.postCode,
-            articles: cart.data.articles,
-            articlesSum: cart.data.articlesSum,
-            totalSum: cart.data.totalSum,
+            articles: cart.data.articles.map((article) => ({
+              food: article.food,
+              quantity: article.quantity,
+              options: article.selectedOptions.map(
+                (selectedOption) => selectedOption._id
+              ),
+            })),
             note: cart.data.note,
             orderType: cart.data.orderType,
             paymentMethod: selectedPaymentMethod,
             estimatedArrivalDate: estimatedArrivalDate,
-            restaurantId: restaurant.data._id,
+            restaurantUniqueValue: restaurant.data.uniqueValue,
           }),
         });
         setFetchTrigger(true);

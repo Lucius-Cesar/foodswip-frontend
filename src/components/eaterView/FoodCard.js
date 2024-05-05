@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
 import AddBtn from "../ui/AddBtn";
-import ModalFood from "./ModalFood";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addArticleToCart,
-  incrementArticleQuantity,
-} from "../../redux/cart/cartSlice";
 
-import findIndexOfArticleInCart from "../../utils/findIndexOfArticleInCart";
-export default function FoodCard({ food, foodCategoryIndex }) {
-  const dispatch = useDispatch();
+export default function FoodCard({ food, onClick }) {
   const cart = useSelector((state) => state.cart);
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -37,47 +30,11 @@ export default function FoodCard({ food, foodCategoryIndex }) {
     sumFoodQuantityInCart();
   }, [cart.data.articles]);
 
-  const handleAddArticleToCart = () => {
-    const newArticle = {
-      value: food.value,
-      food: food._id,
-      price: food.price,
-      quantity: 1,
-      selectedOptions: [],
-      selectedSupplements: [],
-      foodCategoryIndex: foodCategoryIndex,
-    };
-    //if cart already contains this article object -> increment
-    // /!\ This code is also present in foodCard.js please pay attention to change it in this file too
-    const articleIndex = findIndexOfArticleInCart(
-      newArticle,
-      cart.data.articles
-    );
-
-    if (articleIndex !== -1) {
-      dispatch(
-        incrementArticleQuantity({
-          index: articleIndex,
-          increment: newArticle.quantity,
-        })
-      );
-    } else {
-      //else add article object to cart
-      dispatch(addArticleToCart(newArticle));
-    }
-  };
-
-  const onClickAddBtn = () => {
-    food.options.length > 0 || food.supplements.length > 0
-      ? setModalOpen(true)
-      : handleAddArticleToCart();
-  };
-
   return (
     <>
       <button
         className="flex flex-row items-center justify-between w-full sm:w-11/12 min-h-32 h-auto bg-magnolia rounded-lg border border-gravel mt-3 mb-3 p-4 sm:hover:brightness-95"
-        onClick={onClickAddBtn}
+        onClick={() => onClick()}
       >
         <div className="flex flex-col justify-between items-start h-full me-4">
           <p className="font-extrabold">{food.value}</p>
@@ -94,13 +51,6 @@ export default function FoodCard({ food, foodCategoryIndex }) {
           <AddBtn />
         )}
       </button>
-
-      <ModalFood
-        open={isModalOpen}
-        setOpen={setModalOpen}
-        food={food}
-        foodCategoryIndex={foodCategoryIndex}
-      />
     </>
   );
 }
