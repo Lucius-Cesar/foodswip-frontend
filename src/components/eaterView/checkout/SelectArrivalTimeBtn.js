@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import SelectBtn from "@/components/ui/SelectBtn";
-import ClockLinesIcon from "@/components/ui/icons/ClockLinesIcon";
-import { useSelector } from "react-redux";
-import DefaultModal from "@/components/ui/DefaultModal";
-import DefaultBtn from "@/components/ui/DefaultBtn";
-import { current } from "@reduxjs/toolkit";
-import { arrivalTimeValidation } from "@/utils/validations";
+import { useState, useEffect } from "react"
+import SelectBtn from "@/components/ui/SelectBtn"
+import ClockLinesIcon from "@/components/ui/icons/ClockLinesIcon"
+import { useSelector } from "react-redux"
+import DefaultModal from "@/components/ui/DefaultModal"
+import DefaultBtn from "@/components/ui/DefaultBtn"
+import { current } from "@reduxjs/toolkit"
+import { arrivalTimeValidation } from "@/utils/validations"
 import {
   getTotalNumberOfMinutesSinceBeginningOfTheDay,
   getTimeStringBasedOnNumberOfMinutes,
   formatTimeStringAfterMidnightForDisplay,
-} from "@/utils/dateAndTime";
+} from "@/utils/dateAndTime"
 
 const pushValuesInTimeChoicesArray = (
   restaurant,
@@ -21,50 +21,54 @@ const pushValuesInTimeChoicesArray = (
   timeIncrement,
   currentService
 ) => {
-  let minutesToAddToStart;
+  let minutesToAddToStart
   if (orderType === 0) {
     // if restaurant is in service
     if (currentService?.start) {
-      minutesToAddToStart = restaurant.data.publicSettings.deliveryEstimate.max;
+      minutesToAddToStart = restaurant.data.publicSettings.deliveryEstimate.max
     } else {
-      minutesToAddToStart = restaurant.data.publicSettings.deliveryEstimate.min;
+      minutesToAddToStart = restaurant.data.publicSettings.deliveryEstimate.min
     }
   } else if (orderType === 1) {
-    minutesToAddToStart = restaurant.data.publicSettings.takeAwayEstimate;
+    minutesToAddToStart = restaurant.data.publicSettings.takeAwayEstimate
   }
 
   const minTimeInMinutes =
     Math.ceil((startInMinutes + minutesToAddToStart) / timeIncrement) *
-    timeIncrement;
+    timeIncrement
   const maxTimeInMinutes =
-    Math.ceil(endInMinutes / timeIncrement) * timeIncrement;
+    Math.ceil(endInMinutes / timeIncrement) * timeIncrement
 
   for (let i = minTimeInMinutes; i <= maxTimeInMinutes; i += timeIncrement) {
     //in the format "8:10"
-    let timeChoiceString = getTimeStringBasedOnNumberOfMinutes(i);
-    timeChoicesArray.push(timeChoiceString);
+    let timeChoiceString = getTimeStringBasedOnNumberOfMinutes(i)
+    timeChoicesArray.push(timeChoiceString)
   }
-};
+}
 
 function getTimeChoicesArray(
   restaurant,
   orderType,
   timeIncrement,
   currentService,
-  remainingServicesForCurrentDay
+  remainingServicesForToday
 ) {
-  let timeChoicesArray = [];
-  const currentDate = new Date();
+  let timeChoicesArray = []
+  const currentDate = new Date()
   const numberOfMinuteCurrentDay =
-    getTotalNumberOfMinutesSinceBeginningOfTheDay(currentDate, "Date");
-  //if we are in current service
-
-  if (currentService?.start && currentService?.end) {
+    getTotalNumberOfMinutesSinceBeginningOfTheDay(currentDate, "Date")
+  //if we are in current service and if service is open for delivery or takeaway
+  if (
+    currentService?.start &&
+    currentService?.end &&
+    ((orderType === 0 && currentService.delivery === true) ||
+      (orderType === 1 && currentService.takeAway === true))
+  ) {
     const numberOfMinutesServiceEnd =
       getTotalNumberOfMinutesSinceBeginningOfTheDay(
         currentService.end,
         "timeString"
-      );
+      )
     pushValuesInTimeChoicesArray(
       restaurant,
       orderType,
@@ -73,20 +77,20 @@ function getTimeChoicesArray(
       numberOfMinutesServiceEnd,
       timeIncrement,
       currentService
-    );
+    )
   }
 
-  for (let service of remainingServicesForCurrentDay) {
+  for (let service of remainingServicesForToday) {
+    if (orderType === 0 && service.delivery === false) break
+    if (orderType === 1 && service.takeAway === false) break
+
     //service start
 
     const numberOfMinutesServiceStart =
-      getTotalNumberOfMinutesSinceBeginningOfTheDay(
-        service.start,
-        "timeString"
-      );
+      getTotalNumberOfMinutesSinceBeginningOfTheDay(service.start, "timeString")
 
     const numberOfMinutesServiceEnd =
-      getTotalNumberOfMinutesSinceBeginningOfTheDay(service.end, "timeString");
+      getTotalNumberOfMinutesSinceBeginningOfTheDay(service.end, "timeString")
 
     pushValuesInTimeChoicesArray(
       restaurant,
@@ -96,9 +100,9 @@ function getTimeChoicesArray(
       numberOfMinutesServiceEnd,
       timeIncrement,
       currentService
-    );
+    )
   }
-  return timeChoicesArray;
+  return timeChoicesArray
 }
 
 function ModalSelectArrivalTime({
@@ -112,31 +116,31 @@ function ModalSelectArrivalTime({
   defaultOptionArrivalTimeSelect,
   setValidationErrors,
 }) {
-  let errorMessage;
-  const [validationErrorMessage, setValidationErrorMessage] = useState(false);
+  let errorMessage
+  const [validationErrorMessage, setValidationErrorMessage] = useState(false)
   const validation = (value) => {
     //if order in advance and timestring is null or the default message
     if (value !== timeString) {
-      setTimeString(value);
+      setTimeString(value)
       arrivalTimeValidation(
         value,
         defaultOptionArrivalTimeSelect,
         setValidationErrors,
         currentService,
         "arrivalTime"
-      );
+      )
     }
     if (
       !currentService?.start &&
       (!value || value === defaultOptionArrivalTimeSelect)
     ) {
-      errorMessage = "Veuillez choisir une heure";
-      setValidationErrorMessage(errorMessage);
+      errorMessage = "Veuillez choisir une heure"
+      setValidationErrorMessage(errorMessage)
     } else {
-      setOpen(false);
-      setValidationErrorMessage(false);
+      setOpen(false)
+      setValidationErrorMessage(false)
     }
-  };
+  }
 
   return (
     <DefaultModal open={open} setOpen={setOpen}>
@@ -167,7 +171,7 @@ function ModalSelectArrivalTime({
           value={timeString}
           onChange={(e) => {
             if (e.target.value !== defaultOptionArrivalTimeSelect) {
-              validation(e.target.value);
+              validation(e.target.value)
             }
           }}
         >
@@ -195,20 +199,20 @@ function ModalSelectArrivalTime({
             currentService?.start &&
             timeString === defaultOptionArrivalTimeSelect
               ? null
-              : timeString;
+              : timeString
           // if we are it is an orderInAdvance and
-          validation(updatedTimeString);
+          validation(updatedTimeString)
         }}
         value="Valider"
         className="bg-success text-xl w-40"
       ></DefaultBtn>
       <p className="mt-2 text-error-danger">{validationErrorMessage}</p>
     </DefaultModal>
-  );
+  )
 }
 export default function SelectArrivalTimeBtn({
   currentService,
-  remainingServicesForCurrentDay,
+  remainingServicesForToday,
   timeString,
   setTimeString,
   validationError,
@@ -216,14 +220,14 @@ export default function SelectArrivalTimeBtn({
   timeInterval,
   defaultOptionArrivalTimeSelect,
 }) {
-  const restaurant = useSelector((state) => state.restaurantPublic);
-  const cart = useSelector((state) => state.cart);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [timeChoicesArray, setTimeChoiceArray] = useState(null);
+  const restaurant = useSelector((state) => state.restaurantPublic)
+  const cart = useSelector((state) => state.cart)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [timeChoicesArray, setTimeChoiceArray] = useState(null)
   useEffect(() => {
     setTimeChoiceArray(() => {
       // if status open is forced -> no end to current service (it is not really true but it is a marker to avoid order in advance for forced opening periods)
-      if (!remainingServicesForCurrentDay) return;
+      if (!remainingServicesForToday) return
       if (currentService?.start) {
         return [
           "Dès que possible",
@@ -232,10 +236,10 @@ export default function SelectArrivalTimeBtn({
             cart.data.orderType,
             timeInterval,
             currentService,
-            remainingServicesForCurrentDay
+            remainingServicesForToday
           ),
           ,
-        ];
+        ]
       } else {
         return [
           defaultOptionArrivalTimeSelect,
@@ -244,18 +248,18 @@ export default function SelectArrivalTimeBtn({
             cart.data.orderType,
             timeInterval,
             currentService,
-            remainingServicesForCurrentDay
+            remainingServicesForToday
           ),
           ,
-        ];
+        ]
       }
-    });
+    })
   }, [
     restaurant.data,
     cart.data.orderType,
     currentService,
-    remainingServicesForCurrentDay,
-  ]);
+    remainingServicesForToday,
+  ])
 
   return (
     <>
@@ -324,5 +328,5 @@ export default function SelectArrivalTimeBtn({
         </div>
       </SelectBtn>
     </>
-  );
+  )
 }

@@ -1,14 +1,15 @@
-"use client";
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import DefaultBtn from "@/components/ui/DefaultBtn";
-import { modalPeriodValidation } from "@/utils/validations";
+"use client"
+import { Fragment, useState } from "react"
+import { Dialog, Transition } from "@headlessui/react"
+import { CheckIcon } from "@heroicons/react/24/outline"
+import { XMarkIcon } from "@heroicons/react/24/outline"
+import DefaultBtn from "@/components/ui/DefaultBtn"
+import { modalPeriodValidation } from "@/utils/validations"
 import {
   formatEndTimeStringIfAfterMidnightForDatabase,
   formatTimeStringAfterMidnightForDisplay,
-} from "@/utils/dateAndTime";
+} from "@/utils/dateAndTime"
+
 export default function ModalPeriod({
   type,
   value,
@@ -18,22 +19,23 @@ export default function ModalPeriod({
   startLabel,
   endLabel,
   validateBtnFunction,
+  variant,
 }) {
   const [validationErrors, setValidationErrors] = useState({
     period: "",
-  });
+  })
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
     setTimeout(function () {
       setValue({
         dayIndex: null,
         itemIndex: null,
         start: null,
         end: null,
-      });
-      setValidationErrors({ period: "" });
-    }, 300);
-  };
+      })
+      setValidationErrors({ period: "" })
+    }, 300)
+  }
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleClose}>
@@ -72,8 +74,6 @@ export default function ModalPeriod({
                     <input
                       type={type}
                       id={"end"}
-                      min={"00:00"}
-                      max={"23:59"}
                       value={value.start}
                       onChange={(e) =>
                         setValue((previous) => ({
@@ -94,8 +94,6 @@ export default function ModalPeriod({
                     <input
                       type={type}
                       id={"end"}
-                      min={"00:00"}
-                      max={"23:59"}
                       value={
                         value?.end && type === "time"
                           ? formatTimeStringAfterMidnightForDisplay(value?.end)
@@ -105,11 +103,51 @@ export default function ModalPeriod({
                         setValue((previous) => ({
                           ...previous,
                           end: e.target.value,
-                        }));
+                        }))
                       }}
                       className={`rounded-xl border border-1 border-gray-300 focus:border-primary shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-primary sm:leading-8`}
                     ></input>
                   </div>
+                  {variant === "service" ? (
+                    <div className="flex flex-col justify-center items-start space-y-2">
+                      <div className="flex flex-row gap-2">
+                        <input
+                          type="checkbox"
+                          id="takeAwayCheckBox"
+                          name="Livraison"
+                          checked={value.delivery}
+                          onChange={(e) => {
+                            setValue((previous) => ({
+                              ...previous,
+                              delivery: e.target.checked,
+                            }))
+                          }}
+                          className={`h-6 w-6  rounded border-gray-300 text-primary focus:ring-primary`}
+                        />
+                        <label htmlFor="takeAwayCheckBox" className="text-lg">
+                          Livraison
+                        </label>
+                      </div>
+                      <div className="flex flex-row gap-2">
+                        <input
+                          type="checkbox"
+                          id="takeAwayCheckBox"
+                          name="À emporter"
+                          checked={value.takeaway}
+                          onChange={(e) => {
+                            setValue((previous) => ({
+                              ...previous,
+                              takeaway: e.target.checked,
+                            }))
+                          }}
+                          className={`h-6 w-6  rounded border-gray-300 text-primary focus:ring-primary`}
+                        />
+                        <label htmlFor="takeAwayCheckBox" className="text-lg">
+                          À emporter{" "}
+                        </label>
+                      </div>
+                    </div>
+                  ) : null}
                   <DefaultBtn
                     value="Valider"
                     className="text-xl font-bold bg-success hover:opacity-90"
@@ -118,15 +156,16 @@ export default function ModalPeriod({
                         value,
                         setValidationErrors,
                         type,
-                        "period"
-                      );
+                        "period",
+                        variant
+                      )
                       setValidationErrors((previous) => {
                         if (!previous.period) {
-                          validateBtnFunction();
-                          handleClose();
+                          validateBtnFunction()
+                          handleClose()
                         }
-                        return previous;
-                      });
+                        return previous
+                      })
                     }}
                   />
                   {validationErrors.period && (
@@ -141,5 +180,5 @@ export default function ModalPeriod({
         </div>
       </Dialog>
     </Transition.Root>
-  );
+  )
 }

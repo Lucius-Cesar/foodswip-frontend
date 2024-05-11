@@ -1,45 +1,45 @@
-"use client";
-import { Fragment, useState, useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+"use client"
+import { Fragment, useState, useEffect } from "react"
+import { Dialog, Transition } from "@headlessui/react"
+import { XMarkIcon } from "@heroicons/react/24/outline"
 
-import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux"
+import { useRouter } from "next/navigation"
 
-import { addNote, updateTotalSum } from "@/redux/cart/cartSlice";
-import { addMoney, subtractMoney } from "@/utils/moneyCalculations";
+import { addNote, updateTotalSum } from "@/redux/cart/cartSlice"
+import { addMoney, subtractMoney } from "@/utils/moneyCalculations"
 
-import CartIcon from "../ui/icons/CartIcon";
-import CartArticle from "./CartArticle";
+import CartIcon from "../ui/icons/CartIcon"
+import CartArticle from "./CartArticle"
 
-import DefaultBtn from "../ui/DefaultBtn";
-import checkRestaurantStatus from "@/utils/checkRestaurantStatus";
+import DefaultBtn from "../ui/DefaultBtn"
+import checkRestaurantStatus from "@/utils/checkRestaurantStatus"
 
 export default function Cart({ open, setOpen, variant }) {
-  const primary = "#F97247"; //sorry for this
-  const cart = useSelector((state) => state.cart);
-  const restaurant = useSelector((state) => state.restaurantPublic);
+  const primary = "#F97247" //sorry for this
+  const cart = useSelector((state) => state.cart)
+  const restaurant = useSelector((state) => state.restaurantPublic)
 
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [totalSum, setTotalSum] = useState(null);
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const [totalSum, setTotalSum] = useState(null)
   const [validationErrors, setValidationErrors] = useState({
     deliveryMin: "",
     restaurantClosed: "",
-  });
+  })
 
   const onClickOrderBtn = () => {
-    const { restaurantOpen } = checkRestaurantStatus(restaurant);
+    const { restaurantOpen } = checkRestaurantStatus(restaurant)
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
         ...previous,
-        restaurantClosed: "Le restaurant est actuellement fermé",
-      }));
+        restaurantClosed: "L'établissement est actuellement fermé",
+      }))
     } else {
       setValidationErrors((previous) => ({
         ...previous,
         restaurantClosed: "",
-      }));
+      }))
     }
     if (
       cart.data.articlesSum < restaurant.data.publicSettings.deliveryMin &&
@@ -51,19 +51,18 @@ export default function Cart({ open, setOpen, variant }) {
           restaurant.data.publicSettings.deliveryMin,
           cart.data.articlesSum
         )} € d'achats restants pour la livraison`,
-      }));
-    } else
-      setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
+      }))
+    } else setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }))
 
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
         router.push(`${restaurant.data.uniqueValue}/checkout`, {
           scroll: false,
-        });
+        })
       }
-      return previous;
-    });
-  };
+      return previous
+    })
+  }
 
   useEffect(() => {
     //0 for delivery orderType
@@ -73,7 +72,7 @@ export default function Cart({ open, setOpen, variant }) {
           cart.data.articlesSum,
           restaurant.data.publicSettings.deliveryFees
         )
-      );
+      )
       //if there is already a validation error.deliveryMin compute the remaining sum to reach deliveryMin
       if (validationErrors.deliveryMin) {
         setValidationErrors((previous) => ({
@@ -82,22 +81,22 @@ export default function Cart({ open, setOpen, variant }) {
             restaurant.data.publicSettings.deliveryMin,
             cart.data.articlesSum
           )} € d'achats restants pour la livraison`,
-        }));
+        }))
       }
     }
     if (cart.data.orderType === 1) {
-      setTotalSum(cart.data.articlesSum);
+      setTotalSum(cart.data.articlesSum)
     }
     //if take away or if the sum for deliveryMin is reached
     if (
       cart.data.orderType === 1 ||
       cart.data.articlesSum >= restaurant.data.publicSettings.deliveryMin
     ) {
-      setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }));
+      setValidationErrors((previous) => ({ ...previous, deliveryMin: "" }))
     }
 
-    dispatch(updateTotalSum(totalSum));
-  }, [cart.data]);
+    dispatch(updateTotalSum(totalSum))
+  }, [cart.data])
 
   const cartContent = (
     <div className="flex col h-full flex-col bg-magnolia">
@@ -198,12 +197,12 @@ export default function Cart({ open, setOpen, variant }) {
         </p>
       )}
     </div>
-  );
+  )
 
   if (variant === "menu") {
     return (
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={setOpen}>
+        <Dialog as="div" className="relative z-50" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-500"
@@ -237,12 +236,12 @@ export default function Cart({ open, setOpen, variant }) {
           </div>
         </Dialog>
       </Transition.Root>
-    );
+    )
   } else if (variant === "checkout") {
     return (
       <div className="h-auto sm:h-screen w-screen sm:w-72 md:w-80 lg:w-96	static sm:sticky top-0 border border-gravel sm:start-full">
         {cartContent}
       </div>
-    );
+    )
   }
 }

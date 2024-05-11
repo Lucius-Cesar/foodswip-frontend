@@ -1,19 +1,19 @@
-import { Fragment } from "react";
-import { useSelector } from "react-redux";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { switchDayLabel } from "@/utils/switchLabel";
+import { Fragment } from "react"
+import { useSelector } from "react-redux"
+import { Dialog, Transition } from "@headlessui/react"
+import { XMarkIcon } from "@heroicons/react/24/outline"
+import { switchDayLabel } from "@/utils/switchLabel"
 import {
   formatTimeStringAfterMidnightForDisplay,
   getDayIndex,
-} from "@/utils/dateAndTime";
+} from "@/utils/dateAndTime"
 export default function ModalInfoRestaurant({ open, setOpen }) {
-  const restaurant = useSelector((state) => state.restaurantPublic);
-  const currentDate = new Date();
-  const currentDayIndex = getDayIndex(currentDate);
+  const restaurant = useSelector((state) => state.restaurantPublic)
+  const currentDate = new Date()
+  const currentDayIndex = getDayIndex(currentDate)
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   function formatExeptionalClosings(dateString) {
     const options = {
@@ -23,14 +23,14 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
       year: "numeric",
       hour: "numeric",
       minute: "numeric",
-    };
+    }
 
-    const date = new Date(dateString);
-    return date.toLocaleString("fr-FR", options);
+    const date = new Date(dateString)
+    return date.toLocaleString("fr-FR", options)
   }
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={handleClose}>
+      <Dialog as="div" className="relative z-50" onClose={handleClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -86,12 +86,12 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                     <div className="flex flex-col space-y-2">
                       {restaurant.data.publicSettings.schedule.map(
                         (dayschedule, i) => {
-                          const dayLabel = switchDayLabel(i);
+                          const dayLabel = switchDayLabel(i)
 
                           return (
                             <div
                               key={i}
-                              className={`flex flex-row justify-between ${
+                              className={`flex flex-row justify-between gap-8 ${
                                 i === currentDayIndex
                                   ? "text-primary font-bold"
                                   : ""
@@ -102,20 +102,31 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
                                 {dayschedule.services.length === 0 ? (
                                   <p>Fermé</p>
                                 ) : (
-                                  <div className="space-x-4 flex flex-row">
+                                  <div className="space-x-4 flex flex-row gap-8">
                                     {dayschedule.services.map((service, j) => (
-                                      <p key={j}>
+                                      <div
+                                        className="flex flex-col items-end"
+                                        key={j}
+                                      >
                                         {service.start} -{" "}
                                         {formatTimeStringAfterMidnightForDisplay(
                                           service.end
                                         )}
-                                      </p>
+                                        {service.delivery === true &&
+                                        !service.takeaway ? (
+                                          <p>Livraison</p>
+                                        ) : null}
+                                        {service.takeaway &&
+                                        !service.delivery ? (
+                                          <p> À emporter</p>
+                                        ) : null}
+                                      </div>
                                     ))}
                                   </div>
                                 )}
                               </div>
                             </div>
-                          );
+                          )
                         }
                       )}
                     </div>
@@ -143,5 +154,5 @@ export default function ModalInfoRestaurant({ open, setOpen }) {
         </div>
       </Dialog>
     </Transition.Root>
-  );
+  )
 }

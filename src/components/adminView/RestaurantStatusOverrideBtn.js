@@ -1,31 +1,31 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 
-import ToggleBtn from "../ui/ToggleBtn";
-import DefaultBtn from "@/components/ui/DefaultBtn";
-import DefaultModal from "../ui/DefaultModal";
-import { WarningAlert } from "@/components/ui/Alerts";
-import { compteNewDateBasedOnTimeString } from "@/utils/dateAndTime";
-import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
-import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
+import ToggleBtn from "../ui/ToggleBtn"
+import DefaultBtn from "@/components/ui/DefaultBtn"
+import DefaultModal from "../ui/DefaultModal"
+import { WarningAlert } from "@/components/ui/Alerts"
+import { compteNewDateBasedOnTimeString } from "@/utils/dateAndTime"
+import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice"
+import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus"
 
 function getEndOfOverrideStatusPeriod(
   currentService,
-  remainingServicesForCurrentDay,
+  remainingServicesForToday,
   untilNextDay
 ) {
   //this function loop over all the services of the week, current date is within a service => put the end of the overrideStatusPeriode to the end of the current service
   //if we are not in a service: put the end of the overrideStatusPeriode to the start of the next periode
 
-  let currentDate = new Date();
-  let endOfService;
+  let currentDate = new Date()
+  let endOfService
   if (untilNextDay) {
     const nextDayTimestamp = new Date(
       currentDate.setDate(currentDate.getDate() + 1)
-    );
-    nextDayTimestamp.setHours(0, 0, 0, 0);
-    return nextDayTimestamp;
+    )
+    nextDayTimestamp.setHours(0, 0, 0, 0)
+    return nextDayTimestamp
   }
 
   //if currently in service
@@ -35,24 +35,24 @@ function getEndOfOverrideStatusPeriod(
     const currentServiceEndDate = compteNewDateBasedOnTimeString(
       currentDate,
       currentService.end
-    );
+    )
 
-    endOfService = currentServiceEndDate;
-  } else if (remainingServicesForCurrentDay.length) {
+    endOfService = currentServiceEndDate
+  } else if (remainingServicesForToday.length) {
     const nextServiceEndDate = compteNewDateBasedOnTimeString(
       currentDate,
-      remainingServicesForCurrentDay[0].end
-    );
-    endOfService = nextServiceEndDate;
+      remainingServicesForToday[0].end
+    )
+    endOfService = nextServiceEndDate
   } else {
     // else end of overrideStatusPeriode the next day
     const nextDayTimestamp = new Date(
       currentDate.setDate(currentDate.getDate() + 1)
-    );
-    nextDayTimestamp.setHours(0, 0, 0, 0);
-    return nextDayTimestamp;
+    )
+    nextDayTimestamp.setHours(0, 0, 0, 0)
+    return nextDayTimestamp
   }
-  return endOfService;
+  return endOfService
 }
 
 const ModalStatusOverride = ({
@@ -61,24 +61,24 @@ const ModalStatusOverride = ({
   restaurantOpen,
   currentService,
   initialRestaurantStatus,
-  remainingServicesForCurrentDay,
+  remainingServicesForToday,
 }) => {
-  const dispatch = useDispatch();
-  const restaurant = useSelector((state) => state.restaurantAdmin);
+  const dispatch = useDispatch()
+  const restaurant = useSelector((state) => state.restaurantAdmin)
   const onClickBtn = (untilNextDay) => {
-    const updatedRestaurantOpen = !restaurantOpen;
-    const currentDate = new Date();
+    const updatedRestaurantOpen = !restaurantOpen
+    const currentDate = new Date()
     const endOfOverrideStatusPeriod = getEndOfOverrideStatusPeriod(
       currentService,
-      remainingServicesForCurrentDay,
+      remainingServicesForToday,
       untilNextDay
-    );
+    )
     const updatedStatusOverride = {
       open: updatedRestaurantOpen,
       start: currentDate,
       //if no next service , end of the overrideStatus is arbitrary next day midnight
       end: endOfOverrideStatusPeriod,
-    };
+    }
 
     const restaurantSettingsPayload = {
       ...restaurant.data,
@@ -86,11 +86,11 @@ const ModalStatusOverride = ({
         ...restaurant.data.publicSettings,
         statusOverride: updatedStatusOverride,
       },
-    };
+    }
     dispatch(updateRestaurantSettings(restaurantSettingsPayload)).then(() => {
-      setOpen(false);
-    });
-  };
+      setOpen(false)
+    })
+  }
 
   //workaround to avoid modal data changes during the closing animation, change later if possible
 
@@ -98,7 +98,7 @@ const ModalStatusOverride = ({
     <DefaultModal open={open} setOpen={setOpen}>
       <div className="flex flex-col justify-center items-center space-y-6">
         {initialRestaurantStatus === "open" &&
-        remainingServicesForCurrentDay.length >= 1 ? (
+        remainingServicesForToday.length >= 1 ? (
           <>
             <h2 className="text-center">Choisissez la durée de fermeture</h2>
 
@@ -106,7 +106,7 @@ const ModalStatusOverride = ({
               <DefaultBtn
                 className="text-xl font-bold h-16 rounded-s-lg rounded-e-lg"
                 color="primary"
-                value={`Jusque ${remainingServicesForCurrentDay[0].start}`}
+                value={`Jusque ${remainingServicesForToday[0].start}`}
                 onClick={() => onClickBtn(false)}
               />
               <DefaultBtn
@@ -121,9 +121,9 @@ const ModalStatusOverride = ({
               ajouter une fermeture exceptionnelle.
             </p>
           </>
-        ) : (initialRestaurantStatus === "orders in advance" ||
+        ) : (initialRestaurantStatus === "pre order" ||
             initialRestaurantStatus === "forced open") &&
-          remainingServicesForCurrentDay.length >= 2 ? (
+          remainingServicesForToday.length >= 2 ? (
           <>
             <h2 className="text-center">Choisissez la durée de fermeture</h2>
 
@@ -131,7 +131,7 @@ const ModalStatusOverride = ({
               <DefaultBtn
                 className="text-xl font-bold h-16 rounded-s-lg rounded-e-lg"
                 color="primary"
-                value={`Jusque ${remainingServicesForCurrentDay[1]?.start}`}
+                value={`Jusque ${remainingServicesForToday[1]?.start}`}
                 onClick={() => onClickBtn(false)}
               />
               <DefaultBtn
@@ -148,7 +148,7 @@ const ModalStatusOverride = ({
           </>
         ) : initialRestaurantStatus === "open" ||
           initialRestaurantStatus === "forced open" ||
-          initialRestaurantStatus === "orders in advance" ? (
+          initialRestaurantStatus === "pre order" ? (
           <div className="flex flex-col gap-4">
             <WarningAlert>
               <div className="flex flex-col gap-2">
@@ -208,22 +208,22 @@ const ModalStatusOverride = ({
         ) : null}
       </div>
     </DefaultModal>
-  );
-};
+  )
+}
 
 export default function RestaurantStatusOverrideBtn({ className }) {
-  const restaurant = useSelector((state) => state.restaurantAdmin);
+  const restaurant = useSelector((state) => state.restaurantAdmin)
   //const [toggle, setToggle] = useState(checkRestaurantStatus(restaurant));
   const {
     restaurantOpen,
     setRestaurantOpen,
     currentService,
-    remainingServicesForCurrentDay,
+    remainingServicesForToday,
     restaurantStatus,
-  } = useCheckRestaurantStatus(restaurant);
-  const [modalOpen, setModalOpen] = useState(false);
+  } = useCheckRestaurantStatus(restaurant)
+  const [modalOpen, setModalOpen] = useState(false)
   const [initialRestaurantStatus, setInitialRestaurantStatus] =
-    useState(restaurantStatus);
+    useState(restaurantStatus)
   return (
     <>
       <div
@@ -235,15 +235,15 @@ export default function RestaurantStatusOverrideBtn({ className }) {
             enabled={restaurantOpen}
             setEnabled={setRestaurantOpen}
             onChange={() => {
-              setModalOpen(true);
-              setInitialRestaurantStatus(restaurantStatus);
+              setModalOpen(true)
+              setInitialRestaurantStatus(restaurantStatus)
             }}
             className="w-20"
           />
         </div>
         <p
           className={`${
-            restaurantStatus === "orders in advance"
+            restaurantStatus === "pre order"
               ? "text-primary"
               : restaurantStatus === "open" ||
                 restaurantStatus === "forced open"
@@ -253,7 +253,7 @@ export default function RestaurantStatusOverrideBtn({ className }) {
               : null
           } font-bold text-xl`}
         >
-          {restaurantStatus === "orders in advance"
+          {restaurantStatus === "pre order"
             ? "Commandes à l'avance"
             : restaurantStatus === "open" || restaurantStatus === "forced open"
             ? "Ouvert"
@@ -269,8 +269,8 @@ export default function RestaurantStatusOverrideBtn({ className }) {
         setRestaurantOpen={setRestaurantOpen}
         initialRestaurantStatus={initialRestaurantStatus}
         currentService={currentService}
-        remainingServicesForCurrentDay={remainingServicesForCurrentDay}
+        remainingServicesForToday={remainingServicesForToday}
       />
     </>
-  );
+  )
 }
