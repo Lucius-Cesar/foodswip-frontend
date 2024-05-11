@@ -4,7 +4,6 @@ import ClockLinesIcon from "@/components/ui/icons/ClockLinesIcon"
 import { useSelector } from "react-redux"
 import DefaultModal from "@/components/ui/DefaultModal"
 import DefaultBtn from "@/components/ui/DefaultBtn"
-import { current } from "@reduxjs/toolkit"
 import { arrivalTimeValidation } from "@/utils/validations"
 import {
   getTotalNumberOfMinutesSinceBeginningOfTheDay,
@@ -81,8 +80,8 @@ function getTimeChoicesArray(
   }
 
   for (let service of remainingServicesForToday) {
-    if (orderType === 0 && service.delivery === false) break
-    if (orderType === 1 && service.takeAway === false) break
+    if (orderType === 0 && service.delivery === false) continue
+    if (orderType === 1 && service.takeAway === false) continue
 
     //service start
 
