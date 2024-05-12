@@ -43,6 +43,8 @@ export default function Checkout({ params }) {
   const mobileScrollRef = useRef(null)
 
   const restaurant = useSelector((state) => state.restaurantPublic)
+  console.log(restaurant)
+
   const cart = useSelector((state) => state.cart)
   const [paymentMethods, setPaymentMethods] = useState([])
   const [form, setForm] = useState({
@@ -274,7 +276,7 @@ export default function Checkout({ params }) {
             orderType: cart.data.orderType,
             paymentMethod: selectedPaymentMethod,
             estimatedArrivalDate: estimatedArrivalDate,
-            restaurantUniqueValue: restaurant.data.uniqueValue,
+            restaurant: restaurant.data._id,
           }),
         })
         setFetchTrigger(true)
