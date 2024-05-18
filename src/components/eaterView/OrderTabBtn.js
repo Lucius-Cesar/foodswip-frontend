@@ -46,7 +46,13 @@ export default function OrderTabBtn({
 
   const checkAvailableOrderType = () => {
     if (!restaurantStatus || restaurantStatus === "closed") return
-
+    if (restaurantStatus === "forced open") {
+      setOrderTypes([
+        { label: "Livraison", enabled: true },
+        { label: "À emporter", enabled: true },
+      ])
+      return
+    }
     for (let service of [{ ...currentService }, ...remainingServicesForToday]) {
       const updatedOrderTypes = [...orderTypes]
       if (!service) return
