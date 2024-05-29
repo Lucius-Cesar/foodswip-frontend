@@ -7,7 +7,7 @@ import {
   formatTimeStringAfterMidnightForDisplay,
   getDayIndex,
 } from "@/utils/dateAndTime"
-export default function ModalInfoRestaurant({ open, setOpen }) {
+export default function Restaurant({ open, setOpen }) {
   const restaurant = useSelector((state) => state.restaurantPublic)
   const currentDate = new Date()
   const currentDayIndex = getDayIndex(currentDate)

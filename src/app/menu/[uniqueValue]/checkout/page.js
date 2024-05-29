@@ -13,6 +13,7 @@ import OrderTabBtn from "@/components/eaterView/OrderTabBtn"
 import FormInput from "../../../../components/ui/FormInput"
 import DefaultBtn from "@/components/ui/DefaultBtn"
 import SelectArrivalTimeBtn from "@/components/eaterView/checkout/SelectArrivalTimeBtn"
+import StripeModal from "@/components/eaterView/checkout/StripeModal"
 import LoadingSpinner from "@/components/ui/LoadingSpinner"
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel"
@@ -41,9 +42,7 @@ export default function Checkout({ params }) {
 
   //mobileScrollRef is used to scroll directly behind the card on checkout
   const mobileScrollRef = useRef(null)
-
   const restaurant = useSelector((state) => state.restaurantPublic)
-  console.log(restaurant)
 
   const cart = useSelector((state) => state.cart)
   const [paymentMethods, setPaymentMethods] = useState([])
@@ -90,8 +89,11 @@ export default function Checkout({ params }) {
     restaurantStatus,
   } = useCheckRestaurantStatus(restaurant)
 
+  //stripeModalOpen for onlinePayment
+  const [stripeModalOpen, setStripeModalOpen] = useState(false)
+
   const newOrder = useFetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/orders/addOrder`,
+    `${process.env.NEXT_PUBLIC_API_URL}/orders/createOrder`,
     fetchOptions,
     fetchTrigger,
     setFetchTrigger
@@ -138,6 +140,24 @@ export default function Checkout({ params }) {
       )
     }
   }, [cart.data.orderType])
+
+  // this useEffect is used to redirect to open the stripe modal if online payment or redirect to the order page if cash payment
+  useEffect(() => {
+    if (!newOrder.data) return
+    if (newOrder.data.clientSecret) {
+      setStripeModalOpen(true)
+      console.log(stripeModalOpen)
+    } else {
+      router.push(
+        `/menu/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
+      )
+
+      //workaround to dispatch after router.push is completed (not the best solution)
+      setTimeout(() => {
+        dispatch(clearCart())
+      }, "1000")
+    }
+  }, [newOrder])
 
   const computeEstimatedArrivalDate = (orderType) => {
     const currentDate = new Date()
@@ -285,16 +305,6 @@ export default function Checkout({ params }) {
       }
       return previous
     })
-  }
-
-  if (newOrder.data) {
-    router.push(
-      `/menu/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
-    )
-    //workaround to dispatch after router.push is completed (not the best solution)
-    setTimeout(() => {
-      dispatch(clearCart())
-    }, "1000")
   }
 
   return (
@@ -483,6 +493,11 @@ export default function Checkout({ params }) {
                       </div>
                     )
                   })}
+                  <StripeModal
+                    open={stripeModalOpen}
+                    setOpen={setStripeModalOpen}
+                    clientSecret={newOrder.data?.clientSecret}
+                  />
                 </div>
               </fieldset>
             </div>
