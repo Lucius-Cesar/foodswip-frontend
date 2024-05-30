@@ -43,7 +43,6 @@ export default function Checkout({ params }) {
   const mobileScrollRef = useRef(null)
 
   const restaurant = useSelector((state) => state.restaurantPublic)
-  console.log(restaurant)
 
   const cart = useSelector((state) => state.cart)
   const [paymentMethods, setPaymentMethods] = useState([])
@@ -83,6 +82,10 @@ export default function Checkout({ params }) {
   const timeInterval = 15
   //this variable is the defaultValue of the formSelect to choose arrivalTime
   const defaultOptionArrivalTimeSelect = "Choisissez une heure"
+  const [
+    isCurrentServiceActiveForSelectedOrderType,
+    setIsCurrentServiceActiveForSelectedOrderType,
+  ] = useState(null)
   const {
     restaurantOpen,
     currentService,
@@ -178,7 +181,7 @@ export default function Checkout({ params }) {
       timeString,
       defaultOptionArrivalTimeSelect,
       setValidationErrors,
-      currentService,
+      isCurrentServiceActiveForSelectedOrderType,
       "arrivalTime"
     )
     //display errors on submit and not only onBlur
@@ -322,7 +325,7 @@ export default function Checkout({ params }) {
                       updatedTimeString,
                       defaultOptionArrivalTimeSelect,
                       setValidationErrors,
-                      currentService,
+                      isCurrentServiceActiveForSelectedOrderType,
                       "arrivalTime"
                     )
                   }}
@@ -447,6 +450,12 @@ export default function Checkout({ params }) {
                 setValidationErrors={setValidationErrors}
                 timeInterval={timeInterval}
                 defaultOptionArrivalTimeSelect={defaultOptionArrivalTimeSelect}
+                isCurrentServiceActiveForSelectedOrderType={
+                  isCurrentServiceActiveForSelectedOrderType
+                }
+                setIsCurrentServiceActiveForSelectedOrderType={
+                  setIsCurrentServiceActiveForSelectedOrderType
+                }
               />
             </div>
             <div>

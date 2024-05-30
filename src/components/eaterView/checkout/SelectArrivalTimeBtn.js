@@ -18,12 +18,12 @@ const pushValuesInTimeChoicesArray = (
   startInMinutes,
   endInMinutes,
   timeIncrement,
-  currentService
+  isCurrentService
 ) => {
   let minutesToAddToStart
   if (orderType === 0) {
     // if restaurant is in service
-    if (currentService?.start) {
+    if (isCurrentService) {
       minutesToAddToStart = restaurant.data.publicSettings.deliveryEstimate.max
     } else {
       minutesToAddToStart = restaurant.data.publicSettings.deliveryEstimate.min
@@ -52,6 +52,7 @@ function getTimeChoicesArray(
   currentService,
   remainingServicesForToday
 ) {
+  let isCurrentService
   let timeChoicesArray = []
   const currentDate = new Date()
   const numberOfMinuteCurrentDay =
@@ -61,8 +62,9 @@ function getTimeChoicesArray(
     currentService?.start &&
     currentService?.end &&
     ((orderType === 0 && currentService.delivery === true) ||
-      (orderType === 1 && currentService.takeAway === true))
+      (orderType === 1 && currentService.takeaway === true))
   ) {
+    isCurrentService = true
     const numberOfMinutesServiceEnd =
       getTotalNumberOfMinutesSinceBeginningOfTheDay(
         currentService.end,
@@ -75,16 +77,16 @@ function getTimeChoicesArray(
       numberOfMinuteCurrentDay,
       numberOfMinutesServiceEnd,
       timeIncrement,
-      currentService
+      isCurrentService
     )
   }
 
+  isCurrentService = false
   for (let service of remainingServicesForToday) {
     if (orderType === 0 && service.delivery === false) continue
-    if (orderType === 1 && service.takeAway === false) continue
+    if (orderType === 1 && service.takeaway === false) continue
 
     //service start
-
     const numberOfMinutesServiceStart =
       getTotalNumberOfMinutesSinceBeginningOfTheDay(service.start, "timeString")
 
@@ -98,7 +100,7 @@ function getTimeChoicesArray(
       numberOfMinutesServiceStart,
       numberOfMinutesServiceEnd,
       timeIncrement,
-      currentService
+      isCurrentService
     )
   }
   return timeChoicesArray
@@ -218,6 +220,8 @@ export default function SelectArrivalTimeBtn({
   setValidationErrors,
   timeInterval,
   defaultOptionArrivalTimeSelect,
+  isCurrentServiceActiveForSelectedOrderType,
+  setIsCurrentServiceActiveForSelectedOrderType,
 }) {
   const restaurant = useSelector((state) => state.restaurantPublic)
   const cart = useSelector((state) => state.cart)
@@ -227,7 +231,14 @@ export default function SelectArrivalTimeBtn({
     setTimeChoiceArray(() => {
       // if status open is forced -> no end to current service (it is not really true but it is a marker to avoid order in advance for forced opening periods)
       if (!remainingServicesForToday) return
-      if (currentService?.start) {
+      const checkIfCurrentServiceActiveForSelectedOrderType =
+        currentService?.start &&
+        ((cart.data.orderType === 0 && currentService.delivery) ||
+          (cart.data.orderType === 1 && currentService.takeaway))
+      setIsCurrentServiceActiveForSelectedOrderType(
+        checkIfCurrentServiceActiveForSelectedOrderType
+      )
+      if (checkIfCurrentServiceActiveForSelectedOrderType) {
         return [
           "Dès que possible",
           ...getTimeChoicesArray(
@@ -274,7 +285,11 @@ export default function SelectArrivalTimeBtn({
         setValidationErrors={setValidationErrors}
       />
       <SelectBtn
-        status={`${currentService?.start || timeString ? "success" : "fail"}`}
+        status={`${
+          isCurrentServiceActiveForSelectedOrderType || timeString
+            ? "success"
+            : "fail"
+        }`}
         onClick={() => setModalOpen(true)}
         validationError={validationError}
       >
@@ -283,7 +298,7 @@ export default function SelectArrivalTimeBtn({
           <p className="font-semibold text-start">
             {
               // current service & ti
-              currentService?.start &&
+              isCurrentServiceActiveForSelectedOrderType &&
               timeString !== defaultOptionArrivalTimeSelect ? (
                 <p>
                   {cart.data.orderType === 0
@@ -309,7 +324,7 @@ export default function SelectArrivalTimeBtn({
           <p className="font-bold">
             {
               //if no timeString selected or is not in the expected format (for example with the "As soon as possible" value)
-              currentService?.start
+              isCurrentServiceActiveForSelectedOrderType
                 ? /^\d{2}:\d{2}$/.test(timeString)
                   ? formatTimeStringAfterMidnightForDisplay(timeString)
                   : cart.data.orderType === 0 &&

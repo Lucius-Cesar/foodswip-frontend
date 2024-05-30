@@ -209,13 +209,14 @@ export const arrivalTimeValidation = (
   timeString,
   defaultOptionArrivalTimeSelect,
   setValidationErrors,
-  currentService,
+  isCurrentServiceActiveForSelectedOrderType,
   field
 ) => {
+  console.log(timeString)
   //if no arrivalTime selected and we are not in a current service (order in advance)
   if (
     timeString === defaultOptionArrivalTimeSelect ||
-    (!timeString && !currentService?.start)
+    (!timeString && !isCurrentServiceActiveForSelectedOrderType)
   ) {
     setValidationErrors((previous) => ({
       ...previous,
