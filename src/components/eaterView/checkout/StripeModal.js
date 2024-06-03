@@ -1,26 +1,31 @@
 import DefaultModal from "@/components/ui/DefaultModal"
+import FullWidthBtn from "@/components/ui/FullWidthBtn"
+import { RestaurantLogoCircle, XmarkIcon } from "@/components/ui/RestaurantLogo"
 import {
   Elements,
   PaymentElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js"
-import { loadStripe } from "@stripe/stripe-js"
-import { Router } from "express"
-
+import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 
-export function CheckoutForm() {
+import { LockClosedIcon } from "@heroicons/react/20/solid"
+
+export function CheckoutForm({ orderId, totalSum }) {
   const stripe = useStripe()
   const elements = useElements()
+  const Router = useRouter()
   const restaurantPhoneNumber = useSelector(
     (state) => state.restaurantPublic.data.phoneNumber
   )
 
   const [message, setMessage] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
-
+  const [paymentSuccess, setPaymentSuccess] = useState(null)
+  const [isStripeModalReady, setIsStripeModalReady] = useState(false)
+  const [order, setOrder] = useState(null)
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -34,28 +39,29 @@ export function CheckoutForm() {
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
+      redirect: "if_required",
     })
 
-    if (error.type === "card_error" || error.type === "validation_error") {
+    if (error?.type === "card_error") {
       setMessage(error.message)
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
+      setPaymentSuccess(true)
       // If the payment has been processed successfully, call your API
       fetch(
-        `${$process.env.NEXT_PUBLIC_API_URL}/orders/processOrderAfterPayment`,
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/processOrderAfterPayment`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            paymentIntentId: paymentIntent.id,
-          }),
+          body: JSON.stringify({ orderId: orderId }),
         }
       )
         .then((response) => response.json())
         .then((data) => {
-          if (data.status === "success") {
-            Router.push(`/order/${data.order.orderNumber}`)
+          if (data) {
+            setOrder(data)
+            Router.push(`order/${data.orderNumber}`)
           } else {
             setMessage(
               `Le paiement a été effectué avec succès mais une erreur est survenue lors de la validation de la commande. Veuillez contacter le restaurant au ${restaurantPhoneNumber}.`
@@ -67,35 +73,48 @@ export function CheckoutForm() {
             `Le paiement a été effectué avec succès mais une erreur est survenue lors de la validation de la commande. Veuillez contacter le restaurant au ${restaurantPhoneNumber}.`
           )
         })
-    } else {
-      setMessage("An unexpected error occured.")
     }
     setIsProcessing(false)
   }
 
   const PaymentElementOptions = {
     layout: {
-      type: "accordion",
+      type: "tabs",
       defaultCollapsed: false,
-      radios: true,
-      spacedAccordionItems: false,
     },
+    paymentMethodOrder: ["bancontact", "card"],
   }
 
   return (
     <>
       <form id="payment-form" onSubmit={handleSubmit}>
-        <PaymentElement options={PaymentElementOptions} id="payment-element" />
-        <button disabled={isProcessing || !stripe || !elements} id="submit">
-          <span id="button-text">
-            {isProcessing ? "Processing ... " : "Pay now"}
-          </span>
-        </button>
+        <PaymentElement
+          options={PaymentElementOptions}
+          id="payment-element"
+          onReady={() => setIsStripeModalReady(true)}
+        />
+
         {/* Show any error or success messages */}
         {message && (
           <div id="payment-message" className="text-error-danger">
             {message}
           </div>
+        )}
+        {isStripeModalReady && (
+          <FullWidthBtn
+            isLoading={isProcessing}
+            success={paymentSuccess}
+            className="rounded-b-xl right-0
+          
+          
+
+"
+          >
+            <div className="flex flex-row gap-2">
+              <LockClosedIcon className={"text-white h-5 w-5"} />
+              <p className="self-end">Valider et payer {totalSum}€</p>
+            </div>
+          </FullWidthBtn>
         )}
       </form>
     </>
@@ -105,23 +124,30 @@ export function CheckoutForm() {
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 
-export default function StripeModal({ open, setOpen, clientSecret }) {
-  const [stripePromise, setStripePromise] = useState(null)
-  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_KEY
-  useEffect(() => {
-    setStripePromise(loadStripe(stripeKey))
-  }, [])
-
+export default function StripeModal({
+  open,
+  setOpen,
+  clientSecret,
+  orderId,
+  stripePromise,
+  totalSum,
+}) {
   return (
     <>
-      <DefaultModal open={open} setOpen={setOpen}>
+      <DefaultModal
+        open={open}
+        setOpen={setOpen}
+        xButton={true}
+        closeOnOverlayClick={false}
+      >
+        <RestaurantLogoCircle className="z-50 absolute -top-8 p-2 bg-rose-50" />
         {clientSecret && stripePromise && (
-          <div>
+          <div className="pt-4">
             <Elements
               stripe={stripePromise}
               options={{ clientSecret: clientSecret }}
             >
-              <CheckoutForm />
+              <CheckoutForm orderId={orderId} totalSum={totalSum} />
             </Elements>
           </div>
         )}

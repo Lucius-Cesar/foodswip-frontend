@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react"
 import useFetch from "@/hooks/useFetch"
 import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty"
 import Cart from "../../../../components/eaterView/Cart"
-import RestaurantLogo from "@/components/ui/RestaurantLogo"
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
 import OrderTabBtn from "@/components/eaterView/OrderTabBtn"
 import FormInput from "../../../../components/ui/FormInput"
 import DefaultBtn from "@/components/ui/DefaultBtn"
@@ -17,6 +17,8 @@ import StripeModal from "@/components/eaterView/checkout/StripeModal"
 import LoadingSpinner from "@/components/ui/LoadingSpinner"
 
 import { switchPaymentMethodLabel } from "@/utils/switchLabel"
+import { loadStripe } from "@stripe/stripe-js"
+
 import {
   missingInformationValidation,
   phoneNumberValidation,
@@ -113,19 +115,23 @@ export default function Checkout({ params }) {
 
   useEffect(() => {
     //change payment method choices based on orderType
+    let filteredPaymentMethods
     if (cart.data.orderType === 0) {
-      const paymentMethodsForDelivery =
-        restaurant.data.publicSettings.paymentMethods.filter(
-          (paymentMethod) => paymentMethod.delivery === true
-        )
+      filteredPaymentMethods = restaurant.data.publicSettings.paymentMethods
+        .filter((paymentMethod) => paymentMethod.delivery === true)
+        .map((paymentMethod) => paymentMethod.value)
 
-      setPaymentMethods(paymentMethodsForDelivery)
+      setPaymentMethods(filteredPaymentMethods)
     } else if (cart.data.orderType === 1) {
-      const paymentMethodsForTakeAway =
-        restaurant.data.publicSettings.paymentMethods.filter(
-          (paymentMethod) => paymentMethod.takeAway === true
-        )
-      setPaymentMethods(paymentMethodsForTakeAway)
+      filteredPaymentMethods = restaurant.data.publicSettings.paymentMethods
+        .filter((paymentMethod) => paymentMethod.takeAway === true)
+        .map((paymentMethod) => paymentMethod.value)
+
+      setPaymentMethods(filteredPaymentMethods)
+    }
+
+    if (filteredPaymentMethods.includes("online") && !selectedPaymentMethod) {
+      setSelectedPaymentMethod("online")
     }
 
     //postCode Validation based on orderType
@@ -146,7 +152,6 @@ export default function Checkout({ params }) {
     if (!newOrder.data) return
     if (newOrder.data.clientSecret) {
       setStripeModalOpen(true)
-      console.log(stripeModalOpen)
     } else {
       router.push(
         `/menu/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
@@ -193,6 +198,12 @@ export default function Checkout({ params }) {
     }
   }, [])
 
+  //prefetch stripe promise
+  const [stripePromise, setStripePromise] = useState(
+    loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
+  )
+
+  console.log(selectedPaymentMethod)
   const handleConfirmOrder = () => {
     arrivalTimeValidation(
       timeString,
@@ -464,9 +475,8 @@ export default function Checkout({ params }) {
               <fieldset className="mt-4">
                 <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                   {paymentMethods.map((paymentMethod, i) => {
-                    const paymentMethodLabel = switchPaymentMethodLabel(
-                      paymentMethod.value
-                    )
+                    const paymentMethodLabel =
+                      switchPaymentMethodLabel(paymentMethod)
 
                     return (
                       <div key={i} className="flex items-center">
@@ -476,16 +486,17 @@ export default function Checkout({ params }) {
                           type="radio"
                           className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
                           onChange={() => {
-                            setSelectedPaymentMethod(paymentMethods[i].value)
+                            setSelectedPaymentMethod(paymentMethod)
                             setValidationErrors((previous) => ({
                               ...previous,
                               paymentMethod: "",
                             }))
                           }}
-                          value={paymentMethod}
+                          defaultChecked={selectedPaymentMethod}
+                          value={selectedPaymentMethod}
                         />
                         <label
-                          htmlFor={paymentMethod.value}
+                          htmlFor={paymentMethod}
                           className="ml-3 block text-lg sm:text-base font-medium leading-6 text-gray-900"
                         >
                           {paymentMethodLabel}
@@ -497,6 +508,9 @@ export default function Checkout({ params }) {
                     open={stripeModalOpen}
                     setOpen={setStripeModalOpen}
                     clientSecret={newOrder.data?.clientSecret}
+                    orderId={newOrder.data?.orderId}
+                    stripePromise={stripePromise}
+                    totalSum={newOrder.data?.totalSum}
                   />
                 </div>
               </fieldset>
@@ -641,13 +655,15 @@ export default function Checkout({ params }) {
               )
             )}
             <div className="self-center w-fit">
-              <DefaultBtn
-                value={"Confirmer la commande"}
-                className="sm:w-72 h-12 text-xl font-bold"
-                onClick={handleConfirmOrder}
-                color="success"
-                isLoading={newOrder?.isLoading || newOrder.data}
-              />
+              {!stripeModalOpen && (
+                <DefaultBtn
+                  value={"Confirmer la commande"}
+                  className="sm:w-72 h-12 text-xl font-bold"
+                  onClick={handleConfirmOrder}
+                  color="success"
+                  isLoading={newOrder?.isLoading}
+                />
+              )}
             </div>
           </div>
         </div>
