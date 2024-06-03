@@ -1,9 +1,9 @@
 import TabBtn from "../ui/TabBtn"
-import { useState, useLayoutEffect } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { selectOrderType } from "@/redux/cart/cartSlice"
 import { DefaultNotification } from "../ui/Notifications"
-
+import useCheckAvailableOrderTypes from "@/hooks/useCheckAvailableOrderTypes"
 export default function OrderTabBtn({
   onChange,
   currentService,
@@ -11,15 +11,14 @@ export default function OrderTabBtn({
   restaurantStatus,
 }) {
   const dispatch = useDispatch()
-  const [orderTypes, setOrderTypes] = useState([
-    { label: "Livraison", enabled: false },
-    { label: "À emporter", enabled: false },
-  ])
-
   const [message, setMessage] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
-
   const currentOrderType = useSelector((state) => state.cart.data.orderType)
+  const orderTypes = useCheckAvailableOrderTypes(
+    currentService,
+    remainingServicesForToday,
+    restaurantStatus
+  )
   const changeOrderType = (newOrderType) => {
     if (restaurantStatus === "closed") {
       setMessage("L'établissement est actuellement fermé")
@@ -43,39 +42,6 @@ export default function OrderTabBtn({
       }
     }
   }
-
-  const checkAvailableOrderType = () => {
-    if (!restaurantStatus || restaurantStatus === "closed") return
-    if (restaurantStatus === "forced open") {
-      setOrderTypes([
-        { label: "Livraison", enabled: true },
-        { label: "À emporter", enabled: true },
-      ])
-      return
-    }
-    for (let service of [{ ...currentService }, ...remainingServicesForToday]) {
-      const updatedOrderTypes = [...orderTypes]
-      if (!service) return
-      if (service.delivery) {
-        updatedOrderTypes[0].enabled = true
-      }
-      if (service.takeaway) {
-        updatedOrderTypes[1].enabled = true
-      }
-      setOrderTypes(updatedOrderTypes)
-    }
-  }
-
-  useLayoutEffect(() => {
-    checkAvailableOrderType()
-    //handle default orderType based on what is available
-    if (!orderTypes[0].enabled && orderTypes[1].enabled) {
-      dispatch(selectOrderType(1))
-    }
-    if (!orderTypes[1].enabled && orderTypes[0].enabled) {
-      dispatch(selectOrderType(0))
-    }
-  }, [currentService, remainingServicesForToday])
 
   return (
     <div className="relative flex flex-col gap-2">

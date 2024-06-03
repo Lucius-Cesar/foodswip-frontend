@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 export const getRestaurantPublicData = createAsyncThunk(
   "GetRestaurantPublicData",
@@ -10,16 +10,16 @@ export const getRestaurantPublicData = createAsyncThunk(
       }
     )
       .then((response) => response.json())
-      .catch((err) => console.error(err));
-    return data;
+      .catch((err) => console.error(err))
+    return data
   }
-);
+)
 
 const initialState = {
   data: {},
   isLoading: false,
   error: false,
-};
+}
 
 export const restaurantPublicSlice = createSlice({
   name: "restaurantPublic",
@@ -27,20 +27,24 @@ export const restaurantPublicSlice = createSlice({
   //extraReducers are used for async function
   extraReducers: (builder) => {
     builder.addCase(getRestaurantPublicData.pending, (state, action) => {
-      state.isLoading = true;
-      state.error = false;
-    });
+      state.isLoading = true
+      state.error = false
+    })
     builder.addCase(getRestaurantPublicData.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data = action.payload;
-    });
+      state.isLoading = false
+      state.data = action.payload
+    })
     builder.addCase(getRestaurantPublicData.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
+      state.isLoading = false
+      state.error = action.error
+    })
   },
-  reducers: {},
-});
+  reducers: {
+    clearRestaurantPublicData: (state, action) => {
+      state.data = initialState.data
+    },
+  },
+})
 
-// export const { updateRestaurant } = restaurantSlice.actions;
-export default restaurantPublicSlice.reducer;
+export const { clearRestaurantPublicData } = restaurantPublicSlice.actions
+export default restaurantPublicSlice.reducer
