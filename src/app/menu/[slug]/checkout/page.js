@@ -37,7 +37,7 @@ export default function Checkout({ params }) {
   const router = useRouter()
   const dispatch = useDispatch()
   useRedirectIfCartEmpty()
-  useRestaurantData(params.uniqueValue, "restaurantPublic")
+  useRestaurantData(params.slug, "restaurantPublic")
 
   //mobileScrollRef is used to scroll directly behind the card on checkout
   const mobileScrollRef = useRef(null)
@@ -104,10 +104,10 @@ export default function Checkout({ params }) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       //every timeInterval => leave checkout
-      router.push(`/menu/${restaurant.data.uniqueValue}`)
+      router.push(`/menu/${restaurant.data.slug}`)
     }, timeInterval * 60 * 1000)
     if (restaurantOpen === false) {
-      router.push(`/menu/${restaurant.data.uniqueValue}`)
+      router.push(`/menu/${restaurant.data.slug}`)
     }
     return () => clearInterval(intervalId)
   }, [])
@@ -291,9 +291,7 @@ export default function Checkout({ params }) {
   }
 
   if (newOrder.data) {
-    router.push(
-      `/menu/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
-    )
+    router.push(`/menu/${params.slug}/order/${newOrder.data.orderNumber}`)
     //workaround to dispatch after router.push is completed (not the best solution)
     setTimeout(() => {
       dispatch(clearCart())

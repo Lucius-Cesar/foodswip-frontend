@@ -1,54 +1,54 @@
-"use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
+"use client"
+import { useState, useEffect } from "react"
+import Link from "next/link"
 
-import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon.js";
-import FormInput from "@/components/ui/FormInput.js";
-import DefaultBtn from "@/components/ui/DefaultBtn";
+import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon.js"
+import FormInput from "@/components/ui/FormInput.js"
+import DefaultBtn from "@/components/ui/DefaultBtn"
 import {
   mailValidation,
   missingInformationValidation,
-} from "@/utils/validations";
-import { logIn } from "@/redux/auth/authSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-import useCheckAuth from "@/hooks/useCheckAuth";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import useRestaurantData from "@/hooks/useRestaurantData";
+} from "@/utils/validations"
+import { logIn } from "@/redux/auth/authSlice"
+import { useSelector, useDispatch } from "react-redux"
+import { useRouter } from "next/navigation"
+import useCheckAuth from "@/hooks/useCheckAuth"
+import LoadingSpinner from "@/components/ui/LoadingSpinner"
+import useRestaurantData from "@/hooks/useRestaurantData"
 
-import Cookies from "js-cookie";
-import useRefreshAuth from "@/hooks/useRefreshAuth";
+import Cookies from "js-cookie"
+import useRefreshAuth from "@/hooks/useRefreshAuth"
 export default function Login() {
-  const auth = useSelector((state) => state.auth);
-  const router = useRouter();
-  useRefreshAuth();
-  useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin");
-  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth)
+  const router = useRouter()
+  useRefreshAuth()
+  useRestaurantData(auth.data?.user?.slug, "restaurantAdmin")
+  const dispatch = useDispatch()
 
   const formInitialState = {
     mail: "",
     password: "",
     login: "",
-  };
-  const [form, setForm] = useState(formInitialState);
+  }
+  const [form, setForm] = useState(formInitialState)
 
-  const [validationErrors, setValidationErrors] = useState(formInitialState);
-  const restaurant = useSelector((state) => state.restaurantAdmin);
+  const [validationErrors, setValidationErrors] = useState(formInitialState)
+  const restaurant = useSelector((state) => state.restaurantAdmin)
 
   useEffect(() => {
     if (auth.data?.token) {
-      setValidationErrors(formInitialState);
-      router.push(`/admin/settings`);
+      setValidationErrors(formInitialState)
+      router.push(`/admin/settings`)
     }
     if (auth.error) {
       if (auth.error.name === "ErrorInvalidCredentials") {
         setValidationErrors({
           ...validationErrors,
           login: "Adresse email ou mot de passe incorrect",
-        });
+        })
       }
     }
-  }, [auth, restaurant]);
+  }, [auth, restaurant])
 
   const onClickConnexionBtn = (form) => {
     if (
@@ -57,10 +57,10 @@ export default function Login() {
       form.mail !== "" &&
       form.password !== ""
     ) {
-      setValidationErrors({ ...validationErrors, login: "" });
-      dispatch(logIn(form));
+      setValidationErrors({ ...validationErrors, login: "" })
+      dispatch(logIn(form))
     }
-  };
+  }
 
   return (
     <>
@@ -135,5 +135,5 @@ export default function Login() {
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
 export const getRestaurantPublicData = createAsyncThunk(
   "GetRestaurantPublicData",
-  async (uniqueValue) => {
+  async (slug) => {
     const data = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/restaurants/public/${uniqueValue}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/restaurants/public/${slug}`,
       {
         method: "GET",
       }

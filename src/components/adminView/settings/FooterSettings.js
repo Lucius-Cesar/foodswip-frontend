@@ -1,27 +1,27 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState, useRef } from "react";
-import { SuccesAlert, ErrorAlert } from "@/components/ui/Alerts";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
-import SaveBtn from "@/components/ui/SaveBtn";
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect, useState, useRef } from "react"
+import { SuccesAlert, ErrorAlert } from "@/components/ui/Alerts"
+import LoadingSpinner from "@/components/ui/LoadingSpinner"
+import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice"
+import SaveBtn from "@/components/ui/SaveBtn"
 export default function FooterSettings({
   validationErrors,
   formRestaurantInfo,
   publicSettings,
   privateSettings,
 }) {
-  const dispatch = useDispatch();
-  const [saveError, setSaveError] = useState(false);
+  const dispatch = useDispatch()
+  const [saveError, setSaveError] = useState(false)
   //alert is only displayed after save btn is pressed
-  const [alertOpen, setAlertOpen] = useState(false);
-  const restaurant = useSelector((state) => state.restaurantAdmin);
+  const [alertOpen, setAlertOpen] = useState(false)
+  const restaurant = useSelector((state) => state.restaurantAdmin)
 
   const onClickSaveBtn = () => {
-    setAlertOpen(false);
+    setAlertOpen(false)
     if (Object.values(validationErrors).every((value) => value === "")) {
-      setSaveError(false);
+      setSaveError(false)
       const payload = {
-        uniqueValue: restaurant.data.uniqueValue,
+        slug: restaurant.data.slug,
         name: formRestaurantInfo.name,
         mail: formRestaurantInfo.mail,
         website: formRestaurantInfo.website,
@@ -35,15 +35,13 @@ export default function FooterSettings({
         },
         publicSettings: publicSettings,
         privateSettings: privateSettings,
-      };
-      dispatch(updateRestaurantSettings(payload)).then(() =>
-        setAlertOpen(true)
-      );
+      }
+      dispatch(updateRestaurantSettings(payload)).then(() => setAlertOpen(true))
     } else {
-      setSaveError(true);
-      setAlertOpen(true);
+      setSaveError(true)
+      setAlertOpen(true)
     }
-  };
+  }
   return (
     <div className="mt-auto h-fit z-10 w-full flex flex-col justify-center sm:justify-end items-center sm:items-end py-2 sm:pe-10">
       <div className="flex flex-col justify-center items-center sm:items-end sm:flex-row gap-2 sm:gap-4">
@@ -74,5 +72,5 @@ export default function FooterSettings({
         <SaveBtn onClick={onClickSaveBtn} isLoading={restaurant.isLoading} />
       </div>
     </div>
-  );
+  )
 }

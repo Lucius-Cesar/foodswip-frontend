@@ -28,8 +28,8 @@ import useRestaurantChange from "@/hooks/useRestaurantChange"
 
 export default function eaterView({ params }) {
   const dispatch = useDispatch()
-  useRestaurantChange(params.uniqueValue)
-  useRestaurantData(params.uniqueValue, "restaurantPublic")
+  useRestaurantChange(params.slug)
+  useRestaurantData(params.slug, "restaurantPublic")
   //redux
   const restaurant = useSelector((state) => state.restaurantPublic)
   const cart = useSelector((state) => state.cart)

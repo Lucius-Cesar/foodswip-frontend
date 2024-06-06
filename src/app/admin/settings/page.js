@@ -39,7 +39,7 @@ export default function settings() {
   const router = useRouter()
   useRefreshAuth()
   useCheckAuth()
-  useRestaurantData(auth.data?.user?.restaurantUniqueValue, "restaurantAdmin")
+  useRestaurantData(auth.data?.user?.slug, "restaurantAdmin")
   //change this later
   const dispatch = useDispatch()
   const restaurant = useSelector((state) => state.restaurantAdmin)

@@ -8,21 +8,21 @@ import { getRestaurantAdminData } from "@/redux/restaurantAdmin/restaurantAdminS
 
 import { clearCart } from "@/redux/cart/cartSlice"
 
-function useRestaurantData(uniqueValue, target) {
+function useRestaurantData(slug, target) {
   const dispatch = useDispatch()
   if (target === "restaurantPublic") {
     const restaurantPublic = useSelector((state) => state.restaurantPublic)
     useLayoutEffect(() => {
-      if (uniqueValue !== restaurantPublic.data?.uniqueValue) {
+      if (slug !== restaurantPublic.data?.slug) {
         dispatch(clearRestaurantPublicData())
-        dispatch(getRestaurantPublicData(uniqueValue)).then(() =>
+        dispatch(getRestaurantPublicData(slug)).then(() =>
           dispatch(clearCart())
         )
-      } else if (uniqueValue) {
-        dispatch(getRestaurantPublicData(uniqueValue))
+      } else if (slug) {
+        dispatch(getRestaurantPublicData(slug))
         //if restaurant is not the same in localStorage => clear cart
       }
-    }, [uniqueValue])
+    }, [slug])
   } else if (target === "restaurantAdmin") {
     // auth token is necessary to fetch these data
     const auth = useSelector((state) => state.auth)
@@ -30,7 +30,7 @@ function useRestaurantData(uniqueValue, target) {
     useLayoutEffect(() => {
       //if authenticated and the restaurant is not the same as stored in localStorage
       if (auth.data?.token) {
-        dispatch(getRestaurantAdminData(uniqueValue))
+        dispatch(getRestaurantAdminData(slug))
       }
     }, [auth.data?.token])
   }
