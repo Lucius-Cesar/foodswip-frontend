@@ -24,7 +24,6 @@ import {
 } from "@/redux/cart/cartSlice"
 
 import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart"
-import useRestaurantChange from "@/hooks/useRestaurantChange"
 
 export default function eaterView({ params }) {
   const dispatch = useDispatch()

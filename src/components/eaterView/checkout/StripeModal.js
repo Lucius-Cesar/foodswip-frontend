@@ -9,14 +9,15 @@ import {
 } from "@stripe/react-stripe-js"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
-import { useSelector } from "react-redux"
-
+import { useDispatch, useSelector } from "react-redux"
+import { clearCart } from "@/redux/cart/cartSlice"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 
 export function CheckoutForm({ orderId, totalSum }) {
   const stripe = useStripe()
   const elements = useElements()
   const Router = useRouter()
+  const dispatch = useDispatch()
   const restaurantPhoneNumber = useSelector(
     (state) => state.restaurantPublic.data.phoneNumber
   )
@@ -64,6 +65,9 @@ export function CheckoutForm({ orderId, totalSum }) {
           if (data) {
             setOrder(data)
             Router.push(`order/${data.orderNumber}`)
+            setTimeout(() => {
+              dispatch(clearCart())
+            }, "3000")
           } else {
             setMessage(
               `Le paiement a été effectué avec succès mais une erreur est survenue lors de la validation de la commande. Veuillez contacter le restaurant au ${restaurantPhoneNumber}.`

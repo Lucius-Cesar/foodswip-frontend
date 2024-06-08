@@ -670,7 +670,11 @@ export default function Checkout({ params }) {
                   className="sm:w-72 h-12 text-xl font-bold"
                   onClick={handleConfirmOrder}
                   color="success"
-                  isLoading={newOrder?.isLoading}
+                  isLoading={
+                    newOrder?.isLoading ||
+                    newOrder?.data
+                      ?.orderNumber /*if orderNumber is present, the order is created, let the loading until redirection */
+                  }
                 />
               )}
             </div>
