@@ -54,7 +54,9 @@ export function CheckoutForm({ orderId, totalSum }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ orderId: orderId }),
+          body: JSON.stringify({
+            orderId: orderId,
+          }),
         }
       )
         .then((response) => response.json())
@@ -73,6 +75,8 @@ export function CheckoutForm({ orderId, totalSum }) {
             `Le paiement a été effectué avec succès mais une erreur est survenue lors de la validation de la commande. Veuillez contacter le restaurant au ${restaurantPhoneNumber}.`
           )
         })
+    } else {
+      setMessage("Une erreur inattendue s'est produite.")
     }
     setIsProcessing(false)
   }
@@ -96,9 +100,12 @@ export function CheckoutForm({ orderId, totalSum }) {
 
         {/* Show any error or success messages */}
         {message && (
-          <div id="payment-message" className="text-error-danger">
+          <p
+            id="payment-message"
+            className="text-error-danger  text-center pt-2"
+          >
             {message}
-          </div>
+          </p>
         )}
         {isStripeModalReady && (
           <FullWidthBtn
@@ -141,16 +148,17 @@ export default function StripeModal({
         closeOnOverlayClick={false}
       >
         <RestaurantLogoCircle className="z-50 absolute -top-8 p-2 bg-rose-50" />
-        {clientSecret && stripePromise && (
-          <div className="pt-4">
-            <Elements
-              stripe={stripePromise}
-              options={{ clientSecret: clientSecret }}
-            >
-              <CheckoutForm orderId={orderId} totalSum={totalSum} />
-            </Elements>
-          </div>
-        )}
+
+        <div className="pt-4">
+          <Elements
+            stripe={stripePromise}
+            options={{
+              clientSecret: clientSecret,
+            }}
+          >
+            <CheckoutForm orderId={orderId} totalSum={totalSum} />
+          </Elements>
+        </div>
       </DefaultModal>
     </>
   )

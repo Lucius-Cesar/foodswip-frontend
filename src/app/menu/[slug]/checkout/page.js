@@ -40,13 +40,14 @@ export default function Checkout({ params }) {
   const router = useRouter()
   const dispatch = useDispatch()
   useRedirectIfCartEmpty()
-  useRestaurantData(params.uniqueValue, "restaurantPublic")
+  useRestaurantData(params.slug, "restaurantPublic")
 
   //mobileScrollRef is used to scroll directly behind the card on checkout
   const mobileScrollRef = useRef(null)
   const restaurant = useSelector((state) => state.restaurantPublic)
 
   const cart = useSelector((state) => state.cart)
+
   const [paymentMethods, setPaymentMethods] = useState([])
   const [form, setForm] = useState({
     street: "",
@@ -74,7 +75,6 @@ export default function Checkout({ params }) {
   })
   const [orderError, setOrderError] = useState(false)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
-
   //fetchTrigger triggers the useFetch hook on confirmOrder
   const [fetchTrigger, setFetchTrigger] = useState(false)
   const [fetchOptions, setFetchOptions] = useState(null)
@@ -105,10 +105,10 @@ export default function Checkout({ params }) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       //every timeInterval => leave checkout
-      router.push(`/menu/${restaurant.data.uniqueValue}`)
+      router.push(`/menu/${restaurant.data.slug}`)
     }, timeInterval * 60 * 1000)
     if (restaurantOpen === false) {
-      router.push(`/menu/${restaurant.data.uniqueValue}`)
+      router.push(`/menu/${restaurant.data.slug}`)
     }
     return () => clearInterval(intervalId)
   }, [])
@@ -150,17 +150,15 @@ export default function Checkout({ params }) {
   // this useEffect is used to redirect to open the stripe modal if online payment or redirect to the order page if cash payment
   useEffect(() => {
     if (!newOrder.data) return
-    if (newOrder.data.clientSecret) {
+    if (newOrder.data.clientSecret && selectedPaymentMethod === "online") {
       setStripeModalOpen(true)
-    } else {
-      router.push(
-        `/menu/${params.uniqueValue}/order/${newOrder.data.orderNumber}`
-      )
+    } else if (newOrder?.data?.orderNumber) {
+      router.push(`/menu/${params.slug}/order/${newOrder.data.orderNumber}`)
 
       //workaround to dispatch after router.push is completed (not the best solution)
       setTimeout(() => {
         dispatch(clearCart())
-      }, "1000")
+      }, "3000")
     }
   }, [newOrder])
 
@@ -203,7 +201,6 @@ export default function Checkout({ params }) {
     loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
   )
 
-  console.log(selectedPaymentMethod)
   const handleConfirmOrder = () => {
     arrivalTimeValidation(
       timeString,
@@ -492,7 +489,9 @@ export default function Checkout({ params }) {
                               paymentMethod: "",
                             }))
                           }}
-                          defaultChecked={selectedPaymentMethod}
+                          defaultChecked={
+                            selectedPaymentMethod === paymentMethod
+                          }
                           value={selectedPaymentMethod}
                         />
                         <label

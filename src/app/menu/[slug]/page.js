@@ -27,7 +27,7 @@ import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart"
 
 export default function eaterView({ params }) {
   const dispatch = useDispatch()
-  useRestaurantData(params.uniqueValue, "restaurantPublic")
+  useRestaurantData(params.slug, "restaurantPublic")
   //redux
   const restaurant = useSelector((state) => state.restaurantPublic)
   const cart = useSelector((state) => state.cart)

@@ -1,26 +1,26 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authFetch } from "../auth/authActions";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { authFetch } from "../auth/authActions"
 
 export const getRestaurantAdminData = createAsyncThunk(
   "GetRestaurantAdminData",
-  async (uniqueValue, { getState, dispatch }) => {
+  async (slug, { getState, dispatch }) => {
     try {
       const data = await authFetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/admin/${uniqueValue}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/restaurants/admin/${slug}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         },
         getState,
         dispatch
-      );
+      )
 
-      return data;
+      return data
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
-);
+)
 
 export const updateRestaurantSettings = createAsyncThunk(
   "updateRestaurantSettings",
@@ -35,19 +35,19 @@ export const updateRestaurantSettings = createAsyncThunk(
         },
         getState,
         dispatch
-      );
-      return data;
+      )
+      return data
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
-);
+)
 
 const initialState = {
   data: {},
   isLoading: false,
   error: false,
-};
+}
 
 export const restaurantAdminSlice = createSlice({
   name: "restaurantAdmin",
@@ -55,39 +55,39 @@ export const restaurantAdminSlice = createSlice({
   //extraReducers are used for async function
   extraReducers: (builder) => {
     builder.addCase(getRestaurantAdminData.pending, (state, action) => {
-      state.isLoading = true;
-      state.error = false;
-    });
+      state.isLoading = true
+      state.error = false
+    })
     builder.addCase(getRestaurantAdminData.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data = action.payload;
-    });
+      state.isLoading = false
+      state.data = action.payload
+    })
     builder.addCase(getRestaurantAdminData.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
+      state.isLoading = false
+      state.error = action.error
+    })
 
     builder.addCase(updateRestaurantSettings.pending, (state, action) => {
-      state.isLoading = true;
-      state.error = false;
-    });
+      state.isLoading = true
+      state.error = false
+    })
     builder.addCase(updateRestaurantSettings.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data = action.payload;
-    });
+      state.isLoading = false
+      state.data = action.payload
+    })
     builder.addCase(updateRestaurantSettings.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error;
-    });
+      state.isLoading = false
+      state.error = action.error
+    })
   },
   reducers: {
     clearRestaurantAdminData: (state, action) => {
-      state.data = initialState.data;
-      state.isLoading = initialState.isLoading;
-      state.error = initialState.error;
+      state.data = initialState.data
+      state.isLoading = initialState.isLoading
+      state.error = initialState.error
     },
   },
-});
+})
 
-export const { clearRestaurantAdminData } = restaurantAdminSlice.actions;
-export default restaurantAdminSlice.reducer;
+export const { clearRestaurantAdminData } = restaurantAdminSlice.actions
+export default restaurantAdminSlice.reducer

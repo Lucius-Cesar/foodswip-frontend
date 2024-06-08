@@ -56,7 +56,7 @@ export default function Cart({ open, setOpen, variant }) {
 
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
-        router.push(`${restaurant.data.uniqueValue}/checkout`, {
+        router.push(`${restaurant.data.slug}/checkout`, {
           scroll: false,
         })
       }
