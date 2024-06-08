@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 
-export default function RestaurantLogo({ className, from }) {
+export function RestaurantLogo({ className, from }) {
   const slug = useSelector((state) => {
     if (from === "restaurantPublic") {
       return state.restaurantPublic.data.slug
@@ -16,5 +16,20 @@ export default function RestaurantLogo({ className, from }) {
       src={`/images/${slug}/logo.png`}
       alt="Restaurant Logo"
     />
+  )
+}
+
+export function RestaurantLogoCircle({ className }) {
+  const slug = useSelector((state) => {
+    return state.restaurantPublic.data.slug
+  })
+  return (
+    <div className={`${className} rounded-full h-20 w-20 overflow-hidden`}>
+      <img
+        className="object-contain w-full h-full"
+        src={`/images/${slug}/icon.png`}
+        alt="Restaurant Logo"
+      />
+    </div>
   )
 }

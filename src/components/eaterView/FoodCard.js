@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import AddBtn from "../ui/AddBtn";
+import { useEffect, useState } from "react"
+import AddBtn from "../ui/AddBtn"
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"
 
 export default function FoodCard({ food, onClick }) {
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart)
 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [foodQuantityInCart, setFoodQuantityInCart] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false)
+  const [foodQuantityInCart, setFoodQuantityInCart] = useState(null)
 
   function sumFoodQuantityInCart() {
     // check if food is already in cart articles to display food quantity instead of add btn
-    let totalQuantity = 0;
+    let totalQuantity = 0
 
     // Vérifier si le panier et la nourriture sont définis
     // Parcourir tous les articles dans le panier
@@ -19,16 +19,15 @@ export default function FoodCard({ food, onClick }) {
       // Vérifier si l'ID de la nourriture correspond à l'ID de la nourriture de l'article
       if (article.food === food._id) {
         // Si la correspondance est trouvée, ajouter la quantité de l'article à la somme totale
-        totalQuantity += article.quantity;
+        totalQuantity += article.quantity
       }
-    });
-    totalQuantity !== foodQuantityInCart &&
-      setFoodQuantityInCart(totalQuantity);
+    })
+    totalQuantity !== foodQuantityInCart && setFoodQuantityInCart(totalQuantity)
   }
 
   useEffect(() => {
-    sumFoodQuantityInCart();
-  }, [cart.data.articles]);
+    sumFoodQuantityInCart()
+  }, [cart.data.articles])
 
   return (
     <>
@@ -52,5 +51,5 @@ export default function FoodCard({ food, onClick }) {
         )}
       </button>
     </>
-  );
+  )
 }

@@ -1,37 +1,37 @@
-"use client";
-import { useSearchParams } from "next/navigation";
+"use client"
+import { useSearchParams } from "next/navigation"
 
 //import { useSelector } from "react-redux";
-import RestaurantLogo from "@/components/ui/RestaurantLogo";
-import SuccessIcon from "@/components/ui/icons/SuccessIcon";
-import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon";
-import Preloader from "@/components/ui/Preloader";
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
+import SuccessIcon from "@/components/ui/icons/SuccessIcon"
+import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon"
+import Preloader from "@/components/ui/Preloader"
 //import { useSearchParams } from "next/navigation";
-import useFetch from "@/hooks/useFetch";
-import { useState, useEffect } from "react";
+import useFetch from "@/hooks/useFetch"
+import { useState, useEffect } from "react"
 
 export default function Order({ params }) {
   const [formattedEstimatedArrivalDate, setFormattedEstimatedArrivalDate] =
-    useState(null);
+    useState(null)
 
-  const fetchOptions = { method: "GET" };
+  const fetchOptions = { method: "GET" }
   const order = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
     fetchOptions
-  );
+  )
   useEffect(() => {
-    const estimatedArrivalDate = new Date(order.data?.estimatedArrivalDate);
+    const estimatedArrivalDate = new Date(order.data?.estimatedArrivalDate)
     setFormattedEstimatedArrivalDate(
       estimatedArrivalDate
         ? `${estimatedArrivalDate.getHours()}:${String(
             estimatedArrivalDate.getMinutes()
           ).padStart(2, "0")}`
         : null
-    );
-  }, [order.data]);
+    )
+  }, [order.data])
 
   if (order.isLoading) {
-    return <Preloader />;
+    return <Preloader />
   } else {
     return (
       <div className="w-full h-dvh flex flex-col justify-between items-center">
@@ -83,6 +83,6 @@ export default function Order({ params }) {
         )}
         <FoodSwipIcon className="h-12 sm:h-10 w-auto" />
       </div>
-    );
+    )
   }
 }

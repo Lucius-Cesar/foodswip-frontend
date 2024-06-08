@@ -6,7 +6,7 @@ import OrderTabBtn from "@/components/eaterView/OrderTabBtn"
 import FoodCard from "@/components/eaterView/FoodCard"
 import CartBtn from "@/components/eaterView/CartBtn"
 import Cart from "@/components/eaterView/Cart"
-import RestaurantLogo from "@/components/ui/RestaurantLogo"
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
 import InfoIcon from "@/components/ui/icons/InfoIcon"
 import DeliveryIcon from "@/components/ui/icons/DeliveryIcon"
 import MinOrderIcon from "@/components/ui/icons/MinOrderIcon"
@@ -28,7 +28,6 @@ import useRestaurantChange from "@/hooks/useRestaurantChange"
 
 export default function eaterView({ params }) {
   const dispatch = useDispatch()
-  useRestaurantChange(params.slug)
   useRestaurantData(params.slug, "restaurantPublic")
   //redux
   const restaurant = useSelector((state) => state.restaurantPublic)
