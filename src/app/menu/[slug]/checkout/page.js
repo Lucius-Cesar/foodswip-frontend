@@ -156,7 +156,7 @@ export default function Checkout({ params }) {
     if (!newOrder.data) return
     if (newOrder.data.clientSecret && selectedPaymentMethod === "online") {
       setStripeModalOpen(true)
-    } else if (newOrder?.data?.orderNumber) {
+    } else if (newOrder?.data?.status === "completed") {
       router.push(`/menu/${params.slug}/order/${newOrder.data.orderNumber}`)
 
       //workaround to dispatch after router.push is completed (not the best solution)
@@ -518,6 +518,7 @@ export default function Checkout({ params }) {
                     setOpen={setStripeModalOpen}
                     clientSecret={newOrder.data?.clientSecret}
                     orderId={newOrder.data?.orderId}
+                    orderNumber={newOrder?.data?.orderNumber}
                     stripePromise={stripePromise}
                     totalSum={newOrder.data?.totalSum}
                   />

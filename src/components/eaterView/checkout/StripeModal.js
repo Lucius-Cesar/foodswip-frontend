@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { clearCart } from "@/redux/cart/cartSlice"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 
-export function CheckoutForm({ orderId, totalSum }) {
+export function CheckoutForm({ orderId, orderNumber, totalSum }) {
   const stripe = useStripe()
   const elements = useElements()
   const Router = useRouter()
@@ -21,6 +21,8 @@ export function CheckoutForm({ orderId, totalSum }) {
   const restaurantPhoneNumber = useSelector(
     (state) => state.restaurantPublic.data.phoneNumber
   )
+
+  const slug = useSelector((state) => state.restaurantPublic.data.slug)
 
   const [message, setMessage] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -41,6 +43,10 @@ export function CheckoutForm({ orderId, totalSum }) {
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       redirect: "if_required",
+      confirmParams: {
+        // Return URL where the customer should be redirected after the PaymentIntent is confirmed.
+        return_url: `https://foodswip.com/menu/${slug}/order/${orderNumber}`,
+      },
     })
 
     if (error?.type === "card_error") {
@@ -80,6 +86,7 @@ export function CheckoutForm({ orderId, totalSum }) {
           )
         })
     } else {
+      console.log(error)
       setMessage("Une erreur inattendue s'est produite.")
     }
     setIsProcessing(false)
@@ -140,6 +147,7 @@ export default function StripeModal({
   setOpen,
   clientSecret,
   orderId,
+  orderNumber,
   stripePromise,
   totalSum,
 }) {
@@ -160,7 +168,11 @@ export default function StripeModal({
               clientSecret: clientSecret,
             }}
           >
-            <CheckoutForm orderId={orderId} totalSum={totalSum} />
+            <CheckoutForm
+              orderId={orderId}
+              totalSum={totalSum}
+              orderNumber={orderNumber}
+            />
           </Elements>
         </div>
       </DefaultModal>
