@@ -1,16 +1,19 @@
 "use client"
-import { useSearchParams } from "next/navigation"
-
-//import { useSelector } from "react-redux";
+import { useRestaurantData } from "@/hooks/useRestaurantData"
 import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
 import SuccessIcon from "@/components/ui/icons/SuccessIcon"
 import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon"
 import Preloader from "@/components/ui/Preloader"
-//import { useSearchParams } from "next/navigation";
 import useFetch from "@/hooks/useFetch"
 import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function Order({ params }) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const redirectStatus = searchParams.get("redirect_status")
+
   const [formattedEstimatedArrivalDate, setFormattedEstimatedArrivalDate] =
     useState(null)
 
@@ -19,23 +22,42 @@ export default function Order({ params }) {
     `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
     fetchOptions
   )
+
   useEffect(() => {
-    const estimatedArrivalDate = new Date(order.data?.estimatedArrivalDate)
-    setFormattedEstimatedArrivalDate(
-      estimatedArrivalDate
-        ? `${estimatedArrivalDate.getHours()}:${String(
-            estimatedArrivalDate.getMinutes()
-          ).padStart(2, "0")}`
-        : null
-    )
+    if (order.data?.estimatedArrivalDate) {
+      const estimatedArrivalDate = new Date(order.data.estimatedArrivalDate)
+      setFormattedEstimatedArrivalDate(
+        `${estimatedArrivalDate.getHours()}:${String(
+          estimatedArrivalDate.getMinutes()
+        ).padStart(2, "0")}`
+      )
+    }
   }, [order.data])
+
+  //error redirection
+  useEffect(() => {
+    if (redirectStatus === "failed") {
+      setTimeout(() => {
+        router.push(`/menu/${params.slug}/checkout`)
+      }, 8000)
+    }
+  }, [redirectStatus])
 
   if (order.isLoading) {
     return <Preloader />
+  } else if (redirectStatus === "failed") {
+    return (
+      <div className="w-full h-dvh flex flex-col justify-center items-center">
+        <p className="text-lg text-center text-error-danger">
+          Le paiement a échoué, vous pourrez réessayer dans quelques secondes
+          après redirection...
+        </p>
+      </div>
+    )
   } else {
     return (
       <div className="w-full h-dvh flex flex-col justify-between items-center">
-        <div className="me-4 mt-2 mb-4  sm:me-6 sm:my-6">
+        <div className="me-4 mt-2 mb-4 sm:me-6 sm:my-6">
           <RestaurantLogo className="h-24 w-72" from="restaurantPublic" />
         </div>
 

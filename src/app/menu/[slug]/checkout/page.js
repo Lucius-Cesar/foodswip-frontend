@@ -674,7 +674,7 @@ export default function Checkout({ params }) {
                   isLoading={
                     newOrder?.isLoading ||
                     newOrder?.data
-                      ?.orderNumber /*if orderNumber is present, the order is created, let the loading until redirection */
+                      ?.creationDate /*if creationDate is present, the order is created, let the loading until redirection */
                   }
                 />
               )}

@@ -13,14 +13,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { clearCart } from "@/redux/cart/cartSlice"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 
-export function CheckoutForm({ orderId, totalSum }) {
+export function CheckoutForm({ params, orderId, orderNumber, totalSum }) {
   const stripe = useStripe()
   const elements = useElements()
   const Router = useRouter()
   const dispatch = useDispatch()
-  const restaurantPhoneNumber = useSelector(
-    (state) => state.restaurantPublic.data.phoneNumber
-  )
+
+  const slug = useSelector((state) => state.restaurantPublic.data.slug)
 
   const [message, setMessage] = useState(null)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -41,45 +40,18 @@ export function CheckoutForm({ orderId, totalSum }) {
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       redirect: "if_required",
-      return_url: `order/${data.orderNumber}`,
+      confirmParams: {
+        return_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/menu/${slug}/order/${orderNumber}`,
+      },
     })
 
     if (error?.type === "card_error") {
       setMessage(error.message)
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setPaymentSuccess(true)
-      // If the payment has been processed successfully, call your API
-      fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/orders/processOrderAfterPayment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderId: orderId,
-          }),
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data) {
-            setOrder(data)
-            Router.push(`order/${data.orderNumber}`)
-            setTimeout(() => {
-              dispatch(clearCart())
-            }, "3000")
-          } else {
-            setMessage(
-              `Le paiement a été effectué avec succès mais une erreur est survenue lors de la validation de la commande. Veuillez contacter le restaurant au ${restaurantPhoneNumber}.`
-            )
-          }
-        })
-        .catch((error) => {
-          setMessage(
-            `Le paiement a été effectué avec succès mais une erreur est survenue lors de la validation de la commande. Veuillez contacter le restaurant au ${restaurantPhoneNumber}.`
-          )
-        })
+      setTimeout(() => {
+        dispatch(clearCart())
+      }, "3000")
     } else {
       setMessage("Une erreur inattendue s'est produite.")
     }
@@ -141,6 +113,7 @@ export default function StripeModal({
   setOpen,
   clientSecret,
   orderId,
+  orderNumber,
   stripePromise,
   totalSum,
 }) {
@@ -161,7 +134,11 @@ export default function StripeModal({
               clientSecret: clientSecret,
             }}
           >
-            <CheckoutForm orderId={orderId} totalSum={totalSum} />
+            <CheckoutForm
+              orderId={orderId}
+              orderNumber={orderNumber}
+              totalSum={totalSum}
+            />
           </Elements>
         </div>
       </DefaultModal>
