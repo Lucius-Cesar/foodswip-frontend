@@ -18,14 +18,14 @@ const OrderCard = ({ order }) => {
             <p className="font-bold">
               {order.customer.firstname} {order.customer.lastname}
             </p>
-            <div className="flex flex-row gap-3">
-              <div className="flex flex-row gap-2 items-start">
+            <div className="flex flex-row gap-4">
+              <div className="flex flex-row gap-1 items-start">
                 <div className="">
                   {switchOrderTypeIcon(order.orderType, "h-4")}
                 </div>
                 <p>{switchOrderTypeLabel(order.orderType)}</p>
               </div>
-              <div className="flex flex-row gap-2 items-start">
+              <div className="flex flex-row gap-1 items-start">
                 {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
                 <p className="align-text-bottom">
                   {switchPaymentMethodLabel(order.paymentMethod)}
