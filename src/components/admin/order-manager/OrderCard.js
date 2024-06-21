@@ -12,20 +12,20 @@ const OrderCard = ({ order }) => {
   console.log(order);
   return (
     <>
-      <div className="flex flex-row text-sm rounded-xl bg-magnolia w-full h-20 ring-inset ring-1 ring-gray-300">
+      <div className="flex flex-row text-sm rounded-xl bg-magnolia w-full h-24 ring-inset ring-1 ring-gray-300">
         <div className="w-9/12 h-full border-e border-gray-300 p-2">
           <div className="flex flex-col justify-between items-start h-full">
             <p className="font-bold">
               {order.customer.firstname} {order.customer.lastname}
             </p>
             <div className="flex flex-row gap-2">
-              <div className="flex flex-row gap-2 items-start">
+              <div className="flex flex-row gap-3 items-start">
                 <div className="">
                   {switchOrderTypeIcon(order.orderType, "h-4")}
                 </div>
                 <p>{switchOrderTypeLabel(order.orderType)}</p>
               </div>
-              <div className="flex flex-row gap-2 items-start">
+              <div className="flex flex-row gap-3 items-start">
                 {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
                 <p className="align-text-bottom">
                   {switchPaymentMethodLabel(order.paymentMethod)}
