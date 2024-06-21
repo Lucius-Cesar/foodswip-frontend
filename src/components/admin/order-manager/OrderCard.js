@@ -12,9 +12,9 @@ const OrderCard = ({ order }) => {
   console.log(order);
   return (
     <>
-      <div className="flex flex-row text-sm rounded-xl bg-magnolia w-full h-24 ring-inset ring-1 ring-gray-300">
-        <div className="w-9/12 h-full border-e border-gray-300 p-2">
-          <div className="flex flex-col justify-between items-start h-full">
+      <div className="flex flex-row text-sm rounded-xl bg-magnolia w-full ring-inset ring-1 ring-gravel py-2">
+        <div className="w-9/12 border-e border-gravel px-2">
+          <div className="flex flex-col gap-0.5 justify-between items-start h-full">
             <p className="font-bold">
               {order.customer.firstname} {order.customer.lastname}
             </p>
@@ -23,11 +23,13 @@ const OrderCard = ({ order }) => {
                 <div className="">
                   {switchOrderTypeIcon(order.orderType, "h-4")}
                 </div>
-                <p>{switchOrderTypeLabel(order.orderType)}</p>
+                <p className="font-bold">
+                  {switchOrderTypeLabel(order.orderType)}
+                </p>
               </div>
               <div className="flex flex-row gap-1 items-start">
                 {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
-                <p className="align-text-bottom">
+                <p className="font-bold">
                   {switchPaymentMethodLabel(order.paymentMethod)}
                 </p>
               </div>
@@ -36,7 +38,7 @@ const OrderCard = ({ order }) => {
           </div>
         </div>
         <div className="flex flex-col justify-center items-center w-3/12  p-1">
-          <ClockIcon className="h-8 text-primary" />
+          <ClockIcon className="h-6 text-primary" />
           <p className="font-bold text-center">
             {dateToTimeString(order.estimatedArrivalDate)}
           </p>
