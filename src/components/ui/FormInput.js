@@ -15,7 +15,7 @@ export default function FormInput({
   validationError = null,
 }) {
   return (
-    <div className>
+    <div className = "w-full">
       <div>
         {label && (
           <label

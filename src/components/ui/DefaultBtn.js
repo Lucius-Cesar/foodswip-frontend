@@ -6,11 +6,12 @@ export default function DefaultBtn({
   color,
   className,
   isLoading,
+  type
 }) {
   return (
     <div className="relative inline-block">
       <button
-        type="button"
+        type={type ? type : "button"}
         onClick={onClick}
         className={` ${className} ${color ? `bg-${color}` : ""} ${
           isLoading ? "invisible" : ""

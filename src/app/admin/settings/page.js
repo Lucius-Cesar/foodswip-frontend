@@ -1,52 +1,52 @@
-"use client"
-import { useState, useEffect } from "react"
-import FormInput from "@/components/ui/FormInput.js"
-import DefaultBtn from "@/components/ui/DefaultBtn"
-import Header from "@/components/adminView/Header"
-import SideNavigation from "@/components/adminView/settings/SideNavigation"
-import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
-import PeriodItem from "@/components/adminView/settings/PeriodItem"
-import ModalPeriod from "@/components/adminView/settings/ModalPeriod"
-import AddBtn from "@/components/ui/AddBtn"
-import InputNumber from "@/components/ui/InputNumber"
-import RestaurantStatusOverrideBtn from "@/components/adminView/RestaurantStatusOverrideBtn"
-import moment from "moment"
-import { formatEndTimeStringIfAfterMidnightForDatabase } from "@/utils/dateAndTime"
-import TabBtn from "@/components/ui/TabBtn"
+"use client";
+import { useState, useEffect } from "react";
+import FormInput from "@/components/ui/FormInput.js";
+import DefaultBtn from "@/components/ui/DefaultBtn";
+import Header from "@/components/admin/Header";
+import SideNavigation from "@/components/admin/settings/SideNavigation";
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo";
+import PeriodItem from "@/components/admin/settings/PeriodItem";
+import ModalPeriod from "@/components/admin/settings/ModalPeriod";
+import AddBtn from "@/components/ui/AddBtn";
+import InputNumber from "@/components/ui/InputNumber";
+import RestaurantStatusOverrideBtn from "@/components/admin/RestaurantStatusOverrideBtn";
+import moment from "moment";
+import { formatEndTimeStringIfAfterMidnightForDatabase } from "@/utils/dateAndTime";
+import TabBtn from "@/components/ui/TabBtn";
 
-import { switchDayLabel } from "@/utils/switchLabel"
-import { useSelector, useDispatch } from "react-redux"
-import { useRouter } from "next/navigation"
+import { switchDayLabel } from "@/utils/switchLabel";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import {
   mailValidation,
   phoneNumberValidation,
   missingInformationValidation,
-} from "@/utils/validations"
-import deepCopy from "@/utils/deepCopy"
-import { switchPaymentMethodLabel } from "@/utils/switchLabel"
-import FooterSettings from "@/components/adminView/settings/FooterSettings"
-import Preloader from "@/components/ui/Preloader"
-import useRefreshAuth from "@/hooks/useRefreshAuth"
-import useCheckAuth from "@/hooks/useCheckAuth"
-import useRestaurantData from "@/hooks/useRestaurantData"
+} from "@/utils/validations";
+import deepCopy from "@/utils/deepCopy";
+import { switchPaymentMethodLabel } from "@/utils/switchLabel";
+import FooterSettings from "@/components/admin/settings/FooterSettings";
+import Preloader from "@/components/ui/Preloader";
+import useRefreshAuth from "@/hooks/useRefreshAuth";
+import useCheckAuth from "@/hooks/useCheckAuth";
+import useRestaurantData from "@/hooks/useRestaurantData";
 
-import { logOut } from "@/redux/auth/authSlice"
-import { XMarkIcon } from "@heroicons/react/20/solid"
-import PasswordUpdate from "@/components/adminView/settings/PasswordUpdate"
+import { logOut } from "@/redux/auth/authSlice";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import PasswordUpdate from "@/components/admin/settings/PasswordUpdate";
 
 export default function settings() {
-  const auth = useSelector((state) => state.auth)
-  const router = useRouter()
-  useRefreshAuth()
-  useCheckAuth()
-  useRestaurantData(auth.data?.user?.slug, "restaurantAdmin")
+  const auth = useSelector((state) => state.auth);
+  const router = useRouter();
+  useRefreshAuth();
+  useCheckAuth();
+  useRestaurantData(auth.data?.user?.slug, "restaurantAdmin");
   //change this later
-  const dispatch = useDispatch()
-  const restaurant = useSelector((state) => state.restaurantAdmin)
-  const [formRestaurantInfo, setFormRestaurantInfo] = useState(null)
-  const [publicSettings, setPublicSettings] = useState(null)
-  const [privateSettings, setPrivateSettings] = useState(null)
-  const [accountSettings, setAccountSettings] = useState(null)
+  const dispatch = useDispatch();
+  const restaurant = useSelector((state) => state.restaurantAdmin);
+  const [formRestaurantInfo, setFormRestaurantInfo] = useState(null);
+  const [publicSettings, setPublicSettings] = useState(null);
+  const [privateSettings, setPrivateSettings] = useState(null);
+  const [accountSettings, setAccountSettings] = useState(null);
   useEffect(() => {
     if (restaurant.data) {
       setFormRestaurantInfo({
@@ -59,43 +59,43 @@ export default function settings() {
         country: restaurant.data.address?.country,
         phoneNumber: restaurant.data.phoneNumber,
         mail: restaurant.data.mail,
-      })
-      setPublicSettings(restaurant.data.publicSettings)
-      setPrivateSettings(restaurant.data.privateSettings)
+      });
+      setPublicSettings(restaurant.data.publicSettings);
+      setPrivateSettings(restaurant.data.privateSettings);
       setAccountSettings({
         password: {
           current: "",
           new: "",
           confirmNew: "",
         },
-      })
+      });
     }
-  }, [restaurant.data])
+  }, [restaurant.data]);
   const [validationErrors, setValidationErrors] = useState({
     mail: "",
     phoneNumber: "",
     orderMailReception: "",
-  })
+  });
 
   const categoriesData = [
     "Paramètres restaurant",
     "Paramètres commandes",
     "Paramètres du compte",
-  ]
-  const [activeCategory, setActiveCategory] = useState(categoriesData[0])
+  ];
+  const [activeCategory, setActiveCategory] = useState(categoriesData[0]);
 
   const optionsDateFormatting = {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     hour12: false, // Utiliser le format 24 heures
-  }
+  };
 
   //ModalPeriod states an functions
 
-  const [isModalScheduleOpen, setModalScheduleOpen] = useState(false)
+  const [isModalScheduleOpen, setModalScheduleOpen] = useState(false);
   const [isModalExceptionalClosingsOpen, setModalExceptionalClosingOpen] =
-    useState(false)
+    useState(false);
 
   const [valueModalPeriod, setValueModalPeriod] = useState({
     dayIndex: null,
@@ -104,80 +104,80 @@ export default function settings() {
     end: null,
     delivery: null,
     takeaway: null,
-  })
+  });
   // crud string "create", "update", "delete" are used to trigger the adequate functions
   const sortServices = (services) =>
     services.sort((a, b) => {
       function convertStartTimeToComparable(time) {
         // Convertit "hh:mm" en minutes depuis minuit
-        const [hours, minutes] = time.split(":").map(Number)
-        return hours * 60 + minutes
+        const [hours, minutes] = time.split(":").map(Number);
+        return hours * 60 + minutes;
       }
 
       return (
         convertStartTimeToComparable(a.start) -
         convertStartTimeToComparable(b.start)
-      )
-    })
-  const [modalPeriodOperation, setModalPeriodOperation] = useState(null)
+      );
+    });
+  const [modalPeriodOperation, setModalPeriodOperation] = useState(null);
   // for Schedule
   const createService = (dayIndex, itemIndex = null, newValue) => {
-    let updatedPublicSettings = deepCopy(publicSettings)
+    let updatedPublicSettings = deepCopy(publicSettings);
     newValue.end = formatEndTimeStringIfAfterMidnightForDatabase(
       newValue.start,
       newValue.end
-    )
-    updatedPublicSettings.schedule[dayIndex].services.push(newValue)
-    sortServices(updatedPublicSettings.schedule[dayIndex].services)
-    setPublicSettings(updatedPublicSettings)
-  }
+    );
+    updatedPublicSettings.schedule[dayIndex].services.push(newValue);
+    sortServices(updatedPublicSettings.schedule[dayIndex].services);
+    setPublicSettings(updatedPublicSettings);
+  };
 
   const updateService = (dayIndex, itemIndex, newValue) => {
-    let updatedPublicSettings = deepCopy(publicSettings)
+    let updatedPublicSettings = deepCopy(publicSettings);
     newValue.end = formatEndTimeStringIfAfterMidnightForDatabase(
       newValue.start,
       newValue.end
-    )
-    updatedPublicSettings.schedule[dayIndex].services[itemIndex] = newValue
-    sortServices(updatedPublicSettings.schedule[dayIndex].services)
-    setPublicSettings(updatedPublicSettings)
-  }
+    );
+    updatedPublicSettings.schedule[dayIndex].services[itemIndex] = newValue;
+    sortServices(updatedPublicSettings.schedule[dayIndex].services);
+    setPublicSettings(updatedPublicSettings);
+  };
 
   const deleteService = (dayIndex, itemIndex, newValue = null) => {
-    let updatedPublicSettings = deepCopy(publicSettings)
-    updatedPublicSettings.schedule[dayIndex].services.splice(itemIndex, 1)
-    setPublicSettings(updatedPublicSettings)
-  }
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.schedule[dayIndex].services.splice(itemIndex, 1);
+    setPublicSettings(updatedPublicSettings);
+  };
 
   // for exceptionalClosings
   const createExceptionalClosing = (itemIndex = null, newValue) => {
-    let updatedPublicSettings = deepCopy(publicSettings)
-    updatedPublicSettings.exceptionalClosings.push(newValue)
-    setPublicSettings(updatedPublicSettings)
-  }
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.exceptionalClosings.push(newValue);
+    setPublicSettings(updatedPublicSettings);
+  };
 
   const updateExceptionalClosing = (itemIndex, newValue) => {
-    let updatedPublicSettings = deepCopy(publicSettings)
-    updatedPublicSettings.exceptionalClosings[itemIndex] = newValue
-    setPublicSettings(updatedPublicSettings)
-  }
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.exceptionalClosings[itemIndex] = newValue;
+    setPublicSettings(updatedPublicSettings);
+  };
 
   const deleteExceptionalClosing = (itemIndex, newValue = null) => {
-    let updatedPublicSettings = deepCopy(publicSettings)
-    updatedPublicSettings.exceptionalClosings.splice(itemIndex, 1)
-    setPublicSettings(updatedPublicSettings)
-  }
+    let updatedPublicSettings = deepCopy(publicSettings);
+    updatedPublicSettings.exceptionalClosings.splice(itemIndex, 1);
+    setPublicSettings(updatedPublicSettings);
+  };
 
   const onClickLogOut = () => {
-    dispatch(logOut()).then(() => router.push("/admin/login"))
-  }
+    dispatch(logOut()).then(() => router.push("/admin/login"));
+  };
 
   if (!(formRestaurantInfo && publicSettings && privateSettings)) {
     return (
       <>
         <Preloader />
       </>
-    )
+    );
   } else {
     return (
       <>
@@ -353,27 +353,27 @@ export default function settings() {
                       endLabel={"Fin du service"}
                       variant="service"
                       validateBtnFunction={() => {
-                        let functionToUse
+                        let functionToUse;
                         switch (modalPeriodOperation) {
                           case "create":
-                            functionToUse = createService
-                            break
+                            functionToUse = createService;
+                            break;
                           case "update":
-                            functionToUse = updateService
-                            break
+                            functionToUse = updateService;
+                            break;
                           default:
-                            break
+                            break;
                         }
                         functionToUse(
                           valueModalPeriod.dayIndex,
                           valueModalPeriod.itemIndex,
                           valueModalPeriod
-                        )
+                        );
                       }}
                     />
                     <div className="flex flex-col items-start space-y-6">
                       {publicSettings?.schedule?.map((scheduleItem, i) => {
-                        const dayLabel = switchDayLabel(i)
+                        const dayLabel = switchDayLabel(i);
                         return (
                           <div
                             key={i}
@@ -391,7 +391,7 @@ export default function settings() {
                                 }
                                 closeBtn={false}
                                 onClickMainBtn={() => {
-                                  setModalScheduleOpen(true)
+                                  setModalScheduleOpen(true);
                                   setValueModalPeriod({
                                     dayIndex: i,
                                     itemIndex: null,
@@ -399,8 +399,8 @@ export default function settings() {
                                     end: null,
                                     delivery: true,
                                     takeaway: true,
-                                  })
-                                  setModalPeriodOperation("create")
+                                  });
+                                  setModalPeriodOperation("create");
                                 }}
                                 type="time"
                               />
@@ -414,7 +414,7 @@ export default function settings() {
                                     otherValue={null}
                                     closeBtn={true}
                                     onClickMainBtn={() => {
-                                      setModalPeriodOperation("update")
+                                      setModalPeriodOperation("update");
                                       setValueModalPeriod({
                                         dayIndex: i,
                                         itemIndex: j,
@@ -422,8 +422,8 @@ export default function settings() {
                                         end: service.end,
                                         delivery: service.delivery,
                                         takeaway: service.takeaway,
-                                      })
-                                      setModalScheduleOpen(true)
+                                      });
+                                      setModalScheduleOpen(true);
                                     }}
                                     onClickCloseBtn={() => deleteService(i, j)}
                                     type="time"
@@ -433,7 +433,7 @@ export default function settings() {
                             )}
                             <AddBtn
                               onClick={() => {
-                                setModalPeriodOperation("create")
+                                setModalPeriodOperation("create");
                                 setValueModalPeriod({
                                   dayIndex: i,
                                   itemIndex: null,
@@ -441,12 +441,12 @@ export default function settings() {
                                   end: null,
                                   delivery: true,
                                   takeaway: true,
-                                })
-                                setModalScheduleOpen(true)
+                                });
+                                setModalScheduleOpen(true);
                               }}
                             />
                           </div>
-                        )
+                        );
                       })}
                     </div>
                   </div>
@@ -462,21 +462,21 @@ export default function settings() {
                       endLabel={"Fin de la période de fermeture"}
                       variant={null}
                       validateBtnFunction={() => {
-                        let functionToUse
+                        let functionToUse;
                         switch (modalPeriodOperation) {
                           case "create":
-                            functionToUse = createExceptionalClosing
-                            break
+                            functionToUse = createExceptionalClosing;
+                            break;
                           case "update":
-                            functionToUse = updateExceptionalClosing
-                            break
+                            functionToUse = updateExceptionalClosing;
+                            break;
                           default:
-                            break
+                            break;
                         }
                         functionToUse(valueModalPeriod.itemIndex, {
                           start: valueModalPeriod.start,
                           end: valueModalPeriod.end,
-                        })
+                        });
                       }}
                     />
                     <div className="flex flex-col items-center space-y-4">
@@ -485,7 +485,7 @@ export default function settings() {
                           const exceptionalClosingDate = {
                             start: new Date(exceptionalClosing.start),
                             end: new Date(exceptionalClosing.end),
-                          }
+                          };
                           const exceptionalClosingLocalString = {
                             start: exceptionalClosingDate.start.toLocaleString(
                               "fr-FR",
@@ -495,7 +495,7 @@ export default function settings() {
                               "fr-FR",
                               optionsDateFormatting
                             ),
-                          }
+                          };
 
                           return (
                             <div>
@@ -506,7 +506,7 @@ export default function settings() {
                                 otherValue={false}
                                 closeBtn={true}
                                 onClickMainBtn={() => {
-                                  setModalPeriodOperation("update")
+                                  setModalPeriodOperation("update");
                                   setValueModalPeriod({
                                     dayIndex: null,
                                     itemIndex: i,
@@ -516,21 +516,21 @@ export default function settings() {
                                     end: moment(
                                       exceptionalClosingDate.end
                                     ).format("YYYY-MM-DD"),
-                                  })
-                                  setModalExceptionalClosingOpen(true)
+                                  });
+                                  setModalExceptionalClosingOpen(true);
                                 }}
                                 onClickCloseBtn={() =>
                                   deleteExceptionalClosing(i)
                                 }
                               />
                             </div>
-                          )
+                          );
                         }
                       )}
                       <AddBtn
                         onClick={() => {
-                          setModalExceptionalClosingOpen(true)
-                          setModalPeriodOperation("create")
+                          setModalExceptionalClosingOpen(true);
+                          setModalPeriodOperation("create");
                         }}
                       />
                     </div>
@@ -557,28 +557,28 @@ export default function settings() {
                             setPublicSettings({
                               ...publicSettings,
                               deliveryMin: value,
-                            })
+                            });
                           }}
                           onIncrement={() => {
                             let updatedDeliveryMin =
-                              Number(publicSettings.deliveryMin) + 1
+                              Number(publicSettings.deliveryMin) + 1;
 
                             setPublicSettings({
                               ...publicSettings,
                               deliveryMin: updatedDeliveryMin,
-                            })
+                            });
                           }}
                           onDecrement={() => {
                             let updatedDeliveryMin =
-                              Number(publicSettings.deliveryMin) - 1
+                              Number(publicSettings.deliveryMin) - 1;
 
                             if (updatedDeliveryMin < 0) {
-                              updatedDeliveryMin = 0
+                              updatedDeliveryMin = 0;
                             }
                             setPublicSettings({
                               ...publicSettings,
                               deliveryMin: updatedDeliveryMin,
-                            })
+                            });
                           }}
                         />
                       </div>
@@ -598,29 +598,29 @@ export default function settings() {
                               setPublicSettings({
                                 ...publicSettings,
                                 deliveryFees: value,
-                              })
+                              });
                             }
                           }}
                           onIncrement={() => {
                             let updatedDeliveryFees =
-                              Number(publicSettings.deliveryFees) + 1
+                              Number(publicSettings.deliveryFees) + 1;
 
                             setPublicSettings({
                               ...publicSettings,
                               deliveryFees: updatedDeliveryFees,
-                            })
+                            });
                           }}
                           onDecrement={() => {
                             let updatedDeliveryFees =
-                              Number(publicSettings.deliveryFees) - 1
+                              Number(publicSettings.deliveryFees) - 1;
 
                             if (updatedDeliveryFees < 0) {
-                              updatedDeliveryFees = 0
+                              updatedDeliveryFees = 0;
                             }
                             setPublicSettings({
                               ...publicSettings,
                               deliveryFees: updatedDeliveryFees,
-                            })
+                            });
                           }}
                         />
                       </div>
@@ -643,35 +643,35 @@ export default function settings() {
                                   ...publicSettings.deliveryEstimate,
                                   min: value,
                                 },
-                              })
+                              });
                             }
                           }}
                           onIncrement={() => {
                             let updatedDeliveryEstimate = {
                               ...publicSettings.deliveryEstimate,
-                            }
+                            };
                             updatedDeliveryEstimate.min =
-                              Number(updatedDeliveryEstimate.min) + 15
+                              Number(updatedDeliveryEstimate.min) + 15;
 
                             setPublicSettings({
                               ...publicSettings,
                               deliveryEstimate: updatedDeliveryEstimate,
-                            })
+                            });
                           }}
                           onDecrement={() => {
                             let updatedDeliveryEstimate = {
                               ...publicSettings.deliveryEstimate,
-                            }
+                            };
                             updatedDeliveryEstimate.min =
-                              Number(updatedDeliveryEstimate.min) - 15
+                              Number(updatedDeliveryEstimate.min) - 15;
 
                             if (updatedDeliveryEstimate.min < 0) {
-                              updatedDeliveryEstimate.min = 0
+                              updatedDeliveryEstimate.min = 0;
                             }
                             setPublicSettings({
                               ...publicSettings,
                               deliveryEstimate: updatedDeliveryEstimate,
-                            })
+                            });
                           }}
                         />
                       </div>
@@ -695,35 +695,35 @@ export default function settings() {
                                 ...publicSettings.deliveryEstimate,
                                 max: value,
                               },
-                            })
+                            });
                           }
                         }}
                         onIncrement={() => {
                           let updatedDeliveryEstimate = {
                             ...publicSettings.deliveryEstimate,
-                          }
+                          };
                           updatedDeliveryEstimate.max =
-                            Number(updatedDeliveryEstimate.max) + 15
+                            Number(updatedDeliveryEstimate.max) + 15;
 
                           setPublicSettings({
                             ...publicSettings,
                             deliveryEstimate: updatedDeliveryEstimate,
-                          })
+                          });
                         }}
                         onDecrement={() => {
                           let updatedDeliveryEstimate = {
                             ...publicSettings.deliveryEstimate,
-                          }
+                          };
                           updatedDeliveryEstimate.max =
-                            Number(updatedDeliveryEstimate.max) - 15
+                            Number(updatedDeliveryEstimate.max) - 15;
 
                           if (updatedDeliveryEstimate.max < 0) {
-                            updatedDeliveryEstimate.max = 0
+                            updatedDeliveryEstimate.max = 0;
                           }
                           setPublicSettings({
                             ...publicSettings,
                             deliveryEstimate: updatedDeliveryEstimate,
-                          })
+                          });
                         }}
                       />
                     </div>
@@ -743,12 +743,12 @@ export default function settings() {
                                 onChange={(input) => {
                                   let updatedDeliveryPostCodes = [
                                     ...publicSettings.deliveryPostCodes,
-                                  ]
-                                  updatedDeliveryPostCodes[i] = input
+                                  ];
+                                  updatedDeliveryPostCodes[i] = input;
                                   setPublicSettings({
                                     ...publicSettings,
                                     deliveryPostCodes: updatedDeliveryPostCodes,
-                                  })
+                                  });
                                 }}
                               />
                             </div>
@@ -756,12 +756,12 @@ export default function settings() {
                               onClick={() => {
                                 let updatedDeliveryPostCodes = [
                                   ...publicSettings.deliveryPostCodes,
-                                ]
-                                updatedDeliveryPostCodes.splice(i, 1)
+                                ];
+                                updatedDeliveryPostCodes.splice(i, 1);
                                 setPublicSettings({
                                   ...publicSettings,
                                   deliveryPostCodes: updatedDeliveryPostCodes,
-                                })
+                                });
                               }}
                               className="absolute -right-8 top-0 bottom-0"
                             >
@@ -775,12 +775,12 @@ export default function settings() {
                         onClick={() => {
                           let updatedDeliveryPostCodes = [
                             ...publicSettings.deliveryPostCodes,
-                          ]
-                          updatedDeliveryPostCodes.push("")
+                          ];
+                          updatedDeliveryPostCodes.push("");
                           setPublicSettings({
                             ...publicSettings,
                             deliveryPostCodes: updatedDeliveryPostCodes,
-                          })
+                          });
                         }}
                       />
                     </div>
@@ -803,29 +803,29 @@ export default function settings() {
                             setPublicSettings({
                               ...publicSettings,
                               takeAwayEstimate: value,
-                            })
+                            });
                           }
                         }}
                         onIncrement={() => {
                           let updatedTakawayEstimate =
-                            Number(publicSettings.takeAwayEstimate) + 5
+                            Number(publicSettings.takeAwayEstimate) + 5;
 
                           setPublicSettings({
                             ...publicSettings,
                             takeAwayEstimate: updatedTakawayEstimate,
-                          })
+                          });
                         }}
                         onDecrement={() => {
                           let updatedTakawayEstimate =
-                            Number(publicSettings.takeAwayEstimate) - 5
+                            Number(publicSettings.takeAwayEstimate) - 5;
 
                           if (updatedTakawayEstimate < 0) {
-                            updatedTakawayEstimate = 0
+                            updatedTakawayEstimate = 0;
                           }
                           setPublicSettings({
                             ...publicSettings,
                             takeAwayEstimate: updatedTakawayEstimate,
-                          })
+                          });
                         }}
                       />
                     </div>
@@ -838,7 +838,7 @@ export default function settings() {
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
-                      )
+                      );
 
                       return (
                         <div key={i} className="flex items-center">
@@ -851,17 +851,17 @@ export default function settings() {
                             onChange={() => {
                               let updatedPaymentMethods = [
                                 ...publicSettings.paymentMethods,
-                              ] // Make a copy of paymentMethods array
+                              ]; // Make a copy of paymentMethods array
                               let updatedPaymentMethod = {
                                 ...updatedPaymentMethods[i],
-                              } // Make a copy of the specific payment method object
+                              }; // Make a copy of the specific payment method object
                               updatedPaymentMethod.delivery =
-                                !updatedPaymentMethod.delivery // Update the delivery status
-                              updatedPaymentMethods[i] = updatedPaymentMethod // Update the payment method in the array
+                                !updatedPaymentMethod.delivery; // Update the delivery status
+                              updatedPaymentMethods[i] = updatedPaymentMethod; // Update the payment method in the array
                               setPublicSettings({
                                 ...publicSettings,
                                 paymentMethods: updatedPaymentMethods,
-                              })
+                              });
                             }}
                           />
                           <label
@@ -871,7 +871,7 @@ export default function settings() {
                             {paymentMethodLabel}
                           </label>
                         </div>
-                      )
+                      );
                     })}
                   </div>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
@@ -879,7 +879,7 @@ export default function settings() {
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
-                      )
+                      );
 
                       return (
                         <div key={i} className="flex items-center">
@@ -892,15 +892,15 @@ export default function settings() {
                             onChange={() => {
                               let updatedPaymentMethods = [
                                 ...publicSettings.paymentMethods,
-                              ] // Faites une copie du tableau paymentMethods
+                              ]; // Faites une copie du tableau paymentMethods
                               updatedPaymentMethods[i] = {
                                 ...updatedPaymentMethods[i],
                                 takeAway: !updatedPaymentMethods[i].takeAway,
-                              }
+                              };
                               setPublicSettings({
                                 ...publicSettings,
                                 paymentMethods: updatedPaymentMethods,
-                              })
+                              });
                             }}
                           />
                           <label
@@ -910,7 +910,7 @@ export default function settings() {
                             {paymentMethodLabel}
                           </label>
                         </div>
-                      )
+                      );
                     })}
                   </div>
                 </div>
@@ -927,19 +927,19 @@ export default function settings() {
                       onClickTab={(i) => {
                         let updatedOrderMailreception = {
                           ...privateSettings.orderMailReception,
-                        }
+                        };
 
                         if (i === 0) {
                           //enable
-                          updatedOrderMailreception.enabled = true
+                          updatedOrderMailreception.enabled = true;
                         } else if (i === 1) {
                           //disable
-                          updatedOrderMailreception.enabled = false
+                          updatedOrderMailreception.enabled = false;
                         }
                         setPrivateSettings({
                           ...privateSettings,
                           orderMailReception: updatedOrderMailreception,
-                        })
+                        });
                       }}
                     />
                     <div>
@@ -955,14 +955,14 @@ export default function settings() {
                           onChange={(input) => {
                             let updatedOrderMailReception = {
                               ...privateSettings.orderMailReception,
-                            }
-                            updatedOrderMailReception.mail = input
+                            };
+                            updatedOrderMailReception.mail = input;
                             setPrivateSettings({
                               ...privateSettings,
                               orderMailReception: {
                                 ...updatedOrderMailReception,
                               },
-                            })
+                            });
                           }}
                           validationFunction={(e) =>
                             mailValidation(
@@ -991,18 +991,18 @@ export default function settings() {
                       onClickTab={(i) => {
                         let updatedPendingOrderAlert = {
                           ...privateSettings.pendingOrderAlert,
-                        }
+                        };
                         if (i === 0) {
                           //enable
-                          updatedPendingOrderAlert.enabled = true
+                          updatedPendingOrderAlert.enabled = true;
                         } else if (i === 1) {
                           //disable
-                          updatedPendingOrderAlert.enabled = false
+                          updatedPendingOrderAlert.enabled = false;
                         }
                         setPrivateSettings({
                           ...privateSettings,
                           pendingOrderAlert: updatedPendingOrderAlert,
-                        })
+                        });
                       }}
                     />
                   </div>
@@ -1019,39 +1019,39 @@ export default function settings() {
                         onChange={(value) => {
                           let updatedPendingOrderAlert = {
                             ...privateSettings.pendingOrderAlert,
-                          }
+                          };
                           if (value >= 0) {
-                            updatedPendingOrderAlert.interval = value
+                            updatedPendingOrderAlert.interval = value;
                             setPrivateSettings({
                               ...privateSettings,
                               pendingOrderAlert: updatedPendingOrderAlert,
-                            })
+                            });
                           }
                         }}
                         onIncrement={() => {
                           let updatedPendingOrderAlert = {
                             ...privateSettings.pendingOrderAlert,
-                          }
+                          };
                           updatedPendingOrderAlert.interval =
-                            Number(updatedPendingOrderAlert.interval) + 5
+                            Number(updatedPendingOrderAlert.interval) + 5;
                           setPrivateSettings({
                             ...privateSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
-                          })
+                          });
                         }}
                         onDecrement={() => {
                           let updatedPendingOrderAlert = {
                             ...privateSettings.pendingOrderAlert,
-                          }
+                          };
                           updatedPendingOrderAlert.interval =
-                            Number(updatedPendingOrderAlert.interval) - 5
+                            Number(updatedPendingOrderAlert.interval) - 5;
                           if (updatedPendingOrderAlert.interval < 0) {
-                            updatedPendingOrderAlert.interval = 0
+                            updatedPendingOrderAlert.interval = 0;
                           }
                           setPrivateSettings({
                             ...privateSettings,
                             pendingOrderAlert: updatedPendingOrderAlert,
-                          })
+                          });
                         }}
                       />
                     </div>
@@ -1111,6 +1111,6 @@ export default function settings() {
           )}
         </div>
       </>
-    )
+    );
   }
 }

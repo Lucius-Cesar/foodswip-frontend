@@ -1,49 +1,65 @@
 function switchDayLabel(dayNumber) {
-  let dayLabel
+  let dayLabel;
 
   switch (dayNumber) {
     case 0:
-      dayLabel = "Lundi"
-      break
+      dayLabel = "Lundi";
+      break;
     case 1:
-      dayLabel = "Mardi"
-      break
+      dayLabel = "Mardi";
+      break;
     case 2:
-      dayLabel = "Mercredi"
-      break
+      dayLabel = "Mercredi";
+      break;
     case 3:
-      dayLabel = "Jeudi"
-      break
+      dayLabel = "Jeudi";
+      break;
     case 4:
-      dayLabel = "Vendredi"
-      break
+      dayLabel = "Vendredi";
+      break;
     case 5:
-      dayLabel = "Samedi"
-      break
+      dayLabel = "Samedi";
+      break;
     case 6:
-      dayLabel = "Dimanche"
-      break
+      dayLabel = "Dimanche";
+      break;
   }
 
-  return dayLabel
+  return dayLabel;
 }
 
 function switchPaymentMethodLabel(paymentMethodValue) {
-  let paymentMethodlabel
+  let paymentMethodlabel;
   switch (paymentMethodValue) {
     case "cash":
-      paymentMethodlabel = "Espèces"
-      break
+      paymentMethodlabel = "Espèces";
+      break;
     case "online":
-      paymentMethodlabel = "Paiement en ligne"
-      break
+      paymentMethodlabel = "Paiement en ligne";
+      break;
     case "bancontact":
-      paymentMethodlabel = "Bancontact"
+      paymentMethodlabel = "Bancontact";
     default:
-      break
+      break;
   }
 
-  return paymentMethodlabel
+  return paymentMethodlabel;
 }
 
-export { switchDayLabel, switchPaymentMethodLabel }
+function switchOrderTypeLabel(orderType) {
+  let orderTypeLabel;
+  switch (orderType) {
+    case 0:
+      orderTypeLabel = "Livraison";
+      break;
+    case 1:
+      orderTypeLabel = "À emporter";
+      break;
+    default:
+      break;
+  }
+
+  return orderTypeLabel;
+}
+
+export { switchDayLabel, switchPaymentMethodLabel, switchOrderTypeLabel };

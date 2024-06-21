@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-import { clearCart } from "@/redux/cart/cartSlice"
-import { useState, useEffect, useRef } from "react"
-import useFetch from "@/hooks/useFetch"
-import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty"
-import Cart from "../../../../components/eaterView/Cart"
-import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
-import OrderTabBtn from "@/components/eaterView/OrderTabBtn"
-import FormInput from "../../../../components/ui/FormInput"
-import DefaultBtn from "@/components/ui/DefaultBtn"
-import SelectArrivalTimeBtn from "@/components/eaterView/checkout/SelectArrivalTimeBtn"
-import StripeModal from "@/components/eaterView/checkout/StripeModal"
-import LoadingSpinner from "@/components/ui/LoadingSpinner"
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { clearCart } from "@/redux/cart/cartSlice";
+import { useState, useEffect, useRef } from "react";
+import useFetch from "@/hooks/useFetch";
+import useRedirectIfCartEmpty from "../../../../hooks/useRedirectIfCartEmpty";
+import Cart from "../../../../components/menu/Cart";
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo";
+import OrderTabBtn from "@/components/menu/OrderTabBtn";
+import FormInput from "../../../../components/ui/FormInput";
+import DefaultBtn from "@/components/ui/DefaultBtn";
+import SelectArrivalTimeBtn from "@/components/menu/checkout/SelectArrivalTimeBtn";
+import StripeModal from "@/components/menu/checkout/StripeModal";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
-import { switchPaymentMethodLabel } from "@/utils/switchLabel"
-import { loadStripe } from "@stripe/stripe-js"
+import { switchPaymentMethodLabel } from "@/utils/switchLabel";
+import { loadStripe } from "@stripe/stripe-js";
 
 import {
   missingInformationValidation,
@@ -25,30 +25,30 @@ import {
   postCodeValidation,
   mailValidation,
   arrivalTimeValidation,
-} from "@/utils/validations"
+} from "@/utils/validations";
 
 import {
   isValidTimeString,
   compteNewDateBasedOnTimeString,
-} from "@/utils/dateAndTime"
-import InputNumber from "@/components/ui/InputNumber"
-import useRestaurantData from "@/hooks/useRestaurantData"
-import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus"
+} from "@/utils/dateAndTime";
+import InputNumber from "@/components/ui/InputNumber";
+import useRestaurantData from "@/hooks/useRestaurantData";
+import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 
 export default function Checkout({ params }) {
   //redirect to menu page if cart modification during checkout leads to empty cart
-  const router = useRouter()
-  const dispatch = useDispatch()
-  useRedirectIfCartEmpty()
-  useRestaurantData(params.slug, "restaurantPublic")
+  const router = useRouter();
+  const dispatch = useDispatch();
+  useRedirectIfCartEmpty();
+  useRestaurantData(params.slug, "restaurantPublic");
 
   //mobileScrollRef is used to scroll directly behind the card on checkout
-  const mobileScrollRef = useRef(null)
-  const restaurant = useSelector((state) => state.restaurantPublic)
+  const mobileScrollRef = useRef(null);
+  const restaurant = useSelector((state) => state.restaurantPublic);
 
-  const cart = useSelector((state) => state.cart)
+  const cart = useSelector((state) => state.cart);
 
-  const [paymentMethods, setPaymentMethods] = useState([])
+  const [paymentMethods, setPaymentMethods] = useState([]);
   const [form, setForm] = useState({
     street: "",
     streetNumber: "",
@@ -58,7 +58,7 @@ export default function Checkout({ params }) {
     lastname: "",
     mail: "",
     phoneNumber: "",
-  })
+  });
   //validations forms
   const [validationErrors, setValidationErrors] = useState({
     street: "",
@@ -72,70 +72,70 @@ export default function Checkout({ params }) {
     paymentMethod: "",
     restaurantOpen: "",
     arrivalTime: "",
-  })
-  const [orderError, setOrderError] = useState(false)
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null)
+  });
+  const [orderError, setOrderError] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   //fetchTrigger triggers the useFetch hook on confirmOrder
-  const [fetchTrigger, setFetchTrigger] = useState(false)
-  const [fetchOptions, setFetchOptions] = useState(null)
-  const [timeString, setTimeString] = useState(null)
+  const [fetchTrigger, setFetchTrigger] = useState(false);
+  const [fetchOptions, setFetchOptions] = useState(null);
+  const [timeString, setTimeString] = useState(null);
 
   //this part of the code are designed for the SelectedArrivalTimeBtn
-  const timeInterval = 15
+  const timeInterval = 15;
   //this variable is the defaultValue of the formSelect to choose arrivalTime
-  const defaultOptionArrivalTimeSelect = "Choisissez une heure"
+  const defaultOptionArrivalTimeSelect = "Choisissez une heure";
   const [
     isCurrentServiceActiveForSelectedOrderType,
     setIsCurrentServiceActiveForSelectedOrderType,
-  ] = useState(null)
+  ] = useState(null);
   const {
     restaurantOpen,
     currentService,
     remainingServicesForToday,
     restaurantStatus,
-  } = useCheckRestaurantStatus(restaurant)
+  } = useCheckRestaurantStatus(restaurant);
 
   //stripeModalOpen for onlinePayment
-  const [stripeModalOpen, setStripeModalOpen] = useState(false)
+  const [stripeModalOpen, setStripeModalOpen] = useState(false);
 
   const newOrder = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/createOrder`,
     fetchOptions,
     fetchTrigger,
     setFetchTrigger
-  )
+  );
 
   //this useEffect is used to leave the checkout page if needed to avoid problems
   useEffect(() => {
     const intervalId = setInterval(() => {
       //every timeInterval => leave checkout
-      router.push(`/menu/${restaurant.data.slug}`)
-    }, timeInterval * 60 * 1000)
+      router.push(`/menu/${restaurant.data.slug}`);
+    }, timeInterval * 60 * 1000);
     if (restaurantOpen === false) {
-      router.push(`/menu/${restaurant.data.slug}`)
+      router.push(`/menu/${restaurant.data.slug}`);
     }
-    return () => clearInterval(intervalId)
-  }, [])
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     //change payment method choices based on orderType
-    let filteredPaymentMethods
+    let filteredPaymentMethods;
     if (cart.data.orderType === 0) {
       filteredPaymentMethods = restaurant.data.publicSettings.paymentMethods
         .filter((paymentMethod) => paymentMethod.delivery === true)
-        .map((paymentMethod) => paymentMethod.value)
+        .map((paymentMethod) => paymentMethod.value);
 
-      setPaymentMethods(filteredPaymentMethods)
+      setPaymentMethods(filteredPaymentMethods);
     } else if (cart.data.orderType === 1) {
       filteredPaymentMethods = restaurant.data.publicSettings.paymentMethods
         .filter((paymentMethod) => paymentMethod.takeAway === true)
-        .map((paymentMethod) => paymentMethod.value)
+        .map((paymentMethod) => paymentMethod.value);
 
-      setPaymentMethods(filteredPaymentMethods)
+      setPaymentMethods(filteredPaymentMethods);
     }
 
     if (filteredPaymentMethods.includes("online") && !selectedPaymentMethod) {
-      setSelectedPaymentMethod("online")
+      setSelectedPaymentMethod("online");
     }
 
     //postCode Validation based on orderType
@@ -147,37 +147,37 @@ export default function Checkout({ params }) {
         restaurant.data.publicSettings.deliveryPostCodes,
         cart.data.orderType,
         restaurant.data.phoneNumber
-      )
+      );
     }
-  }, [cart.data.orderType])
+  }, [cart.data.orderType]);
 
   // this useEffect is used to redirect to open the stripe modal if online payment or redirect to the order page if cash payment
   useEffect(() => {
-    if (!newOrder.data) return
+    if (!newOrder.data) return;
     if (newOrder.data.clientSecret && selectedPaymentMethod === "online") {
-      setStripeModalOpen(true)
+      setStripeModalOpen(true);
     } else if (newOrder?.data?.status === "completed") {
-      router.push(`/menu/${params.slug}/order/${newOrder.data.orderNumber}`)
+      router.push(`/menu/${params.slug}/order/${newOrder.data.orderNumber}`);
 
       //workaround to dispatch after router.push is completed (not the best solution)
       setTimeout(() => {
-        dispatch(clearCart())
-      }, "3000")
+        dispatch(clearCart());
+      }, "3000");
     }
-  }, [newOrder])
+  }, [newOrder]);
 
   const computeEstimatedArrivalDate = (orderType) => {
-    const currentDate = new Date()
-    let estimatedArrival
+    const currentDate = new Date();
+    let estimatedArrival;
     //if no timeString haveBeen selected or is not in the expected format (for example with the "As soon as possible" value)
     if (!timeString || !isValidTimeString(timeString)) {
-      estimatedArrival = currentDate
+      estimatedArrival = currentDate;
       //delivery
       if (orderType === 0) {
         estimatedArrival.setMinutes(
           currentDate.getMinutes() +
             restaurant.data.publicSettings.deliveryEstimate.max
-        )
+        );
       }
 
       //takeAway
@@ -185,25 +185,28 @@ export default function Checkout({ params }) {
         estimatedArrival.setMinutes(
           currentDate.getMinutes() +
             restaurant.data.publicSettings.takeAwayEstimate
-        )
+        );
       }
     } else {
-      estimatedArrival = compteNewDateBasedOnTimeString(currentDate, timeString)
+      estimatedArrival = compteNewDateBasedOnTimeString(
+        currentDate,
+        timeString
+      );
     }
 
-    return estimatedArrival
-  }
+    return estimatedArrival;
+  };
 
   useEffect(() => {
     if (window.innerWidth <= 640 && mobileScrollRef.current) {
-      mobileScrollRef.current.scrollIntoView({ behavior: "smooth" })
+      mobileScrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [])
+  }, []);
 
   //prefetch stripe promise
   const [stripePromise, setStripePromise] = useState(
     loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
-  )
+  );
 
   const handleConfirmOrder = () => {
     arrivalTimeValidation(
@@ -212,20 +215,20 @@ export default function Checkout({ params }) {
       setValidationErrors,
       isCurrentServiceActiveForSelectedOrderType,
       "arrivalTime"
-    )
+    );
     //display errors on submit and not only onBlur
     missingInformationValidation(
       form.street,
       setValidationErrors,
       "street",
       "La rue est obligatoire"
-    )
+    );
     missingInformationValidation(
       form.streetNumber,
       setValidationErrors,
       "streetNumber",
       "Le numéro de maison est obligatoire"
-    )
+    );
     postCodeValidation(
       form.postCode,
       setValidationErrors,
@@ -233,54 +236,54 @@ export default function Checkout({ params }) {
       restaurant.data.publicSettings.deliveryPostCodes,
       cart.data.orderType,
       restaurant.data.phoneNumber
-    )
+    );
     missingInformationValidation(
       form.city,
       setValidationErrors,
       "city",
       "La ville est obligatoire"
-    )
+    );
     missingInformationValidation(
       form.firstname,
       setValidationErrors,
       "firstname",
       "Le prénom est obligatoire"
-    )
+    );
     missingInformationValidation(
       form.lastname,
       setValidationErrors,
       "lastname",
       "Le nom est obligatoire"
-    )
-    mailValidation(form.mail, setValidationErrors, "mail")
-    phoneNumberValidation(form.phoneNumber, setValidationErrors, "phoneNumber")
+    );
+    mailValidation(form.mail, setValidationErrors, "mail");
+    phoneNumberValidation(form.phoneNumber, setValidationErrors, "phoneNumber");
 
     if (!selectedPaymentMethod) {
       setValidationErrors((previous) => ({
         ...previous,
         paymentMethod: "Aucun moyen de paiement sélectionné",
-      }))
+      }));
     } else {
       setValidationErrors((previous) => ({
         ...previous,
         paymentMethod: "",
-      }))
+      }));
     }
     if (!restaurantOpen) {
       setValidationErrors((previous) => ({
         ...previous,
         restaurantOpen: "L'établissement est actuellement fermé",
-      }))
+      }));
     }
 
     //use set + previous to avoid async problems
     setValidationErrors((previous) => {
       if (Object.values(previous).every((value) => value === "")) {
-        setOrderError(false)
+        setOrderError(false);
         //compute estimated arrival Date
         const estimatedArrivalDate = computeEstimatedArrivalDate(
           cart.data.orderType
-        )
+        );
 
         //fetchOptions triggers the fetch
         setFetchOptions({
@@ -310,14 +313,14 @@ export default function Checkout({ params }) {
             estimatedArrivalDate: estimatedArrivalDate,
             restaurant: restaurant.data._id,
           }),
-        })
-        setFetchTrigger(true)
+        });
+        setFetchTrigger(true);
       } else {
-        setOrderError(true)
+        setOrderError(true);
       }
-      return previous
-    })
-  }
+      return previous;
+    });
+  };
 
   return (
     <>
@@ -338,15 +341,15 @@ export default function Checkout({ params }) {
                   remainingServicesForToday={remainingServicesForToday}
                   restaurantStatus={restaurantStatus}
                   onChange={() => {
-                    const updatedTimeString = defaultOptionArrivalTimeSelect
-                    setTimeString(defaultOptionArrivalTimeSelect)
+                    const updatedTimeString = defaultOptionArrivalTimeSelect;
+                    setTimeString(defaultOptionArrivalTimeSelect);
                     arrivalTimeValidation(
                       updatedTimeString,
                       defaultOptionArrivalTimeSelect,
                       setValidationErrors,
                       isCurrentServiceActiveForSelectedOrderType,
                       "arrivalTime"
-                    )
+                    );
                   }}
                 />
               </div>
@@ -483,7 +486,7 @@ export default function Checkout({ params }) {
                 <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                   {paymentMethods.map((paymentMethod, i) => {
                     const paymentMethodLabel =
-                      switchPaymentMethodLabel(paymentMethod)
+                      switchPaymentMethodLabel(paymentMethod);
 
                     return (
                       <div key={i} className="flex items-center">
@@ -493,11 +496,11 @@ export default function Checkout({ params }) {
                           type="radio"
                           className="h-5 w-5 sm:h-4 sm:w-4 border-gray-300 text-primary focus:ring-primary"
                           onChange={() => {
-                            setSelectedPaymentMethod(paymentMethod)
+                            setSelectedPaymentMethod(paymentMethod);
                             setValidationErrors((previous) => ({
                               ...previous,
                               paymentMethod: "",
-                            }))
+                            }));
                           }}
                           defaultChecked={
                             selectedPaymentMethod === paymentMethod
@@ -511,7 +514,7 @@ export default function Checkout({ params }) {
                           {paymentMethodLabel}
                         </label>
                       </div>
-                    )
+                    );
                   })}
                   <StripeModal
                     open={stripeModalOpen}
@@ -686,5 +689,5 @@ export default function Checkout({ params }) {
         </div>
       </div>
     </>
-  )
+  );
 }

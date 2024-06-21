@@ -1,4 +1,5 @@
 export const dateToTimeString = (date) => {
+  date = new Date(date);
   return `${date.getHours()}:${String(date.getMinutes()).padStart(2, "0")}`;
 };
 export const isValidTimeString = (timeString) => {

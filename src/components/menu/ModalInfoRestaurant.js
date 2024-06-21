@@ -1,19 +1,19 @@
-import { Fragment } from "react"
-import { useSelector } from "react-redux"
-import { Dialog, Transition } from "@headlessui/react"
-import { XMarkIcon } from "@heroicons/react/24/outline"
-import { switchDayLabel } from "@/utils/switchLabel"
+import { Fragment } from "react";
+import { useSelector } from "react-redux";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { switchDayLabel } from "@/utils/switchLabel";
 import {
   formatTimeStringAfterMidnightForDisplay,
   getDayIndex,
-} from "@/utils/dateAndTime"
+} from "@/utils/dateAndTime";
 export default function Restaurant({ open, setOpen }) {
-  const restaurant = useSelector((state) => state.restaurantPublic)
-  const currentDate = new Date()
-  const currentDayIndex = getDayIndex(currentDate)
+  const restaurant = useSelector((state) => state.restaurantPublic);
+  const currentDate = new Date();
+  const currentDayIndex = getDayIndex(currentDate);
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   function formatExeptionalClosings(dateString) {
     const options = {
@@ -23,10 +23,10 @@ export default function Restaurant({ open, setOpen }) {
       year: "numeric",
       hour: "numeric",
       minute: "numeric",
-    }
+    };
 
-    const date = new Date(dateString)
-    return date.toLocaleString("fr-FR", options)
+    const date = new Date(dateString);
+    return date.toLocaleString("fr-FR", options);
   }
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -86,7 +86,7 @@ export default function Restaurant({ open, setOpen }) {
                     <div className="flex flex-col space-y-2">
                       {restaurant.data.publicSettings.schedule.map(
                         (dayschedule, i) => {
-                          const dayLabel = switchDayLabel(i)
+                          const dayLabel = switchDayLabel(i);
 
                           return (
                             <div
@@ -126,7 +126,7 @@ export default function Restaurant({ open, setOpen }) {
                                 )}
                               </div>
                             </div>
-                          )
+                          );
                         }
                       )}
                     </div>
@@ -154,5 +154,5 @@ export default function Restaurant({ open, setOpen }) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }
