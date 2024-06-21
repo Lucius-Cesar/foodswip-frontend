@@ -1688,13 +1688,13 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen p-6 space-y-4">
-        <div className="flex flex-col flex-grow space-y-4 overflow-y-hidden">
+      <div className="flex flex-col h-screen p-6 space-y-2  ">
+        <div className="flex flex-col flex-grow space-y-2  overflow-y-hidden">
           <div className="flex flex-row gap-3">
-            <BellAlertIcon className="text-yellow-400 h-8" />
-            <p className="text-3xl font-bold">Nouveau (3)</p>
+            <BellAlertIcon className="text-yellow-400 h-6" />
+            <p className="text-lg font-bold">Nouveau (3)</p>
           </div>
-          <div className=" overflow-y-auto space-y-4">
+          <div className="grow overflow-y-auto space-y-2">
             <OrderCard order={orders[0]} />
             <OrderCard order={orders[0]} />
             <OrderCard order={orders[0]} />
@@ -1702,13 +1702,12 @@ const page = () => {
           </div>
         </div>
 
-        <div className="flex flex-col flex-grow space-y-4 overflow-y-hidden">
+        <div className="flex flex-col flex-grow space-y-2 ">
           <div className="flex flex-row gap-3">
-            <CheckCircleIcon className="text-success h-8" />
-            <p className="text-3xl font-bold">Accepté (3)</p>
+            <CheckCircleIcon className="text-success h-6" />
+            <p className="text-lg font-bold">Accepté (3)</p>
           </div>
-          <div className="overflow-y-auto space-y-4">
-            <OrderCard order={orders[0]} />
+          <div className="grow overflow-y-auto space-y-2">
             <OrderCard order={orders[0]} />
           </div>
         </div>

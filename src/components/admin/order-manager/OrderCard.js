@@ -12,8 +12,8 @@ const OrderCard = ({ order }) => {
   console.log(order);
   return (
     <>
-      <div className="flex flex-row text-lg rounded-xl bg-magnolia w-full h-32 ring-inset ring-1 ring-gray-300">
-        <div className="w-9/12 h-full border-e border-gray-300 p-3">
+      <div className="flex flex-row text-sm rounded-xl bg-magnolia w-full h-24 ring-inset ring-1 ring-gray-300">
+        <div className="w-9/12 h-full border-e border-gray-300 p-2">
           <div className="flex flex-col justify-between items-start h-full">
             <p className="font-bold">
               {order.customer.firstname} {order.customer.lastname}
@@ -21,12 +21,12 @@ const OrderCard = ({ order }) => {
             <div className="flex flex-row gap-6">
               <div className="flex flex-row gap-1 items-start">
                 <div className="">
-                  {switchOrderTypeIcon(order.orderType, "h-5")}
+                  {switchOrderTypeIcon(order.orderType, "h-4")}
                 </div>
                 <p>{switchOrderTypeLabel(order.orderType)}</p>
               </div>
               <div className="flex flex-row gap-1 items-start">
-                {switchPaymentMethodIcon(order.paymentMethod, "h-6")}
+                {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
                 <p className="align-text-bottom">
                   {switchPaymentMethodLabel(order.paymentMethod)}
                 </p>
@@ -35,12 +35,12 @@ const OrderCard = ({ order }) => {
             <p className="font-bold"> {order.totalSum} €</p>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center w-3/12  p-3">
-          <ClockIcon className="h-10 text-primary" />
+        <div className="flex flex-col justify-center items-center w-3/12  p-2">
+          <ClockIcon className="h-8 text-primary" />
           <p className="font-bold text-center">
             {dateToTimeString(order.estimatedArrivalDate)}
           </p>
-          <p className="text-sm text-center">
+          <p className="text-xs text-center">
             Passée à {dateToTimeString(order.creationDate)}
           </p>
         </div>
