@@ -1688,7 +1688,7 @@ const page = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen p-6 space-y-2  ">
+      <div className="flex flex-col h-screen p-4 space-y-2  ">
         <div className="flex flex-col flex-grow space-y-2  overflow-y-hidden">
           <div className="flex flex-row gap-3">
             <BellAlertIcon className="text-yellow-400 h-6" />

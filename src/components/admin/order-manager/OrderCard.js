@@ -18,7 +18,7 @@ const OrderCard = ({ order }) => {
             <p className="font-bold">
               {order.customer.firstname} {order.customer.lastname}
             </p>
-            <div className="flex flex-row gap-6">
+            <div className="flex flex-row gap-2">
               <div className="flex flex-row gap-1 items-start">
                 <div className="">
                   {switchOrderTypeIcon(order.orderType, "h-4")}
