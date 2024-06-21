@@ -19,13 +19,13 @@ const OrderCard = ({ order }) => {
               {order.customer.firstname} {order.customer.lastname}
             </p>
             <div className="flex flex-row gap-2">
-              <div className="flex flex-row gap-1 items-start">
+              <div className="flex flex-row gap-2 items-start">
                 <div className="">
                   {switchOrderTypeIcon(order.orderType, "h-4")}
                 </div>
                 <p>{switchOrderTypeLabel(order.orderType)}</p>
               </div>
-              <div className="flex flex-row gap-1 items-start">
+              <div className="flex flex-row gap-2 items-start">
                 {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
                 <p className="align-text-bottom">
                   {switchPaymentMethodLabel(order.paymentMethod)}
@@ -35,7 +35,7 @@ const OrderCard = ({ order }) => {
             <p className="font-bold"> {order.totalSum} €</p>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center w-3/12  p-2">
+        <div className="flex flex-col justify-center items-center w-3/12  p-1">
           <ClockIcon className="h-8 text-primary" />
           <p className="font-bold text-center">
             {dateToTimeString(order.estimatedArrivalDate)}
