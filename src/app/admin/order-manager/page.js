@@ -13,207 +13,78 @@ const page = () => {
   const orders = [
     {
       _id: {
-        $oid: "66741749f8cf387099dc4ecf",
+        $oid: "667715ef8c9e32ab7109c45b",
       },
-      orderNumber: 233485,
+      orderNumber: 233489,
       customer: {
-        firstname: "Lucien",
-        lastname: "Delgrange",
-        mail: "luciendelgrange5@gmail.com",
-        phoneNumber: "0498089362",
+        firstname: "Phil",
+        lastname: "Heath",
+        mail: "Thebigphil@gmail.com",
+        phoneNumber: "0497886655",
         address: {
-          street: "Rue du bout de la Haut",
-          streetNumber: "8",
-          postCode: "7390",
-          city: "Quaregnon",
+          street: "Rue de la masse",
+          streetNumber: "20",
+          postCode: "7100",
+          city: "Mutant City",
         },
         ip: "::1",
       },
-      articles: [
+      articles: [],
+      formattedArticlesList: [
         {
-          food: {
-            value: "Pizza Margherita",
-            description: "Sauce tomate, Mozzarella, Basilic",
-            price: 10.99,
-            display: true,
-            categoryNumber: 0,
-            categoryTitle: "Pizza",
-            tva: 6,
-            _id: {
-              $oid: "6637e51442bab015bccf1843",
-            },
-          },
-          options: [
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
             {
-              value: "Taille S",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51242bab015bccf181d",
+              food: {
+                _id: {
+                  $oid: "667715f08c9e32ab7109c463",
+                },
               },
-            },
-            {
-              value: "Croûte normale",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51342bab015bccf1826",
-              },
+              options: [
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667715f08c9e32ab7109c464",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667715f08c9e32ab7109c465",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 10.99,
+              sum: 43.96,
             },
           ],
-          quantity: 1,
-          price: 10.99,
-          sum: 10.99,
-        },
-        {
-          food: {
-            value: "Pizza Pepperoni",
-            description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-            price: 11.99,
-            display: true,
-            categoryNumber: 0,
-            categoryTitle: "Pizza",
-            tva: 6,
-            _id: {
-              $oid: "6637e51542bab015bccf1852",
-            },
-          },
-          options: [
-            {
-              value: "Taille S",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51242bab015bccf181d",
-              },
-            },
-            {
-              value: "Croûte normale",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51342bab015bccf1826",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 11.99,
-          sum: 11.99,
-        },
-        {
-          food: {
-            value: "Fettuccine Alfredo",
-            description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
-            price: 11.99,
-            display: true,
-            categoryNumber: 1,
-            categoryTitle: "Pâtes",
-            tva: 6,
-            _id: {
-              $oid: "6637e52042bab015bccf18e6",
-            },
-          },
-          options: [
-            {
-              value: "Pâtes blanches",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51f42bab015bccf18cd",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 11.99,
-          sum: 11.99,
-        },
-        {
-          food: {
-            value: "Bruschetta",
-            description: "Tomates, Ail, Basilic, Pain grillé",
-            price: 6.99,
-            display: true,
-            categoryNumber: 2,
-            categoryTitle: "Entrées",
-            tva: 6,
-            _id: {
-              $oid: "6637e52642bab015bccf1928",
-            },
-          },
-          options: [],
-          quantity: 2,
-          price: 6.99,
-          sum: 13.98,
-        },
-        {
-          food: {
-            value: "Fondant au chocolat",
-            description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-            price: 8.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193c",
-            },
-          },
-          options: [],
-          quantity: 3,
-          price: 8.99,
-          sum: 26.97,
-        },
-        {
-          food: {
-            value: "Tiramisu",
-            description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-            price: 7.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193a",
-            },
-          },
-          options: [],
-          quantity: 1,
-          price: 7.99,
-          sum: 7.99,
         },
       ],
-      articlesSum: 83.91,
+      articlesSum: 43.96,
       deliveryFees: 2.5,
-      totalSum: 86.41,
+      totalSum: 46.46,
       note: "",
       orderType: 0,
-      paymentMethod: "online",
-      creationDate: "2024-06-20T11:49:28.976Z",
+      paymentMethod: "cash",
+      creationDate: "2024-06-22T18:20:31.867Z",
+
       lastUpdate: {
-        $date: "2024-06-20T11:49:28.976Z",
+        $date: "2024-06-22T18:20:31.867Z",
       },
-      transactionFees: {
-        platformCommission: 0,
-        onlinePayment: 1.86,
-        total: 1.86,
-      },
-      estimatedArrivalDate: "2024-06-20T17:00:00.000Z",
-      status: "paymentPending",
+      estimatedArrivalDate: "2024-06-22T19:20:31.814Z",
+
+      status: "completed",
       statusHistory: [
         {
-          status: "paymentPending",
+          status: "completed",
           date: {
-            $date: "2024-06-20T11:49:28.976Z",
+            $date: "2024-06-22T18:20:31.867Z",
           },
         },
       ],
@@ -230,235 +101,39 @@ const page = () => {
           postCode: "1000",
           city: "Bruxelles",
         },
-        website: "www.dodopizza.com",
-        privateSettings: {
-          orderMailReception: {
-            enabled: true,
-            mail: "dodopizza.order@gmail.com",
-          },
-        },
       },
-      formattedArticlesList: [
-        {
-          categoryTitle: "Pizza",
-          categoryNumber: 0,
-          articles: [
-            {
-              food: {
-                value: "Pizza Margherita",
-                description: "Sauce tomate, Mozzarella, Basilic",
-                price: 10.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51442bab015bccf1843",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 10.99,
-              sum: 10.99,
-            },
-            {
-              food: {
-                value: "Pizza Pepperoni",
-                description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-                price: 11.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51542bab015bccf1852",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Pâtes",
-          categoryNumber: 1,
-          articles: [
-            {
-              food: {
-                value: "Fettuccine Alfredo",
-                description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
-                price: 11.99,
-                display: true,
-                categoryNumber: 1,
-                categoryTitle: "Pâtes",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52042bab015bccf18e6",
-                },
-              },
-              options: [
-                {
-                  value: "Pâtes blanches",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51f42bab015bccf18cd",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Entrées",
-          categoryNumber: 2,
-          articles: [
-            {
-              food: {
-                value: "Bruschetta",
-                description: "Tomates, Ail, Basilic, Pain grillé",
-                price: 6.99,
-                display: true,
-                categoryNumber: 2,
-                categoryTitle: "Entrées",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52642bab015bccf1928",
-                },
-              },
-              options: [],
-              quantity: 2,
-              price: 6.99,
-              sum: 13.98,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Desserts",
-          categoryNumber: 3,
-          articles: [
-            {
-              food: {
-                value: "Fondant au chocolat",
-                description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-                price: 8.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193c",
-                },
-              },
-              options: [],
-              quantity: 3,
-              price: 8.99,
-              sum: 26.97,
-            },
-            {
-              food: {
-                value: "Tiramisu",
-                description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-                price: 7.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193a",
-                },
-              },
-              options: [],
-              quantity: 1,
-              price: 7.99,
-              sum: 7.99,
-            },
-          ],
-        },
-      ],
-      note: "Pas de salade svp je déteste les légumes",
-      paymentIntentId: "pi_3PTjUbP4PUdMZVTS0AEvYHyk",
       __v: 0,
     },
     {
       _id: {
-        $oid: "66741749f8cf387099dc4ecf",
+        $oid: "6677171f8c9e32ab7109c49a",
       },
-      orderNumber: 233485,
+      orderNumber: 233491,
       customer: {
-        firstname: "Lucien",
-        lastname: "Delgrange",
-        mail: "luciendelgrange5@gmail.com",
-        phoneNumber: "0498089362",
+        firstname: "Shawn",
+        lastname: "Flexatron Rhoden",
+        mail: "ThebigFlex@gmail.com",
+        phoneNumber: "0495887766",
         address: {
-          street: "Rue du bout de la Haut",
-          streetNumber: "8",
-          postCode: "7390",
-          city: "Quaregnon",
+          street: "Rue du stress chronique",
+          streetNumber: "65",
+          postCode: "7100",
+          city: "Paix-a-son-âme",
         },
         ip: "::1",
       },
       articles: [
         {
           food: {
-            value: "Pizza Margherita",
-            description: "Sauce tomate, Mozzarella, Basilic",
-            price: 10.99,
+            value: "Pizza Hawaiienne",
+            description: "Sauce tomate, Mozzarella, Jambon, Ananas",
+            price: 12.49,
             display: true,
             categoryNumber: 0,
             categoryTitle: "Pizza",
             tva: 6,
             _id: {
-              $oid: "6637e51442bab015bccf1843",
+              $oid: "6637e51742bab015bccf1870",
             },
           },
           options: [
@@ -484,59 +159,20 @@ const page = () => {
             },
           ],
           quantity: 1,
-          price: 10.99,
-          sum: 10.99,
+          price: 12.49,
+          sum: 12.49,
         },
         {
           food: {
-            value: "Pizza Pepperoni",
-            description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-            price: 11.99,
-            display: true,
-            categoryNumber: 0,
-            categoryTitle: "Pizza",
-            tva: 6,
-            _id: {
-              $oid: "6637e51542bab015bccf1852",
-            },
-          },
-          options: [
-            {
-              value: "Taille S",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51242bab015bccf181d",
-              },
-            },
-            {
-              value: "Croûte normale",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51342bab015bccf1826",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 11.99,
-          sum: 11.99,
-        },
-        {
-          food: {
-            value: "Fettuccine Alfredo",
-            description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
+            value: "Raviolis aux épinards et ricotta",
+            description: "Sauce tomate, Épinards, Ricotta, Parmesan",
             price: 11.99,
             display: true,
             categoryNumber: 1,
             categoryTitle: "Pâtes",
             tva: 6,
             _id: {
-              $oid: "6637e52042bab015bccf18e6",
+              $oid: "6637e52342bab015bccf18fe",
             },
           },
           options: [
@@ -550,88 +186,255 @@ const page = () => {
                 $oid: "6637e51f42bab015bccf18cd",
               },
             },
+            {
+              value: "Parmesan",
+              price: 1,
+              isSupplement: true,
+              display: true,
+              isNeededInOrder: true,
+              _id: {
+                $oid: "6637e51f42bab015bccf18d6",
+              },
+            },
+            {
+              value: "Tomates ceries",
+              price: 1.5,
+              isSupplement: true,
+              display: true,
+              isNeededInOrder: true,
+              _id: {
+                $oid: "6637e51f42bab015bccf18d9",
+              },
+            },
           ],
           quantity: 1,
-          price: 11.99,
-          sum: 11.99,
+          price: 14.49,
+          sum: 14.49,
         },
         {
           food: {
-            value: "Bruschetta",
-            description: "Tomates, Ail, Basilic, Pain grillé",
-            price: 6.99,
+            value: "Calamars frits",
+            description: "Calamars, Chapelure, Sauce tartare",
+            price: 8.99,
             display: true,
             categoryNumber: 2,
             categoryTitle: "Entrées",
             tva: 6,
             _id: {
-              $oid: "6637e52642bab015bccf1928",
-            },
-          },
-          options: [],
-          quantity: 2,
-          price: 6.99,
-          sum: 13.98,
-        },
-        {
-          food: {
-            value: "Fondant au chocolat",
-            description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-            price: 8.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193c",
-            },
-          },
-          options: [],
-          quantity: 3,
-          price: 8.99,
-          sum: 26.97,
-        },
-        {
-          food: {
-            value: "Tiramisu",
-            description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-            price: 7.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193a",
+              $oid: "6637e52742bab015bccf192a",
             },
           },
           options: [],
           quantity: 1,
-          price: 7.99,
-          sum: 7.99,
+          price: 8.99,
+          sum: 8.99,
+        },
+        {
+          food: {
+            value: "Jus d'orange frais",
+            description: "Jus d'orange pressé",
+            price: 4.49,
+            display: true,
+            categoryNumber: 4,
+            categoryTitle: "Boissons",
+            tva: 6,
+            _id: {
+              $oid: "6637e52942bab015bccf1952",
+            },
+          },
+          options: [],
+          quantity: 1,
+          price: 4.49,
+          sum: 4.49,
+        },
+        {
+          food: {
+            value: "Soda cola",
+            description: "Soda, Cola",
+            price: 3.99,
+            display: true,
+            categoryNumber: 4,
+            categoryTitle: "Boissons",
+            tva: 6,
+            _id: {
+              $oid: "6637e52942bab015bccf1950",
+            },
+          },
+          options: [],
+          quantity: 1,
+          price: 3.99,
+          sum: 3.99,
+        },
+        {
+          food: {
+            value: "Eau minérale",
+            description: "Eau",
+            price: 1,
+            display: true,
+            categoryNumber: 4,
+            categoryTitle: "Boissons",
+            tva: 6,
+            _id: {
+              $oid: "6637e52942bab015bccf194e",
+            },
+          },
+          options: [],
+          quantity: 1,
+          price: 1,
+          sum: 1,
         },
       ],
-      articlesSum: 83.91,
-      deliveryFees: 2.5,
-      totalSum: 86.41,
+      formattedArticlesList: [
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667717208c9e32ab7109c4aa",
+                },
+              },
+              options: [
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667717208c9e32ab7109c4ab",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667717208c9e32ab7109c4ac",
+                  },
+                },
+              ],
+              quantity: 1,
+              price: 12.49,
+              sum: 12.49,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pâtes",
+          categoryNumber: 1,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667717208c9e32ab7109c4ad",
+                },
+              },
+              options: [
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667717208c9e32ab7109c4ae",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667717208c9e32ab7109c4af",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667717208c9e32ab7109c4b0",
+                  },
+                },
+              ],
+              quantity: 1,
+              price: 14.49,
+              sum: 14.49,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Entrées",
+          categoryNumber: 2,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667717208c9e32ab7109c4b1",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 8.99,
+              sum: 8.99,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Boissons",
+          categoryNumber: 4,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667717208c9e32ab7109c4b2",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 4.49,
+              sum: 4.49,
+            },
+            {
+              food: {
+                _id: {
+                  $oid: "667717208c9e32ab7109c4b3",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 3.99,
+              sum: 3.99,
+            },
+            {
+              food: {
+                _id: {
+                  $oid: "667717208c9e32ab7109c4b4",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 1,
+              sum: 1,
+            },
+          ],
+        },
+      ],
+      articlesSum: 45.45,
+      totalSum: 45.45,
       note: "",
-      orderType: 0,
-      paymentMethod: "online",
-      creationDate: "2024-06-20T11:49:28.976Z",
+      orderType: 1,
+      paymentMethod: "cash",
+      creationDate: "2024-06-22T18:25:35.877Z",
       lastUpdate: {
-        $date: "2024-06-20T11:49:28.976Z",
+        $date: "2024-06-22T18:25:35.877Z",
       },
-      transactionFees: {
-        platformCommission: 0,
-        onlinePayment: 1.86,
-        total: 1.86,
-      },
-      estimatedArrivalDate: "2024-06-20T17:00:00.000Z",
-      status: "paymentPending",
+      estimatedArrivalDate: "2024-06-22T21:00:00.000Z",
+
+      status: "completed",
       statusHistory: [
         {
-          status: "paymentPending",
+          status: "completed",
           date: {
-            $date: "2024-06-20T11:49:28.976Z",
+            $date: "2024-06-22T18:25:35.877Z",
           },
         },
       ],
@@ -648,235 +451,39 @@ const page = () => {
           postCode: "1000",
           city: "Bruxelles",
         },
-        website: "www.dodopizza.com",
-        privateSettings: {
-          orderMailReception: {
-            enabled: true,
-            mail: "dodopizza.order@gmail.com",
-          },
-        },
       },
-      formattedArticlesList: [
-        {
-          categoryTitle: "Pizza",
-          categoryNumber: 0,
-          articles: [
-            {
-              food: {
-                value: "Pizza Margherita",
-                description: "Sauce tomate, Mozzarella, Basilic",
-                price: 10.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51442bab015bccf1843",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 10.99,
-              sum: 10.99,
-            },
-            {
-              food: {
-                value: "Pizza Pepperoni",
-                description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-                price: 11.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51542bab015bccf1852",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Pâtes",
-          categoryNumber: 1,
-          articles: [
-            {
-              food: {
-                value: "Fettuccine Alfredo",
-                description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
-                price: 11.99,
-                display: true,
-                categoryNumber: 1,
-                categoryTitle: "Pâtes",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52042bab015bccf18e6",
-                },
-              },
-              options: [
-                {
-                  value: "Pâtes blanches",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51f42bab015bccf18cd",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Entrées",
-          categoryNumber: 2,
-          articles: [
-            {
-              food: {
-                value: "Bruschetta",
-                description: "Tomates, Ail, Basilic, Pain grillé",
-                price: 6.99,
-                display: true,
-                categoryNumber: 2,
-                categoryTitle: "Entrées",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52642bab015bccf1928",
-                },
-              },
-              options: [],
-              quantity: 2,
-              price: 6.99,
-              sum: 13.98,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Desserts",
-          categoryNumber: 3,
-          articles: [
-            {
-              food: {
-                value: "Fondant au chocolat",
-                description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-                price: 8.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193c",
-                },
-              },
-              options: [],
-              quantity: 3,
-              price: 8.99,
-              sum: 26.97,
-            },
-            {
-              food: {
-                value: "Tiramisu",
-                description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-                price: 7.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193a",
-                },
-              },
-              options: [],
-              quantity: 1,
-              price: 7.99,
-              sum: 7.99,
-            },
-          ],
-        },
-      ],
-      note: "Pas de salade svp je déteste les légumes",
-      paymentIntentId: "pi_3PTjUbP4PUdMZVTS0AEvYHyk",
       __v: 0,
     },
     {
       _id: {
-        $oid: "66741749f8cf387099dc4ecf",
+        $oid: "6677168f8c9e32ab7109c47d",
       },
-      orderNumber: 233485,
+      orderNumber: 233490,
       customer: {
-        firstname: "Lucien",
-        lastname: "Delgrange",
-        mail: "luciendelgrange5@gmail.com",
-        phoneNumber: "0498089362",
+        firstname: "Ronnie",
+        lastname: "Coleman",
+        mail: "Thebigron@gmail.com",
+        phoneNumber: "0499887766",
         address: {
-          street: "Rue du bout de la Haut",
-          streetNumber: "8",
-          postCode: "7390",
-          city: "Quaregnon",
+          street: "Rue du DC",
+          streetNumber: "65",
+          postCode: "7100",
+          city: "Lagrosseveine",
         },
         ip: "::1",
       },
       articles: [
         {
           food: {
-            value: "Pizza Margherita",
-            description: "Sauce tomate, Mozzarella, Basilic",
-            price: 10.99,
+            value: "Pizza Hawaiienne",
+            description: "Sauce tomate, Mozzarella, Jambon, Ananas",
+            price: 12.49,
             display: true,
             categoryNumber: 0,
             categoryTitle: "Pizza",
             tva: 6,
             _id: {
-              $oid: "6637e51442bab015bccf1843",
+              $oid: "6637e51742bab015bccf1870",
             },
           },
           options: [
@@ -902,59 +509,20 @@ const page = () => {
             },
           ],
           quantity: 1,
-          price: 10.99,
-          sum: 10.99,
+          price: 12.49,
+          sum: 12.49,
         },
         {
           food: {
-            value: "Pizza Pepperoni",
-            description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-            price: 11.99,
-            display: true,
-            categoryNumber: 0,
-            categoryTitle: "Pizza",
-            tva: 6,
-            _id: {
-              $oid: "6637e51542bab015bccf1852",
-            },
-          },
-          options: [
-            {
-              value: "Taille S",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51242bab015bccf181d",
-              },
-            },
-            {
-              value: "Croûte normale",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51342bab015bccf1826",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 11.99,
-          sum: 11.99,
-        },
-        {
-          food: {
-            value: "Fettuccine Alfredo",
-            description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
+            value: "Raviolis aux épinards et ricotta",
+            description: "Sauce tomate, Épinards, Ricotta, Parmesan",
             price: 11.99,
             display: true,
             categoryNumber: 1,
             categoryTitle: "Pâtes",
             tva: 6,
             _id: {
-              $oid: "6637e52042bab015bccf18e6",
+              $oid: "6637e52342bab015bccf18fe",
             },
           },
           options: [
@@ -968,88 +536,260 @@ const page = () => {
                 $oid: "6637e51f42bab015bccf18cd",
               },
             },
+            {
+              value: "Parmesan",
+              price: 1,
+              isSupplement: true,
+              display: true,
+              isNeededInOrder: true,
+              _id: {
+                $oid: "6637e51f42bab015bccf18d6",
+              },
+            },
+            {
+              value: "Tomates ceries",
+              price: 1.5,
+              isSupplement: true,
+              display: true,
+              isNeededInOrder: true,
+              _id: {
+                $oid: "6637e51f42bab015bccf18d9",
+              },
+            },
           ],
           quantity: 1,
-          price: 11.99,
-          sum: 11.99,
+          price: 14.49,
+          sum: 14.49,
         },
         {
           food: {
-            value: "Bruschetta",
-            description: "Tomates, Ail, Basilic, Pain grillé",
-            price: 6.99,
+            value: "Calamars frits",
+            description: "Calamars, Chapelure, Sauce tartare",
+            price: 8.99,
             display: true,
             categoryNumber: 2,
             categoryTitle: "Entrées",
             tva: 6,
             _id: {
-              $oid: "6637e52642bab015bccf1928",
-            },
-          },
-          options: [],
-          quantity: 2,
-          price: 6.99,
-          sum: 13.98,
-        },
-        {
-          food: {
-            value: "Fondant au chocolat",
-            description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-            price: 8.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193c",
-            },
-          },
-          options: [],
-          quantity: 3,
-          price: 8.99,
-          sum: 26.97,
-        },
-        {
-          food: {
-            value: "Tiramisu",
-            description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-            price: 7.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193a",
+              $oid: "6637e52742bab015bccf192a",
             },
           },
           options: [],
           quantity: 1,
-          price: 7.99,
-          sum: 7.99,
+          price: 8.99,
+          sum: 8.99,
+        },
+        {
+          food: {
+            value: "Jus d'orange frais",
+            description: "Jus d'orange pressé",
+            price: 4.49,
+            display: true,
+            categoryNumber: 4,
+            categoryTitle: "Boissons",
+            tva: 6,
+            _id: {
+              $oid: "6637e52942bab015bccf1952",
+            },
+          },
+          options: [],
+          quantity: 1,
+          price: 4.49,
+          sum: 4.49,
+        },
+        {
+          food: {
+            value: "Soda cola",
+            description: "Soda, Cola",
+            price: 3.99,
+            display: true,
+            categoryNumber: 4,
+            categoryTitle: "Boissons",
+            tva: 6,
+            _id: {
+              $oid: "6637e52942bab015bccf1950",
+            },
+          },
+          options: [],
+          quantity: 1,
+          price: 3.99,
+          sum: 3.99,
+        },
+        {
+          food: {
+            value: "Eau minérale",
+            description: "Eau",
+            price: 1,
+            display: true,
+            categoryNumber: 4,
+            categoryTitle: "Boissons",
+            tva: 6,
+            _id: {
+              $oid: "6637e52942bab015bccf194e",
+            },
+          },
+          options: [],
+          quantity: 1,
+          price: 1,
+          sum: 1,
         },
       ],
-      articlesSum: 83.91,
+      formattedArticlesList: [
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667716908c9e32ab7109c48d",
+                },
+              },
+              options: [
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667716908c9e32ab7109c48e",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667716908c9e32ab7109c48f",
+                  },
+                },
+              ],
+              quantity: 1,
+              price: 12.49,
+              sum: 12.49,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pâtes",
+          categoryNumber: 1,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667716908c9e32ab7109c490",
+                },
+              },
+              options: [
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667716908c9e32ab7109c491",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667716908c9e32ab7109c492",
+                  },
+                },
+                {
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "667716908c9e32ab7109c493",
+                  },
+                },
+              ],
+              quantity: 1,
+              price: 14.49,
+              sum: 14.49,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Entrées",
+          categoryNumber: 2,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667716908c9e32ab7109c494",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 8.99,
+              sum: 8.99,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Boissons",
+          categoryNumber: 4,
+          articles: [
+            {
+              food: {
+                _id: {
+                  $oid: "667716908c9e32ab7109c495",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 4.49,
+              sum: 4.49,
+            },
+            {
+              food: {
+                _id: {
+                  $oid: "667716908c9e32ab7109c496",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 3.99,
+              sum: 3.99,
+            },
+            {
+              food: {
+                _id: {
+                  $oid: "667716908c9e32ab7109c497",
+                },
+              },
+              options: [],
+              quantity: 1,
+              price: 1,
+              sum: 1,
+            },
+          ],
+        },
+      ],
+      articlesSum: 45.45,
       deliveryFees: 2.5,
-      totalSum: 86.41,
+      totalSum: 47.95,
       note: "",
       orderType: 0,
       paymentMethod: "online",
-      creationDate: "2024-06-20T11:49:28.976Z",
+      creationDate: "2024-06-22T18:23:11.207Z",
       lastUpdate: {
-        $date: "2024-06-20T11:49:28.976Z",
+        $date: "2024-06-22T18:23:11.207Z",
       },
       transactionFees: {
         platformCommission: 0,
-        onlinePayment: 1.86,
-        total: 1.86,
+        onlinePayment: 1.19,
+        total: 1.19,
       },
-      estimatedArrivalDate: "2024-06-20T17:00:00.000Z",
+      estimatedArrivalDate: "2024-06-22T19:23:11.195Z",
       status: "paymentPending",
       statusHistory: [
         {
           status: "paymentPending",
           date: {
-            $date: "2024-06-20T11:49:28.976Z",
+            $date: "2024-06-22T18:23:11.207Z",
           },
         },
       ],
@@ -1066,621 +806,8 @@ const page = () => {
           postCode: "1000",
           city: "Bruxelles",
         },
-        website: "www.dodopizza.com",
-        privateSettings: {
-          orderMailReception: {
-            enabled: true,
-            mail: "dodopizza.order@gmail.com",
-          },
-        },
       },
-      formattedArticlesList: [
-        {
-          categoryTitle: "Pizza",
-          categoryNumber: 0,
-          articles: [
-            {
-              food: {
-                value: "Pizza Margherita",
-                description: "Sauce tomate, Mozzarella, Basilic",
-                price: 10.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51442bab015bccf1843",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 10.99,
-              sum: 10.99,
-            },
-            {
-              food: {
-                value: "Pizza Pepperoni",
-                description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-                price: 11.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51542bab015bccf1852",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Pâtes",
-          categoryNumber: 1,
-          articles: [
-            {
-              food: {
-                value: "Fettuccine Alfredo",
-                description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
-                price: 11.99,
-                display: true,
-                categoryNumber: 1,
-                categoryTitle: "Pâtes",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52042bab015bccf18e6",
-                },
-              },
-              options: [
-                {
-                  value: "Pâtes blanches",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51f42bab015bccf18cd",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Entrées",
-          categoryNumber: 2,
-          articles: [
-            {
-              food: {
-                value: "Bruschetta",
-                description: "Tomates, Ail, Basilic, Pain grillé",
-                price: 6.99,
-                display: true,
-                categoryNumber: 2,
-                categoryTitle: "Entrées",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52642bab015bccf1928",
-                },
-              },
-              options: [],
-              quantity: 2,
-              price: 6.99,
-              sum: 13.98,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Desserts",
-          categoryNumber: 3,
-          articles: [
-            {
-              food: {
-                value: "Fondant au chocolat",
-                description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-                price: 8.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193c",
-                },
-              },
-              options: [],
-              quantity: 3,
-              price: 8.99,
-              sum: 26.97,
-            },
-            {
-              food: {
-                value: "Tiramisu",
-                description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-                price: 7.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193a",
-                },
-              },
-              options: [],
-              quantity: 1,
-              price: 7.99,
-              sum: 7.99,
-            },
-          ],
-        },
-      ],
-      note: "Pas de salade svp je déteste les légumes",
-      paymentIntentId: "pi_3PTjUbP4PUdMZVTS0AEvYHyk",
-      __v: 0,
-    },
-    {
-      _id: {
-        $oid: "66741749f8cf387099dc4ecf",
-      },
-      orderNumber: 233485,
-      customer: {
-        firstname: "Lucien",
-        lastname: "Delgrange",
-        mail: "luciendelgrange5@gmail.com",
-        phoneNumber: "0498089362",
-        address: {
-          street: "Rue du bout de la Haut",
-          streetNumber: "8",
-          postCode: "7390",
-          city: "Quaregnon",
-        },
-        ip: "::1",
-      },
-      articles: [
-        {
-          food: {
-            value: "Pizza Margherita",
-            description: "Sauce tomate, Mozzarella, Basilic",
-            price: 10.99,
-            display: true,
-            categoryNumber: 0,
-            categoryTitle: "Pizza",
-            tva: 6,
-            _id: {
-              $oid: "6637e51442bab015bccf1843",
-            },
-          },
-          options: [
-            {
-              value: "Taille S",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51242bab015bccf181d",
-              },
-            },
-            {
-              value: "Croûte normale",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51342bab015bccf1826",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 10.99,
-          sum: 10.99,
-        },
-        {
-          food: {
-            value: "Pizza Pepperoni",
-            description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-            price: 11.99,
-            display: true,
-            categoryNumber: 0,
-            categoryTitle: "Pizza",
-            tva: 6,
-            _id: {
-              $oid: "6637e51542bab015bccf1852",
-            },
-          },
-          options: [
-            {
-              value: "Taille S",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51242bab015bccf181d",
-              },
-            },
-            {
-              value: "Croûte normale",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51342bab015bccf1826",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 11.99,
-          sum: 11.99,
-        },
-        {
-          food: {
-            value: "Fettuccine Alfredo",
-            description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
-            price: 11.99,
-            display: true,
-            categoryNumber: 1,
-            categoryTitle: "Pâtes",
-            tva: 6,
-            _id: {
-              $oid: "6637e52042bab015bccf18e6",
-            },
-          },
-          options: [
-            {
-              value: "Pâtes blanches",
-              price: 0,
-              isSupplement: false,
-              display: true,
-              isNeededInOrder: true,
-              _id: {
-                $oid: "6637e51f42bab015bccf18cd",
-              },
-            },
-          ],
-          quantity: 1,
-          price: 11.99,
-          sum: 11.99,
-        },
-        {
-          food: {
-            value: "Bruschetta",
-            description: "Tomates, Ail, Basilic, Pain grillé",
-            price: 6.99,
-            display: true,
-            categoryNumber: 2,
-            categoryTitle: "Entrées",
-            tva: 6,
-            _id: {
-              $oid: "6637e52642bab015bccf1928",
-            },
-          },
-          options: [],
-          quantity: 2,
-          price: 6.99,
-          sum: 13.98,
-        },
-        {
-          food: {
-            value: "Fondant au chocolat",
-            description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-            price: 8.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193c",
-            },
-          },
-          options: [],
-          quantity: 3,
-          price: 8.99,
-          sum: 26.97,
-        },
-        {
-          food: {
-            value: "Tiramisu",
-            description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-            price: 7.99,
-            display: true,
-            categoryNumber: 3,
-            categoryTitle: "Desserts",
-            tva: 6,
-            _id: {
-              $oid: "6637e52742bab015bccf193a",
-            },
-          },
-          options: [],
-          quantity: 1,
-          price: 7.99,
-          sum: 7.99,
-        },
-      ],
-      articlesSum: 83.91,
-      deliveryFees: 2.5,
-      totalSum: 86.41,
-      note: "",
-      orderType: 0,
-      paymentMethod: "online",
-      creationDate: "2024-06-20T11:49:28.976Z",
-      lastUpdate: {
-        $date: "2024-06-20T11:49:28.976Z",
-      },
-      transactionFees: {
-        platformCommission: 0,
-        onlinePayment: 1.86,
-        total: 1.86,
-      },
-      estimatedArrivalDate: "2024-06-20T17:00:00.000Z",
-      status: "paymentPending",
-      statusHistory: [
-        {
-          status: "paymentPending",
-          date: {
-            $date: "2024-06-20T11:49:28.976Z",
-          },
-        },
-      ],
-      restaurant: {
-        $oid: "66145f2db84fa2b61c6acb85",
-      },
-      slug: "dodopizza",
-      restaurantInfo: {
-        name: "Dodopizza",
-        phoneNumber: "+3288997766",
-        address: {
-          street: "Rue des Dodos",
-          streetNumber: "5",
-          postCode: "1000",
-          city: "Bruxelles",
-        },
-        website: "www.dodopizza.com",
-        privateSettings: {
-          orderMailReception: {
-            enabled: true,
-            mail: "dodopizza.order@gmail.com",
-          },
-        },
-      },
-      formattedArticlesList: [
-        {
-          categoryTitle: "Pizza",
-          categoryNumber: 0,
-          articles: [
-            {
-              food: {
-                value: "Pizza Margherita",
-                description: "Sauce tomate, Mozzarella, Basilic",
-                price: 10.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51442bab015bccf1843",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 10.99,
-              sum: 10.99,
-            },
-            {
-              food: {
-                value: "Pizza Pepperoni",
-                description: "Sauce tomate, Mozzarella Pepperoni, Poivrons",
-                price: 11.99,
-                display: true,
-                categoryNumber: 0,
-                categoryTitle: "Pizza",
-                tva: 6,
-                _id: {
-                  $oid: "6637e51542bab015bccf1852",
-                },
-              },
-              options: [
-                {
-                  value: "Taille S",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51242bab015bccf181d",
-                  },
-                },
-                {
-                  value: "Croûte normale",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51342bab015bccf1826",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Pâtes",
-          categoryNumber: 1,
-          articles: [
-            {
-              food: {
-                value: "Fettuccine Alfredo",
-                description: "Sauce Alfredo, Poulet grillé, Parmesan; Persil",
-                price: 11.99,
-                display: true,
-                categoryNumber: 1,
-                categoryTitle: "Pâtes",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52042bab015bccf18e6",
-                },
-              },
-              options: [
-                {
-                  value: "Pâtes blanches",
-                  price: 0,
-                  isSupplement: false,
-                  display: true,
-                  isNeededInOrder: true,
-                  _id: {
-                    $oid: "6637e51f42bab015bccf18cd",
-                  },
-                },
-              ],
-              quantity: 1,
-              price: 11.99,
-              sum: 11.99,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Entrées",
-          categoryNumber: 2,
-          articles: [
-            {
-              food: {
-                value: "Bruschetta",
-                description: "Tomates, Ail, Basilic, Pain grillé",
-                price: 6.99,
-                display: true,
-                categoryNumber: 2,
-                categoryTitle: "Entrées",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52642bab015bccf1928",
-                },
-              },
-              options: [],
-              quantity: 2,
-              price: 6.99,
-              sum: 13.98,
-            },
-          ],
-        },
-        {
-          categoryTitle: "Desserts",
-          categoryNumber: 3,
-          articles: [
-            {
-              food: {
-                value: "Fondant au chocolat",
-                description: "Chocolat noir, Beurre, Oeufs, Sucre, Farine",
-                price: 8.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193c",
-                },
-              },
-              options: [],
-              quantity: 3,
-              price: 8.99,
-              sum: 26.97,
-            },
-            {
-              food: {
-                value: "Tiramisu",
-                description: "Biscuits à la cuillère, Café, Mascarpone, Cacao",
-                price: 7.99,
-                display: true,
-                categoryNumber: 3,
-                categoryTitle: "Desserts",
-                tva: 6,
-                _id: {
-                  $oid: "6637e52742bab015bccf193a",
-                },
-              },
-              options: [],
-              quantity: 1,
-              price: 7.99,
-              sum: 7.99,
-            },
-          ],
-        },
-      ],
-      note: "Pas de salade svp je déteste les légumes",
-      paymentIntentId: "pi_3PTjUbP4PUdMZVTS0AEvYHyk",
+      paymentIntentId: "pi_3PUYahP4PUdMZVTS17E831op",
       __v: 0,
     },
   ];
@@ -1696,9 +823,7 @@ const page = () => {
           </div>
           <div className="space-y-2">
             <OrderCard order={orders[0]} />
-            <OrderCard order={orders[0]} />
-            <OrderCard order={orders[0]} />
-            <OrderCard order={orders[0]} />
+            <OrderCard order={orders[1]} />
           </div>
         </div>
 
@@ -1708,7 +833,7 @@ const page = () => {
             <p className="text-lg font-extrabold">Accepté (3)</p>
           </div>
           <div className="space-y-2">
-            <OrderCard order={orders[0]} />
+            <OrderCard order={orders[2]} />
           </div>
         </div>
       </div>
