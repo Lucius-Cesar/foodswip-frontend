@@ -2,7 +2,7 @@ import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
 } from "@/utils/switchLabel";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   switchPaymentMethodIcon,
   switchOrderTypeIcon,
@@ -18,35 +18,36 @@ import { usePathname } from "next/navigation";
 import FullWidthBtn from "@/components/ui/FullWidthBtn";
 import OrderPrintTicket from "./OrderPrintTicket";
 import html2canvas from "html2canvas";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 const OrderDetails = ({ order }) => {
   const pathname = usePathname(); // Destructure pathname from router
   const ticketRef = useRef(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const handleDownloadTicket = async () => {
+    setIsDownloading(true); // Commence le chargement
     const currentDate = Date.now();
-    console.log("im in");
-    const DownloadText = async (text) => {
-      // Convert text to a Blob object
-      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
 
-      // Generate a random filename
-      const txtFileName = `${currentDate}.txt`;
-
-      // Save the Blob as a file with the random filename
-      saveAs(blob, txtFileName);
-    };
-
-    if (!ticketRef.current) return;
+    if (!ticketRef.current) {
+      setIsDownloading(false); // Termine le chargement si ticketRef n'est pas défini
+      return;
+    }
 
     const canvas = await html2canvas(ticketRef.current);
     const imgData = canvas.toDataURL("image/jpeg");
-    const textToDownload = " ";
 
     const link = document.createElement("a");
     link.href = imgData;
     link.download = `order_${order.orderNumber}_${currentDate}.jpg`;
 
-    //Download an empty text to iniate a print before the real ticket print (this avoid a rawBt auto print bug)
+    // Écouteur pour détecter quand le téléchargement est terminé
+
     link.click();
+
+    // No way to know when the downloading is finished, so we put an arbitrary value of 3s to stop the loading
+    setTimeout(() => {
+      setIsDownloading(false);
+    }, 3000);
   };
 
   return (
@@ -60,13 +61,17 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          <button
-            onClick={() => {
-              handleDownloadTicket();
-            }}
-          >
-            <PrinterIcon className="h-8 w-8 text-primary" />
-          </button>
+          {isDownloading ? (
+            <LoadingSpinner className="text-primary" />
+          ) : (
+            <button
+              onClick={() => {
+                handleDownloadTicket();
+              }}
+            >
+              <PrinterIcon className="h-8 w-8 text-primary" />
+            </button>
+          )}
         </div>
         <div className="mt-14">
           <div className="flex flex-row text-sm w-full py-3 ">
@@ -239,6 +244,7 @@ const OrderDetails = ({ order }) => {
           <FullWidthBtn
             onClick={() => handleDownloadTicket()}
             className="text-white bg-success"
+            isLoading={isDownloading}
           >
             Accepter la commande
           </FullWidthBtn>
