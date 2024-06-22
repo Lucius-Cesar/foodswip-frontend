@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "../assets/styles/globals.css";
 import Hotjar from "@/components/Hotjar";
 import StoreProvider from "../redux/StoreProvider";
+import Head from "next/head";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -61,6 +62,9 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${(urwGeometric.variable, publicSans.variable)}`}
     >
+      <Head>
+        <meta name="mobile-web-app-capable" content="yes" />
+      </Head>
       <body className={`body ${urwGeometric.className}`}>
         <Hotjar>
           <StoreProvider>{children}</StoreProvider>

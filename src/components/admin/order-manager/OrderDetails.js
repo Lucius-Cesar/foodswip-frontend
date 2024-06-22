@@ -49,6 +49,10 @@ const OrderDetails = ({ order }) => {
     link.click();
   };
 
+  const print = () => {
+    window.print();
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 h-full w-full bg-white overflow-auto">
@@ -237,7 +241,7 @@ const OrderDetails = ({ order }) => {
             </tbody>
           </table>
           <FullWidthBtn
-            onClick={() => handleDownloadTicket()}
+            onClick={() => print()}
             className="text-white bg-success"
           >
             Accepter la commande
