@@ -33,7 +33,7 @@ const OrderPrintTicket = ({ order }, ref) => {
       <div className="flex flex-col  items-start w-full">
         <img className="self-center" src="/images/foodswip-logo-print.png" />
         <p className="text-lg text-black self-center">
-          {restaurant.name} {restaurant.address.street}{" "}
+          {restaurant.name} - {restaurant.address.street}{" "}
           {restaurant.address.postCode} {restaurant.address.city}
         </p>
         <p className="text-lg font-bold self-center">
@@ -57,59 +57,64 @@ const OrderPrintTicket = ({ order }, ref) => {
           {dateToTimeString(order.estimatedArrivalDate)}
         </p>
       </div>
-
-      <div className="font-semibold text-2xl border-t border-b border-black w-full pb-5">
-        Liste des articles
-      </div>
-      <div className="flex flex-col justify-start items-start w-full border-black">
-        {order.formattedArticlesList.map((element, i) => {
-          return (
-            <div className=" w-full" key={i}>
-              <p className="text-2xl font-extrabold">{element.categoryTitle}</p>
-              <div className="ps-6 py-2 w-full">
-                {element.articles.map((article, j) => {
-                  return (
-                    <div className="py-2" key={j}>
-                      <div className="flex flex-row justify-between text-2xl font-semibold w-full">
-                        {" "}
-                        <div className="flex flex-row gap-4">
-                          <p className="font-extrabold">{article.quantity}</p>{" "}
-                          <p>X</p>
-                          <div className="flex flex-col max-w-44">
-                            <p>{article.food.value}</p>{" "}
-                            {article.options.map((option, k) => {
-                              let formattedOption = option.value;
-                              if (!option.isNeededInOrder) {
-                                formattedOption = "";
-                              } else if (option.isSupplement) {
-                                formattedOption = `+${option.value}`;
-                              }
-                              return (
-                                <p className="font-normal">{formattedOption}</p>
-                              );
-                            })}
-                          </div>{" "}
-                        </div>{" "}
-                        <p>{article.sum} €</p>
-                      </div>{" "}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="self-start font-semibold text-2xl pb-2 w-full"></div>
-            </div>
-          );
-        })}
-      </div>
       <div className="w-full">
-        {order.orderType === 0 ? (
-          <div className="flex flex-row justify-between font-semibold text-2xl  border-t  border-black pb-5 w-full">
-            <p>Frais de livraison</p> <p>{order.deliveryFees} €</p>
-          </div>
-        ) : null}
+        <div className="font-semibold text-2xl border-t border-b border-black w-full pb-6">
+          Liste des articles
+        </div>
+        <div className="flex flex-col justify-start items-start w-full border-black">
+          {order.formattedArticlesList.map((element, i) => {
+            return (
+              <div className=" w-full" key={i}>
+                <p className="text-2xl font-extrabold">
+                  {element.categoryTitle}
+                </p>
+                <div className="ps-6 py-2 w-full">
+                  {element.articles.map((article, j) => {
+                    return (
+                      <div className="py-2" key={j}>
+                        <div className="flex flex-row justify-between text-2xl font-semibold w-full">
+                          {" "}
+                          <div className="flex flex-row gap-2">
+                            <p className="font-extrabold">{article.quantity}</p>{" "}
+                            <p>X</p>
+                            <div className="flex flex-col max-w-44">
+                              <p>{article.food.value}</p>{" "}
+                              {article.options.map((option, k) => {
+                                let formattedOption = option.value;
+                                if (!option.isNeededInOrder) {
+                                  formattedOption = "";
+                                } else if (option.isSupplement) {
+                                  formattedOption = `+${option.value}`;
+                                }
+                                return (
+                                  <p className="font-normal">
+                                    {formattedOption}
+                                  </p>
+                                );
+                              })}
+                            </div>{" "}
+                          </div>{" "}
+                          <p>{article.sum} €</p>
+                        </div>{" "}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="self-start font-semibold text-2xl pb-2 w-full"></div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="w-full">
+          {order.orderType === 0 ? (
+            <div className="flex flex-row justify-between font-semibold text-2xl  border-t  border-black pb-6 w-full">
+              <p>Frais de livraison</p> <p>{order.deliveryFees} €</p>
+            </div>
+          ) : null}
 
-        <div className="flex flex-row justify-between font-semibold text-2xl border-b border-t border-black w-full pb-5">
-          <p>Montant Total</p> <p>{order.totalSum} €</p>
+          <div className="flex flex-row justify-between font-semibold text-2xl border-b border-t border-black w-full pb-6">
+            <p>Montant Total</p> <p>{order.totalSum} €</p>
+          </div>
         </div>
       </div>
       {order.note && (
@@ -124,27 +129,29 @@ const OrderPrintTicket = ({ order }, ref) => {
         <thead></thead>
         <tbody class="text-2xl font-semibold">
           <tr>
-            <td class="py-2 px-4 border border-black font-normal pb-8">Nom</td>
-            <td class="py-2 px-4 border border-black  pb-8">
+            <td class="py-2  border border-black font-normal pb-8 text-center ">
+              Nom
+            </td>
+            <td class="py-2 border border-black  pb-8 text-center ">
               {order.customer.firstname} {order.customer.lastname}
             </td>
           </tr>
           {order.orderType === 0 ? (
             <>
               <tr>
-                <td class="py-2 px-4 border border-black font-normal  pb-8">
+                <td class="py-2 border border-black font-normal  pb-8 text-center ">
                   Adresse
                 </td>
-                <td class="py-2 px-4 border border-black pb-8">
+                <td class="py-2 border border-black pb-8 text-center ">
                   {order.customer.address.street},{" "}
                   {order.customer.address.streetNumber}
                 </td>
               </tr>
               <tr>
-                <td class="py-2 px-4 border border-black font-normal pb-8">
+                <td class="py-2 border border-black font-normal pb-8 text-center ">
                   Ville
                 </td>
-                <td class="py-2 px-4 border border-black pb-8">
+                <td class="py-2 border border-black pb-8 text-center ">
                   {order.customer.address.postCode}{" "}
                   {order.customer.address.city}
                 </td>
@@ -153,10 +160,10 @@ const OrderPrintTicket = ({ order }, ref) => {
           ) : null}
 
           <tr>
-            <td class="py-2 px-4 border border-black font-normal pb-8">
-              Numéro de téléphone
+            <td class="py-2 border border-black font-normal text-center pb-8">
+              Téléphone
             </td>
-            <td class="py-2 px-4 border border-black">
+            <td class="py-2 border border-black text-center ">
               {order.customer.phoneNumber}
             </td>
           </tr>
