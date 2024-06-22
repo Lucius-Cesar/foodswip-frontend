@@ -1690,9 +1690,9 @@ const page = () => {
     <>
       <div className="flex flex-col h-screen p-4 space-y-4">
         <div className="flex flex-col space-y-2">
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-1">
             <BellAlertIcon className="text-yellow-400 h-6" />
-            <p className="text-lg font-bold">Nouveau (3)</p>
+            <p className="text-lg font-extrabold">Nouveau (3)</p>
           </div>
           <div className="space-y-2">
             <OrderCard order={orders[0]} />
@@ -1703,9 +1703,9 @@ const page = () => {
         </div>
 
         <div className="flex flex-col space-y-2">
-          <div className="flex flex-row gap-2 ">
+          <div className="flex flex-row gap-1">
             <CheckCircleIcon className="text-success h-6" />
-            <p className="text-lg font-bold">Accepté (3)</p>
+            <p className="text-lg font-extrabold">Accepté (3)</p>
           </div>
           <div className="space-y-2">
             <OrderCard order={orders[0]} />

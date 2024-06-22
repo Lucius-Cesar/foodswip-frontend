@@ -1,3 +1,4 @@
+"use client";
 import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
@@ -8,47 +9,65 @@ import {
 } from "@/components/ui/icons/SwitchIcon";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { dateToTimeString } from "@/utils/dateAndTime";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import OrderDetails from "./OrderDetails";
+
 const OrderCard = ({ order }) => {
-  console.log(order);
-  return (
-    <>
-      <div className="flex flex-row text-sm rounded-xl bg-magnolia w-full ring-inset ring-1 ring-gravel py-2">
-        <div className="w-9/12 border-e border-gravel px-2">
-          <div className="flex flex-col gap-0.5 justify-between items-start h-full">
-            <p className="font-bold">
-              {order.customer.firstname} {order.customer.lastname}
-            </p>
-            <div className="flex flex-row gap-4">
-              <div className="flex flex-row gap-1 items-start">
-                <div className="">
-                  {switchOrderTypeIcon(order.orderType, "h-4")}
+  const searchParams = useSearchParams();
+  const selectedOrder = Number(searchParams.get("order"));
+
+  console.log(selectedOrder);
+  // orderCard is displayed if no order is selected or if the selected order is different from the current order
+  if (!selectedOrder || selectedOrder !== order.orderNumber) {
+    console.log("hihihi");
+    return (
+      <>
+        <Link
+          href={`?${new URLSearchParams({
+            order: order.orderNumber,
+          })}`}
+          className="flex flex-row text-sm rounded-xl bg-magnolia w-full ring-inset ring-1 ring-gravel py-2"
+        >
+          <div className="w-9/12 border-e border-gravel px-2">
+            <div className="flex flex-col gap-0.5 justify-between items-start h-full">
+              <p className="font-bold">
+                {order.customer.firstname} {order.customer.lastname}
+              </p>
+              <div className="flex flex-row gap-4">
+                <div className="inline-flex items-stretch  gap-1">
+                  <div className="">
+                    {switchOrderTypeIcon(order.orderType, "h-4")}
+                  </div>
+                  <p className="font-bold">
+                    {switchOrderTypeLabel(order.orderType)}
+                  </p>
                 </div>
-                <p className="font-bold">
-                  {switchOrderTypeLabel(order.orderType)}
-                </p>
+                <div className="inline-flex items-stretch  gap-1">
+                  {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
+                  <p className="font-bold">
+                    {switchPaymentMethodLabel(order.paymentMethod)}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-row gap-1 items-start">
-                {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
-                <p className="font-bold">
-                  {switchPaymentMethodLabel(order.paymentMethod)}
-                </p>
-              </div>
+              <p className="font-bold"> {order.totalSum} €</p>
             </div>
-            <p className="font-bold"> {order.totalSum} €</p>
           </div>
-        </div>
-        <div className="flex flex-col justify-center items-center w-3/12  p-1">
-          <ClockIcon className="h-6 text-primary" />
-          <p className="font-bold text-center">
-            {dateToTimeString(order.estimatedArrivalDate)}
-          </p>
-          <p className="text-xs text-center">
-            Passée à {dateToTimeString(order.creationDate)}
-          </p>
-        </div>
-      </div>
-    </>
-  );
+          <div className="flex flex-col justify-center items-center w-3/12  p-1">
+            <ClockIcon className="h-6 text-primary" />
+            <p className="font-bold text-center">
+              {dateToTimeString(order.estimatedArrivalDate)}
+            </p>
+            <p className="text-xs text-center">
+              Passée à {dateToTimeString(order.creationDate)}
+            </p>
+          </div>
+        </Link>
+      </>
+    );
+  } else {
+    return <OrderDetails order={order} />;
+  }
 };
 
 export default OrderCard;

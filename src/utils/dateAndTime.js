@@ -118,3 +118,15 @@ export const isWithinServiceHours = (
     currentMinutesOfDay < serviceEndMinutes
   );
 };
+
+export function dateToCompleteDateString(creationDate) {
+  creationDate = new Date(creationDate);
+  const options = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return creationDate.toLocaleDateString("fr-BE", options);
+}

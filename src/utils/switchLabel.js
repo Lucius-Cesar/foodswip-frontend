@@ -46,6 +46,21 @@ function switchPaymentMethodLabel(paymentMethodValue) {
   return paymentMethodlabel;
 }
 
+const switchPaymentMethodLabelForTicket = (paymentMethod) => {
+  switch (paymentMethod) {
+    case "cash":
+      return "Commande à payer en cash";
+      break;
+    case "bancontact":
+      return "Commande à payer via bancontact";
+      break;
+    case "online":
+      return "Commande payée en ligne";
+    default:
+    // code to be executed if paymentMethod is different from 'method1' and 'method2'
+  }
+};
+
 function switchOrderTypeLabel(orderType) {
   let orderTypeLabel;
   switch (orderType) {
@@ -62,4 +77,9 @@ function switchOrderTypeLabel(orderType) {
   return orderTypeLabel;
 }
 
-export { switchDayLabel, switchPaymentMethodLabel, switchOrderTypeLabel };
+export {
+  switchDayLabel,
+  switchPaymentMethodLabel,
+  switchOrderTypeLabel,
+  switchPaymentMethodLabelForTicket,
+};

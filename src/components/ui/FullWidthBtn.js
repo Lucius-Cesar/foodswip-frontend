@@ -1,25 +1,27 @@
-import LoadingSpinner from "./LoadingSpinner"
-import { CheckIcon } from "@heroicons/react/20/solid"
+import LoadingSpinner from "./LoadingSpinner";
+import { CheckIcon } from "@heroicons/react/20/solid";
 
-const FullWidthBtn = ({ children, isLoading, success, className }) => {
+const FullWidthBtn = ({ children, isLoading, success, className, onClick }) => {
   return (
     <>
-      <div className="h-16"></div>
-      <button
-        className={`${className} flex flex-row justify-center items-center fixed bottom-0 w-full h-16 bg-success hover:opacity-90 text-white font-bold text-lg`}
-        disabled={isLoading || success}
-        id="submit"
-      >
-        {isLoading ? (
-          <LoadingSpinner className="text-white" />
-        ) : success ? (
-          <CheckIcon className="text-white text-center h-10 w-10" />
-        ) : (
-          children
-        )}
-      </button>
+      <div className="h-14">
+        <button
+          className={`${className} flex flex-row justify-center items-center fixed bottom-0 w-full h-14 bg-success hover:brightness-105 text-white font-bold text-xl`}
+          disabled={isLoading || success}
+          id="submit"
+          onClick={onClick}
+        >
+          {isLoading ? (
+            <LoadingSpinner className="text-white" />
+          ) : success ? (
+            <CheckIcon className="text-white text-center h-10 w-10" />
+          ) : (
+            children
+          )}
+        </button>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default FullWidthBtn
+export default FullWidthBtn;
