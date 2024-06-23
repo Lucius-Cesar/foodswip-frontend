@@ -57,8 +57,7 @@ const APP_DESCRIPTION = "Commandes de repas en ligne";
 
 export const metadata = {
   applicationName: APP_NAME,
-  manifest: "/manifest.json", // we are accessing our manifest file here
-
+  manifest: "manifest.json", // we are accessing our manifest file here
   title: {
     default: APP_DEFAULT_TITLE,
     template: APP_TITLE_TEMPLATE,
