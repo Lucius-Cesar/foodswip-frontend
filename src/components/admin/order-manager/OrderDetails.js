@@ -43,7 +43,10 @@ const OrderDetails = ({ order }) => {
     // Écouteur pour détecter quand le téléchargement est terminé
 
     link.click();
-    window.URL.revokeObjectURL(imgUrl);
+    setTimeout(() => {
+      document.body.removeChild(Link);
+      window.URL.revokeObjectURL(imgUrl);
+    }, 0);
 
     // No way to know when the downloading is finished, so we put an arbitrary value of 3s to stop the loading
     setTimeout(() => {
