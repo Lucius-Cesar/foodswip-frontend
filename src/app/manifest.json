@@ -21,7 +21,7 @@
   "lang": "fr-FR",
   "name": "FoodSwip",
   "short_name": "FoodSwip",
-  "start_url": "https://www.foodswip-front-end.vercel.app",
-  "scope": "https://www.foodswip-front-end.vercel.app",
+  "start_url": "https://foodswip-frontend.vercel.app",
+  "scope": "https://foodswip-frontend.vercel.app",
   "description": "Plateforme de commande de repas en ligne"
 }
