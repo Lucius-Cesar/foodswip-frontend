@@ -50,10 +50,10 @@ const urwGeometric = localFont({
   variable: "--font-urw-geometric",
 });
 
-const APP_NAME = "PWA App";
-const APP_DEFAULT_TITLE = "My Awesome PWA App";
-const APP_TITLE_TEMPLATE = "%s - PWA App";
-const APP_DESCRIPTION = "Best PWA app in the world!";
+const APP_NAME = "Foodswip";
+const APP_DEFAULT_TITLE = "Foodswip";
+const APP_TITLE_TEMPLATE = "%s - Foodswip";
+const APP_DESCRIPTION = "Commandes de repas en ligne";
 
 export const metadata = {
   applicationName: APP_NAME,
