@@ -34,15 +34,16 @@ const OrderDetails = ({ order }) => {
     }
 
     const canvas = await html2canvas(ticketRef.current);
-    const imgData = canvas.toDataURL("image/jpeg");
+    const imgUrl = canvas.toDataURL("image/jpeg");
 
     const link = document.createElement("a");
-    link.href = imgData;
+    link.href = imgUrl;
     link.download = `order_${order.orderNumber}_${currentDate}.jpg`;
 
     // Écouteur pour détecter quand le téléchargement est terminé
 
     link.click();
+    window.URL.revokeObjectURL(imgUrl);
 
     // No way to know when the downloading is finished, so we put an arbitrary value of 3s to stop the loading
     setTimeout(() => {
