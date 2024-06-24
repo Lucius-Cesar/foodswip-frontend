@@ -35,20 +35,33 @@ const OrderDetails = ({ order }) => {
   };
 
   const printTicket = async () => {
-    if(!ticketSrc){
-      setLoading(true)
-      const ticketSrc = await generateTicketImg();
-      setTicketSrc(ticketSrc);
-      setLoading(false)
-      printTicketAnchor.current.click()
-
+    setLoading(true);
+  
+    if (!ticketSrc) {
+      try {
+        const newTicketSrc = await generateTicketImg(); // Updated to use newTicketSrc to avoid redeclaration issue
+        setTicketSrc(newTicketSrc);
+  
+        printTicketAnchor.current.click();
+  
+        setTimeout(() => {
+          // Simulating printing time with setTimeout
+          setLoading(false);
+        }, 1000);
+      } catch (error) {
+        console.error('Error generating ticket:', error);
+        setLoading(false);
+      }
+    } else {
+      printTicketAnchor.current.click();
+  
+      setTimeout(() => {
+        // Simulating printing time with setTimeout
+        setLoading(false);
+      }, 1000);
     }
-    else{
-      printTicketAnchor.current.click()
-    }
-  }
-
-
+  };
+  
 
   useEffect(() => {
     const getTicketSrc = async () => {
