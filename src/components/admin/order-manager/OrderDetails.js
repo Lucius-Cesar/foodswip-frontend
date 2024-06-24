@@ -24,26 +24,19 @@ const OrderDetails = ({ order }) => {
   const ticketRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const [ticketSrc, setTicketSrc] = useState(null);
+  const [base64Html, setBase64Html] = useState('');
 
-  const generateTicketImg = async () => {
-      const canvas = await html2canvas(ticketRef.current);
-
-    const imgUrl = canvas.toDataURL("image/jpeg");
-    return(imgUrl)
+  const convertToBase64 = (htmlString) => {
+    return btoa(unescape(encodeURIComponent(htmlString)));
   };
 
-
   useEffect(() => {
-    const getTicketSrc = async () => {
-      const ticketSrc = await generateTicketImg();
-      setTicketSrc(ticketSrc);
-    };
-    
-    getTicketSrc();
+    if (ticketRef.current) {
+      const htmlString = ticketRef.current.innerHTML;
+      const base64EncodedHtml = convertToBase64(htmlString);
+      setBase64Html(base64EncodedHtml);
+    }
   }, []);
-
-  console.log(ticketSrc)
   return (
     <>
       <div className="fixed top-0 left-0 right-0 h-full w-full bg-white overflow-auto">
@@ -55,11 +48,11 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {!ticketSrc ? (
+          {!order ? (
             <LoadingSpinner className="text-primary" />
           ) : (
             <a
-              href = {`rawbt:${ticketSrc}`}
+              href = {`rawbt:data:text/html;base64,${base64Html}`}
             >
               <PrinterIcon className="h-8 w-8 text-primary" />
             </a>
@@ -234,12 +227,12 @@ const OrderDetails = ({ order }) => {
             </tbody>
           </table>
           <a
-              href = {`rawbt:${ticketSrc}`}
+              href = {`rawbt:data:text/html;base64,${base64Html}`}
             >
           <FullWidthBtn
             onClick={() => console.log("héhé")}
             className="text-white bg-success"
-            isLoading={!ticketSrc}
+            isLoading={!order}
           >
             Accepter la commande
           </FullWidthBtn>
