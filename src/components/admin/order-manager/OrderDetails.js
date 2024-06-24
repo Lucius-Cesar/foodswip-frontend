@@ -164,10 +164,14 @@ const OrderDetails = ({ order }) => {
             <p>Montant Total</p> <p>{order.totalSum} €</p>
           </div>
           <div className="flex flex-col gap-2 p-3 text-lg font-medium">
-            <p>
-              Note de commande :{" "}
-              <span className="text-error-danger">{order.note}</span>
-            </p>
+           
+              {order.note && (
+          <p>
+          Note de commande :{" "}
+          <span className="text-error-danger">{order.note}</span>
+        </p>
+              )}
+
             <p>
               Type de commande :{" "}
               <span className="text-error-danger">
