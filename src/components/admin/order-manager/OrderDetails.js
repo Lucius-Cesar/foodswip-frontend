@@ -2,7 +2,7 @@ import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
 } from "@/utils/switchLabel";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   switchPaymentMethodIcon,
   switchOrderTypeIcon,
@@ -24,36 +24,26 @@ const OrderDetails = ({ order }) => {
   const ticketRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownloadTicket = async () => {
-    setIsDownloading(true); // Commence le chargement
-    const currentDate = Date.now();
+  const [ticketSrc, setTicketSrc] = useState(null);
 
-    if (!ticketRef.current) {
-      setIsDownloading(false); // Termine le chargement si ticketRef n'est pas défini
-      return;
-    }
+  const generateTicketImg = async () => {
+      const canvas = await html2canvas(ticketRef.current);
 
-    const canvas = await html2canvas(ticketRef.current);
     const imgUrl = canvas.toDataURL("image/jpeg");
-
-    const link = document.createElement("a");
-    link.href = imgUrl;
-    link.download = `order_${order.orderNumber}_${currentDate}.jpg`;
-
-    // Écouteur pour détecter quand le téléchargement est terminé
-
-    link.click();
-    setTimeout(() => {
-      document.body.removeChild(Link);
-      window.URL.revokeObjectURL(imgUrl);
-    }, 0);
-
-    // No way to know when the downloading is finished, so we put an arbitrary value of 3s to stop the loading
-    setTimeout(() => {
-      setIsDownloading(false);
-    }, 3000);
+    return(imgUrl)
   };
 
+
+  useEffect(() => {
+    const getTicketSrc = async () => {
+      const ticketSrc = await generateTicketImg();
+      setTicketSrc(ticketSrc);
+    };
+    
+    getTicketSrc();
+  }, []);
+
+  console.log(ticketSrc)
   return (
     <>
       <div className="fixed top-0 left-0 right-0 h-full w-full bg-white overflow-auto">
@@ -68,13 +58,11 @@ const OrderDetails = ({ order }) => {
           {isDownloading ? (
             <LoadingSpinner className="text-primary" />
           ) : (
-            <button
-              onClick={() => {
-                handleDownloadTicket();
-              }}
+            <a
+              href = {`rawbt:${ticketSrc}`}
             >
               <PrinterIcon className="h-8 w-8 text-primary" />
-            </button>
+            </a>
           )}
         </div>
         <div className="mt-14">
@@ -245,13 +233,17 @@ const OrderDetails = ({ order }) => {
               </tr>
             </tbody>
           </table>
+          <a
+              href = {`rawbt:${ticketSrc}`}
+            >
           <FullWidthBtn
-            onClick={() => handleDownloadTicket()}
+            onClick={() => console.log("héhé")}
             className="text-white bg-success"
             isLoading={isDownloading}
           >
             Accepter la commande
           </FullWidthBtn>
+          </a>
         </div>
       </div>
       <OrderPrintTicket order={order} ref={ticketRef} />
