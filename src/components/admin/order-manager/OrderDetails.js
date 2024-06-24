@@ -22,8 +22,10 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 const OrderDetails = ({ order }) => {
   const pathname = usePathname(); // Destructure pathname from router
   const ticketRef = useRef(null);
+  const printTicketAnchor = useRef(null)
 
   const [ticketSrc, setTicketSrc] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   const generateTicketImg = async () => {
       const canvas = await html2canvas(ticketRef.current);
@@ -32,6 +34,18 @@ const OrderDetails = ({ order }) => {
     return(imgUrl)
   };
 
+  const printTicket = async () => {
+    if(!ticketSrc){
+      setLoading(true)
+      const ticketSrc = await generateTicketImg();
+      setTicketSrc(ticketSrc);
+      setLoading(false)
+    }
+    else{
+      printTicketAnchor.current.click()
+    }
+  }
+
 
 
   useEffect(() => {
@@ -39,11 +53,12 @@ const OrderDetails = ({ order }) => {
       const ticketSrc = await generateTicketImg();
       setTicketSrc(ticketSrc);
     };
-    
     getTicketSrc();
+
   }, []);
 
-  console.log(ticketSrc)
+
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 h-full w-full bg-white overflow-auto">
@@ -55,14 +70,18 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {!ticketSrc ? (
+          <a
+              href = {`rawbt:${ticketSrc}`}
+              ref = {printTicketAnchor}
+
+            >
+              </a>
+          {loading ? (
             <LoadingSpinner className="text-primary" />
           ) : (
-            <a
-              href = {`rawbt:${ticketSrc}`}
-            >
+            <button onClick = {() => printTicket()}>
               <PrinterIcon className="h-8 w-8 text-primary" />
-            </a>
+              </button>
           )}
         </div>
         <div className="mt-14">
@@ -237,18 +256,14 @@ const OrderDetails = ({ order }) => {
               </tr>
             </tbody>
           </table>
-          <a
-              href = {`rawbt:${ticketSrc}`}
-            >
           <FullWidthBtn
-            onClick={() => console.log("héhé")}
+            onClick = {() => printTicket()}
             className="text-white bg-success"
-            isLoading={!ticketSrc}
+            isLoading={loading}
           >
             Accepter la commande
           </FullWidthBtn>
-          </a>
-        </div>
+                  </div>
       </div>
       <OrderPrintTicket order={order} ref={ticketRef} />
     </>
