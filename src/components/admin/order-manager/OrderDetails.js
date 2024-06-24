@@ -40,6 +40,8 @@ const OrderDetails = ({ order }) => {
       const ticketSrc = await generateTicketImg();
       setTicketSrc(ticketSrc);
       setLoading(false)
+      printTicketAnchor.current.click()
+
     }
     else{
       printTicketAnchor.current.click()
