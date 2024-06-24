@@ -55,7 +55,7 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {isDownloading ? (
+          {!ticketSrc ? (
             <LoadingSpinner className="text-primary" />
           ) : (
             <a
@@ -239,7 +239,7 @@ const OrderDetails = ({ order }) => {
           <FullWidthBtn
             onClick={() => console.log("héhé")}
             className="text-white bg-success"
-            isLoading={isDownloading}
+            isLoading={!ticketSrc}
           >
             Accepter la commande
           </FullWidthBtn>
