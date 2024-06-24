@@ -22,21 +22,28 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 const OrderDetails = ({ order }) => {
   const pathname = usePathname(); // Destructure pathname from router
   const ticketRef = useRef(null);
-  const [isDownloading, setIsDownloading] = useState(false);
 
-  const [base64Html, setBase64Html] = useState('');
+  const [ticketSrc, setTicketSrc] = useState(null);
 
-  const convertToBase64 = (htmlString) => {
-    return btoa(unescape(encodeURIComponent(htmlString)));
+  const generateTicketImg = async () => {
+      const canvas = await html2canvas(ticketRef.current);
+
+    const imgUrl = canvas.toDataURL("image/jpeg");
+    return(imgUrl)
   };
 
+
+
   useEffect(() => {
-    if (ticketRef.current) {
-      const htmlString = ticketRef.current.innerHTML;
-      const base64EncodedHtml = convertToBase64(htmlString);
-      setBase64Html(base64EncodedHtml);
-    }
+    const getTicketSrc = async () => {
+      const ticketSrc = await generateTicketImg();
+      setTicketSrc(ticketSrc);
+    };
+    
+    getTicketSrc();
   }, []);
+
+  console.log(ticketSrc)
   return (
     <>
       <div className="fixed top-0 left-0 right-0 h-full w-full bg-white overflow-auto">
@@ -48,11 +55,11 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {!order ? (
+          {!ticketSrc ? (
             <LoadingSpinner className="text-primary" />
           ) : (
             <a
-              href = {`rawbt:data:text/html;base64,${base64Html}`}
+              href = {`rawbt:${ticketSrc}`}
             >
               <PrinterIcon className="h-8 w-8 text-primary" />
             </a>
@@ -227,12 +234,12 @@ const OrderDetails = ({ order }) => {
             </tbody>
           </table>
           <a
-              href = {`rawbt:data:text/html;base64,${base64Html}`}
+              href = {`rawbt:${ticketSrc}`}
             >
           <FullWidthBtn
             onClick={() => console.log("héhé")}
             className="text-white bg-success"
-            isLoading={!order}
+            isLoading={!ticketSrc}
           >
             Accepter la commande
           </FullWidthBtn>
