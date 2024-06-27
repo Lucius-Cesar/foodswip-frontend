@@ -10,7 +10,7 @@ function useCheckAuth(loginPage = false) {
     //check if there is an authError
     if (auth.error) {
       if (!loginPage) {
-        router.push("/admin/login");
+        router.push("/pro/login");
         //clear restaurant admin data in localstorage if not auth and if we are located in loginPage
       }
       //if already authenticated redirect to /admin/settings

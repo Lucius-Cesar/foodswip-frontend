@@ -311,7 +311,7 @@ export default function Checkout({ params }) {
             orderType: cart.data.orderType,
             paymentMethod: selectedPaymentMethod,
             estimatedArrivalDate: estimatedArrivalDate,
-            restaurant: restaurant.data._id,
+            slug: restaurant.data.slug,
           }),
         });
         setFetchTrigger(true);

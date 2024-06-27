@@ -1,8 +1,8 @@
-import { useEffect } from "react"
-import { Fragment, useState } from "react"
-import { Transition } from "@headlessui/react"
-import { CheckCircleIcon } from "@heroicons/react/24/outline"
-import { XMarkIcon } from "@heroicons/react/20/solid"
+import { useEffect } from "react";
+import { Fragment, useState } from "react";
+import { Transition } from "@headlessui/react";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 export function DefaultNotification({
   className,
@@ -12,13 +12,15 @@ export function DefaultNotification({
   expirationTime,
 }) {
   useEffect(() => {
-    if (!expirationTime) return
-    if (show) {
-      setTimeout(() => {
-        setShow(false)
-      }, expirationTime)
+    let timeoutId;
+    if (!expirationTime) return;
+    if (expirationTime) {
+      timeoutId = setTimeout(() => {
+        setShow(false);
+      }, expirationTime);
     }
-  }, [show])
+    return () => clearTimeout(timeoutId);
+  }, [show]);
   return (
     <>
       <div
@@ -44,7 +46,7 @@ export function DefaultNotification({
                     type="button"
                     className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     onClick={() => {
-                      setShow(false)
+                      setShow(false);
                     }}
                   >
                     <span className="sr-only">Close</span>
@@ -57,5 +59,5 @@ export function DefaultNotification({
         </Transition>
       </div>
     </>
-  )
+  );
 }

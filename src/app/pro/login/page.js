@@ -1,0 +1,136 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+
+import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon.js";
+import FormInput from "@/components/ui/FormInput.js";
+import DefaultBtn from "@/components/ui/DefaultBtn";
+import {
+  mailValidation,
+  missingInformationValidation,
+} from "@/utils/validations";
+import { logIn } from "@/redux/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import useCheckAuth from "@/hooks/useCheckAuth";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import useRestaurantData from "@/hooks/useRestaurantData";
+
+import Cookies from "js-cookie";
+import useRefreshAuth from "@/hooks/useRefreshAuth";
+
+export default function Login() {
+  const auth = useSelector((state) => state.auth);
+  const router = useRouter();
+  useRefreshAuth();
+  useRestaurantData(auth.data?.user?.slug, "restaurantAdmin");
+  const dispatch = useDispatch();
+
+  const formInitialState = {
+    mail: "",
+    password: "",
+    login: "",
+  };
+  const [form, setForm] = useState(formInitialState);
+  const [validationErrors, setValidationErrors] = useState(formInitialState);
+  const restaurant = useSelector((state) => state.restaurantAdmin);
+
+  useEffect(() => {
+    if (auth.data?.token) {
+      setValidationErrors(formInitialState);
+      router.push(`/pro/settings`);
+    }
+    if (auth.error) {
+      if (auth.error.name === "ErrorInvalidCredentials") {
+        setValidationErrors({
+          ...validationErrors,
+          login: "Adresse email ou mot de passe incorrect",
+        });
+      }
+    }
+  }, [auth, restaurant]);
+
+  const handleSubmit = (e) => {
+    console.log("hihi");
+    e.preventDefault();
+    if (
+      validationErrors.password === "" &&
+      validationErrors.mail === "" &&
+      form.mail !== "" &&
+      form.password !== ""
+    ) {
+      setValidationErrors({ ...validationErrors, login: "" });
+      dispatch(logIn(form));
+    }
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center h-dvh space-y-6 xl:scale-100">
+      <div className="mb-12">
+        <FoodSwipIcon />
+      </div>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col justify-center items-center space-y-8 w-11/12 lg:w-1/2"
+      >
+        <FormInput
+          label="Email"
+          labelSize="2xl"
+          textSize="lg"
+          placeholder="you@example.com"
+          id="mail"
+          type="email"
+          onChange={(input) =>
+            setForm({
+              ...form,
+              mail: input,
+            })
+          }
+          validationFunction={(e) =>
+            mailValidation(e, setValidationErrors, "mail")
+          }
+          validationError={validationErrors.mail}
+        />
+        <FormInput
+          label="Mot de passe"
+          labelSize="2xl"
+          textSize="lg"
+          type="password"
+          onChange={(input) =>
+            setForm({
+              ...form,
+              password: input,
+            })
+          }
+          validationFunction={(e) =>
+            missingInformationValidation(
+              e,
+              setValidationErrors,
+              "password",
+              "Le mot de passe est obligatoire"
+            )
+          }
+          validationError={validationErrors.password}
+        />
+        <DefaultBtn
+          value="Connexion"
+          className="w-36 h-10 text-2xl hover:opacity-90  focus:text-white text-white self-center"
+          isLoading={auth.isLoading || restaurant.data.isLoading}
+          color="primary"
+          type="submit"
+        />
+      </form>
+      {validationErrors.login && (
+        <p className="text-error-danger font-bold">{validationErrors.login}</p>
+      )}
+      <div className="flex flex-col items-center">
+        <p>Vous souhaitez devenir client ?</p>
+        <Link href="https://erp.webwalkers.io/forms/wtl/d5666534a70376742b81a46cfa37bcd0?styled=1">
+          <p className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 text-center">
+            Contactez-nous
+          </p>
+        </Link>
+      </div>
+    </div>
+  );
+}

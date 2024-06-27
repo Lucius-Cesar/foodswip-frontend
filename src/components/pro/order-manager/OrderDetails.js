@@ -22,46 +22,45 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 const OrderDetails = ({ order }) => {
   const pathname = usePathname(); // Destructure pathname from router
   const ticketRef = useRef(null);
-  const printTicketAnchor = useRef(null)
+  const printTicketAnchor = useRef(null);
 
   const [ticketSrc, setTicketSrc] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const generateTicketImg = async () => {
-      const canvas = await html2canvas(ticketRef.current);
+    const canvas = await html2canvas(ticketRef.current);
 
     const imgUrl = canvas.toDataURL("image/jpeg");
-    return(imgUrl)
+    return imgUrl;
   };
 
   const printTicket = async () => {
     setLoading(true);
-  
+
     if (!ticketSrc) {
       try {
         const newTicketSrc = await generateTicketImg(); // Updated to use newTicketSrc to avoid redeclaration issue
         setTicketSrc(newTicketSrc);
-  
+
         printTicketAnchor.current.click();
-  
+
         setTimeout(() => {
           // Simulating printing time with setTimeout
           setLoading(false);
         }, 1000);
       } catch (error) {
-        console.error('Error generating ticket:', error);
+        console.error("Error generating ticket:", error);
         setLoading(false);
       }
     } else {
       printTicketAnchor.current.click();
-  
+
       setTimeout(() => {
         // Simulating printing time with setTimeout
         setLoading(false);
       }, 1000);
     }
   };
-  
 
   useEffect(() => {
     const getTicketSrc = async () => {
@@ -69,10 +68,7 @@ const OrderDetails = ({ order }) => {
       setTicketSrc(ticketSrc);
     };
     getTicketSrc();
-
   }, []);
-
-
 
   return (
     <>
@@ -85,18 +81,13 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          <a
-              href = {`rawbt:${ticketSrc}`}
-              ref = {printTicketAnchor}
-
-            >
-              </a>
+          <a href={`rawbt:${ticketSrc}`} ref={printTicketAnchor}></a>
           {loading ? (
             <LoadingSpinner className="text-primary" />
           ) : (
-            <button onClick = {() => printTicket()}>
+            <button onClick={() => printTicket()}>
               <PrinterIcon className="h-8 w-8 text-primary" />
-              </button>
+            </button>
           )}
         </div>
         <div className="mt-14">
@@ -108,14 +99,14 @@ const OrderDetails = ({ order }) => {
                 </p>
                 <div className="flex flex-row gap-4">
                   <div className=" inline-flex items-stretch gap-1">
-                    <div className="inline-flex items-baseline">
-                      {switchOrderTypeIcon(order.orderType, "h-4")}
+                    <div className="flex flex-row items-start  gap-1">
+                      {switchOrderTypeIcon(order.orderType, "h-3.5")}
                     </div>
                     <p className="font-bold">
                       {switchOrderTypeLabel(order.orderType)}
                     </p>
                   </div>
-                  <div className="inline-flex items-stretch gap-1">
+                  <div className="flex flex-row items-start  gap-1">
                     {switchPaymentMethodIcon(order.paymentMethod, "h-4")}
                     <p className="font-bold">
                       {switchPaymentMethodLabel(order.paymentMethod)}
@@ -198,13 +189,12 @@ const OrderDetails = ({ order }) => {
             <p>Montant Total</p> <p>{order.totalSum} €</p>
           </div>
           <div className="flex flex-col gap-2 p-3 text-lg font-medium">
-           
-              {order.note && (
-          <p>
-          Note de commande :{" "}
-          <span className="text-error-danger">{order.note}</span>
-        </p>
-              )}
+            {order.note && (
+              <p>
+                Note de commande :{" "}
+                <span className="text-error-danger">{order.note}</span>
+              </p>
+            )}
 
             <p>
               Type de commande :{" "}
@@ -272,13 +262,13 @@ const OrderDetails = ({ order }) => {
             </tbody>
           </table>
           <FullWidthBtn
-            onClick = {() => printTicket()}
+            onClick={() => printTicket()}
             className="text-white bg-success"
             isLoading={loading}
           >
             Accepter la commande
           </FullWidthBtn>
-                  </div>
+        </div>
       </div>
       <OrderPrintTicket order={order} ref={ticketRef} />
     </>

@@ -44,7 +44,7 @@ const OrderPrintTicket = ({ order }, ref) => {
           {dateToCompleteDateString(order.creationDate)}
         </p>
         <div className="flex flex-col justify-center items-center w-full ">
-          <div className="align-middle	flex flex-row  justify-center items-center self-center gap-2">
+          <div className="flex flex-row  justify-center items-center self-center gap-2">
             <div className="mt-8">
               {switchOrderTypeIcon(order.orderType, "h-10")}
             </div>

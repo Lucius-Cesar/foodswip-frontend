@@ -21,7 +21,7 @@
   "lang": "fr-FR",
   "name": "FoodSwip",
   "short_name": "FoodSwip",
-  "start_url": "/admin/order-manager",
-  "scope": "/admin",
+  "start_url": "/pro/order-manager",
+  "scope": "/pro",
   "description": "Plateforme de commande de repas en ligne"
 }
