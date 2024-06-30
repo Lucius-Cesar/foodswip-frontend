@@ -28,74 +28,48 @@ const OrderDetails = ({ order }) => {
   const pathname = usePathname();
   const router = useRouter();
   const ticketRef = useRef(null);
-  const printTicketAnchor = useRef(null);
   const isAndroidDevice = /Android/i.test(navigator?.userAgent);
-
   const [ticketSrc, setTicketSrc] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const generateTicketImg = async () => {
     if (isAndroidDevice) {
       const canvas = await html2canvas(ticketRef.current);
-
       const imgUrl = canvas.toDataURL("image/jpeg");
       return imgUrl;
     }
   };
 
-  const printTicket = async () => {
-    setLoading(true);
-    if (printTicketAnchor.current && ticketSrc && isAndroidDevice) {
-      setTimeout(() => {
-        printTicketAnchor.current.click();
-
-        // Simulating printing time with setTimeout
-        setLoading(false);
-      }, 1000);
-    } else {
-      try {
-        const newTicketSrc = await generateTicketImg(); // Updated to use newTicketSrc to avoid redeclaration issue
-        setTicketSrc(newTicketSrc);
-        if (isAndroidDevice) {
-          setTimeout(() => {
-            printTicketAnchor.current.click();
-            setLoading(false);
-          }, 1000);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error generating ticket:", error);
-        setLoading(false);
-      }
-    }
-  };
-
   const handleAcceptOrder = async () => {
     setLoading(true);
-    printTicket();
     dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
     ).then(() => router.push(pathname));
+    setTimeout(() => setLoading(false), 1000);
   };
 
   useEffect(() => {
+    if (!ticketRef.current) return;
     const getTicketSrc = async () => {
       const newTicketSrc = await generateTicketImg();
       setTicketSrc(newTicketSrc);
     };
-
     getTicketSrc();
-  }, []);
+  }, [ticketRef.current]);
 
+  useEffect(() => {
+    if (!ticketSrc) {
+      return;
+    }
+    if (ticketSrc) {
+      setLoading(false);
+    }
+  }, [ticketSrc]);
   return (
     <>
-      <a
-        href={ticketSrc ? `rawbt:${ticketSrc}` : ""}
-        className="absolute left-[-9999px]"
-        ref={printTicketAnchor}
-      ></a>
       <div className="fixed z-50 top-0 left-0 right-0 w-full bg-white overflow-auto h-full pb-8">
         <div className="fixed  bg-white top-0 w-full h-14 border-b border-gravel drop-shadow flex flex-row justify-between items-center pl-1 pr-3">
           <Link href={pathname}>
@@ -109,9 +83,11 @@ const OrderDetails = ({ order }) => {
           {loading ? (
             <LoadingSpinner className="text-primary" />
           ) : order.status === "accepted" && isAndroidDevice ? (
-            <button onClick={() => printTicket()}>
-              <PrinterIcon className="h-8 w-8 text-primary" />
-            </button>
+            <a href={`rawbt:${ticketSrc}`}>
+              <button>
+                <PrinterIcon className="h-8 w-8 text-primary" />
+              </button>
+            </a>
           ) : (
             <div className="h-8 w-8"></div>
           )}
@@ -285,13 +261,15 @@ const OrderDetails = ({ order }) => {
           </tbody>
         </table>
         {order.status === "new" && (
-          <FullWidthBtn
-            onClick={() => handleAcceptOrder()}
-            className="text-white bg-success"
-            isLoading={loading}
-          >
-            Accepter la commande
-          </FullWidthBtn>
+          <a href={`${isAndroidDevice ? `rawbt:${ticketSrc}` : ""}`}>
+            <FullWidthBtn
+              onClick={() => handleAcceptOrder()}
+              className="text-white bg-success"
+              isLoading={loading}
+            >
+              Accepter la commande
+            </FullWidthBtn>
+          </a>
         )}
       </div>
       <OrderPrintTicket order={order} ref={ticketRef} />

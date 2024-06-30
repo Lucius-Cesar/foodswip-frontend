@@ -21,7 +21,7 @@
   "lang": "fr-FR",
   "name": "FoodSwip Pro",
   "short_name": "FoodSwip Pro",
-  "start_url": "/pro/order-manager",
+  "start_url": "/pro",
   "scope": "/pro",
   "description": "Gérez vos commandes en toute simplicité"
 }
