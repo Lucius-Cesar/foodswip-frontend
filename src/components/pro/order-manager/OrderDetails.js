@@ -46,7 +46,7 @@ const OrderDetails = ({ order }) => {
         status: "accepted",
       })
     ).then(() => router.push(pathname));
-    setTimeout(() => setLoading(false), 1000);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -67,6 +67,16 @@ const OrderDetails = ({ order }) => {
     }
   }, [ticketSrc]);
 
+  const printTicket = () => {
+    if (isAndroidDevice) {
+      setLoading(true);
+      setTimeout(() => {
+        console.log("print"), 500;
+      });
+    }
+    setLoading(false);
+  };
+
   console.log(ticketSrc);
   return (
     <>
@@ -84,7 +94,7 @@ const OrderDetails = ({ order }) => {
             <LoadingSpinner className="text-primary" />
           ) : order.status === "accepted" ? (
             <a href={`rawbt:${ticketSrc}`}>
-              <button>
+              <button onClick={() => printTicket()}>
                 <PrinterIcon className="h-8 w-8 text-primary" />
               </button>
             </a>
