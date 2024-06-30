@@ -80,7 +80,7 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeLabel(order.orderType)}
           </div>
 
-          {loading ? (
+          {loading && order.status === "accepted" && isAndroidDevice ? (
             <LoadingSpinner className="text-primary" />
           ) : order.status === "accepted" && isAndroidDevice ? (
             <a href={`rawbt:${ticketSrc}`}>
