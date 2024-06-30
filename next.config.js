@@ -3,7 +3,6 @@ const {
   PHASE_PRODUCTION_BUILD,
 } = require("next/constants");
 
-
 /** @type {(phase: string, defaultConfig: import("next").NextConfig) => Promise<import("next").NextConfig>} */
 module.exports = async (phase) => {
   /** @type {import("next").NextConfig} */
@@ -18,8 +17,8 @@ module.exports = async (phase) => {
       ];
     },
   };
-  
-  if (phase === PHASE_PRODUCTION_BUILD) {
+
+  if (phase === PHASE_PRODUCTION_BUILD || phase === PHASE_DEVELOPMENT_SERVER) {
     const withSerwist = (await import("@serwist/next")).default({
       // Note: This is only an example. If you use Pages Router,
       // use something else that works, such as "service-worker/index.ts".
@@ -27,8 +26,7 @@ module.exports = async (phase) => {
       swDest: "public/sw.js",
     });
     return withSerwist(nextConfig);
+  } else {
+    return nextConfig;
   }
-  else  {
-    return(nextConfig)
-  }
-}
+};

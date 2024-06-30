@@ -16,7 +16,7 @@ export default function PeriodItem({
       <div className="relative">
         <DefaultBtn
           value={otherValue ? otherValue : `${start} - ${end}`}
-          className={`${className} text-xl bg-primary hover:opacity-90  focus:text-white text-white self-center`}
+          className={`${className} !max-w-32 bg-primary hover:opacity-90  focus:text-white text-white self-center`}
           onClick={() => onClickMainBtn()}
         />
         {closeBtn && (

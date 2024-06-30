@@ -19,9 +19,9 @@
   "display": "standalone",
   "dir": "auto",
   "lang": "fr-FR",
-  "name": "FoodSwip",
-  "short_name": "FoodSwip",
+  "name": "FoodSwip Pro",
+  "short_name": "FoodSwip Pro",
   "start_url": "/pro/order-manager",
   "scope": "/pro",
-  "description": "Plateforme de commande de repas en ligne"
+  "description": "Gérez vos commandes en toute simplicité"
 }

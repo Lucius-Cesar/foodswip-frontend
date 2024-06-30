@@ -52,21 +52,21 @@ const urwGeometric = localFont({
 
 const APP_NAME = "Foodswip";
 const APP_DEFAULT_TITLE = "Foodswip";
-const APP_TITLE_TEMPLATE = "%s - Foodswip";
+const APP_TITLE_TEMPLATE = "%s - Foodswip Pro";
 const APP_DESCRIPTION = "Commandes de repas en ligne";
 
 export const metadata = {
   applicationName: APP_NAME,
   manifest: "manifest.json", // we are accessing our manifest file here
   title: {
-    default: APP_DEFAULT_TITLE,
-    template: APP_TITLE_TEMPLATE,
+    default: "FoodSwip",
+    template: "%s - Foodswip",
   },
   description: APP_DESCRIPTION,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: APP_DEFAULT_TITLE,
+    title: "FoodSwip Pro",
     // startUpImage: [],
   },
   formatDetection: {

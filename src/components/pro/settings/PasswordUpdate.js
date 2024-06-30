@@ -44,12 +44,12 @@ export default function PasswordUpdate() {
 
   return (
     <div classname="space-y-4">
-      <h2 className="mb-4">Modifier le mot de passe</h2>
+      <h2 className="text-xl font-bold mb-4">Modifier le mot de passe</h2>
       <div className="w-full sm:w-5/12 space-y-4 flex flex-col">
         <FormInput
           label="Mot de passe actuel"
-          labelSize="xl"
-          textSize="lg"
+          labelSize="lg"
+          textSize="normal"
           type="password"
           onChange={(input) =>
             setPasswordForm({ ...passwordForm, currentPassword: input })
@@ -66,8 +66,8 @@ export default function PasswordUpdate() {
         ></FormInput>
         <FormInput
           label="Nouveau mot de passe"
-          labelSize="xl"
-          textSize="lg"
+          labelSize="lg"
+          textSize="normal"
           type="password"
           onChange={(input) =>
             setPasswordForm({ ...passwordForm, newPassword: input })
@@ -79,8 +79,8 @@ export default function PasswordUpdate() {
         ></FormInput>
         <FormInput
           label="Confirmer le nouveau mot de passe"
-          labelSize="xl"
-          textSize="lg"
+          labelSize="lg"
+          textSize="normal"
           type="password"
           onChange={(input) =>
             setPasswordForm({ ...passwordForm, confirmNewPassword: input })

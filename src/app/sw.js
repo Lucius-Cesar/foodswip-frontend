@@ -1,7 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import { Serwist } from "serwist";
 
-const self = self;
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   skipWaiting: true,
@@ -9,5 +8,37 @@ const serwist = new Serwist({
   navigationPreload: true,
   runtimeCaching: defaultCache,
 });
+
+self.addEventListener("push", (event) => {
+  const data = JSON.parse(event.data?.text() ?? '{ title: "" }');
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.message,
+      icon: "icons/icon192.png",
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        if (clientList.length > 0) {
+          let client = clientList[0];
+          for (let i = 0; i < clientList.length; i++) {
+            if (clientList[i].focused) {
+              client = clientList[i];
+            }
+          }
+          return client.focus();
+        }
+        return self.clients.openWindow("/pro/order-manager");
+      })
+  );
+});
+
+//don't forget to covert icon to 192x192
 
 serwist.addEventListeners();

@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-import ToggleBtn from "../ui/ToggleBtn"
-import DefaultBtn from "@/components/ui/DefaultBtn"
-import DefaultModal from "../ui/DefaultModal"
-import { WarningAlert } from "@/components/ui/Alerts"
-import { compteNewDateBasedOnTimeString } from "@/utils/dateAndTime"
-import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice"
-import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus"
+import ToggleBtn from "../ui/ToggleBtn";
+import DefaultBtn from "@/components/ui/DefaultBtn";
+import DefaultModal from "../ui/DefaultModal";
+import { WarningAlert } from "@/components/ui/Alerts";
+import { compteNewDateBasedOnTimeString } from "@/utils/dateAndTime";
+import { updateRestaurantSettings } from "@/redux/restaurantAdmin/restaurantAdminSlice";
+import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 
 function getEndOfOverrideStatusPeriod(
   currentService,
@@ -18,14 +18,14 @@ function getEndOfOverrideStatusPeriod(
   //this function loop over all the services of the week, current date is within a service => put the end of the overrideStatusPeriode to the end of the current service
   //if we are not in a service: put the end of the overrideStatusPeriode to the start of the next periode
 
-  let currentDate = new Date()
-  let endOfService
+  let currentDate = new Date();
+  let endOfService;
   if (untilNextDay) {
     const nextDayTimestamp = new Date(
       currentDate.setDate(currentDate.getDate() + 1)
-    )
-    nextDayTimestamp.setHours(0, 0, 0, 0)
-    return nextDayTimestamp
+    );
+    nextDayTimestamp.setHours(0, 0, 0, 0);
+    return nextDayTimestamp;
   }
 
   //if currently in service
@@ -35,24 +35,24 @@ function getEndOfOverrideStatusPeriod(
     const currentServiceEndDate = compteNewDateBasedOnTimeString(
       currentDate,
       currentService.end
-    )
+    );
 
-    endOfService = currentServiceEndDate
+    endOfService = currentServiceEndDate;
   } else if (remainingServicesForToday.length) {
     const nextServiceEndDate = compteNewDateBasedOnTimeString(
       currentDate,
       remainingServicesForToday[0].end
-    )
-    endOfService = nextServiceEndDate
+    );
+    endOfService = nextServiceEndDate;
   } else {
     // else end of overrideStatusPeriode the next day
     const nextDayTimestamp = new Date(
       currentDate.setDate(currentDate.getDate() + 1)
-    )
-    nextDayTimestamp.setHours(0, 0, 0, 0)
-    return nextDayTimestamp
+    );
+    nextDayTimestamp.setHours(0, 0, 0, 0);
+    return nextDayTimestamp;
   }
-  return endOfService
+  return endOfService;
 }
 
 const ModalStatusOverride = ({
@@ -63,22 +63,22 @@ const ModalStatusOverride = ({
   initialRestaurantStatus,
   remainingServicesForToday,
 }) => {
-  const dispatch = useDispatch()
-  const restaurant = useSelector((state) => state.restaurantAdmin)
+  const dispatch = useDispatch();
+  const restaurant = useSelector((state) => state.restaurantAdmin);
   const onClickBtn = (untilNextDay) => {
-    const updatedRestaurantOpen = !restaurantOpen
-    const currentDate = new Date()
+    const updatedRestaurantOpen = !restaurantOpen;
+    const currentDate = new Date();
     const endOfOverrideStatusPeriod = getEndOfOverrideStatusPeriod(
       currentService,
       remainingServicesForToday,
       untilNextDay
-    )
+    );
     const updatedStatusOverride = {
       open: updatedRestaurantOpen,
       start: currentDate,
       //if no next service , end of the overrideStatus is arbitrary next day midnight
       end: endOfOverrideStatusPeriod,
-    }
+    };
 
     const restaurantSettingsPayload = {
       ...restaurant.data,
@@ -86,11 +86,11 @@ const ModalStatusOverride = ({
         ...restaurant.data.publicSettings,
         statusOverride: updatedStatusOverride,
       },
-    }
+    };
     dispatch(updateRestaurantSettings(restaurantSettingsPayload)).then(() => {
-      setOpen(false)
-    })
-  }
+      setOpen(false);
+    });
+  };
 
   //workaround to avoid modal data changes during the closing animation, change later if possible
 
@@ -208,11 +208,11 @@ const ModalStatusOverride = ({
         ) : null}
       </div>
     </DefaultModal>
-  )
-}
+  );
+};
 
 export default function RestaurantStatusOverrideBtn({ className }) {
-  const restaurant = useSelector((state) => state.restaurantAdmin)
+  const restaurant = useSelector((state) => state.restaurantAdmin);
   //const [toggle, setToggle] = useState(checkRestaurantStatus(restaurant));
   const {
     restaurantOpen,
@@ -220,23 +220,23 @@ export default function RestaurantStatusOverrideBtn({ className }) {
     currentService,
     remainingServicesForToday,
     restaurantStatus,
-  } = useCheckRestaurantStatus(restaurant)
-  const [modalOpen, setModalOpen] = useState(false)
+  } = useCheckRestaurantStatus(restaurant);
+  const [modalOpen, setModalOpen] = useState(false);
   const [initialRestaurantStatus, setInitialRestaurantStatus] =
-    useState(restaurantStatus)
+    useState(restaurantStatus);
   return (
     <>
       <div
-        className={`${className} flex flex-col justify-beween items-between w-56 h-fit rounded-lg border border-gravel p-3 gap-2`}
+        className={`${className} flex flex-col justify-beween items-between w-48 h-fit rounded-lg border border-gravel p-2 gap-2`}
       >
-        <div className="flex flex-row justify-between ">
-          <h2>Votre statut</h2>
+        <div className="flex flex-row justify-between text-sm">
+          <p className="text-lg font-semibold">Votre statut</p>
           <ToggleBtn
             enabled={restaurantOpen}
             setEnabled={setRestaurantOpen}
             onChange={() => {
-              setModalOpen(true)
-              setInitialRestaurantStatus(restaurantStatus)
+              setModalOpen(true);
+              setInitialRestaurantStatus(restaurantStatus);
             }}
             className="w-20"
           />
@@ -251,7 +251,7 @@ export default function RestaurantStatusOverrideBtn({ className }) {
               : restaurantStatus === "closed"
               ? "text-error-danger"
               : null
-          } font-bold text-xl`}
+          } font-bold text-lg`}
         >
           {restaurantStatus === "pre order"
             ? "Commandes à l'avance"
@@ -272,5 +272,5 @@ export default function RestaurantStatusOverrideBtn({ className }) {
         remainingServicesForToday={remainingServicesForToday}
       />
     </>
-  )
+  );
 }

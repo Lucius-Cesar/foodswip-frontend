@@ -4,6 +4,7 @@ import {
   switchOrderTypeLabel,
   switchPaymentMethodLabelForTicket,
 } from "@/utils/switchLabel";
+import { useSelector } from "react-redux";
 import {
   dateToCompleteDateString,
   dateToTimeString,
@@ -14,27 +15,20 @@ import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
 const OrderPrintTicket = ({ order }, ref) => {
-  const restaurant = {
-    name: "Dodopizza",
-    address: {
-      street: "Avenue des dodos 7130 Binche",
-      postCode: 7134,
-      city: "Binche",
-    },
-  };
+  const restaurant = useSelector((state) => state.restaurantAdmin);
 
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px]"
+      className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
     >
       {/*absolute -9999px to hide the component*/}
 
       <div className="flex flex-col  items-start w-full">
         <img className="self-center" src="/images/foodswip-logo-print.png" />
-        <p className="text-lg text-black self-center">
-          {restaurant.name} - {restaurant.address.street}{" "}
-          {restaurant.address.postCode} {restaurant.address.city}
+        <p className="text-lg text-center text-black self-center">
+          {restaurant.data.name} - {restaurant.data.address.street}{" "}
+          {restaurant.data.address.postCode} {restaurant.data.address.city}
         </p>
         <p className="text-lg font-bold self-center">
           {" "}
@@ -87,7 +81,7 @@ const OrderPrintTicket = ({ order }, ref) => {
                                   formattedOption = `+${option.value}`;
                                 }
                                 return (
-                                  <p className="font-normal">
+                                  <p key={k} className="font-normal">
                                     {formattedOption}
                                   </p>
                                 );
@@ -125,33 +119,33 @@ const OrderPrintTicket = ({ order }, ref) => {
       <div className="text-4xl font-extrabold text-center">
         {switchPaymentMethodLabelForTicket(order.paymentMethod)}
       </div>
-      <table class="min-w-full bg-white border border-gray-200">
+      <table className="min-w-full bg-white border border-gray-200">
         <thead></thead>
-        <tbody class="text-2xl font-semibold">
+        <tbody className="text-2xl font-semibold">
           <tr>
-            <td class="py-2  border border-black font-normal pb-8 text-center ">
+            <td className="py-2  border border-black font-normal pb-8 text-center ">
               Nom
             </td>
-            <td class="py-2 border border-black  pb-8 text-center ">
+            <td className="py-2 border border-black  pb-8 text-center ">
               {order.customer.firstname} {order.customer.lastname}
             </td>
           </tr>
           {order.orderType === 0 ? (
             <>
               <tr>
-                <td class="py-2 border border-black font-normal  pb-8 text-center ">
+                <td className="py-2 border border-black font-normal  pb-8 text-center ">
                   Adresse
                 </td>
-                <td class="py-2 border border-black pb-8 text-center ">
+                <td className="py-2 border border-black pb-8 text-center ">
                   {order.customer.address.street},{" "}
                   {order.customer.address.streetNumber}
                 </td>
               </tr>
               <tr>
-                <td class="py-2 border border-black font-normal pb-8 text-center ">
+                <td className="py-2 border border-black font-normal pb-8 text-center ">
                   Ville
                 </td>
-                <td class="py-2 border border-black pb-8 text-center ">
+                <td className="py-2 border border-black pb-8 text-center ">
                   {order.customer.address.postCode}{" "}
                   {order.customer.address.city}
                 </td>
@@ -160,10 +154,10 @@ const OrderPrintTicket = ({ order }, ref) => {
           ) : null}
 
           <tr>
-            <td class="py-2 border border-black font-normal text-center pb-8">
+            <td className="py-2 border border-black font-normal text-center pb-8">
               Téléphone
             </td>
-            <td class="py-2 border border-black text-center ">
+            <td className="py-2 border border-black text-center ">
               {order.customer.phoneNumber}
             </td>
           </tr>

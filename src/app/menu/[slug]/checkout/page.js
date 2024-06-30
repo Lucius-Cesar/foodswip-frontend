@@ -156,7 +156,7 @@ export default function Checkout({ params }) {
     if (!newOrder.data) return;
     if (newOrder.data.clientSecret && selectedPaymentMethod === "online") {
       setStripeModalOpen(true);
-    } else if (newOrder?.data?.status === "completed") {
+    } else if (newOrder?.data?.status === "new") {
       router.push(`/menu/${params.slug}/order/${newOrder.data.orderNumber}`);
 
       //workaround to dispatch after router.push is completed (not the best solution)

@@ -12,15 +12,13 @@ import { dateToTimeString } from "@/utils/dateAndTime";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import OrderDetails from "./OrderDetails";
-
+import { useSelector } from "react-redux";
 const OrderCard = ({ order }) => {
   const searchParams = useSearchParams();
   const selectedOrder = Number(searchParams.get("order"));
 
-  console.log(selectedOrder);
   // orderCard is displayed if no order is selected or if the selected order is different from the current order
   if (!selectedOrder || selectedOrder !== order.orderNumber) {
-    console.log("hihihi");
     return (
       <>
         <Link

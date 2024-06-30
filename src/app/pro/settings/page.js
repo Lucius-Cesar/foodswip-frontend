@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import FormInput from "@/components/ui/FormInput.js";
 import DefaultBtn from "@/components/ui/DefaultBtn";
-import Header from "@/components/pro/Header";
 import SideNavigation from "@/components/pro/settings/SideNavigation";
 import { RestaurantLogo } from "@/components/ui/RestaurantLogo";
 import PeriodItem from "@/components/pro/settings/PeriodItem";
@@ -16,7 +15,7 @@ import TabBtn from "@/components/ui/TabBtn";
 
 import { switchDayLabel } from "@/utils/switchLabel";
 import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   mailValidation,
   phoneNumberValidation,
@@ -33,6 +32,8 @@ import useRestaurantData from "@/hooks/useRestaurantData";
 import { logOut } from "@/redux/auth/authSlice";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import PasswordUpdate from "@/components/pro/settings/PasswordUpdate";
+import MainNavigation from "@/components/pro/MainNavigation";
+import Link from "next/link";
 
 export default function settings() {
   const auth = useSelector((state) => state.auth);
@@ -47,6 +48,13 @@ export default function settings() {
   const [publicSettings, setPublicSettings] = useState(null);
   const [privateSettings, setPrivateSettings] = useState(null);
   const [accountSettings, setAccountSettings] = useState(null);
+  const searchParams = useSearchParams();
+  const activeSettings = searchParams.get("q");
+  useEffect(() => {
+    if (!activeSettings) {
+      router.push("/pro/settings?q=restaurant");
+    }
+  }, [activeSettings]);
   useEffect(() => {
     if (restaurant.data) {
       setFormRestaurantInfo({
@@ -76,13 +84,6 @@ export default function settings() {
     phoneNumber: "",
     orderMailReception: "",
   });
-
-  const categoriesData = [
-    "Paramètres restaurant",
-    "Paramètres commandes",
-    "Paramètres du compte",
-  ];
-  const [activeCategory, setActiveCategory] = useState(categoriesData[0]);
 
   const optionsDateFormatting = {
     day: "2-digit",
@@ -181,168 +182,43 @@ export default function settings() {
   } else {
     return (
       <>
-        <div className="h-dvh flex flex-col overflow-hidden">
-          <Header isSettingsActive={true} />
-          <div className="flex flex-col sm:flex-row sm:h-full sm:ps-10  overflow-hidden">
-            <SideNavigation
-              categoriesData={categoriesData}
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-            />
-            {activeCategory === categoriesData[0] && (
-              <div className="relative flex flex-col w-full px-4 sm:px-10 h-full space-y-8 overflow-y-auto pb-2">
-                <RestaurantStatusOverrideBtn className="self-start md:absolute top-0 bottom-0 right-10" />
-
-                <div>
-                  <h2 className="mb-4">Informations générales</h2>
-                  <p className="font-medium text-xl">Logo</p>
-                  <div className="me-4 mt-2 mb-4  sm:me-6 sm:my-6">
-                    <RestaurantLogo from={"restaurantAdmin"} />
-                  </div>
-                  <div class="grid grid-cols1 sm:grid-cols-2 gap-6">
-                    <div className="w-full">
-                      <FormInput
-                        label="Nom de l'établissement"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.name}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            name: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Site web"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.website}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            website: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Rue"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.street}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            street: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Numéro"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.streetNumber}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            streetNumber: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Ville"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.city}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            city: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Code Postal"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.postCode}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            postCode: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Pays"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.country}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            country: input,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Numéro de téléphone"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.phoneNumber}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            phoneNumber: input,
-                          })
-                        }
-                        validationFunction={(e) =>
-                          phoneNumberValidation(
-                            e,
-                            setValidationErrors,
-                            "phoneNumber"
-                          )
-                        }
-                        validationError={validationErrors.phoneNumber}
-                      />
-                    </div>
-                    <div className="w-full">
-                      <FormInput
-                        label="Email"
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.mail}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            mail: input,
-                          })
-                        }
-                        validationFunction={(e) =>
-                          mailValidation(e, setValidationErrors, "mail")
-                        }
-                        validationError={validationErrors.mail}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <main className="h-dvh overflow-y-hidden flex flex-col w-full">
+          <MainNavigation />
+          <div className="flex fex-col border-bottom  bg-white border-gravel rounded-lg p-3 drop-shadow-md">
+            <div className="w-full px-8 sm:px-0 flex flex-row justify-around items-center text-center font-semibold">
+              <Link
+                className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
+                  activeSettings === "restaurant" ? "text-primary" : ""
+                }`}
+                href="/pro/settings?q=restaurant"
+              >
+                Paramètres du restaurant
+              </Link>
+              <Link
+                className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
+                  activeSettings === "order" ? "text-primary" : ""
+                }`}
+                href="/pro/settings?q=order"
+              >
+                Paramètres de commandes
+              </Link>
+              <Link
+                className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
+                  activeSettings === "account" ? "text-primary" : ""
+                }`}
+                href="/pro/settings?q=account"
+              >
+                Paramètres de compte
+              </Link>
+            </div>
+          </div>
+          <div className="flex flex-col px-3 pt-3 w-full h-full overflow-y-auto">
+            {activeSettings === "restaurant" && (
+              <div className="relative flex flex-col w-full h-full pb-4 space-y-4">
+                <RestaurantStatusOverrideBtn className="self-start" />
+                <div className="flex flex-row gap-8 sm:gap-56 ">
                   <div className="flex flex-col">
-                    <h2 className="mb-4">Horraires d'ouverture</h2>
+                    <h2 className="mb-4 font-bold">Horraires d'ouverture</h2>
                     <ModalPeriod
                       type={"time"}
                       value={valueModalPeriod}
@@ -371,15 +247,17 @@ export default function settings() {
                         );
                       }}
                     />
-                    <div className="flex flex-col items-start space-y-6">
+                    <div className="flex flex-col items-start space-y-2">
                       {publicSettings?.schedule?.map((scheduleItem, i) => {
                         const dayLabel = switchDayLabel(i);
                         return (
                           <div
                             key={i}
-                            className="flex flex-col items-center space-y-4"
+                            className="flex flex-col items-center space-y-2"
                           >
-                            <p className="self-start text-xl">{dayLabel} :</p>
+                            <p className="self-start text-lg font-semibold">
+                              {dayLabel} :
+                            </p>
                             {scheduleItem.services.length === 0 ? (
                               <PeriodItem
                                 className="w-40"
@@ -450,8 +328,8 @@ export default function settings() {
                       })}
                     </div>
                   </div>
-                  <div className="flex flex-col items-start space-y-6">
-                    <h2 className="">Fermetures exceptionnelles</h2>
+                  <div className="flex flex-col items-center space-y-4">
+                    <h2 className="font-bold">Fermetures exceptionnelles</h2>
                     <ModalPeriod
                       type={"date"}
                       value={valueModalPeriod}
@@ -479,7 +357,7 @@ export default function settings() {
                         });
                       }}
                     />
-                    <div className="flex flex-col items-center space-y-4">
+                    <div className="flex flex-col items-center justify-center space-y-4">
                       {publicSettings?.exceptionalClosings.map(
                         (exceptionalClosing, i) => {
                           const exceptionalClosingDate = {
@@ -528,6 +406,7 @@ export default function settings() {
                         }
                       )}
                       <AddBtn
+                        className="h-4 w-4"
                         onClick={() => {
                           setModalExceptionalClosingOpen(true);
                           setModalPeriodOperation("create");
@@ -536,21 +415,164 @@ export default function settings() {
                     </div>
                   </div>
                 </div>
+                <div>
+                  <h2 className="mb-4 font-bold">Informations générales</h2>
+                  <div class="flex flex-col gap-4 sm:grid sm:grid-cols-2">
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Nom de l'établissement"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.name}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            name: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Site web"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.website}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            website: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Rue"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.street}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            street: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Numéro"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.streetNumber}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            streetNumber: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Ville"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.city}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            city: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Code Postal"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.postCode}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            postCode: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Pays"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.country}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            country: input,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Numéro de téléphone"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.phoneNumber}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            phoneNumber: input,
+                          })
+                        }
+                        validationFunction={(e) =>
+                          phoneNumberValidation(
+                            e,
+                            setValidationErrors,
+                            "phoneNumber"
+                          )
+                        }
+                        validationError={validationErrors.phoneNumber}
+                      />
+                    </div>
+                    <div className="w-2/3">
+                      <FormInput
+                        label="Email"
+                        labelSize="lg"
+                        textSize="normal"
+                        value={formRestaurantInfo.mail}
+                        onChange={(input) =>
+                          setFormRestaurantInfo({
+                            ...formRestaurantInfo,
+                            mail: input,
+                          })
+                        }
+                        validationFunction={(e) =>
+                          mailValidation(e, setValidationErrors, "mail")
+                        }
+                        validationError={validationErrors.mail}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
-            {activeCategory === categoriesData[1] && (
-              <div className="flex flex-col px-4 sm:px-10 w-full h-full space-y-8 overflow-y-auto pb-2">
+            {activeSettings === "order" && (
+              <div className="flex flex-col w-full h-full space-y-4 pb-2">
                 <div className="space-y-4">
-                  <h2 className="mb-4">Commandes à livrer</h2>
+                  <h2 className="mb-4 font-bold">Commandes à livrer</h2>
                   <div className="space-y-4">
                     <div>
-                      <label className="text-xl font-medium block mb-2">
+                      <label className="text-lg font-semibold block mb-2">
                         Minimum d'achat pour la livraison (€)
                       </label>
                       <div className="text-center w-48">
                         <InputNumber
-                          labelSize="xl"
-                          textSize="lg"
+                          labelSize="lg"
+                          textSize="normal"
                           id="alertInterval"
                           value={publicSettings.deliveryMin}
                           onChange={(value) => {
@@ -584,13 +606,13 @@ export default function settings() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-xl font-medium">
+                      <label className="text-lg font-semibold">
                         Frais de livraison (€)
                       </label>
                       <div className="text-center  w-48">
                         <InputNumber
-                          labelSize="xl"
-                          textSize="lg"
+                          labelSize="lg"
+                          textSize="normal"
                           id="alertInterval"
                           value={publicSettings.deliveryFees}
                           onChange={(value) => {
@@ -626,13 +648,13 @@ export default function settings() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-xl font-medium block mb-2">
+                      <label className="text-lg font-semibold block mb-2">
                         Délai de livraison, moyenne basse (minutes)
                       </label>
                       <div className="text-center  w-48">
                         <InputNumber
-                          labelSize="xl"
-                          textSize="lg"
+                          labelSize="lg"
+                          textSize="normal"
                           id="alertInterval"
                           value={publicSettings.deliveryEstimate.min}
                           onChange={(value) => {
@@ -678,13 +700,13 @@ export default function settings() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-xl font-medium block mb-2">
+                    <label className="text-lg font-semibold block mb-2">
                       Délai de livraison, moyenne haute (minutes)
                     </label>
                     <div className="text-center  w-48">
                       <InputNumber
-                        labelSize="xl"
-                        textSize="lg"
+                        labelSize="lg"
+                        textSize="normal"
                         id="alertInterval"
                         value={publicSettings.deliveryEstimate.max}
                         onChange={(value) => {
@@ -729,7 +751,7 @@ export default function settings() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-xl font-medium block mb-2">
+                    <label className="text-lg font-semibold block mb-2">
                       Codes postaux éligibles pour la livraison{" "}
                     </label>
                     <div className="grid grid-cols1 sm:grid-cols-3 w-fit gap-x-10 gap-y-4">
@@ -738,7 +760,8 @@ export default function settings() {
                           <div className="relative w-fit">
                             <div className="w-32">
                               <InputNumber
-                                textSize="lg"
+                                labelSize="lg"
+                                textSize="normal"
                                 value={postCode}
                                 onChange={(input) => {
                                   let updatedDeliveryPostCodes = [
@@ -789,13 +812,13 @@ export default function settings() {
                 <div className="space-y-4">
                   <h2 className="mb-4">Commandes à emporter</h2>
                   <div>
-                    <label className="text-xl font-medium block mb-2">
+                    <label className="text-lg font-semibold block mb-2">
                       Délai de préparation moyen (minutes)
                     </label>
                     <div className="text-center w-48">
                       <InputNumber
-                        labelSize="xl"
-                        textSize="lg"
+                        labelSize="lg"
+                        textSize="normal"
                         id="alertInterval"
                         value={publicSettings.takeAwayEstimate}
                         onChange={(value) => {
@@ -834,7 +857,7 @@ export default function settings() {
                 <div className="space-y-4">
                   <h2 className="mb-4">Moyens de paiement</h2>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    <p className="text-xl font-medium w-28">Livraison</p>
+                    <p className="text-lg font-semibold w-28">Livraison</p>
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
@@ -866,7 +889,7 @@ export default function settings() {
                           />
                           <label
                             htmlFor={paymentMethod.value}
-                            className="ml-3 block text-medium font-medium text-lg  leading-6"
+                            className="ml-3 block font-semibold  leading-6"
                           >
                             {paymentMethodLabel}
                           </label>
@@ -875,7 +898,7 @@ export default function settings() {
                     })}
                   </div>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    <p className="text-xl font-medium w-28">À emporter</p>
+                    <p className="font-semibold w-28">À emporter</p>
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
@@ -905,7 +928,7 @@ export default function settings() {
                           />
                           <label
                             htmlFor={paymentMethod.value}
-                            className="ml-3 block text-medium font-medium text-lg  leading-6"
+                            className="ml-3 block font-semibold text-lg  leading-6"
                           >
                             {paymentMethodLabel}
                           </label>
@@ -915,8 +938,8 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">
-                    {"Réceptions des commandes par mail:"}
+                  <h2 className="mb-4 font-bold">
+                    {"Réceptions des commandes par mail"}
                   </h2>
                   <div className="space-y-2 flex flex-col w-fit">
                     <TabBtn
@@ -944,7 +967,7 @@ export default function settings() {
                     />
                     <div>
                       <label
-                        className={`ml-px block text-lg font-medium leading-6 mb-2`}
+                        className={`ml-px block text-lg font-semibold leading-6 mb-2`}
                       >
                         Adresse mail
                       </label>
@@ -978,9 +1001,9 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Alertes sonores</h2>
+                  <h2 className="mb-4 font-bold">Alertes sonores</h2>
                   <div className="space-y-2">
-                    <p className="font-medium text-xl">
+                    <p className="font-semibold text-lg">
                       Alerte pour les commande en attente
                     </p>
                     <TabBtn
@@ -1007,13 +1030,13 @@ export default function settings() {
                     />
                   </div>
                   <div>
-                    <label className="text-xl font-medium">
+                    <label className="text-lg font-semibold">
                       Rappel sonores (minutes)
                     </label>
                     <div className="text-center  w-48">
                       <InputNumber
-                        labelSize="xl"
-                        textSize="lg"
+                        labelSize="lg"
+                        textSize="normal"
                         id="alertInterval"
                         value={privateSettings.pendingOrderAlert.interval}
                         onChange={(value) => {
@@ -1059,41 +1082,15 @@ export default function settings() {
                 </div>
               </div>
             )}
-            {activeCategory === categoriesData[2] && (
-              <div className="flex flex-col px-4 sm:px-10  w-full h-full space-y-8 overflow-y-auto pb-2">
+            {activeSettings === "account" && (
+              <div className="flex flex-col px-4 sm:px-10  w-full h-full space-y-8 pb-2">
                 <div className="space-y-4">
-                  {/*
-                     <h2 className="mb-4">Informations du compte</h2>
-                  <div className="space-y-2">
-                    <p className="font-medium text-xl"></p>
-                    <div className="w-full sm:w-5/12">
-                      <FormInput
-                        label="Adresse mail de connection :
-                        "
-                        labelSize="xl"
-                        textSize="lg"
-                        value={formRestaurantInfo.mail}
-                        onChange={(input) =>
-                          setFormRestaurantInfo({
-                            ...formRestaurantInfo,
-                            mail: input,
-                          })
-                        }
-                        validationFunction={(e) =>
-                          mailValidation(e, setValidationErrors)
-                        }
-                        validationError={validationErrors.mail}
-                      />
-                    </div>
-                  </div>
-                
-            */}
                   <PasswordUpdate />
                 </div>
                 <div className="w-full sm:w-5/12 space-y-4 text-center">
                   <DefaultBtn
                     value="Se déconnecter"
-                    className="bg-error-danger hover:brightness-95 rounded-s-lg rounded-e-lg text-xl font-bold  focus:text-white text-white self-center"
+                    className="bg-error-danger hover:brightness-95 rounded-s-lg rounded-e-lg text-lg font-bold  focus:text-white text-white self-center"
                     onClick={() => onClickLogOut()}
                     color="error-danger"
                   />
@@ -1101,7 +1098,7 @@ export default function settings() {
               </div>
             )}
           </div>
-          {activeCategory !== categoriesData[2] && (
+          {activeSettings !== "account" && (
             <FooterSettings
               validationErrors={validationErrors}
               formRestaurantInfo={formRestaurantInfo}
@@ -1109,7 +1106,7 @@ export default function settings() {
               privateSettings={privateSettings}
             />
           )}
-        </div>
+        </main>
       </>
     );
   }

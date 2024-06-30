@@ -6,17 +6,17 @@ export default function DefaultBtn({
   color,
   className,
   isLoading,
-  type
+  type,
 }) {
   return (
     <div className="relative inline-block">
       <button
         type={type ? type : "button"}
         onClick={onClick}
-        className={` ${className} ${color ? `bg-${color}` : ""} ${
+        className={`${className} ${color ? `bg-${color}` : ""} ${
           isLoading ? "invisible" : ""
         }
-        py-1 px-4 text-white font-bold rounded-s-full rounded-e-full text-center hover:opacity-90 `}
+        py-1 px-4 font-bold rounded-s-full rounded-e-full text-center hover:opacity-90 text-white`}
         disabled={isLoading} // Désactiver le bouton lors du chargement
       >
         {value}

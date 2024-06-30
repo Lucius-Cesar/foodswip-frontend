@@ -1,54 +1,54 @@
-"use client"
-import { useState, useEffect, createRef, useRef } from "react"
+"use client";
+import { useState, useEffect, createRef, useRef } from "react";
 
-import SideFoodCategories from "../../../components/menu/SideFoodCategories"
-import OrderTabBtn from "@/components/menu/OrderTabBtn"
-import FoodCard from "@/components/menu/FoodCard"
-import CartBtn from "@/components/menu/CartBtn"
-import Cart from "@/components/menu/Cart"
-import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
-import InfoIcon from "@/components/ui/icons/InfoIcon"
-import DeliveryIcon from "@/components/ui/icons/DeliveryIcon"
-import MinOrderIcon from "@/components/ui/icons/MinOrderIcon"
-import BarsIcon from "@/components/ui/icons/BarsIcon"
-import ModalInfoRestaurant from "@/components/menu/ModalInfoRestaurant"
-import ModalFood from "@/components/menu/ModalFood"
-import Preloader from "@/components/ui/Preloader"
-import { useSelector, useDispatch } from "react-redux"
-import TopBannerClosed from "@/components/menu/TopBannerClosed"
-import useRestaurantData from "@/hooks/useRestaurantData"
-import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus"
+import SideFoodCategories from "../../../components/menu/SideFoodCategories";
+import OrderTabBtn from "@/components/menu/OrderTabBtn";
+import FoodCard from "@/components/menu/FoodCard";
+import CartBtn from "@/components/menu/CartBtn";
+import Cart from "@/components/menu/Cart";
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo";
+import InfoIcon from "@/components/ui/icons/InfoIcon";
+import DeliveryIcon from "@/components/ui/icons/DeliveryIcon";
+import MinOrderIcon from "@/components/ui/icons/MinOrderIcon";
+import BarsIcon from "@/components/ui/icons/BarsIcon";
+import ModalInfoRestaurant from "@/components/menu/ModalInfoRestaurant";
+import ModalFood from "@/components/menu/ModalFood";
+import Preloader from "@/components/ui/Preloader";
+import { useSelector, useDispatch } from "react-redux";
+import TopBannerClosed from "@/components/menu/TopBannerClosed";
+import useRestaurantData from "@/hooks/useRestaurantData";
+import useCheckRestaurantStatus from "@/hooks/useCheckRestaurantStatus";
 import {
   addArticleToCart,
   incrementArticleQuantity,
-} from "@/redux/cart/cartSlice"
+} from "@/redux/cart/cartSlice";
 
-import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart"
+import findIndexOfArticleInCart from "@/utils/findIndexOfArticleInCart";
 
 export default function eaterView({ params }) {
-  const dispatch = useDispatch()
-  useRestaurantData(params.slug, "restaurantPublic")
+  const dispatch = useDispatch();
+  useRestaurantData(params.slug, "restaurantPublic");
   //redux
-  const restaurant = useSelector((state) => state.restaurantPublic)
-  const cart = useSelector((state) => state.cart)
+  const restaurant = useSelector((state) => state.restaurantPublic);
+  const cart = useSelector((state) => state.cart);
   //react states
   const {
     restaurantOpen,
     currentService,
     remainingServicesForToday,
     restaurantStatus,
-  } = useCheckRestaurantStatus(restaurant)
-  const [menu, setMenu] = useState(null)
-  const [activeFoodCategoryIndex, setActiveFoodCategoryIndex] = useState(null)
-  const [isCartOpen, setIsCartOpen] = useState(false)
-  const [isFoodCategoriesMenuOpen, setFoodCategoriesMenuOpen] = useState(false)
+  } = useCheckRestaurantStatus(restaurant);
+  const [menu, setMenu] = useState(null);
+  const [activeFoodCategoryIndex, setActiveFoodCategoryIndex] = useState(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isFoodCategoriesMenuOpen, setFoodCategoriesMenuOpen] = useState(false);
   const [isModalInfoRestaurantOpen, setModalInfoRestaurantOpen] =
-    useState(false)
-  const [isModalFoodOpen, setIsModalFoodOpen] = useState(false)
-  const [food, setFood] = useState(null)
+    useState(false);
+  const [isModalFoodOpen, setIsModalFoodOpen] = useState(false);
+  const [food, setFood] = useState(null);
 
   //ref of the mainContainer to add scrolling event
-  const mainContainer = useRef(null)
+  const mainContainer = useRef(null);
 
   const handleAddArticleToCart = (food) => {
     const newArticle = {
@@ -57,11 +57,11 @@ export default function eaterView({ params }) {
       price: food.price,
       quantity: 1,
       selectedOptions: [],
-    }
+    };
     const articleIndex = findIndexOfArticleInCart(
       newArticle,
       cart.data.articles
-    )
+    );
 
     if (articleIndex !== -1) {
       dispatch(
@@ -69,45 +69,45 @@ export default function eaterView({ params }) {
           index: articleIndex,
           increment: newArticle.quantity,
         })
-      )
+      );
     } else {
       //else add article object to cart
-      dispatch(addArticleToCart(newArticle))
+      dispatch(addArticleToCart(newArticle));
     }
-  }
+  };
 
   //extract restaurant unique value based on URL and fetch restaurant data
 
   useEffect(() => {
-    if (!restaurant?.data?.menu) return
+    if (!restaurant?.data?.menu) return;
     setMenu(
       restaurant.data.menu.map((foodCategory) => ({
         ...foodCategory,
         ref: createRef(), //create ref for each foodCategory to scroll on it onClick on click and highlight active foodCategory
       }))
-    )
-  }, [restaurant?.data?.menu])
+    );
+  }, [restaurant?.data?.menu]);
 
   useEffect(() => {
     if (menu && !restaurant.error && !restaurant.isLoading) {
       const handleScroll = () => {
         // logic to execute while scrolling
         menu.forEach((foodCategory, i) => {
-          const ref = foodCategory.ref
+          const ref = foodCategory.ref;
           if (ref.current) {
-            const rect = ref.current.getBoundingClientRect()
-            const isInsideTheFoodCategory = rect.top <= 0 && rect.bottom >= 0
+            const rect = ref.current.getBoundingClientRect();
+            const isInsideTheFoodCategory = rect.top <= 0 && rect.bottom >= 0;
 
             if (isInsideTheFoodCategory) {
-              setActiveFoodCategoryIndex(i)
+              setActiveFoodCategoryIndex(i);
             }
           }
-        })
-      }
+        });
+      };
 
-      mainContainer.current.addEventListener("scroll", handleScroll)
+      mainContainer.current.addEventListener("scroll", handleScroll);
     }
-  }, [menu])
+  }, [menu]);
 
   return (
     <>
@@ -127,14 +127,14 @@ export default function eaterView({ params }) {
                 : "overflow-auto"
             } relative sm:flex sm:flex-row h-screen w-screen p-0`}
           >
-            <div className="sticky top-0 z-50">
+            <div className="sticky top-3 z-50">
               <button
                 className={`${
                   isFoodCategoriesMenuOpen ? "hidden" : "block sm:hidden"
-                } m-1 ms-2 absolute top-1 w-fit h-fit`}
+                } ms-2 absolute w-fit h-fit`}
                 onClick={() => setFoodCategoriesMenuOpen(true)}
               >
-                <BarsIcon className="h-9 w-auto" />
+                <BarsIcon className="h-7 w-auto" />
               </button>
             </div>
 
@@ -153,15 +153,15 @@ export default function eaterView({ params }) {
               setOpen={setFoodCategoriesMenuOpen}
               activeFoodCategoryIndex={activeFoodCategoryIndex}
               onFoodCategoryClick={(index) => {
-                setFoodCategoriesMenuOpen(false)
-                setActiveFoodCategoryIndex(menu[index])
+                setFoodCategoriesMenuOpen(false);
+                setActiveFoodCategoryIndex(menu[index]);
                 //scroll Margin needed because of the top bar when restaurant is closed
                 menu[index].ref.current.style.scrollMargin = restaurantOpen
                   ? "-5px"
-                  : "-45px"
+                  : "-45px";
                 menu[index].ref.current.scrollIntoView({
                   block: "start",
-                })
+                });
               }}
             />
 
@@ -182,7 +182,7 @@ export default function eaterView({ params }) {
               {cart.data.orderType === 0 && (
                 <div className="flex flex-row justify-between w-64 sm:w-96 pb-2">
                   <div className="flex flex-row gap-1 sm:gap-2">
-                    <DeliveryIcon className="h-4 w-auto" />
+                    <DeliveryIcon className="h-3 w-auto" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Livraison</p>
                       <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data?.publicSettings?.deliveryFees} €`}</p>
@@ -190,7 +190,7 @@ export default function eaterView({ params }) {
                   </div>
 
                   <div className="flex flex-row gap-1 sm:gap-2">
-                    <MinOrderIcon className="h-4 w-4" />
+                    <MinOrderIcon className="h-3 w-3" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Min. commande</p>
                       <p className="text-xs sm:text-sm font-bold">{`${restaurant.data?.publicSettings?.deliveryMin} €`}</p>
@@ -222,10 +222,10 @@ export default function eaterView({ params }) {
                         setFood={setFood}
                         onClick={() => {
                           if (food.optionGroups.length > 0) {
-                            setFood(food)
-                            setIsModalFoodOpen(true)
+                            setFood(food);
+                            setIsModalFoodOpen(true);
                           } else {
-                            handleAddArticleToCart(food)
+                            handleAddArticleToCart(food);
                           }
                         }}
                       />
@@ -244,5 +244,5 @@ export default function eaterView({ params }) {
         </div>
       )}
     </>
-  )
+  );
 }
