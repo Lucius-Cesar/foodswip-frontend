@@ -185,7 +185,7 @@ export default function settings() {
         <main className="h-dvh overflow-y-hidden flex flex-col w-full">
           <MainNavigation />
           <div className="flex fex-col border-bottom  bg-white border-gravel rounded-lg p-3 drop-shadow-md">
-            <div className="w-full px-8 sm:px-0 flex flex-row justify-around items-center text-center font-semibold">
+            <div className="w-full px-8 sm:px-0 flex flex-row justify-between items-center text-center font-semibold">
               <Link
                 className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
                   activeSettings === "restaurant" ? "text-primary" : ""

@@ -182,7 +182,7 @@ export default function eaterView({ params }) {
               {cart.data.orderType === 0 && (
                 <div className="flex flex-row justify-between w-64 sm:w-96 pb-2">
                   <div className="flex flex-row gap-1 sm:gap-2">
-                    <DeliveryIcon className="h-3 w-auto" />
+                    <DeliveryIcon className="h-4 w-auto" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Livraison</p>
                       <p className="text-xs sm:text-sm font-bold">{` ${restaurant.data?.publicSettings?.deliveryFees} €`}</p>
@@ -190,7 +190,7 @@ export default function eaterView({ params }) {
                   </div>
 
                   <div className="flex flex-row gap-1 sm:gap-2">
-                    <MinOrderIcon className="h-3 w-3" />
+                    <MinOrderIcon className="h-4 w-3" />
                     <div className="flex flex-row gap-1 sm:gap-2">
                       <p className="text-xs sm:text-sm">Min. commande</p>
                       <p className="text-xs sm:text-sm font-bold">{`${restaurant.data?.publicSettings?.deliveryMin} €`}</p>

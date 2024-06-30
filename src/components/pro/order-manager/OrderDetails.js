@@ -45,8 +45,9 @@ const OrderDetails = ({ order }) => {
   const printTicket = async () => {
     setLoading(true);
     if (printTicketAnchor.current && ticketSrc && isAndroidDevice) {
-      printTicketAnchor.current.click();
       setTimeout(() => {
+        printTicketAnchor.current.click();
+
         // Simulating printing time with setTimeout
         setLoading(false);
       }, 1000);
@@ -81,14 +82,13 @@ const OrderDetails = ({ order }) => {
 
   useEffect(() => {
     const getTicketSrc = async () => {
-      const ticketSrc = await generateTicketImg();
-      setTicketSrc(ticketSrc);
+      const newTicketSrc = await generateTicketImg();
+      setTicketSrc(newTicketSrc);
     };
 
     getTicketSrc();
   }, []);
 
-  useEffect(() => {}, []);
   return (
     <>
       <a
