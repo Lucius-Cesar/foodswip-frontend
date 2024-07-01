@@ -77,7 +77,6 @@ const OrderDetails = ({ order }) => {
     setLoading(false);
   };
 
-  console.log(ticketSrc);
   return (
     <>
       <div className="fixed z-50 top-0 left-0 right-0 w-full bg-white overflow-auto h-full pb-8">
