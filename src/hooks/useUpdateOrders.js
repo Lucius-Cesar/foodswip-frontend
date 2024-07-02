@@ -2,6 +2,8 @@ import useSocket from "./useSocket";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { pushOrder, fetchTodayOrders } from "@/redux/orders/ordersSlice";
+
+const newOrderSound = new Audio("/sounds/new_order.wav");
 const useUpdateOrders = () => {
   const dispatch = useDispatch();
   const socket = useSocket();
@@ -10,6 +12,8 @@ const useUpdateOrders = () => {
       return;
     }
     socket.on("new-order", (newOrder) => {
+      newOrderSound.play();
+
       dispatch(pushOrder(newOrder));
     });
 

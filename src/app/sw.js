@@ -15,6 +15,7 @@ self.addEventListener("push", (event) => {
     self.registration.showNotification(data.title, {
       body: data.message,
       icon: "icons/icon192.png",
+      vibrate: [200, 100, 200],
     })
   );
 });
