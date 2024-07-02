@@ -40,13 +40,13 @@ const OrderDetails = ({ order }) => {
 
   const handleAcceptOrder = async () => {
     setLoading(true);
+    router.push(pathname);
     dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
-    ).then(() => router.push(pathname));
-    setLoading(false);
+    );
   };
 
   useEffect(() => {
@@ -68,13 +68,10 @@ const OrderDetails = ({ order }) => {
   }, [ticketSrc]);
 
   const printTicket = () => {
-    if (isAndroidDevice) {
-      setLoading(true);
-      setTimeout(() => {
-        console.log("print"), 500;
-      });
-    }
-    setLoading(false);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -92,11 +89,11 @@ const OrderDetails = ({ order }) => {
           {loading && order.status === "accepted" ? (
             <LoadingSpinner className="text-primary" />
           ) : order.status === "accepted" ? (
-            <a href={`rawbt:${ticketSrc}`}>
-              <button onClick={() => printTicket()}>
+            <button disabled={loading} onClick={() => printTicket()}>
+              <a href={`rawbt:${ticketSrc}`}>
                 <PrinterIcon className="h-8 w-8 text-primary" />
-              </button>
-            </a>
+              </a>
+            </button>
           ) : (
             <div className="h-8 w-8"></div>
           )}
@@ -270,15 +267,16 @@ const OrderDetails = ({ order }) => {
           </tbody>
         </table>
         {order.status === "new" && (
-          <a href={`${isAndroidDevice ? `rawbt:${ticketSrc}` : ""}`}>
-            <FullWidthBtn
-              onClick={() => handleAcceptOrder()}
-              className="text-white bg-success"
-              isLoading={loading}
-            >
+          <FullWidthBtn
+            onClick={() => handleAcceptOrder()}
+            className="text-white bg-success"
+            isLoading={loading}
+            disabled={loading}
+          >
+            <a href={`${isAndroidDevice ? `rawbt:${ticketSrc}` : ""}`}>
               Accepter la commande
-            </FullWidthBtn>
-          </a>
+            </a>
+          </FullWidthBtn>
         )}
       </div>
       <OrderPrintTicket order={order} ref={ticketRef} />
