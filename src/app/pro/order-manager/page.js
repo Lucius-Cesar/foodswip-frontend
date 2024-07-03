@@ -53,7 +53,7 @@ const page = () => {
               </div>
               <div className="space-y-2">
                 {newOrders?.map((order, i) => (
-                  <OrderCard key={i} order={order} status="new" />
+                  <OrderCard key={i} order={order} />
                 ))}
               </div>
             </div>
@@ -67,7 +67,7 @@ const page = () => {
               </div>
               <div className="space-y-2">
                 {acceptedOrders?.map((order, i) => (
-                  <OrderCard key={i} order={order} status="accepted" />
+                  <OrderCard key={i} order={order} />
                 ))}
               </div>
             </div>

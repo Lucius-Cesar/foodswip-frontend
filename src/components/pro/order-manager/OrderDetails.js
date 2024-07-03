@@ -17,61 +17,45 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import FullWidthBtn from "@/components/ui/FullWidthBtn";
-import OrderPrintTicket from "./OrderPrintTicket";
+import OrderTicket from "./OrderTicket";
 import html2canvas from "html2canvas";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { useDispatch } from "react-redux";
 import { updateOrderStatus } from "@/redux/orders/ordersSlice";
+import usePrintTicket from "@/hooks/usePrintTicket";
+
 const OrderDetails = ({ order }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
-  const ticketRef = useRef(null);
-  const isAndroidDevice = /Android/i.test(navigator?.userAgent);
-  const [ticketSrc, setTicketSrc] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const generateTicketImg = async () => {
-    const canvas = await html2canvas(ticketRef.current);
-    const imgUrl = canvas.toDataURL("image/jpeg");
-    return imgUrl;
-  };
+  const { ticketRef, ticketSrc, isAndroidDevice } = usePrintTicket(
+    loading,
+    setLoading
+  );
 
   const handleAcceptOrder = async () => {
     setLoading(true);
-    router.push(pathname);
     dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
-    );
+    ).then(() => router.push(pathname));
+
+    router.push(pathname);
+    printTimeOut();
   };
 
-  useEffect(() => {
-    if (!ticketRef.current) return;
-    const getTicketSrc = async () => {
-      const newTicketSrc = await generateTicketImg();
-      setTicketSrc(newTicketSrc);
-    };
-    getTicketSrc();
-  }, [ticketRef.current]);
-
-  useEffect(() => {
-    if (!ticketSrc) {
-      return;
+  const printTimeOut = () => {
+    if (isAndroidDevice) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
-    if (ticketSrc) {
-      setLoading(false);
-    }
-  }, [ticketSrc]);
-
-  const printTicket = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   };
 
   return (
@@ -89,8 +73,8 @@ const OrderDetails = ({ order }) => {
           {loading && order.status === "accepted" ? (
             <LoadingSpinner className="text-primary" />
           ) : order.status === "accepted" ? (
-            <button disabled={loading} onClick={() => printTicket()}>
-              <a href={`rawbt:${ticketSrc}`}>
+            <button disabled={loading} onClick={() => printTimeOut()}>
+              <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
                 <PrinterIcon className="h-8 w-8 text-primary" />
               </a>
             </button>
@@ -273,13 +257,13 @@ const OrderDetails = ({ order }) => {
             isLoading={loading}
             disabled={loading}
           >
-            <a href={`${isAndroidDevice ? `rawbt:${ticketSrc}` : ""}`}>
+            <a href={`${isAndroidDevice ? `rawbt:${ticketSrc}` : "#"}`}>
               Accepter la commande
             </a>
           </FullWidthBtn>
         )}
       </div>
-      <OrderPrintTicket order={order} ref={ticketRef} />
+      <OrderTicket order={order} ref={ticketRef} />
     </>
   );
 };

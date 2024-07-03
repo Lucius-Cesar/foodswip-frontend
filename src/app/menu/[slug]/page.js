@@ -30,7 +30,6 @@ export default function eaterView({ params }) {
   useRestaurantData(params.slug, "restaurantPublic");
   //redux
   const restaurant = useSelector((state) => state.restaurantPublic);
-  console.log(restaurant.data);
   const cart = useSelector((state) => state.cart);
   //react states
   const {

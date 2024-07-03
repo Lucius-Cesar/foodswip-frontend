@@ -134,7 +134,7 @@ export default function Checkout({ params }) {
       setPaymentMethods(filteredPaymentMethods);
     }
 
-    if (filteredPaymentMethods.includes("online") && !selectedPaymentMethod) {
+    if (filteredPaymentMethods?.includes("online") && !selectedPaymentMethod) {
       setSelectedPaymentMethod("online");
     }
 

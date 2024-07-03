@@ -429,7 +429,7 @@ const page = () => {
       },
       estimatedArrivalDate: "2024-06-22T21:00:00.000Z",
 
-      status: "completed",
+      status: "new",
       statusHistory: [
         {
           status: "completed",

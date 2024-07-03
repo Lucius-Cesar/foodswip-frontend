@@ -10,12 +10,17 @@ const useUpdateOrders = () => {
     if (!socket) {
       return;
     }
-    socket.on("new-order", (newOrder) => {
+    socket.on("new-order", () => {
       const newOrderSound = new Audio("/sounds/new_order.wav");
 
       newOrderSound.play();
 
-      dispatch(pushOrder(newOrder));
+      dispatch(fetchTodayOrders());
+    });
+
+    socket.on("update-order", () => {
+      //avoid having differnet order status on different device due to cache
+      dispatch(fetchTodayOrders());
     });
 
     // on connect or reconnect after disconnect -> refetch orders
@@ -25,6 +30,7 @@ const useUpdateOrders = () => {
 
     return () => {
       socket.off("new-order");
+      socket.off("update-order");
     };
   }, [socket]);
 };

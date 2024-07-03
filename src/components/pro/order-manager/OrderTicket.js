@@ -14,7 +14,7 @@ import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
-const OrderPrintTicket = ({ order }, ref) => {
+const OrderTicket = ({ order }, ref) => {
   const restaurant = useSelector((state) => state.restaurantAdmin);
 
   return (
@@ -167,4 +167,4 @@ const OrderPrintTicket = ({ order }, ref) => {
   );
 };
 
-export default forwardRef(OrderPrintTicket);
+export default forwardRef(OrderTicket);
