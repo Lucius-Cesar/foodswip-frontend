@@ -31,7 +31,6 @@ const OrderTicket = ({
   const [printUrl, setPrintUrl] = useState(null);
 
   const generateTicketJpgBase64 = async () => {
-    setLoading(true);
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
     setPrintUrl(`rawbt:${ticketJpgBase64}`);
