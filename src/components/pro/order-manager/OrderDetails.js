@@ -54,8 +54,7 @@ const OrderDetails = ({ order }) => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
-      console.log("test");
+      }, 1500);
     }
   };
 
