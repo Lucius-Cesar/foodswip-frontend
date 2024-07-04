@@ -2,7 +2,7 @@ import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
 } from "@/utils/switchLabel";
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   switchPaymentMethodIcon,
   switchOrderTypeIcon,
@@ -23,7 +23,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { useDispatch } from "react-redux";
 import { updateOrderStatus } from "@/redux/orders/ordersSlice";
 
-const OrderDetails = ({ order }) => {
+const OrderDetails = ({ order, variant }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
@@ -32,7 +32,6 @@ const OrderDetails = ({ order }) => {
   const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
   const isAndroidDevice = /Android/i.test(navigator?.userAgent);
 
-  const orderStatusRef = useRef(order.status);
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
     setPrintTrigger(true);
@@ -61,9 +60,9 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {orderStatusRef.current === "accepted" && loading ? (
+          {variant === "accepted" && loading ? (
             <LoadingSpinner />
-          ) : orderStatusRef.current === "accepted" ? (
+          ) : variant === "accepted" ? (
             <button disabled={loading} onClick={() => setPrintTrigger(true)}>
               <PrinterIcon className="h-8 w-8 text-primary" />
             </button>
@@ -239,7 +238,7 @@ const OrderDetails = ({ order }) => {
             </tr>
           </tbody>
         </table>
-        {orderStatusRef.current === "new" && (
+        {variant === "new" && (
           <FullWidthBtn
             onClick={() => {
               handleAcceptOrder();

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import OrderDetails from "./OrderDetails";
 import { useSelector } from "react-redux";
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, variant }) => {
   const searchParams = useSearchParams();
   const selectedOrder = Number(searchParams.get("order"));
 
@@ -64,7 +64,7 @@ const OrderCard = ({ order }) => {
       </>
     );
   } else {
-    return <OrderDetails order={order} />;
+    return <OrderDetails order={order} variant={variant} />;
   }
 };
 
