@@ -2,7 +2,7 @@ import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
 } from "@/utils/switchLabel";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   switchPaymentMethodIcon,
   switchOrderTypeIcon,
@@ -35,13 +35,12 @@ const OrderDetails = ({ order }) => {
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
     setPrintTrigger(true);
-    /*dispatch(
+    dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
     ).then(() => router.push(pathname));
-*/
     router.push(pathname);
     setAcceptOrderLoading(false);
   };
