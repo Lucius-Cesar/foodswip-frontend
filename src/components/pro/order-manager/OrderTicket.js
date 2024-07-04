@@ -47,6 +47,7 @@ const OrderTicket = ({
         if (printUrl) {
           printLinkRef.current.click();
           setPrintTrigger(false);
+          setLoading(false);
         }
       }
     }
