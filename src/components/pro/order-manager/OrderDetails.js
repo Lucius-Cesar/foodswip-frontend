@@ -71,7 +71,7 @@ const OrderDetails = ({ order }) => {
             <LoadingSpinner />
           ) : order.status === "accepted" ? (
             <button disabled={loading} onClick={() => printTimeOut()}>
-              <a href={ticketSrc ? `rawbt:url:${ticketSrc}` : "#"}>
+              <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
                 <PrinterIcon className="h-8 w-8 text-primary" />
               </a>
             </button>
@@ -254,7 +254,7 @@ const OrderDetails = ({ order }) => {
             isLoading={loading}
             disabled={loading}
           >
-            <a href={`${ticketSrc ? `rawbt:url:${ticketSrc}` : "#"}`}>
+            <a href={`${ticketSrc ? `rawbt:${ticketSrc}` : "#"}`}>
               Accepter la commande
             </a>
           </FullWidthBtn>
