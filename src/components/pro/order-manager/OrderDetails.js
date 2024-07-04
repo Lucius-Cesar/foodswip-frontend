@@ -39,7 +39,12 @@ const OrderDetails = ({ order }) => {
         orderId: order._id,
         status: "accepted",
       })
-    ).then(() => router.push(pathname));
+    ).then(() =>
+      setTimeout(() => {
+        router.push(pathname);
+        setAcceptOrderLoading(false);
+      }, 500)
+    );
     setAcceptOrderLoading(false);
   };
 
