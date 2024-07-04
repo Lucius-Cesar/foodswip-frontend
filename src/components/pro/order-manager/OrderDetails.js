@@ -2,7 +2,7 @@ import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
 } from "@/utils/switchLabel";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   switchPaymentMethodIcon,
   switchOrderTypeIcon,
@@ -17,45 +17,30 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import FullWidthBtn from "@/components/ui/FullWidthBtn";
-import OrderTicket from "./OrderTicket";
-import html2canvas from "html2canvas";
+import OrderPrintTicket from "./OrderPrintTicket";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { useDispatch } from "react-redux";
 import { updateOrderStatus } from "@/redux/orders/ordersSlice";
-import usePrintTicket from "@/hooks/usePrintTicket";
 
 const OrderDetails = ({ order }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
+  const [printTrigger, setPrintTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const { ticketRef, ticketSrc, isAndroidDevice } = usePrintTicket(
-    loading,
-    setLoading
-  );
-
+  const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
+  const isAndroidDevice = /Android/i.test(navigator?.userAgent);
   const handleAcceptOrder = async () => {
-    setLoading(true);
-    /*dispatch(
+    setAcceptOrderLoading(true);
+    setPrintTrigger(true);
+    dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
     ).then(() => router.push(pathname));
-    */
-    router.push(pathname);
-    printTimeOut();
-  };
-
-  const printTimeOut = () => {
-    if (isAndroidDevice) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
-    }
+    setAcceptOrderLoading(false);
   };
 
   return (
@@ -69,14 +54,11 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-
-          {loading && order.status === "accepted" ? (
-            <LoadingSpinner className="text-primary" />
+          {order.status === "accepted" && loading ? (
+            <LoadingSpinner />
           ) : order.status === "accepted" ? (
-            <button disabled={loading} onClick={() => printTimeOut()}>
-              <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
-                <PrinterIcon className="h-8 w-8 text-primary" />
-              </a>
+            <button disabled={loading} onClick={() => setPrintTrigger(true)}>
+              <PrinterIcon className="h-8 w-8 text-primary" />
             </button>
           ) : (
             <div className="h-8 w-8"></div>
@@ -252,18 +234,25 @@ const OrderDetails = ({ order }) => {
         </table>
         {order.status === "new" && (
           <FullWidthBtn
-            onClick={() => handleAcceptOrder()}
+            onClick={() => {
+              handleAcceptOrder();
+            }}
             className="text-white bg-success"
-            isLoading={loading}
-            disabled={loading}
+            isLoading={acceptOrderLoading}
+            disabled={acceptOrderLoading}
           >
-            <a href={`${ticketSrc ? `rawbt:${ticketSrc}` : "#"}`}>
-              Accepter la commande
-            </a>
+            Accepter la commande
           </FullWidthBtn>
         )}
       </div>
-      <OrderTicket order={order} ref={ticketRef} />
+      <OrderPrintTicket
+        order={order}
+        printTrigger={printTrigger}
+        setPrintTrigger={setPrintTrigger}
+        loading={loading}
+        setLoading={setLoading}
+        isAndroidDevice={isAndroidDevice}
+      />
     </>
   );
 };
