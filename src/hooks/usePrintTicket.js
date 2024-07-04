@@ -6,7 +6,7 @@ import html2canvas from "html2canvas";
 // <a href={`rawbt:base64,${ticketSrc}`} is inside OrderDetails component to allow interactity with button
 const usePrintTicket = () => {
   //
-  const isAndroidDevice = /Android/i.test(navigator?.userAgent);
+  const isAndroidDevice = true;
   const [loading, setLoading] = useState(isAndroidDevice ? true : false);
 
   const ticketRef = useRef(null);
