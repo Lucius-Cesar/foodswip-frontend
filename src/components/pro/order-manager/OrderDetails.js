@@ -34,6 +34,7 @@ const OrderDetails = ({ order }) => {
 
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
+    /*
     setPrintTrigger(true);
     dispatch(
       updateOrderStatus({
@@ -41,7 +42,10 @@ const OrderDetails = ({ order }) => {
         status: "accepted",
       })
     ).then(() => router.push(pathname));
-    router.push(pathname);
+    */
+    setTimeout(() => {
+      router.push(pathname);
+    });
     setAcceptOrderLoading(false);
   };
 
