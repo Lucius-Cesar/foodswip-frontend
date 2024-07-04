@@ -19,13 +19,14 @@ const usePrintTicket = (loading, setLoading) => {
   useEffect(() => {
     if (!ticketRef.current) return;
     const getTicketSrc = async () => {
-      setLoading(true);
       const newTicketSrc = await generateTicketImg();
       setTicketSrc(newTicketSrc);
     };
 
     // only generate ticketSrc on android device, rawbt does not work with IOS
     if (isAndroidDevice) {
+      setLoading(true);
+
       getTicketSrc();
       setLoading(false);
     }
