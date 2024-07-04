@@ -2,7 +2,7 @@ import {
   switchPaymentMethodLabel,
   switchOrderTypeLabel,
 } from "@/utils/switchLabel";
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import {
   switchPaymentMethodIcon,
   switchOrderTypeIcon,
@@ -31,6 +31,8 @@ const OrderDetails = ({ order }) => {
   const [loading, setLoading] = useState(false);
   const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
   const isAndroidDevice = /Android/i.test(navigator?.userAgent);
+
+  const orderStatusRef = useRef(order.status);
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
     setPrintTrigger(true);
@@ -59,9 +61,9 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {order.status === "accepted" && loading ? (
+          {orderStatusRef.current === "accepted" && loading ? (
             <LoadingSpinner />
-          ) : order.status === "accepted" ? (
+          ) : orderStatusRef.current === "accepted" ? (
             <button disabled={loading} onClick={() => setPrintTrigger(true)}>
               <PrinterIcon className="h-8 w-8 text-primary" />
             </button>
@@ -237,7 +239,7 @@ const OrderDetails = ({ order }) => {
             </tr>
           </tbody>
         </table>
-        {order.status === "new" && (
+        {orderStatusRef.current === "new" && (
           <FullWidthBtn
             onClick={() => {
               handleAcceptOrder();
