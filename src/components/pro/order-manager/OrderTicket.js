@@ -43,9 +43,12 @@ const OrderTicket = ({
   useEffect(() => {
     if (isAndroidDevice) {
       if (!printUrl) generateTicketJpgBase64();
-      if (printUrl && printTrigger) {
-        printLinkRef.current.click();
-        setPrintTrigger(false);
+      if (printTrigger) {
+        setLoading(true);
+        if (printUrl) {
+          printLinkRef.current.click();
+          setPrintTrigger(false);
+        }
       }
     }
   }, [printTrigger, printUrl]);
