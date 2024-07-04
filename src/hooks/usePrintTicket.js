@@ -12,16 +12,18 @@ const usePrintTicket = () => {
   const ticketRef = useRef(null);
   const [ticketSrc, setTicketSrc] = useState(null);
 
-  const generateTicketImg = async () => {
+  const generateTicketBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
-    const imgUrl = canvas.toDataURL("image/jpeg");
-    return imgUrl;
+    const dataUrl = canvas.toDataURL();
+    const regexp = /base64,[A-Za-z0-9+/=]+/;
+    const ticketBase64 = dataUrl.match(regexp);
+    return ticketBase64;
   };
 
   useEffect(() => {
     if (!ticketRef.current) return;
     const getTicketSrc = async () => {
-      const newTicketSrc = await generateTicketImg();
+      const newTicketSrc = await generateTicketBase64();
       setTicketSrc(newTicketSrc);
     };
 

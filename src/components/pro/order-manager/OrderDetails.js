@@ -33,6 +33,7 @@ const OrderDetails = ({ order }) => {
   const { ticketRef, ticketSrc, isAndroidDevice, loading, setLoading } =
     usePrintTicket();
 
+  console.log(ticketSrc);
   const handleAcceptOrder = async () => {
     setLoading(true);
     /*dispatch(
@@ -70,7 +71,7 @@ const OrderDetails = ({ order }) => {
             <LoadingSpinner />
           ) : order.status === "accepted" ? (
             <button disabled={loading} onClick={() => printTimeOut()}>
-              <a href={ticketSrc ? `rawbt:Hello,%20world!%0A%0A` : "#"}>
+              <a href={ticketSrc ? `rawbt:url:${ticketSrc}` : "#"}>
                 <PrinterIcon className="h-8 w-8 text-primary" />
               </a>
             </button>
@@ -253,7 +254,7 @@ const OrderDetails = ({ order }) => {
             isLoading={loading}
             disabled={loading}
           >
-            <a href={`${ticketSrc ? `rawbt:${ticketSrc}` : "#"}`}>
+            <a href={`${ticketSrc ? `rawbt:url:${ticketSrc}` : "#"}`}>
               Accepter la commande
             </a>
           </FullWidthBtn>
