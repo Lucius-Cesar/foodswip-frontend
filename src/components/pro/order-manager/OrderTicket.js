@@ -28,7 +28,7 @@ const OrderTicket = ({
   const ticketRef = useRef(null);
   const printLinkRef = useRef(null);
   const restaurant = useSelector((state) => state.restaurantAdmin);
-  const [rawbtPrintLink, SetRawbtPrintLink] = useState(null);
+  const [printUrl, setPrintUrl] = useState(null);
 
   const generateTicketJpgBase64 = async () => {
     setLoading(true);
@@ -54,7 +54,7 @@ const OrderTicket = ({
     <>
       <a
         ref={printLinkRef}
-        href={printURl}
+        href={printUrl}
         className="absolute left-[-9999px]"
       ></a>
       <div
