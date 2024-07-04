@@ -40,15 +40,23 @@ const OrderTicket = ({
   useEffect(() => {
     if (!printTrigger) return;
     if (isAndroidDevice && printTrigger) {
+      generateTicketJpgBase64().then();
       generateTicketJpgBase64().then((ticketJpgBase64) => {
-        setPrintTrigger(false);
-        router.push(`rawbt:${ticketJpgBase64}`);
+        setPrintUrl(`rawbt:${ticketJpgBase64}`);
       });
+      printLinkRef.current.click();
+
+      setPrintTrigger(false);
     }
   }, [printTrigger]);
 
   return (
     <>
+      <a
+        ref={printLinkRef}
+        href={printURl}
+        className="absolute left-[-9999px]"
+      ></a>
       <div
         ref={ticketRef}
         className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
