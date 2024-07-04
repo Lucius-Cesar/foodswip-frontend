@@ -15,7 +15,7 @@ import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
 const OrderTicket = ({ order }, ref) => {
-  const restaurant = useSelector((state) => state.restaurantAdmin);
+  //const restaurant = useSelector((state) => state.restaurantAdmin);
 
   return (
     <div
@@ -27,8 +27,9 @@ const OrderTicket = ({ order }, ref) => {
       <div className="flex flex-col  items-start w-full">
         <img className="self-center" src="/images/foodswip-logo-print.png" />
         <p className="text-lg text-center text-black self-center">
-          {restaurant.data.name} - {restaurant.data.address.street}{" "}
-          {restaurant.data.address.postCode} {restaurant.data.address.city}
+          {restaurant?.data?.name} - {restaurant?.data?.address?.street}
+          {restaurant?.data?.address?.postCode}
+          {restaurant?.data?.address?.city}
         </p>
         <p className="text-lg font-bold self-center">
           {" "}
