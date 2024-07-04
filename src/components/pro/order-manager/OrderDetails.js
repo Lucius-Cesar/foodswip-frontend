@@ -23,7 +23,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { useDispatch } from "react-redux";
 import { updateOrderStatus } from "@/redux/orders/ordersSlice";
 
-const OrderDetails = ({ order, variant }) => {
+const OrderDetails = ({ order }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
@@ -35,18 +35,17 @@ const OrderDetails = ({ order, variant }) => {
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
     setPrintTrigger(true);
-    dispatch(
-      updateOrderStatus({
-        orderId: order._id,
-        status: "accepted",
-      })
-    ).then(() =>
-      setTimeout(() => {
+    setTimeout(() => {
+      dispatch(
+        updateOrderStatus({
+          orderId: order._id,
+          status: "accepted",
+        })
+      ).then(() => {
         router.push(pathname);
         setAcceptOrderLoading(false);
-      }, 500)
-    );
-    setAcceptOrderLoading(false);
+      });
+    });
   };
 
   return (
@@ -60,9 +59,9 @@ const OrderDetails = ({ order, variant }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {variant === "accepted" && loading ? (
+          {order.status === "accepted" && loading ? (
             <LoadingSpinner />
-          ) : variant === "accepted" ? (
+          ) : order.status === "accepted" ? (
             <button disabled={loading} onClick={() => setPrintTrigger(true)}>
               <PrinterIcon className="h-8 w-8 text-primary" />
             </button>
@@ -238,7 +237,7 @@ const OrderDetails = ({ order, variant }) => {
             </tr>
           </tbody>
         </table>
-        {variant === "new" && (
+        {order.status === "new" && (
           <FullWidthBtn
             onClick={() => {
               handleAcceptOrder();

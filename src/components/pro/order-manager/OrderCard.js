@@ -64,7 +64,7 @@ const OrderCard = ({ order, variant }) => {
       </>
     );
   } else {
-    return <OrderDetails order={order} variant={variant} />;
+    return <OrderDetails order={order} />;
   }
 };
 
