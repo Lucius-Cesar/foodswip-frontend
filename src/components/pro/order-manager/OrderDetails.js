@@ -29,22 +29,19 @@ const OrderDetails = ({ order }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
-  const { ticketRef, ticketSrc, isAndroidDevice } = usePrintTicket(
-    loading,
-    setLoading
-  );
+  const { ticketRef, ticketSrc, isAndroidDevice, loading, setLoading } =
+    usePrintTicket();
 
   const handleAcceptOrder = async () => {
     setLoading(true);
-    dispatch(
+    /*dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
     ).then(() => router.push(pathname));
-
+*/
     router.push(pathname);
     printTimeOut();
   };
@@ -58,6 +55,8 @@ const OrderDetails = ({ order }) => {
     }
   };
 
+  console.log(loading);
+
   return (
     <>
       <div className="fixed z-50 top-0 left-0 right-0 w-full bg-white overflow-auto h-full pb-8">
@@ -69,12 +68,17 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-
-          <button disabled={loading} onClick={() => printTimeOut()}>
-            <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
-              <PrinterIcon className="h-8 w-8 text-primary" />
-            </a>
-          </button>
+          {order.status === "accepted" && loading ? (
+            <LoadingSpinner />
+          ) : order.status === "accepted" ? (
+            <button disabled={loading} onClick={() => printTimeOut()}>
+              <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
+                <PrinterIcon className="h-8 w-8 text-primary" />
+              </a>
+            </button>
+          ) : (
+            <div className="h-8 w-8"></div>
+          )}
         </div>
         <div className="flex flex-row text-sm w-full py-3 mt-14">
           <div className="w-9/12 border-e border-gravel px-3">
