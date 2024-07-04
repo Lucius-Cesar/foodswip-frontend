@@ -55,6 +55,7 @@ const OrderDetails = ({ order }) => {
       setTimeout(() => {
         setLoading(false);
       }, 1000);
+      console.log("print");
     }
   };
 
