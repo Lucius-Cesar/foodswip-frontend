@@ -70,17 +70,11 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeLabel(order.orderType)}
           </div>
 
-          {loading && order.status === "accepted" ? (
-            <LoadingSpinner className="text-primary" />
-          ) : order.status === "accepted" ? (
-            <button disabled={loading} onClick={() => printTimeOut()}>
-              <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
-                <PrinterIcon className="h-8 w-8 text-primary" />
-              </a>
-            </button>
-          ) : (
-            <div className="h-8 w-8"></div>
-          )}
+          <button disabled={loading} onClick={() => printTimeOut()}>
+            <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
+              <PrinterIcon className="h-8 w-8 text-primary" />
+            </a>
+          </button>
         </div>
         <div className="flex flex-row text-sm w-full py-3 mt-14">
           <div className="w-9/12 border-e border-gravel px-3">
