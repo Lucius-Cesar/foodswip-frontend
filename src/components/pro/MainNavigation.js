@@ -10,7 +10,7 @@ function NavigationContainer({ open, setOpen, navigationItems }) {
     <div
       className={`${
         open ? "fixed bg-white flex" : "hidden"
-      } z-50 flex-col justify-center h-dvh w-screen top-0`}
+      } z-50 flex-col justify-center h-full w-screen top-0`}
     >
       <button
         type="button"

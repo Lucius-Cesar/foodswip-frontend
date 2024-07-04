@@ -39,7 +39,7 @@ const page = () => {
       ) : (
         <div className="max-w-screen-sm">
           <div
-            className={`h-dvh py-10 px-3 space-y-4${
+            className={`h-screen py-10 px-3 space-y-4${
               selectedOrder ? "overflow-y-hidden" : ""
             } `}
           >

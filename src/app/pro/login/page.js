@@ -76,7 +76,7 @@ export default function Login() {
     );
   } else
     return (
-      <div className="bg-primary h-dvh">
+      <div className="bg-primary h-screen">
         <div className="flex flex-col justify-start items-center bg-primary">
           <div className="mb-6 mt-12">
             <FoodswipProLogo />

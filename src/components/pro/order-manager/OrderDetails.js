@@ -38,13 +38,13 @@ const OrderDetails = ({ order }) => {
 
   const handleAcceptOrder = async () => {
     setLoading(true);
-    dispatch(
+    /*dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
     ).then(() => router.push(pathname));
-
+    */
     router.push(pathname);
     printTimeOut();
   };

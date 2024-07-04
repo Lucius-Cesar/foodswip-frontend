@@ -103,7 +103,7 @@ export const ordersSlice = createSlice({
     });
   },
   reducers: {
-    clearOrdersData: (state) => {
+    clearOrders: (state) => {
       state.data = [];
     },
     pushOrder: (state, action) => {
