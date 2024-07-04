@@ -238,11 +238,11 @@ const OrderDetails = ({ order }) => {
         {order.status === "new" && (
           <FullWidthBtn
             onClick={() => {
-              handleAcceptOrder;
+              handleAcceptOrder();
             }}
             className="text-white bg-success"
-            isLoading={loading}
-            disabled={loading}
+            isLoading={acceptOrderLoading}
+            disabled={acceptOrderLoading}
           >
             Accepter la commande
           </FullWidthBtn>
