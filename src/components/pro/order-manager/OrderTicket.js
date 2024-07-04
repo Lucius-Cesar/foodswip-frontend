@@ -34,16 +34,20 @@ const OrderTicket = ({
     setLoading(true);
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
+    setPrintUrl(`rawbt:${ticketJpgBase64}`);
+    setTimeout(() => {
+      console.log("print");
+    }, 500);
     setLoading(false);
     return ticketJpgBase64;
   };
+
   useEffect(() => {
     if (!printTrigger) return;
     if (isAndroidDevice && printTrigger) {
-      generateTicketJpgBase64().then();
-      generateTicketJpgBase64().then((ticketJpgBase64) => {
-        setPrintUrl(`rawbt:${ticketJpgBase64}`);
-      });
+      if (!printUrl) {
+        generateTicketJpgBase64();
+      }
       printLinkRef.current.click();
 
       setPrintTrigger(false);
