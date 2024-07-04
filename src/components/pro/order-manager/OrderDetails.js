@@ -29,9 +29,12 @@ const OrderDetails = ({ order }) => {
   const router = useRouter();
   const [printTrigger, setPrintTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
+  const isAndroidDevice = true;
 
   const handleAcceptOrder = async () => {
-    setLoading(true);
+    setAcceptOrderLoading(true);
+    setPrintTrigger(true);
     /*dispatch(
       updateOrderStatus({
         orderId: order._id,
@@ -40,7 +43,7 @@ const OrderDetails = ({ order }) => {
     ).then(() => router.push(pathname));
 */
     router.push(pathname);
-    printTimeOut();
+    setAcceptOrderLoading(false);
   };
 
   return (
@@ -234,7 +237,9 @@ const OrderDetails = ({ order }) => {
         </table>
         {order.status === "new" && (
           <FullWidthBtn
-            onClick={() => setPrintTrigger(true)}
+            onClick={() => {
+              handleAcceptOrder;
+            }}
             className="text-white bg-success"
             isLoading={loading}
             disabled={loading}
@@ -249,6 +254,7 @@ const OrderDetails = ({ order }) => {
         setPrintTrigger={setPrintTrigger}
         loading={loading}
         setLoading={setLoading}
+        isAndroidDevice={isAndroidDevice}
       />
     </>
   );
