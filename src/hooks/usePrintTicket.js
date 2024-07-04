@@ -14,9 +14,8 @@ const usePrintTicket = () => {
 
   const generateTicketImg = async () => {
     const canvas = await html2canvas(ticketRef.current);
-    const url = canvas.toDataURL();
-    setTicketSrc(url);
-    return imgUrl;
+    const urlBase64 = canvas.toDataURL();
+    return urlBase64;
   };
 
   useEffect(() => {
