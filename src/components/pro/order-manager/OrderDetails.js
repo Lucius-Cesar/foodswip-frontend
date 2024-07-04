@@ -18,22 +18,18 @@ import { usePathname, useRouter } from "next/navigation";
 
 import FullWidthBtn from "@/components/ui/FullWidthBtn";
 import OrderTicket from "./OrderTicket";
-import html2canvas from "html2canvas";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { useDispatch } from "react-redux";
 import { updateOrderStatus } from "@/redux/orders/ordersSlice";
-import usePrintTicket from "@/hooks/usePrintTicket";
 
 const OrderDetails = ({ order }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
+  const [printTrigger, setPrintTrigger] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const { ticketRef, ticketSrc, isAndroidDevice, loading, setLoading } =
-    usePrintTicket();
-
-  console.log(ticketSrc);
   const handleAcceptOrder = async () => {
     setLoading(true);
     /*dispatch(
@@ -45,15 +41,6 @@ const OrderDetails = ({ order }) => {
 */
     router.push(pathname);
     printTimeOut();
-  };
-
-  const printTimeOut = () => {
-    if (isAndroidDevice) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
-    }
   };
 
   return (
@@ -70,10 +57,8 @@ const OrderDetails = ({ order }) => {
           {order.status === "accepted" && loading ? (
             <LoadingSpinner />
           ) : order.status === "accepted" ? (
-            <button disabled={loading} onClick={() => printTimeOut()}>
-              <a href={ticketSrc ? `rawbt:${ticketSrc}` : "#"}>
-                <PrinterIcon className="h-8 w-8 text-primary" />
-              </a>
+            <button disabled={loading} onClick={() => setPrintTrigger(true)}>
+              <PrinterIcon className="h-8 w-8 text-primary" />
             </button>
           ) : (
             <div className="h-8 w-8"></div>
@@ -249,18 +234,22 @@ const OrderDetails = ({ order }) => {
         </table>
         {order.status === "new" && (
           <FullWidthBtn
-            onClick={() => handleAcceptOrder()}
+            onClick={() => setPrintTrigger(true)}
             className="text-white bg-success"
             isLoading={loading}
             disabled={loading}
           >
-            <a href={`${ticketSrc ? `rawbt:${ticketSrc}` : "#"}`}>
-              Accepter la commande
-            </a>
+            Accepter la commande
           </FullWidthBtn>
         )}
       </div>
-      <OrderTicket order={order} ref={ticketRef} />
+      <OrderTicket
+        order={order}
+        printTrigger={printTrigger}
+        setPrintTrigger={setPrintTrigger}
+        loading={loading}
+        setLoading={setLoading}
+      />
     </>
   );
 };
