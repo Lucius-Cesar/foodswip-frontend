@@ -257,7 +257,7 @@ const OrderDetails = ({ order }) => {
             isLoading={loading}
             disabled={loading}
           >
-            <a href={`${isAndroidDevice ? `rawbt:${ticketSrc}` : "#"}`}>
+            <a href={`${ticketSrc ? `rawbt:${ticketSrc}` : "#"}`}>
               Accepter la commande
             </a>
           </FullWidthBtn>
