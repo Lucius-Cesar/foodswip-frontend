@@ -69,6 +69,7 @@ const OrderTicket = ({
         {/*absolute -9999px to hide the component*/}
 
         <div className="flex flex-col  items-start w-full">
+          <img className="self-center" src="/images/foodswip-logo-print.png" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
