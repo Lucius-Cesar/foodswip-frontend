@@ -182,7 +182,7 @@ export default function settings() {
   } else {
     return (
       <>
-        <main className="h-full overflow-y-hidden flex flex-col w-full">
+        <main className="h-screen overflow-y-hidden flex flex-col w-full">
           <MainNavigation />
           <div className="flex fex-col border-bottom  bg-white border-gravel rounded-lg p-3 drop-shadow-md">
             <div className="w-full px-8 sm:justify-around flex flex-row justify-between items-center text-center font-semibold">
