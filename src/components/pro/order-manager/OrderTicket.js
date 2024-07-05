@@ -12,6 +12,7 @@ import {
 import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
+import CartIcon from "@/components/ui/icons/CartIcon";
 
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
@@ -64,11 +65,15 @@ const OrderTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full pb-8 absolute left-[9999px]"
       >
         {/*absolute -9999px to hide the component*/}
 
         <div className="flex flex-col  items-start w-full">
+          <div className="flex flex-row justif-center items-center self-center">
+            <CartIcon color={"black"} className="h-20 w-20" />
+            <p className="text-6xl font-extrabold">FoodSwip</p>
+          </div>
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
