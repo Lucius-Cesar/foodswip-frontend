@@ -69,7 +69,6 @@ const OrderTicket = ({
         {/*absolute -9999px to hide the component*/}
 
         <div className="flex flex-col  items-start w-full">
-          <img className="self-center" src="/images/foodswip-logo-print.png" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
@@ -84,9 +83,7 @@ const OrderTicket = ({
           </p>
           <div className="flex flex-col justify-center items-center w-full ">
             <div className="flex flex-row  justify-center items-center self-center gap-2">
-              <div className="mt-8">
-                {switchOrderTypeIcon(order.orderType, "h-10")}
-              </div>
+              <div className="mt-8"></div>
               <p className="text-4xl font-bold self-center">
                 {switchOrderTypeLabel(order.orderType)}
               </p>
