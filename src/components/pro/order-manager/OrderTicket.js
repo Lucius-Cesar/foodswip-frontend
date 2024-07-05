@@ -71,7 +71,7 @@ const OrderTicket = ({
 
         <div className="flex flex-col  items-start w-full">
           <div className="flex flex-row justif-center items-center self-center">
-            <CartIcon color={"black"} className="h-20 w-20" />
+            <CartIcon color={"black"} className="h-24 w-24 mt-4" />
             <p className="text-6xl font-extrabold">FoodSwip</p>
           </div>
           <p className="text-lg text-center text-black self-center">
