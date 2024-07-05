@@ -69,7 +69,6 @@ const OrderTicket = ({
         {/*absolute -9999px to hide the component*/}
 
         <div className="flex flex-col  items-start w-full">
-          <img className="self-center" src="/images/foodswip-logo-print.jpg" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
@@ -166,50 +165,6 @@ const OrderTicket = ({
         <div className="text-4xl font-extrabold text-center">
           {switchPaymentMethodLabelForTicket(order.paymentMethod)}
         </div>
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead></thead>
-          <tbody className="text-2xl font-semibold">
-            <tr>
-              <td className="py-2  border border-black font-normal pb-8 text-center ">
-                Nom
-              </td>
-              <td className="py-2 border border-black  pb-8 text-center ">
-                {order.customer.firstname} {order.customer.lastname}
-              </td>
-            </tr>
-            {order.orderType === 0 ? (
-              <>
-                <tr>
-                  <td className="py-2 border border-black font-normal  pb-8 text-center ">
-                    Adresse
-                  </td>
-                  <td className="py-2 border border-black pb-8 text-center ">
-                    {order.customer.address.street},{" "}
-                    {order.customer.address.streetNumber}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="py-2 border border-black font-normal pb-8 text-center ">
-                    Ville
-                  </td>
-                  <td className="py-2 border border-black pb-8 text-center ">
-                    {order.customer.address.postCode}{" "}
-                    {order.customer.address.city}
-                  </td>
-                </tr>
-              </>
-            ) : null}
-
-            <tr>
-              <td className="py-2 border border-black font-normal text-center pb-8">
-                Téléphone
-              </td>
-              <td className="py-2 border border-black text-center ">
-                {order.customer.phoneNumber}
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </>
   );
