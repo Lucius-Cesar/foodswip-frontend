@@ -64,7 +64,7 @@ const OrderTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full pb-14 absolute left-[-9999px]"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full pb-12 absolute left-[-9999px]"
       >
         {/*absolute -9999px to hide the component*/}
 
