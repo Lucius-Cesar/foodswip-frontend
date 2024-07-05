@@ -13,7 +13,6 @@ import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
 import CartIcon from "@/components/ui/icons/CartIcon";
-
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
@@ -65,7 +64,7 @@ const OrderTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black pb-8 w-full absolute left-[-9999px]"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full pb-14 absolute left-[-9999px]"
       >
         {/*absolute -9999px to hide the component*/}
 
@@ -161,50 +160,6 @@ const OrderTicket = ({
               <p>Montant Total</p> <p>{order.totalSum} €</p>
             </div>
           </div>
-          <table className="min-w-full bg-white border border-gray-200">
-            <thead></thead>
-            <tbody className="text-2xl font-semibold">
-              <tr>
-                <td className="py-2  border border-black font-normal pb-8 text-center ">
-                  Nom
-                </td>
-                <td className="py-2 border border-black  pb-8 text-center ">
-                  {order.customer.firstname} {order.customer.lastname}
-                </td>
-              </tr>
-              {order.orderType === 0 ? (
-                <>
-                  <tr>
-                    <td className="py-2 border border-black font-normal  pb-8 text-center ">
-                      Adresse
-                    </td>
-                    <td className="py-2 border border-black pb-8 text-center ">
-                      {order.customer.address.street},{" "}
-                      {order.customer.address.streetNumber}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 border border-black font-normal pb-8 text-center ">
-                      Ville
-                    </td>
-                    <td className="py-2 border border-black pb-8 text-center ">
-                      {order.customer.address.postCode}{" "}
-                      {order.customer.address.city}
-                    </td>
-                  </tr>
-                </>
-              ) : null}
-
-              <tr>
-                <td className="py-2 border border-black font-normal text-center pb-8">
-                  Téléphone
-                </td>
-                <td className="py-2 border border-black text-center ">
-                  {order.customer.phoneNumber}
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
         {order.note && (
           <p className="text-2xl self-start">
@@ -213,6 +168,40 @@ const OrderTicket = ({
         )}
         <div className="text-4xl font-extrabold text-center">
           {switchPaymentMethodLabelForTicket(order.paymentMethod)}
+        </div>
+        <div className="min-w-full bg-white border border-gray-200">
+          <div className="text-2xl font-semibold">
+            <div className="flex border-b border-black">
+              <div className="py-2 px-4 flex-grow text-center">Nom</div>
+              <div className="py-2 px-4 flex-grow text-center">
+                {order.customer.firstname} {order.customer.lastname}
+              </div>
+            </div>
+            {order.orderType === 0 && (
+              <>
+                <div className="flex border-b border-black">
+                  <div className="py-2 px-4 flex-grow text-center">Adresse</div>
+                  <div className="py-2 px-4 flex-grow text-center">
+                    {order.customer.address.street},{" "}
+                    {order.customer.address.streetNumber}
+                  </div>
+                </div>
+                <div className="flex border-b border-black">
+                  <div className="py-2 px-4 flex-grow text-center">Ville</div>
+                  <div className="py-2 px-4 flex-grow text-center">
+                    {order.customer.address.postCode}{" "}
+                    {order.customer.address.city}
+                  </div>
+                </div>
+              </>
+            )}
+            <div className="flex border-b border-black">
+              <div className="py-2 px-4 flex-grow text-center">Téléphone</div>
+              <div className="py-2 px-4 flex-grow text-center">
+                {order.customer.phoneNumber}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
