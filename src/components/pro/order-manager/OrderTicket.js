@@ -161,6 +161,50 @@ const OrderTicket = ({
               <p>Montant Total</p> <p>{order.totalSum} €</p>
             </div>
           </div>
+          <table className="min-w-full bg-white border border-gray-200">
+            <thead></thead>
+            <tbody className="text-2xl font-semibold">
+              <tr>
+                <td className="py-2  border border-black font-normal pb-8 text-center ">
+                  Nom
+                </td>
+                <td className="py-2 border border-black  pb-8 text-center ">
+                  {order.customer.firstname} {order.customer.lastname}
+                </td>
+              </tr>
+              {order.orderType === 0 ? (
+                <>
+                  <tr>
+                    <td className="py-2 border border-black font-normal  pb-8 text-center ">
+                      Adresse
+                    </td>
+                    <td className="py-2 border border-black pb-8 text-center ">
+                      {order.customer.address.street},{" "}
+                      {order.customer.address.streetNumber}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 border border-black font-normal pb-8 text-center ">
+                      Ville
+                    </td>
+                    <td className="py-2 border border-black pb-8 text-center ">
+                      {order.customer.address.postCode}{" "}
+                      {order.customer.address.city}
+                    </td>
+                  </tr>
+                </>
+              ) : null}
+
+              <tr>
+                <td className="py-2 border border-black font-normal text-center pb-8">
+                  Téléphone
+                </td>
+                <td className="py-2 border border-black text-center ">
+                  {order.customer.phoneNumber}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         {order.note && (
           <p className="text-2xl self-start">
