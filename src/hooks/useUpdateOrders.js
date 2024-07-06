@@ -12,9 +12,8 @@ const useUpdateOrders = () => {
     }
     socket.on("new-order", () => {
       const newOrderSound = new Audio("/sounds/new_order.wav");
-
+      window.navigator.vibrate([2000, 1000, 2000, 1000, 2000, 1000, 2000]);
       newOrderSound.play();
-
       dispatch(fetchTodayOrders());
     });
 
