@@ -48,7 +48,9 @@ const OrderTicket = ({
       format: [canvas.width, canvas.height],
     });
     pdf.addImage(ticketJpgBase64, "JPEG", 0, 0, canvas.width, canvas.height);
-    const dataUriString = pdf.output("datauristring");
+    const dataUriString = pdf
+      .output("datauristring")
+      .replace("filename=generated.pdf;", "");
 
     console.log(dataUriString);
     // Create Blob URL
