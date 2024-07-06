@@ -72,7 +72,7 @@ const OrderTicket = ({
       <a
         ref={printLinkRef}
         href={printUrl}
-        download={order.orderNumber + new Date()}
+        download={"order_" + order.orderNumber + new Date()}
         className="absolute left-[-9999px]"
       ></a>
       <div
