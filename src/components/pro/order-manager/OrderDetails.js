@@ -30,21 +30,42 @@ const OrderDetails = ({ order }) => {
   const [printTrigger, setPrintTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
   const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
-  const isAndroidDevice = /Android/i.test(navigator?.userAgent);
+
+  const [isBrave, setIsBrave] = useState(null);
+  // brave is preferd for printing
+
+  async function checkIfBrave() {
+    let isBrave = false;
+    try {
+      isBrave = (await window?.navigator?.brave?.isBrave?.()) || false;
+    } catch (e) {
+      console.error("Error checking if browser is Brave:", e);
+    }
+    console.log("Is Brave Browser:", isBrave);
+    return isBrave;
+  }
+
+  // Example usage
+  checkIfBrave().then((brave) => {
+    setIsBrave(brave);
+    // You can use isBrave here
+  });
 
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
-    setPrintTrigger(true);
-    setTimeout(() => {
-      dispatch(
-        updateOrderStatus({
-          orderId: order._id,
-          status: "accepted",
-        })
-      ).then(() => {
+    if (isBrave) {
+      setPrintTrigger(true);
+    }
+    dispatch(
+      updateOrderStatus({
+        orderId: order._id,
+        status: "accepted",
+      })
+    ).then(() => {
+      setTimeout(() => {
         router.push(pathname);
         setAcceptOrderLoading(false);
-      });
+      }, 500);
     });
   };
 
@@ -256,7 +277,6 @@ const OrderDetails = ({ order }) => {
         setPrintTrigger={setPrintTrigger}
         loading={loading}
         setLoading={setLoading}
-        isAndroidDevice={isAndroidDevice}
       />
     </>
   );

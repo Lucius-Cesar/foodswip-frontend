@@ -1,50 +1,50 @@
-"use client"
-import { useRestaurantData } from "@/hooks/useRestaurantData"
-import { RestaurantLogo } from "@/components/ui/RestaurantLogo"
-import SuccessIcon from "@/components/ui/icons/SuccessIcon"
-import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon"
-import Preloader from "@/components/ui/Preloader"
-import useFetch from "@/hooks/useFetch"
-import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+"use client";
+import { useRestaurantData } from "@/hooks/useRestaurantData";
+import { RestaurantLogo } from "@/components/ui/RestaurantLogo";
+import SuccessIcon from "@/components/ui/icons/SuccessIcon";
+import FoodswipLogo from "@/components/ui/icons/FoodswipLogo";
+import Preloader from "@/components/ui/Preloader";
+import useFetch from "@/hooks/useFetch";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Order({ params }) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const redirectStatus = searchParams.get("redirect_status")
+  const redirectStatus = searchParams.get("redirect_status");
 
   const [formattedEstimatedArrivalDate, setFormattedEstimatedArrivalDate] =
-    useState(null)
+    useState(null);
 
-  const fetchOptions = { method: "GET" }
+  const fetchOptions = { method: "GET" };
   const order = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
     fetchOptions
-  )
+  );
 
   useEffect(() => {
     if (order.data?.estimatedArrivalDate) {
-      const estimatedArrivalDate = new Date(order.data.estimatedArrivalDate)
+      const estimatedArrivalDate = new Date(order.data.estimatedArrivalDate);
       setFormattedEstimatedArrivalDate(
         `${estimatedArrivalDate.getHours()}:${String(
           estimatedArrivalDate.getMinutes()
         ).padStart(2, "0")}`
-      )
+      );
     }
-  }, [order.data])
+  }, [order.data]);
 
   //error redirection
   useEffect(() => {
     if (redirectStatus === "failed") {
       setTimeout(() => {
-        router.push(`/menu/${params.slug}/checkout`)
-      }, 8000)
+        router.push(`/menu/${params.slug}/checkout`);
+      }, 8000);
     }
-  }, [redirectStatus])
+  }, [redirectStatus]);
 
   if (order.isLoading) {
-    return <Preloader />
+    return <Preloader />;
   } else if (redirectStatus === "failed") {
     return (
       <div className="w-full h-dvh flex flex-col justify-center items-center">
@@ -53,7 +53,7 @@ export default function Order({ params }) {
           après redirection...
         </p>
       </div>
-    )
+    );
   } else {
     return (
       <div className="w-full h-dvh flex flex-col justify-between items-center">
@@ -103,8 +103,8 @@ export default function Order({ params }) {
             Vous n'êtes pas autorisé à consulter cette commande
           </p>
         )}
-        <FoodSwipIcon className="h-12 sm:h-10 w-auto" />
+        <FoodswipLogo className="h-10 w-auto pb-2" />
       </div>
-    )
+    );
   }
 }

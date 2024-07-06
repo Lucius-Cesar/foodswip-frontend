@@ -12,7 +12,7 @@ import {
 import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
-
+import FoodswipLogo from "@/components/ui/icons/FoodswipLogo";
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
@@ -22,36 +22,40 @@ const OrderPrintTicket = ({
   setLoading,
   printTrigger,
   setPrintTrigger,
-  isAndroidDevice,
 }) => {
-  const router = useRouter();
-  const restaurant = useSelector((state) => state.restaurantAdmin);
-
   const ticketRef = useRef(null);
   const printLinkRef = useRef(null);
-
+  const restaurant = useSelector((state) => state.restaurantAdmin);
   const [printUrl, setPrintUrl] = useState(null);
+  const currentDate = new Date();
+  const formattedDate = currentDate
+    .toISOString()
+    .replace(/[:\-]|\.\d{3}/g, "")
+    .slice(0, 15); // Format: "YYYYMMDDTHHMMSS"
+  const filename = `order_${order.orderNumber}_${formattedDate}.jpg`;
+  console.log(filename);
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
-    setPrintUrl(`rawbt:${ticketJpgBase64}`);
+    const base64Response = await fetch(ticketJpgBase64);
+    const blob = await base64Response.blob();
+    // Create Blob URL
+    const blobUrl = URL.createObjectURL(blob);
+    setPrintUrl(blobUrl);
     setLoading(false);
-
     return ticketJpgBase64;
   };
 
   useEffect(() => {
-    if (isAndroidDevice) {
-      if (!printUrl) generateTicketJpgBase64();
-      if (printTrigger) {
-        setLoading(true);
-        if (printUrl) {
-          printLinkRef.current.click();
-          setPrintTrigger(false);
-          setTimeout(() => {
-            setLoading(false);
-          }, 500);
-        }
+    if (!printUrl) generateTicketJpgBase64();
+    if (printTrigger) {
+      setLoading(true);
+      if (printUrl) {
+        printLinkRef.current.click();
+        setPrintTrigger(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       }
     }
   }, [printTrigger, printUrl]);
@@ -61,16 +65,17 @@ const OrderPrintTicket = ({
       <a
         ref={printLinkRef}
         href={printUrl}
+        download={filename}
         className="absolute left-[-9999px]"
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full max-w-96 absolute left-[-9999px] pb-14"
       >
         {/*absolute -9999px to hide the component*/}
 
-        <div className="flex flex-col  items-start w-full">
-          <img className="self-center" src="/images/foodswip-logo-print.png" />
+        <div className="flex flex-col  items-center justify-center w-full">
+          <FoodswipLogo color="#000000" className="w-64" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
