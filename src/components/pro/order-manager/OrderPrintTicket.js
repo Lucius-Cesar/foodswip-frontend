@@ -12,11 +12,11 @@ import {
 import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
-
+import FoodSwipIcon from "@/components/ui/icons/FoodSwipIcon";
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
-const OrderTicket = ({
+const OrderPrintTicket = ({
   order,
   loading,
   setLoading,
@@ -77,12 +77,12 @@ const OrderTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full max-w-96 absolute left-[-9999px]"
       >
         {/*absolute -9999px to hide the component*/}
 
-        <div className="flex flex-col  items-start w-full">
-          <img className="self-center" src="/images/foodswip-logo-print.png" />
+        <div className="flex flex-col  items-center justify-center w-full">
+          <FoodSwipIcon color="#000000" className="w-56" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
@@ -228,4 +228,4 @@ const OrderTicket = ({
   );
 };
 
-export default OrderTicket;
+export default OrderPrintTicket;

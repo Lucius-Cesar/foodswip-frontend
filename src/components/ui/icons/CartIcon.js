@@ -6,7 +6,6 @@ const cartIcon = (props, { className }) => (
     height={64}
     fill="none"
     className={className}
-    {...props}
   >
     <path
       stroke={props.color}

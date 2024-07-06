@@ -17,7 +17,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import FullWidthBtn from "@/components/ui/FullWidthBtn";
-import OrderTicket from "./OrderTicket";
+import OrderPrintTicket from "./OrderPrintTicket";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import { useDispatch } from "react-redux";
@@ -30,23 +30,22 @@ const OrderDetails = ({ order }) => {
   const [printTrigger, setPrintTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
   const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
-  const isAndroidDevice = true;
+  const isAndroidDevice = /Android/i.test(navigator?.userAgent);
 
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
-    /*
     setPrintTrigger(true);
-    dispatch(
-      updateOrderStatus({
-        orderId: order._id,
-        status: "accepted",
-      })
-    ).then(() => router.push(pathname));
-    */
     setTimeout(() => {
-      router.push(pathname);
+      dispatch(
+        updateOrderStatus({
+          orderId: order._id,
+          status: "accepted",
+        })
+      ).then(() => {
+        router.push(pathname);
+        setAcceptOrderLoading(false);
+      });
     });
-    setAcceptOrderLoading(false);
   };
 
   return (
@@ -251,7 +250,7 @@ const OrderDetails = ({ order }) => {
           </FullWidthBtn>
         )}
       </div>
-      <OrderTicket
+      <OrderPrintTicket
         order={order}
         printTrigger={printTrigger}
         setPrintTrigger={setPrintTrigger}
