@@ -17,7 +17,6 @@ const orderNotifications = ({ newOrders }) => {
   };
 
   useEffect(() => {
-    playOrderAlert();
     const intervalId = setInterval(() => {
       playOrderAlert();
     }, pendingOrderAlert.interval * 60000);
