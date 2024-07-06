@@ -12,6 +12,8 @@ import { useSearchParams } from "next/navigation";
 import { BellAlertIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
 import Preloader from "@/components/ui/Preloader";
 import MainNavigation from "@/components/pro/MainNavigation";
+import OrderNotifications from "@/components/pro/order-manager/OrderNotifications";
+import Order from "@/app/menu/[slug]/order/[orderNumber]/page";
 
 const page = () => {
   //redux
@@ -74,6 +76,7 @@ const page = () => {
           </div>
         </div>
       )}
+      <OrderNotifications newOrders={newOrders} />
     </>
   );
 };

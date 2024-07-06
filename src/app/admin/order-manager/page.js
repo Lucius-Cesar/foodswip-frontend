@@ -1,5 +1,6 @@
 import OrderCard from "@/components/pro/order-manager/OrderCard";
 import { BellAlertIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
+import OrderNotifications from "@/components/pro/order-manager/OrderNotifications";
 const page = () => {
   const restaurant = {
     name: "Dodopizza",
@@ -892,6 +893,7 @@ const page = () => {
 
   return (
     <>
+      <OrderNotifications></OrderNotifications>
       <div className="max-w-screen-sm">
         <div className="flex flex-col space-y-2">
           <div className="flex flex-row gap-1">

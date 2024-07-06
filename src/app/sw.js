@@ -12,17 +12,11 @@ const serwist = new Serwist({
 self.addEventListener("push", (event) => {
   const data = JSON.parse(event.data?.text() ?? '{ title: "" }');
   event.waitUntil(
-    self.registration
-      .showNotification(data.title, {
-        body: data.message,
-        icon: "icons/icon192.png",
-        vibrate: [200, 100, 200],
-      })
-      .then(() => {
-        const audio = new Audio("/sounds/new_order.wav"); // Replace 'sound-url' with the URL to your sound file
-        audio.play();
-        window.navigator.vibrate([2000, 1000, 2000, 1000, 2000, 1000, 2000]);
-      })
+    self.registration.showNotification(data.title, {
+      body: data.message,
+      icon: "icons/icon192.png",
+      vibrate: [200, 100, 200],
+    })
   );
 });
 
