@@ -42,19 +42,8 @@ const OrderTicket = ({
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg", 1.0);
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "px",
-      format: [canvas.width, canvas.height],
-    });
-    pdf.addImage(ticketJpgBase64, "JPEG", 0, 0, canvas.width, canvas.height);
-    const dataUriString = pdf
-      .output("datauristring")
-      .replace("filename=generated.pdf;", "");
-
-    console.log(dataUriString);
     // Create Blob URL
-    setPrintUrl(`rawbt:${dataUriString}`);
+    setPrintUrl(`rawbt:${ticketJpgBase64}`);
     setLoading(false);
 
     return ticketJpgBase64;
@@ -85,7 +74,7 @@ const OrderTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] max-w-96 pb-8"
       >
         {/*absolute -9999px to hide the component*/}
 
