@@ -34,18 +34,18 @@ const OrderTicket = ({
     const beforeUrl = "intent:";
     const afterUrl =
       "#Intent;scheme=rawbt;component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;package=ru.a402d.rawbtprinter;end;";
-    const printUrl = beforeUrl + imgUrl + afterUrl;
+    const printUrl = beforeUrl + encodeURI(imgUrl) + afterUrl;
     return printUrl;
   };
 
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
-    //const base64Response = await fetch(ticketJpgBase64);
-    //const blob = await base64Response.blob();
+    const base64Response = await fetch(ticketJpgBase64);
+    const blob = await base64Response.blob();
     // Create Blob URL
-    //const blobUrl = URL.createObjectURL(blob);
-    setPrintUrl(`rawbt:${ticketJpgBase64}`);
+    const blobUrl = URL.createObjectURL(blob);
+    setPrintUrl(blobUrl);
     setLoading(false);
 
     return ticketJpgBase64;
@@ -72,11 +72,12 @@ const OrderTicket = ({
       <a
         ref={printLinkRef}
         href={printUrl}
+        download={order.orderNumber + new Date()}
         className="absolute left-[-9999px]"
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8 max-w-96"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
       >
         {/*absolute -9999px to hide the component*/}
 
