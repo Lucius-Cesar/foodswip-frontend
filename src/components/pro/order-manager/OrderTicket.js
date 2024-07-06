@@ -12,7 +12,6 @@ import {
 import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
@@ -41,9 +40,12 @@ const OrderTicket = ({
 
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
-    const ticketJpgBase64 = canvas.toDataURL("image/jpeg", 1.0);
+    const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
+    const base64Response = await fetch(ticketJpgBase64);
+    const blob = await base64Response.blob();
     // Create Blob URL
-    setPrintUrl(`rawbt:${ticketJpgBase64}`);
+    const blobUrl = URL.createObjectURL(blob);
+    setPrintUrl(blobUrl);
     setLoading(false);
 
     return ticketJpgBase64;
@@ -70,11 +72,12 @@ const OrderTicket = ({
       <a
         ref={printLinkRef}
         href={printUrl}
+        download={"order_" + order.orderNumber + new Date()}
         className="absolute left-[-9999px]"
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] max-w-96 pb-8"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
       >
         {/*absolute -9999px to hide the component*/}
 
