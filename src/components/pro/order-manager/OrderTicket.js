@@ -41,8 +41,12 @@ const OrderTicket = ({
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
-    const newPrintUrl = buildPrintUrl(ticketJpgBase64);
-    setPrintUrl(newPrintUrl);
+    const base64Response = await fetch(ticketJpgBase64);
+    const blob = await base64Response.blob();
+    // Create Blob URL
+    const blobUrl = URL.createObjectURL(blob);
+    console.log(blobUrl);
+    setPrintUrl(buildPrintUrl(blobUrl));
     setLoading(false);
 
     return ticketJpgBase64;
