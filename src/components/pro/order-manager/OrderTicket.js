@@ -12,7 +12,7 @@ import {
 import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
-import CartIcon from "@/components/ui/icons/CartIcon";
+
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
 // if the image is downloaded in the folder configured for autoprint (rawbt) -> printed
@@ -33,23 +33,19 @@ const OrderTicket = ({
   const buildPrintUrl = (imgUrl) => {
     const beforeUrl = "intent:";
     const afterUrl =
-      "#Intent;component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;package=ru.a402d.rawbtprinter;end;";
+      "#Intent;scheme=rawbt;component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;package=ru.a402d.rawbtprinter;end;";
     const printUrl = beforeUrl + encodeURI(imgUrl) + afterUrl;
     return printUrl;
   };
+
   const generateTicketJpgBase64 = async () => {
-    setLoading(true);
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
-    // Convert Base64 to Blob
-    fetch(ticketJpgBase64)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const imgUrl = URL.createObjectURL(blob);
-        const printUrl = buildPrintUrl(imgUrl);
-        setPrintUrl(printUrl);
-        setLoading(false);
-      });
+    const newPrintUrl = buildPrintUrl(ticketJpgBase64);
+    setPrintUrl(newPrintUrl);
+    setLoading(false);
+
+    return ticketJpgBase64;
   };
 
   useEffect(() => {
@@ -77,11 +73,12 @@ const OrderTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full pb-14"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
       >
         {/*absolute -9999px to hide the component*/}
 
         <div className="flex flex-col  items-start w-full">
+          <img className="self-center" src="/images/foodswip-logo-print.png" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
