@@ -177,12 +177,272 @@ const page = () => {
             },
           ],
         },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
       ],
       articlesSum: 56.96,
       deliveryFees: 2.5,
       totalSum: 59.46,
       note: "",
-      orderType: 0,
+      orderType: 1,
       paymentMethod: "cash",
       creationDate: "2024-06-30T19:00:50.557Z",
 
@@ -330,6 +590,16 @@ const page = () => {
                   },
                 },
                 {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
                   value: "Anchois",
                   price: 1,
                   isSupplement: true,
@@ -337,6 +607,51 @@ const page = () => {
                   isNeededInOrder: true,
                   _id: {
                     $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
                   },
                 },
                 {
@@ -347,6 +662,276 @@ const page = () => {
                   isNeededInOrder: true,
                   _id: {
                     $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
                   },
                 },
               ],
@@ -535,12 +1120,402 @@ const page = () => {
             },
           ],
         },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
+        {
+          categoryTitle: "Pizza",
+          categoryNumber: 0,
+          articles: [
+            {
+              food: {
+                value: "Pizza Margherita",
+                description: "Sauce tomate, Mozzarella, Basilic",
+                price: 10.99,
+                display: true,
+                categoryNumber: 0,
+                categoryTitle: "Pizza",
+                tva: 6,
+                _id: {
+                  $oid: "6637e51442bab015bccf1843",
+                },
+              },
+              options: [
+                {
+                  value: "Taille S",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51242bab015bccf181d",
+                  },
+                },
+                {
+                  value: "Croûte normale",
+                  price: 0,
+                  isSupplement: false,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51342bab015bccf1826",
+                  },
+                },
+                {
+                  value: "Poulet grillé",
+                  price: 1.25,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf1841",
+                  },
+                },
+                {
+                  value: "Anchois",
+                  price: 1,
+                  isSupplement: true,
+                  display: true,
+                  isNeededInOrder: true,
+                  _id: {
+                    $oid: "6637e51442bab015bccf183e",
+                  },
+                },
+              ],
+              quantity: 4,
+              price: 13.24,
+              sum: 52.96,
+            },
+          ],
+        },
       ],
       articlesSum: 52.96,
       deliveryFees: 2.5,
       totalSum: 55.46,
       note: "",
-      orderType: 0,
+      orderType: 1,
       paymentMethod: "cash",
       creationDate: "2024-06-28T17:27:31.496Z",
       lastUpdate: {
@@ -853,7 +1828,7 @@ const page = () => {
       deliveryFees: 2.5,
       totalSum: 92.17,
       note: "i",
-      orderType: 0,
+      orderType: 1,
       paymentMethod: "cash",
       creationDate: "2024-06-29T21:37:04.114Z",
 
