@@ -2,7 +2,8 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
-const orderNotifications = (newOrders) => {
+const orderNotifications = ({ newOrders }) => {
+  console.log(newOrders);
   const audioRef = useRef(null);
   const playButtonRef = useRef(null);
   const pendingOrderAlert = useSelector(
@@ -32,6 +33,8 @@ const orderNotifications = (newOrders) => {
   const pauseAudio = () => {
     audioRef.current.pause();
   };
+
+  console.log(pendingOrderAlert);
 
   return (
     <div className="hidden">

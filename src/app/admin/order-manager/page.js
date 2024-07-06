@@ -893,7 +893,7 @@ const page = () => {
 
   return (
     <>
-      <OrderNotifications></OrderNotifications>
+      <OrderNotifications newOrders={newOrders}></OrderNotifications>
       <div className="max-w-screen-sm">
         <div className="flex flex-col space-y-2">
           <div className="flex flex-row gap-1">
