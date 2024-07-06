@@ -77,7 +77,7 @@ const OrderPrintTicket = ({
       ></a>
       <div
         ref={ticketRef}
-        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full max-w-96 absolute left-[-9999px]"
+        className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full max-w-96 absolute left-[-9999px] pb-14"
       >
         {/*absolute -9999px to hide the component*/}
 
