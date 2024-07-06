@@ -12,6 +12,7 @@ import {
 import { switchOrderTypeIcon } from "@/components/ui/icons/SwitchIcon";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 //this component is used to print the ticket of an order
 //component is converted to a jpg image and then downloaded
@@ -40,12 +41,18 @@ const OrderTicket = ({
 
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
-    const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
-    const base64Response = await fetch(ticketJpgBase64);
-    const blob = await base64Response.blob();
+    const ticketJpgBase64 = canvas.toDataURL("image/jpeg", 1.0);
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width, canvas.height],
+    });
+    pdf.addImage(ticketJpgBase64, "JPEG", 0, 0, canvas.width, canvas.height);
+    const dataUriString = pdf.output("datauristring");
+
+    console.log(dataUriString);
     // Create Blob URL
-    const blobUrl = URL.createObjectURL(blob);
-    setPrintUrl(blobUrl);
+    setPrintUrl(`rawbt:${dataUriString}`);
     setLoading(false);
 
     return ticketJpgBase64;
@@ -72,7 +79,6 @@ const OrderTicket = ({
       <a
         ref={printLinkRef}
         href={printUrl}
-        download={"order_" + order.orderNumber + new Date()}
         className="absolute left-[-9999px]"
       ></a>
       <div
