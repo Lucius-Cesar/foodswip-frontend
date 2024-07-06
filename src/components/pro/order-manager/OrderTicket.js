@@ -42,11 +42,10 @@ const OrderTicket = ({
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");
     const base64Response = await fetch(ticketJpgBase64);
-    const blob = await base64Response.blob();
+    //rrconst blob = await base64Response.blob();
     // Create Blob URL
-    const blobUrl = URL.createObjectURL(blob);
-    console.log(blobUrl);
-    setPrintUrl(buildPrintUrl(blobUrl));
+    //const blobUrl = URL.createObjectURL(blob);
+    setPrintUrl(ticketJpgBase64);
     setLoading(false);
 
     return ticketJpgBase64;
@@ -58,7 +57,7 @@ const OrderTicket = ({
       if (printTrigger) {
         setLoading(true);
         if (printUrl) {
-          printLinkRef.current.click();
+          router.push(`rawbt:${printUrl}`);
           setPrintTrigger(false);
           setTimeout(() => {
             setLoading(false);
@@ -75,6 +74,7 @@ const OrderTicket = ({
         href={printUrl}
         className="absolute left-[-9999px]"
       ></a>
+      <img src={printUrl} alt="Ticket" className="hidden" />
       <div
         ref={ticketRef}
         className="flex flex-col items-center justify-start bg-white space-y-8 text-black w-full absolute left-[-9999px] pb-8"
