@@ -34,7 +34,7 @@ const OrderTicket = ({
     const beforeUrl = "intent:";
     const afterUrl =
       "#Intent;scheme=rawbt;component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;package=ru.a402d.rawbtprinter;end;";
-    const printUrl = beforeUrl + encodeURI(imgUrl) + afterUrl;
+    const printUrl = beforeUrl + imgUrl + afterUrl;
     return printUrl;
   };
 
