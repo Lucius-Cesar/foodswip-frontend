@@ -82,7 +82,7 @@ const OrderPrintTicket = ({
         {/*absolute -9999px to hide the component*/}
 
         <div className="flex flex-col  items-center justify-center w-full">
-          <FoodSwipIcon color="#000000" className="w-56" />
+          <FoodSwipIcon color="#000000" className="w-64" />
           <p className="text-lg text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
