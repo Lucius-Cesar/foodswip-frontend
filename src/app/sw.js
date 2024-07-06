@@ -18,6 +18,9 @@ self.addEventListener("push", (event) => {
       vibrate: [200, 100, 200],
     })
   );
+  const audio = new Audio("/sounds/new_order.wav"); // Replace 'sound-url' with the URL to your sound file
+  audio.play();
+  window.navigator.vibrate([2000, 1000, 2000, 1000, 2000, 1000, 2000]);
 });
 
 self.addEventListener("notificationclick", (event) => {
