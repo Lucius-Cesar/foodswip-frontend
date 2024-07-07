@@ -11,7 +11,7 @@ const orderNotifications = ({ newOrders }) => {
 
   const playOrderAlert = () => {
     if (newOrders.length > 0 && pendingOrderAlert?.enabled) {
-      playButtonRef.current.click();
+      playAudio();
       window.navigator.vibrate([2000, 1000, 2000, 1000, 2000, 1000, 2000]);
     }
   };
@@ -34,7 +34,7 @@ const orderNotifications = ({ newOrders }) => {
 
   return (
     <div className="hidden">
-      <audio ref={audioRef}>
+      <audio autoplay ref={audioRef}>
         <source src="/sounds/new_order.wav" type="audio/wav" />
       </audio>
       <button ref={playButtonRef} onClick={playAudio}>
