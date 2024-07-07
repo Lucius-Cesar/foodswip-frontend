@@ -10,11 +10,11 @@ function NavigationContainer({ open, setOpen, navigationItems }) {
     <div
       className={`${
         open ? "fixed bg-white flex" : "hidden"
-      } z-50 flex-col justify-center h-full w-screen top-0`}
+      } z-50 flex-col justify-center h-screen w-full top-0`}
     >
       <button
         type="button"
-        className="absolute rounded-md bg-white text-gray-400 hover:text-gray-500 h-fit width-fit top-2 right-6"
+        className="absolute rounded-md bg-white text-gray-400 hover:text-gray-500 h-fit width-fit top-2 right-3"
         onClick={() => setOpen(false)}
       >
         <span className="absolute -inset-2.5" />
@@ -77,23 +77,21 @@ export default function MainNavigation({ className }) {
   ];
   return (
     <>
-      <div className={className}>
-        <button
-          className={`${
-            open && "hidden"
-          } absolute z-10 top-3 left-3 h-7 w-7 hover:opacity-90`}
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          <BarsIcon className="" />
-        </button>
-        <NavigationContainer
-          open={open}
-          setOpen={setOpen}
-          navigationItems={navigationItems}
-        />
-      </div>
+      <button
+        className={`${
+          open && "hidden"
+        } sticky z-10 top-3 left-3 h-7 w-7 hover:opacity-90`}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        <BarsIcon className="" />
+      </button>
+      <NavigationContainer
+        open={open}
+        setOpen={setOpen}
+        navigationItems={navigationItems}
+      />
     </>
   );
 }

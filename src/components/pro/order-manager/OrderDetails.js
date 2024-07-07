@@ -41,7 +41,6 @@ const OrderDetails = ({ order }) => {
     } catch (e) {
       console.error("Error checking if browser is Brave:", e);
     }
-    console.log("Is Brave Browser:", isBrave);
     return isBrave;
   }
 
@@ -56,16 +55,17 @@ const OrderDetails = ({ order }) => {
     if (isBrave) {
       setPrintTrigger(true);
     }
+    setTimeout(() => {
+      setAcceptOrderLoading(false);
+    }, 500);
+
     dispatch(
       updateOrderStatus({
         orderId: order._id,
         status: "accepted",
       })
     ).then(() => {
-      setTimeout(() => {
-        router.push(pathname);
-        setAcceptOrderLoading(false);
-      }, 500);
+      router.push(pathname);
     });
   };
 
@@ -80,14 +80,12 @@ const OrderDetails = ({ order }) => {
             {switchOrderTypeIcon(order.orderType, "h-5")}{" "}
             {switchOrderTypeLabel(order.orderType)}
           </div>
-          {order.status === "accepted" && loading ? (
+          {loading ? (
             <LoadingSpinner />
-          ) : order.status === "accepted" ? (
+          ) : (
             <button disabled={loading} onClick={() => setPrintTrigger(true)}>
               <PrinterIcon className="h-8 w-8 text-primary" />
             </button>
-          ) : (
-            <div className="h-8 w-8"></div>
           )}
         </div>
         <div className="flex flex-row text-sm w-full py-3 mt-14">

@@ -13,7 +13,6 @@ import { BellAlertIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
 import Preloader from "@/components/ui/Preloader";
 import MainNavigation from "@/components/pro/MainNavigation";
 import OrderNotifications from "@/components/pro/order-manager/OrderNotifications";
-import Order from "@/app/menu/[slug]/order/[orderNumber]/page";
 
 const page = () => {
   //redux
@@ -39,13 +38,13 @@ const page = () => {
       {!orders.data ? (
         <Preloader />
       ) : (
-        <div className="max-w-screen-sm">
-          <div
-            className={`h-screen py-10 px-3 space-y-4${
-              selectedOrder ? "overflow-y-hidden" : ""
-            } `}
-          >
-            <MainNavigation className="" />
+        <div
+          className={`max-w-screen-sm h-screen ${
+            selectedOrder ? "overflow-y-hidden" : ""
+          }`}
+        >
+          <MainNavigation />
+          <div className={`px-3 space-y-4 mt-6`}>
             <div className="flex flex-col space-y-2">
               <div className="flex flex-row gap-1">
                 <BellAlertIcon className="text-yellow-400 h-6" />

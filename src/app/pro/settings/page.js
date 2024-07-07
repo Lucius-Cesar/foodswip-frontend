@@ -184,7 +184,7 @@ export default function settings() {
       <>
         <main className="h-screen overflow-y-hidden flex flex-col w-full">
           <MainNavigation />
-          <div className="flex fex-col border-bottom  bg-white border-gravel rounded-lg p-3 drop-shadow-md">
+          <div className="absolute top-0 w-full flex fex-col border-bottom  bg-white border-gravel rounded-lg p-3 sm:p-4 drop-shadow-md">
             <div className="w-full px-8 sm:justify-around flex flex-row justify-between items-center text-center font-semibold">
               <Link
                 className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
@@ -212,7 +212,7 @@ export default function settings() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col px-3 pt-3 w-full h-full overflow-y-auto">
+          <div className="flex flex-col px-3 pt-3 w-full h-full overflow-y-auto mt-8">
             {activeSettings === "restaurant" && (
               <div className="relative flex flex-col w-full h-full pb-4 space-y-4">
                 <RestaurantStatusOverrideBtn className="self-start" />
@@ -255,7 +255,7 @@ export default function settings() {
                             key={i}
                             className="flex flex-col items-center space-y-2"
                           >
-                            <p className="self-start text-lg font-semibold">
+                            <p className="self-start text-lg font-medium">
                               {dayLabel} :
                             </p>
                             {scheduleItem.services.length === 0 ? (
@@ -566,7 +566,7 @@ export default function settings() {
                   <h2 className="mb-4 font-bold">Commandes à livrer</h2>
                   <div className="space-y-4">
                     <div>
-                      <label className="text-lg font-semibold block mb-2">
+                      <label className="text-lg font-medium block mb-2">
                         Minimum d'achat pour la livraison (€)
                       </label>
                       <div className="text-center w-48">
@@ -606,7 +606,7 @@ export default function settings() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-lg font-semibold">
+                      <label className="text-lg font-medium">
                         Frais de livraison (€)
                       </label>
                       <div className="text-center  w-48">
@@ -648,7 +648,7 @@ export default function settings() {
                       </div>
                     </div>
                     <div>
-                      <label className="text-lg font-semibold block mb-2">
+                      <label className="text-lg font-medium block mb-2">
                         Délai de livraison, moyenne basse (minutes)
                       </label>
                       <div className="text-center  w-48">
@@ -700,7 +700,7 @@ export default function settings() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-lg font-semibold block mb-2">
+                    <label className="text-lg font-medium block mb-2">
                       Délai de livraison, moyenne haute (minutes)
                     </label>
                     <div className="text-center  w-48">
@@ -751,7 +751,7 @@ export default function settings() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-lg font-semibold block mb-2">
+                    <label className="text-lg  font-medium block mb-2">
                       Codes postaux éligibles pour la livraison{" "}
                     </label>
                     <div className="grid grid-cols1 sm:grid-cols-3 w-fit gap-x-10 gap-y-4">
@@ -810,9 +810,9 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Commandes à emporter</h2>
+                  <h2 className="mb-4 font-bold">Commandes à emporter</h2>
                   <div>
-                    <label className="text-lg font-semibold block mb-2">
+                    <label className="text-lg font-medium block mb-2">
                       Délai de préparation moyen (minutes)
                     </label>
                     <div className="text-center w-48">
@@ -855,7 +855,7 @@ export default function settings() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="mb-4">Moyens de paiement</h2>
+                  <h2 className="mb-4 font-bold">Moyens de paiement</h2>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                     <p className="text-lg font-semibold w-28">Livraison</p>
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
@@ -889,7 +889,7 @@ export default function settings() {
                           />
                           <label
                             htmlFor={paymentMethod.value}
-                            className="ml-3 block font-semibold  leading-6"
+                            className="ml-3 block font-medium leading-6"
                           >
                             {paymentMethodLabel}
                           </label>
@@ -898,7 +898,7 @@ export default function settings() {
                     })}
                   </div>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    <p className="font-semibold w-28">À emporter</p>
+                    <p className="text-lg font-semibold w-28">À emporter</p>
                     {publicSettings.paymentMethods.map((paymentMethod, i) => {
                       const paymentMethodLabel = switchPaymentMethodLabel(
                         paymentMethod.value
@@ -928,7 +928,7 @@ export default function settings() {
                           />
                           <label
                             htmlFor={paymentMethod.value}
-                            className="ml-3 block font-semibold text-lg  leading-6"
+                            className="ml-3 block font-medium leading-6"
                           >
                             {paymentMethodLabel}
                           </label>
@@ -967,7 +967,7 @@ export default function settings() {
                     />
                     <div>
                       <label
-                        className={`ml-px block text-lg font-semibold leading-6 mb-2`}
+                        className={`ml-px block text-lg font-medium leading-6 mb-2`}
                       >
                         Adresse mail
                       </label>
@@ -1003,7 +1003,7 @@ export default function settings() {
                 <div className="space-y-4">
                   <h2 className="mb-4 font-bold">Alertes sonores</h2>
                   <div className="space-y-2">
-                    <p className="font-semibold text-lg">
+                    <p className="text-lg font-medium">
                       Alerte pour les commande en attente
                     </p>
                     <TabBtn
@@ -1030,7 +1030,7 @@ export default function settings() {
                     />
                   </div>
                   <div>
-                    <label className="text-lg font-semibold">
+                    <label className="text-lg font-medium">
                       Rappel sonores (minutes)
                     </label>
                     <div className="text-center  w-48">
