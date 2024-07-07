@@ -19,7 +19,7 @@ const orderNotifications = ({ newOrders }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       playOrderAlert();
-    }, pendingOrderAlert.interval * 60000);
+    }, pendingOrderAlert?.interval * 60000);
 
     return () => clearInterval(intervalId);
   }, [newOrders, pendingOrderAlert]);
