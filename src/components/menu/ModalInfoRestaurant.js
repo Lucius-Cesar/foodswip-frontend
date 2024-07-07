@@ -21,8 +21,6 @@ export default function Restaurant({ open, setOpen }) {
       day: "numeric",
       month: "numeric",
       year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
     };
 
     const date = new Date(dateString);

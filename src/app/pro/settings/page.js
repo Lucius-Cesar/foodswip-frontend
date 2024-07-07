@@ -153,12 +153,20 @@ export default function settings() {
   // for exceptionalClosings
   const createExceptionalClosing = (itemIndex = null, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
+    //set start date of exceptionnal closings to 00h00 (start of the concerned day)
+    newValue.start = new Date(new Date(newValue.start).setHours(0, 0, 0, 0));
+    //set end date of exceptionnal closings to 23h59 (end of the concerned day)
+    newValue.end = new Date(new Date(newValue.end).setHours(23, 59, 0, 0));
     updatedPublicSettings.exceptionalClosings.push(newValue);
     setPublicSettings(updatedPublicSettings);
   };
 
   const updateExceptionalClosing = (itemIndex, newValue) => {
     let updatedPublicSettings = deepCopy(publicSettings);
+    //set start date of exceptionnal closings to 00h00 (start of the concerned day)
+    newValue.start = new Date(new Date(newValue.start).setHours(0, 0, 0, 0));
+    //set end date of exceptionnal closings to 23h59 (end of the concerned day)
+    newValue.end = new Date(new Date(newValue.end).setHours(23, 59, 0, 0));
     updatedPublicSettings.exceptionalClosings[itemIndex] = newValue;
     setPublicSettings(updatedPublicSettings);
   };
