@@ -16,6 +16,10 @@ function useSocket() {
         extraHeaders: {
           authorization: `bearer ${token}`,
         },
+        reconnection: true, // Enable automatic reconnection
+        reconnectionAttempts: Infinity, // Attempt to reconnect forever
+        reconnectionDelay: 1000, // Start with 1 second delay
+        reconnectionDelayMax: 5000, // Maximum delay of 5 seconds
       });
       if (newSocket) {
         setSocket(newSocket);
