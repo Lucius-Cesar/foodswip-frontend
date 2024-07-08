@@ -75,12 +75,12 @@ const OrderPrintTicket = ({
 
         <div className="flex flex-col  items-center justify-center w-full">
           <FoodswipLogo color="#000000" className="w-64" />
-          <p className="text-xl text-center text-black self-center">
+          <p className="text-2xl text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
             {restaurant?.data?.address?.city}
           </p>
-          <p className="text-xl font-bold self-center">
+          <p className="text-2xl font-bold self-center">
             {" "}
             Commande #{order.orderNumber}
           </p>
@@ -133,7 +133,7 @@ const OrderPrintTicket = ({
                                     formattedOption = `+${option.value}`;
                                   }
                                   return (
-                                    <p key={k} className="font-medium text-xl">
+                                    <p key={k} className="font-medium text-2xl">
                                       {formattedOption}
                                     </p>
                                   );
