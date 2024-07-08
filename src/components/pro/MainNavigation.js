@@ -3,9 +3,28 @@ import Link from "next/link";
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
-
-function NavigationContainer({ open, setOpen, navigationItems }) {
+export const MainNavigationButton = ({ open, setOpen }) => {
+  return (
+    <button
+      className={`${open && "hidden"} px-3 py-2 h-12 w-12 hover:opacity-90`}
+      onClick={() => {
+        setOpen(true);
+      }}
+    >
+      <BarsIcon className="" />
+    </button>
+  );
+};
+export function MainNavigationMenu({ className, open, setOpen }) {
   const pathName = usePathname();
+  const navigationItems = [
+    { value: "Commandes", link: "/pro/order-manager", subitems: [] },
+    {
+      value: "Paramètres",
+      link: "/pro/settings?q=restaurant",
+      subitems: [],
+    },
+  ];
   return (
     <div
       className={`${
@@ -63,35 +82,5 @@ function NavigationContainer({ open, setOpen, navigationItems }) {
         ))}
       </div>
     </div>
-  );
-}
-export default function MainNavigation({ className }) {
-  const [open, setOpen] = useState(false);
-  const navigationItems = [
-    { value: "Commandes", link: "/pro/order-manager", subitems: [] },
-    {
-      value: "Paramètres",
-      link: "/pro/settings?q=restaurant",
-      subitems: [],
-    },
-  ];
-  return (
-    <>
-      <button
-        className={`${
-          open && "hidden"
-        } sticky z-10 top-3 left-3 h-7 w-7 hover:opacity-90`}
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        <BarsIcon className="" />
-      </button>
-      <NavigationContainer
-        open={open}
-        setOpen={setOpen}
-        navigationItems={navigationItems}
-      />
-    </>
   );
 }

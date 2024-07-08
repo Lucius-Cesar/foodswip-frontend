@@ -10,7 +10,7 @@ const orderNotifications = ({ newOrders }) => {
   );
 
   const playOrderAlert = () => {
-    if (newOrders.length > 0 && pendingOrderAlert?.enabled) {
+    if (newOrders?.length > 0 && pendingOrderAlert?.enabled) {
       playAudio();
       window.navigator.vibrate([2000, 1000, 2000, 1000, 2000, 1000, 2000]);
     }

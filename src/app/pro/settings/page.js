@@ -32,7 +32,10 @@ import useRestaurantData from "@/hooks/useRestaurantData";
 import { logOut } from "@/redux/auth/authSlice";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import PasswordUpdate from "@/components/pro/settings/PasswordUpdate";
-import MainNavigation from "@/components/pro/MainNavigation";
+import {
+  MainNavigationMenu,
+  MainNavigationButton,
+} from "@/components/pro/MainNavigation";
 import Link from "next/link";
 
 export default function settings() {
@@ -50,6 +53,8 @@ export default function settings() {
   const [accountSettings, setAccountSettings] = useState(null);
   const searchParams = useSearchParams();
   const activeSettings = searchParams.get("q");
+
+  const [isMainNavigationOpen, setMainNavigationOpen] = useState(false);
   useEffect(() => {
     if (!activeSettings) {
       router.push("/pro/settings?q=restaurant");
@@ -191,8 +196,18 @@ export default function settings() {
     return (
       <>
         <main className="h-screen overflow-y-hidden flex flex-col w-full">
-          <MainNavigation />
-          <div className="absolute top-0 w-full flex fex-col border-bottom  bg-white border-gravel rounded-lg p-3 sm:p-4 drop-shadow-md">
+          <div className="absolute top-0 y-0 z-50">
+            <MainNavigationButton
+              open={isMainNavigationOpen}
+              setOpen={setMainNavigationOpen}
+            />
+          </div>
+
+          <MainNavigationMenu
+            open={isMainNavigationOpen}
+            setOpen={setMainNavigationOpen}
+          />
+          <div className="absolute top-0 w-full flex fex-col border-bottom  z-10 bg-white border-gravel rounded-lg p-3 sm:p-4 drop-shadow-md">
             <div className="w-full px-8 sm:justify-around flex flex-row justify-between items-center text-center font-semibold">
               <Link
                 className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
@@ -220,7 +235,7 @@ export default function settings() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col px-3 pt-3 w-full h-full overflow-y-auto mt-8">
+          <div className="flex flex-col px-3 pt-3 w-full h-full overflow-y-auto mt-16">
             {activeSettings === "restaurant" && (
               <div className="relative flex flex-col w-full h-full pb-4 space-y-4">
                 <RestaurantStatusOverrideBtn className="self-start" />

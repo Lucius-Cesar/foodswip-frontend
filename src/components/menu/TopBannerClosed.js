@@ -1,4 +1,4 @@
-import { ExclamationTriangleIcon } from "@heroicons/react/20/solid"
+import { ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 export default function TopBannerClosed({ onClick }) {
   return (
     <button
@@ -7,8 +7,8 @@ export default function TopBannerClosed({ onClick }) {
     >
       <p className="relative text-lg leading-6 text-white font-bold align-baseline">
         L'établissement est actuellement fermé
-        <ExclamationTriangleIcon className="absolute h-6 w-6 text-white -left-8 top-0 bottom-0" />
+        <ExclamationTriangleIcon className="absolute h-6 w-6 text-white -left-8 -top-0.5 bottom-0" />
       </p>
     </button>
-  )
+  );
 }

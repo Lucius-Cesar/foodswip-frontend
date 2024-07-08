@@ -33,7 +33,6 @@ const OrderPrintTicket = ({
     .replace(/[:\-]|\.\d{3}/g, "")
     .slice(0, 15); // Format: "YYYYMMDDTHHMMSS"
   const filename = `order_${order.orderNumber}_${formattedDate}.jpg`;
-  console.log(filename);
   const generateTicketJpgBase64 = async () => {
     const canvas = await html2canvas(ticketRef.current);
     const ticketJpgBase64 = canvas.toDataURL("image/jpeg");

@@ -11,17 +11,19 @@ import useRestaurantData from "@/hooks/useRestaurantData";
 import { useSearchParams } from "next/navigation";
 import { BellAlertIcon, CheckCircleIcon } from "@heroicons/react/20/solid";
 import Preloader from "@/components/ui/Preloader";
-import MainNavigation from "@/components/pro/MainNavigation";
+import {
+  MainNavigationMenu,
+  MainNavigationButton,
+} from "@/components/pro/MainNavigation";
 import OrderNotifications from "@/components/pro/order-manager/OrderNotifications";
 
 const page = () => {
   //redux
   const orders = useSelector((state) => state.orders);
   const auth = useSelector((state) => state.auth);
-  const searchParams = useSearchParams();
-  const selectedOrder = Number(searchParams.get("order"));
   useRestaurantData(auth.data?.user?.slug, "restaurantAdmin");
 
+  const [isMainNavigationOpen, setMainNavigationOpen] = useState(false);
   //hooks for auth and websocket
   useRefreshAuth();
   useCheckAuth();
@@ -38,14 +40,19 @@ const page = () => {
       {!orders.data ? (
         <Preloader />
       ) : (
-        <div
-          className={`max-w-screen-sm h-screen ${
-            selectedOrder ? "overflow-y-hidden" : ""
-          }`}
-        >
-          <MainNavigation />
-          <div className={`px-3 space-y-4 mt-6`}>
-            <div className="flex flex-col space-y-2">
+        <div className="h-screen flex flex-col w-full overflow-y-hidden">
+          <div className="bg-white w-full">
+            <MainNavigationButton
+              open={isMainNavigationOpen}
+              setOpen={setMainNavigationOpen}
+            />
+          </div>
+          <MainNavigationMenu
+            open={isMainNavigationOpen}
+            setOpen={setMainNavigationOpen}
+          />
+          <div className="px-3 space-y-4 h-full w-full overflow-y-auto">
+            <div className="flex flex-col space-y-2 max-w-screen-sm ">
               <div className="flex flex-row gap-1">
                 <BellAlertIcon className="text-yellow-400 h-6" />
                 <p className="text-lg font-extrabold">
@@ -58,8 +65,7 @@ const page = () => {
                 ))}
               </div>
             </div>
-
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-2 max-w-screen-sm ">
               <div className="flex flex-row gap-1">
                 <CheckCircleIcon className="text-success h-6" />
                 <p className="text-lg font-extrabold">
@@ -75,7 +81,7 @@ const page = () => {
           </div>
         </div>
       )}
-      <OrderNotifications newOrders={newOrders} />
+      <OrderNotifications />
     </>
   );
 };
