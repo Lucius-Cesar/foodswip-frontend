@@ -75,12 +75,12 @@ const OrderPrintTicket = ({
 
         <div className="flex flex-col  items-center justify-center w-full">
           <FoodswipLogo color="#000000" className="w-64" />
-          <p className="text-lg text-center text-black self-center">
+          <p className="text-xl text-center text-black self-center">
             {restaurant?.data?.name} - {restaurant?.data?.address?.street}{" "}
             {restaurant?.data?.address?.postCode}{" "}
             {restaurant?.data?.address?.city}
           </p>
-          <p className="text-lg font-bold self-center">
+          <p className="text-xl font-bold self-center">
             {" "}
             Commande #{order.orderNumber}
           </p>
@@ -109,14 +109,14 @@ const OrderPrintTicket = ({
             {order.formattedArticlesList.map((element, i) => {
               return (
                 <div className=" w-full" key={i}>
-                  <p className="text-2xl font-extrabold">
+                  <p className="text-4xl font-extrabold">
                     {element.categoryTitle}
                   </p>
                   <div className="ps-6 py-2 w-full">
                     {element.articles.map((article, j) => {
                       return (
                         <div className="py-2" key={j}>
-                          <div className="flex flex-row justify-between text-2xl font-semibold w-full">
+                          <div className="flex flex-row justify-between text-4xl font-bold w-full">
                             {" "}
                             <div className="flex flex-row gap-2">
                               <p className="font-extrabold">
