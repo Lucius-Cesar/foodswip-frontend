@@ -133,7 +133,10 @@ const OrderPrintTicket = ({
                                     formattedOption = `+${option.value}`;
                                   }
                                   return (
-                                    <p key={k} className="font-medium text-2xl">
+                                    <p
+                                      key={k}
+                                      className="font-semibold text-2xl"
+                                    >
                                       {formattedOption}
                                     </p>
                                   );
