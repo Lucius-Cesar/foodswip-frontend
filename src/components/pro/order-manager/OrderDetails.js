@@ -156,7 +156,9 @@ const OrderDetails = ({ order }) => {
                                   formattedOption = `+ ${option.value}`;
                                 }
                                 return (
-                                  <p className="text-sm">{formattedOption}</p>
+                                  <p className="text-sm font-normal">
+                                    {formattedOption}
+                                  </p>
                                 );
                               })}
                             </div>{" "}
