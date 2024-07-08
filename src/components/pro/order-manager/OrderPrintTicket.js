@@ -116,7 +116,7 @@ const OrderPrintTicket = ({
                     {element.articles.map((article, j) => {
                       return (
                         <div className="py-2" key={j}>
-                          <div className="flex flex-row justify-between text-4xl font-bold w-full">
+                          <div className="flex flex-row justify-between text-3xl font-bold w-full">
                             {" "}
                             <div className="flex flex-row gap-2">
                               <p className="font-extrabold">
@@ -133,7 +133,7 @@ const OrderPrintTicket = ({
                                     formattedOption = `+${option.value}`;
                                   }
                                   return (
-                                    <p key={k} className="font-medium">
+                                    <p key={k} className="font-medium text-xl">
                                       {formattedOption}
                                     </p>
                                   );
