@@ -81,7 +81,7 @@ const page = () => {
           </div>
         </div>
       )}
-      <OrderNotifications />
+      <OrderNotifications newOrders={newOrders} />
     </>
   );
 };
