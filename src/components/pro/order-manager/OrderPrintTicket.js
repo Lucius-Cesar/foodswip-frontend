@@ -102,7 +102,7 @@ const OrderPrintTicket = ({
           </p>
         </div>
         <div className="w-full">
-          <div className="font-semibold text-2xl border-t border-b border-black w-full pb-6">
+          <div className="font-semibold text-3xl border-t border-b border-black w-full pb-6">
             Liste des articles
           </div>
           <div className="flex flex-col justify-start items-start w-full border-black">
@@ -156,18 +156,20 @@ const OrderPrintTicket = ({
           </div>
           <div className="w-full">
             {order.orderType === 0 ? (
-              <div className="flex flex-row justify-between font-semibold text-2xl  border-t  border-black pb-6 w-full">
-                <p>Frais de livraison</p> <p>{order.deliveryFees} €</p>
+              <div className="flex flex-row justify-between font-semibold text-3xl  border-t  border-black pb-6 w-full">
+                <p>Frais de livraison</p>{" "}
+                <p className="font-bold">{order.deliveryFees} €</p>
               </div>
             ) : null}
 
-            <div className="flex flex-row justify-between font-semibold text-2xl border-b border-t border-black w-full pb-6">
-              <p>Montant Total</p> <p>{order.totalSum} €</p>
+            <div className="flex flex-row justify-between font-semibold text-3xl border-b border-t border-black w-full pb-6">
+              <p>Montant Total</p>{" "}
+              <p className="font-bold">{order.totalSum} €</p>
             </div>
           </div>
         </div>
         {order.note && (
-          <p className="text-2xl self-start">
+          <p className="text-3xl self-start">
             Note: <span className="font-extrabold">{order.note}</span>{" "}
           </p>
         )}
