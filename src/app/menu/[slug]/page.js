@@ -134,7 +134,7 @@ export default function eaterView({ params }) {
                 } ms-2 absolute w-fit h-fit`}
                 onClick={() => setFoodCategoriesMenuOpen(true)}
               >
-                <BarsIcon className="h-7 w-auto" />
+                <BarsIcon className="h-7 w-auto" color="#3F3E3F" />
               </button>
             </div>
 
