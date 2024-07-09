@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 export const MainNavigationButton = ({ open, setOpen }) => {
   return (
     <button
-      className={`${open && "hidden"} px-3 py-2 h-12 w-12 hover:opacity-90`}
+      className={`${open && "hidden"} p-2 h-11 w-11 hover:opacity-90`}
       onClick={() => {
         setOpen(true);
       }}
@@ -33,7 +33,7 @@ export function MainNavigationMenu({ className, open, setOpen }) {
     >
       <button
         type="button"
-        className="absolute rounded-md bg-white text-gray-400 hover:text-gray-500 h-fit width-fit top-2 right-3"
+        className="absolute rounded-md bg-white text-gray-400 hover:text-gray-500 h-fit width-fit top-4 right-6"
         onClick={() => setOpen(false)}
       >
         <span className="absolute -inset-2.5" />

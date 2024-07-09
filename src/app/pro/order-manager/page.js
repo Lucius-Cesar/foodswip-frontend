@@ -51,7 +51,7 @@ const page = () => {
             open={isMainNavigationOpen}
             setOpen={setMainNavigationOpen}
           />
-          <div className="px-3 space-y-4 h-full w-full overflow-y-auto">
+          <div className="px-3 pt-2 space-y-4 h-full w-full overflow-y-auto">
             <div className="flex flex-col space-y-2 max-w-screen-sm ">
               <div className="flex flex-row gap-1">
                 <BellAlertIcon className="text-yellow-400 h-6" />

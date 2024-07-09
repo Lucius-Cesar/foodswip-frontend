@@ -207,31 +207,31 @@ export default function settings() {
             open={isMainNavigationOpen}
             setOpen={setMainNavigationOpen}
           />
-          <div className="absolute top-0 w-full flex fex-col border-bottom  z-10 bg-white border-gravel rounded-lg p-3 sm:p-4 drop-shadow-md">
-            <div className="w-full px-8 sm:justify-around flex flex-row justify-between items-center text-center font-semibold">
+          <div className="absolute top-0 w-full flex fex-col border-bottom  z-10 bg-white border-gravel sm:py-2 rounded-lg drop-shadow-md">
+            <div className="w-full py-1 px-12 sm:justify-around flex flex-row justify-between items-center text-center font-semibold">
               <Link
-                className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
+                className={`text-sm max-w-20 sm:max-w-none sm:text-base font-bold ${
                   activeSettings === "restaurant" ? "text-primary" : ""
                 }`}
                 href="/pro/settings?q=restaurant"
               >
-                Paramètres du restaurant
+                Paramètres restaurant
               </Link>
               <Link
-                className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
+                className={`text-sm max-w-20 sm:max-w-none sm:text-base font-bold ${
                   activeSettings === "order" ? "text-primary" : ""
                 }`}
                 href="/pro/settings?q=order"
               >
-                Paramètres de commandes
+                Paramètres commandes
               </Link>
               <Link
-                className={`text-xs max-w-20 sm:max-w-none sm:text-base font-bold ${
+                className={`text-sm max-w-20 sm:max-w-none sm:text-base font-bold ${
                   activeSettings === "account" ? "text-primary" : ""
                 }`}
                 href="/pro/settings?q=account"
               >
-                Paramètres de compte
+                Paramètres compte
               </Link>
             </div>
           </div>
