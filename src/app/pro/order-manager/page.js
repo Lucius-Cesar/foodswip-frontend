@@ -37,10 +37,6 @@ const page = () => {
 
   return (
     <>
-      <Head>
-        {/* Refresh the page every 15 minutes to never miss order */}
-        <meta http-equiv="refresh" content="900" />
-      </Head>
       {!orders.data ? (
         <Preloader />
       ) : (
