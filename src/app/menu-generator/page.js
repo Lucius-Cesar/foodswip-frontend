@@ -13,6 +13,7 @@ const page = () => {
   const [menu, setMenu] = useState(null);
   const [menuImgUrl, setMenuImgUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [disposition, setDisposition] = useState("optimizeSpace");
   const menuImgRef = useRef(null);
   const menuDownloadRef = useRef(null);
 
@@ -49,6 +50,10 @@ const page = () => {
     setMenuImgUrl(blobUrl);
   };
 
+  const handleDispositionChange = (event) => {
+    setDisposition(event.target.value);
+  };
+
   const handleGenerateAndDownloadMenu = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -56,7 +61,6 @@ const page = () => {
 
     setLoading(false);
   };
-
   return (
     <>
       <main>
@@ -87,6 +91,38 @@ const page = () => {
               onChange={(input) => setMaxFoodPerCategory(input)}
             ></InputNumber>
           </div>
+
+          <div>
+            <label className="font-medium">Disposition du menu</label>
+            <div className="flex flex-row gap-2">
+              <input
+                type="radio"
+                id="optimizeSpace"
+                className={`h-6 w-6 sm:h-4 sm:w-4 rounded border-gray-300 text-primary focus:ring-primary`}
+                name="disposition"
+                value="optimizeSpace"
+                checked={disposition === "optimizeSpace"}
+                onChange={handleDispositionChange}
+              />
+              <label htmlFor="optimizeSpace">
+                Optimiser l'espace (recommandés pour les grands menus)
+              </label>
+            </div>
+            <div className="flex flex-row gap-2">
+              <input
+                type="radio"
+                className={`h-6 w-6 sm:h-4 sm:w-4 rounded border-gray-300 text-primary focus:ring-primary`}
+                id="symmetric"
+                name="disposition"
+                value="symmetric"
+                checked={disposition === "symmetric"}
+                onChange={handleDispositionChange}
+              />
+              <label htmlFor="symmetric">
+                Symétrique (recommandés pour les petits menus)
+              </label>
+            </div>
+          </div>
           <div>
             <DefaultBtn
               className="bg-primary"
@@ -98,17 +134,18 @@ const page = () => {
           <a
             ref={menuDownloadRef}
             href={menuImgUrl ? menuImgUrl : "#"}
-            download={`menu_${slug}.jpg`}
+            download={`menu_${slug}.png`}
           >
             {" "}
           </a>
         </form>
         {menu && (
-          <div className="h-[1850px] w-[1146px]" ref={menuImgRef}>
+          <div className="h-[1690px] w-[1307px]" ref={menuImgRef}>
             <MenuForFlyers
               menu={menu}
               maxFoodPerCategory={maxFoodPerCategory}
               categoriesToDelete={categoriesToDelete}
+              disposition={disposition}
             />
           </div>
         )}
