@@ -100,7 +100,7 @@ const MenuForFlyers = ({
 
   return (
     <div
-      className={`flex ${cols === 1 ? "flex-col" : ""} justify-between ${
+      className={`flex ${cols == 1 ? "flex-col" : ""} justify-between ${
         textAlignment === "center" ? "text-center" : ""
       } px-4 h-full w-full `}
     >
