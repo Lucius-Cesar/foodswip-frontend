@@ -33,9 +33,14 @@ self.addEventListener("notificationclick", (event) => {
               client = clientList[i];
             }
           }
+          client.navigate("/pro/order-manager");
           return client.focus();
         }
-        return self.clients.openWindow("/pro/order-manager");
+        return self.clients
+          .openWindow("/pro/order-manager")
+          .then(function (client) {
+            client.navigate("/pro/order-manager");
+          });
       })
   );
 });

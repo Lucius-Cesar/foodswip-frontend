@@ -41,16 +41,18 @@ const page = () => {
         <Preloader />
       ) : (
         <div className="h-screen flex flex-col w-full overflow-y-hidden">
-          <div className="bg-white w-full">
+          <div className="bg-white flex flex-row justify-between w-full">
             <MainNavigationButton
               open={isMainNavigationOpen}
               setOpen={setMainNavigationOpen}
             />
           </div>
+
           <MainNavigationMenu
             open={isMainNavigationOpen}
             setOpen={setMainNavigationOpen}
           />
+
           <div className="px-3 pt-2 space-y-4 h-full w-full overflow-y-auto">
             <div className="flex flex-col space-y-2 max-w-screen-sm ">
               <div className="flex flex-row gap-1">
