@@ -109,7 +109,6 @@ export default function eaterView({ params }) {
     }
   }, [menu]);
 
-  console.log(menu);
   return (
     <>
       {restaurant.error && <p className="error-danger">{restaurant.error}</p>}

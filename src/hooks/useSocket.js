@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 function useSocket() {
   const [socket, setSocket] = useState(null);
-
   const token = useSelector((state) => state.auth.data?.token);
   useEffect(() => {
     if (!token) {
@@ -29,6 +28,11 @@ function useSocket() {
         const currentDate = new Date();
         console.log("connected to socket", currentDate.toLocaleTimeString());
       });
+
+      newSocket.on("connect_error", () => {
+        console.log("socket connection error" + new Date());
+      });
+
       newSocket.on("disconnect", () => {
         const currentDate = new Date();
         console.log(
@@ -39,10 +43,26 @@ function useSocket() {
     }
     return () => {
       if (socket) {
-        socket.disconnect();
+        socket.close();
       }
     };
   }, [token, socket]);
+
+  useEffect(() => {
+    //reload page every  minute if socket is not connected
+    let intervalId;
+    intervalId = setInterval(() => {
+      if (!socket?.connected || !socket) {
+        window.location.reload();
+      }
+    }, 60000);
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [socket]);
 
   return socket;
 }

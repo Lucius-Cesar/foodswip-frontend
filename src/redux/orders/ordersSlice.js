@@ -24,7 +24,7 @@ export const fetchTodayOrders = createAsyncThunk(
       const data = await authFetch(
         `${
           process.env.NEXT_PUBLIC_API_URL
-        }/orders/?start=${start.toISOString()}&end=${end.toISOString()}&sortBy=estimatedArrivalDate&sortDirection=asc`,
+        }/orders/?start=${start.toISOString()}&end=${end.toISOString()}&sortBy=creationDate&sortDirection=asc`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
