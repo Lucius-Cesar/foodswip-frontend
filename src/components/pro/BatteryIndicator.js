@@ -113,9 +113,6 @@ export default function BatteryIndicator({ style }) {
 
   useEffect(() => {
     const checkBatteryAPIAndSetup = async () => {
-      if (navigator.battery) {
-        const test = await navigator.battery;
-      }
       if (navigator.getBattery) {
         try {
           const battery = await navigator.getBattery();
