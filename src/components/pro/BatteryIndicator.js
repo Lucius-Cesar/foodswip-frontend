@@ -3,30 +3,32 @@ import { useState, useEffect } from "react";
 // Initial battery info: battery level: 0-100, charging status: true/false, supported by the browser: true/false
 const initialBatteryInfo = { level: 50, charging: false, supported: true };
 
-export const BatteryIcon = ({ level, levelColor }) => (
-  //max level is width 16 -> divide by 100 -> 0.16 = 1% power
+export const BatteryIcon = ({ level, levelColor, style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    className="size-6"
+    style={{
+      width: "24px",
+      height: "24px",
+      ...style,
+    }} // Converted 'size-6' to inline style
   >
     <path
       fillRule="evenodd"
       d="M.75 9.75a3 3 0 0 1 3-3h15a3 3 0 0 1 3 3v.038c.856.173 1.5.93 1.5 1.837v2.25c0 .907-.644 1.664-1.5 1.838v.037a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3v-6Zm19.5 0a1.5 1.5 0 0 0-1.5-1.5h-15a1.5 1.5 0 0 0-1.5 1.5v6a1.5 1.5 0 0 0 1.5 1.5h15a1.5 1.5 0 0 0 1.5-1.5v-6Z"
       clipRule="evenodd"
     />
-
     <rect x="3" y="9.8" width={0.16 * level} height="6" fill={levelColor} />
   </svg>
 );
 
-const ChargingIcon = ({ className }) => (
+const ChargingIcon = ({ style }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    className={`size-2 ${className}`}
+    style={{ width: "8.5px", height: "8.5px", ...style }} // Converted 'size-2' and additional className to inline style
   >
     <path
       fillRule="evenodd"
@@ -35,12 +37,13 @@ const ChargingIcon = ({ className }) => (
     />
   </svg>
 );
-const DynamicBattery = ({ batteryInfo, className }) => {
+
+const DynamicBattery = ({ batteryInfo, style }) => {
   const { level, charging } = batteryInfo;
 
   let levelColor;
   if (level > 80 || charging === true) {
-    levelColor = "#2cb55b"; // Assuming levels above 80 should also be this color
+    levelColor = "#2cb55b";
   } else if (level > 50) {
     levelColor = "#8fd501";
   } else if (level > 30) {
@@ -48,33 +51,58 @@ const DynamicBattery = ({ batteryInfo, className }) => {
   } else if (level > 10) {
     levelColor = "#f97247";
   } else {
-    levelColor = "#e12d2e"; // This will also cover the case for level <= 10
+    levelColor = "#e12d2e";
   }
+
+  // BatteryIconStyle is used to change the color of the battery icon outline color when the battery level is less than or equal to 5 and not charging
+  const BatteryIconStyle = level <= 5 && !charging ? { color: levelColor } : {};
 
   return (
     <div
-      className={`${className} flex flex-row justify-center items-center relative size-6`}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative",
+        width: "24px", // Assuming 'size-6' corresponds to 24px width
+        height: "24px", // Assuming 'size-6' corresponds to 24px height
+        ...style,
+      }}
     >
       {charging ? (
-        <ChargingIcon className="absolute left-[7.4px] top-[8.8px]" />
+        <ChargingIcon
+          style={{ position: "absolute", left: "7.4px", top: "8.3px" }}
+        />
       ) : null}
       {level <= 5 && !charging ? (
         <p
-          style={{ color: "#e12d2e" }}
-          className="absolute text-[9px] font-bold left-[10px] top-[7px]"
+          style={{
+            color: "#e12d2e",
+            position: "absolute",
+            fontSize: "9px",
+            fontWeight: "bold",
+            left: "10px",
+            top: "7px",
+          }}
         >
           !
         </p>
       ) : null}
-      <BatteryIcon level={level} levelColor={levelColor}></BatteryIcon>
+
+      <BatteryIcon
+        level={level}
+        levelColor={levelColor}
+        style={BatteryIconStyle}
+      ></BatteryIcon>
     </div>
   );
 };
 
-export default function BatteryIndicator({ className }) {
+export default function BatteryIndicator({ style }) {
   const [batteryInfo, setBatteryInfo] = useState(initialBatteryInfo);
 
-  // Update the battery info
+  console.log(batteryInfo);
   const updateBatteryInfo = (battery) => {
     setBatteryInfo({
       level: battery.level * 100,
@@ -84,15 +112,15 @@ export default function BatteryIndicator({ className }) {
   };
 
   useEffect(() => {
-    // Check if the browser supports the Battery Status API and setup the event listeners
     const checkBatteryAPIAndSetup = async () => {
+      if (navigator.battery) {
+        const test = await navigator.battery;
+      }
       if (navigator.getBattery) {
         try {
-          // Get the battery status
           const battery = await navigator.getBattery();
           updateBatteryInfo(battery);
 
-          // Setup the event listeners for the battery status changes
           battery.addEventListener("chargingchange", () =>
             updateBatteryInfo(battery)
           );
@@ -115,7 +143,7 @@ export default function BatteryIndicator({ className }) {
   return (
     <>
       {batteryInfo?.supported ? (
-        <DynamicBattery className={className} batteryInfo={batteryInfo} />
+        <DynamicBattery style={style} batteryInfo={batteryInfo} />
       ) : null}
     </>
   );

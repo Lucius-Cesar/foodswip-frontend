@@ -24,8 +24,6 @@ module.exports = async (phase) => {
       // use something else that works, such as "service-worker/index.ts".
       swSrc: "src/app/sw.js",
       swDest: "public/sw.js",
-      cacheOnNavigation: true,
-      reloadOnOnline: true,
     });
     return withSerwist(nextConfig);
   } else {
