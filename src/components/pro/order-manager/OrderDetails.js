@@ -31,30 +31,8 @@ const OrderDetails = ({ order }) => {
   const [loading, setLoading] = useState(false);
   const [acceptOrderLoading, setAcceptOrderLoading] = useState(false);
 
-  const [isBrave, setIsBrave] = useState(null);
-  // brave is preferd for printing
-
-  async function checkIfBrave() {
-    let isBrave = false;
-    try {
-      isBrave = (await window?.navigator?.brave?.isBrave?.()) || false;
-    } catch (e) {
-      console.error("Error checking if browser is Brave:", e);
-    }
-    return isBrave;
-  }
-
-  // Example usage
-  checkIfBrave().then((brave) => {
-    setIsBrave(brave);
-    // You can use isBrave here
-  });
-
   const handleAcceptOrder = async () => {
     setAcceptOrderLoading(true);
-    if (isBrave) {
-      setPrintTrigger(true);
-    }
     setTimeout(() => {
       setAcceptOrderLoading(false);
     }, 500);
