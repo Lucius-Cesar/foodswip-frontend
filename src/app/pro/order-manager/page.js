@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { fetchTodayOrders } from "@/redux/orders/ordersSlice";
 import OrderCard from "@/components/pro/order-manager/OrderCard";
 import useCheckAuth from "@/hooks/useCheckAuth";
@@ -16,8 +16,6 @@ import {
   MainNavigationButton,
 } from "@/components/pro/MainNavigation";
 import OrderNotifications from "@/components/pro/order-manager/OrderNotifications";
-import BatteryIndicator from "@/components/pro/BatteryIndicator";
-import ShowTime from "@/components/pro/ShowTime";
 const page = () => {
   //redux
   const orders = useSelector((state) => state.orders);
@@ -36,16 +34,6 @@ const page = () => {
     (order) => order.status === "accepted"
   );
 
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  useEffect(() => {
-    if (
-      screen.width == window.innerWidth &&
-      screen.height == window.innerHeight
-    ) {
-      setIsFullScreen(true);
-    } else setIsFullScreen(false);
-  }, []);
-
   return (
     <>
       {!orders.data ? (
@@ -57,14 +45,6 @@ const page = () => {
               open={isMainNavigationOpen}
               setOpen={setMainNavigationOpen}
             />
-            {isFullScreen ? (
-              <>
-                <ShowTime />
-                <div className="px-3">
-                  <BatteryIndicator />
-                </div>
-              </>
-            ) : null}
           </div>
 
           <MainNavigationMenu

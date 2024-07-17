@@ -7,7 +7,8 @@ import Preloader from "@/components/ui/Preloader";
 import useFetch from "@/hooks/useFetch";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import { useDispatch } from "react-redux";
+import { clearCart } from "@/redux/cart/cartSlice";
 export default function Order({ params }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,6 +23,12 @@ export default function Order({ params }) {
     `${process.env.NEXT_PUBLIC_API_URL}/orders/${params.orderNumber}`,
     fetchOptions
   );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearCart());
+  }, []);
 
   useEffect(() => {
     if (order.data?.estimatedArrivalDate) {

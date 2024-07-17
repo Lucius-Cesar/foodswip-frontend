@@ -80,7 +80,7 @@ export default function Restaurant({ open, setOpen }) {
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-title">Horraires</h3>
+                    <h3 className="font-title">Horaires</h3>
                     <div className="flex flex-col space-y-2">
                       {restaurant.data.publicSettings.schedule.map(
                         (dayschedule, i) => {

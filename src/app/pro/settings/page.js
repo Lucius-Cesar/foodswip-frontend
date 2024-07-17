@@ -241,7 +241,7 @@ export default function settings() {
                 <RestaurantStatusOverrideBtn className="self-start" />
                 <div className="flex flex-row gap-8 sm:gap-56 ">
                   <div className="flex flex-col">
-                    <h2 className="mb-4 font-bold">Horraires d'ouverture</h2>
+                    <h2 className="mb-4 font-bold">Horaires d'ouverture</h2>
                     <ModalPeriod
                       type={"time"}
                       value={valueModalPeriod}
